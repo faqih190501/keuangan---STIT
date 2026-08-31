@@ -80,6 +80,9 @@ export function renderMahasiswaPortal(container) {
             }).join('')}
           </select>
         </div>
+        <button class="btn btn-outline btn-sm" id="btn-self-edit-profile-top" style="color: #1e40af; border-color: #93c5fd; background: #eff6ff; font-weight: 800; display: flex; align-items: center; gap: 4px;">
+          👤 Edit Profil Saya
+        </button>
         <button class="btn btn-outline btn-sm" id="btn-goto-login-view" style="color: var(--primary-700); font-weight: 700;">
           🔑 Halaman Login
         </button>
@@ -93,16 +96,21 @@ export function renderMahasiswaPortal(container) {
     <div class="student-welcome-hero">
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; position: relative; z-index: 1;">
         <div style="display: flex; align-items: center; gap: 20px;">
-          <div style="width: 68px; height: 68px; border-radius: var(--radius-full); background: rgba(255, 255, 255, 0.18); border: 2.5px solid rgba(255, 255, 255, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.7rem; font-weight: 900; box-shadow: var(--shadow-sm); flex-shrink: 0;">
+          <div style="width: 68px; height: 68px; border-radius: var(--radius-full); background: rgba(255, 255, 255, 0.18); border: 2.5px solid rgba(255, 255, 255, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.7rem; font-weight: 900; box-shadow: var(--shadow-sm); flex-shrink: 0; position: relative;">
             ${currentStudent.name.split(' ').map(n=>n[0]).slice(0,2).join('')}
           </div>
           <div>
             <div style="font-size: 0.76rem; color: #93c5fd; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 2px;">
               Assalamu'alaikum Warahmatullahi Wabarakatuh
             </div>
-            <h2 style="font-size: 1.45rem; font-weight: 900; margin: 0; color: #ffffff; letter-spacing: -0.3px;">
-              ${currentStudent.name}
-            </h2>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <h2 style="font-size: 1.45rem; font-weight: 900; margin: 0; color: #ffffff; letter-spacing: -0.3px;">
+                ${currentStudent.name}
+              </h2>
+              <button class="btn btn-sm" id="btn-hero-edit-profile" style="background: rgba(255, 255, 255, 0.22); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.45); font-size: 0.75rem; font-weight: 800; padding: 3px 10px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; backdrop-filter: blur(4px);" title="Sunting Biodata Profil">
+                ✏️ Edit Biodata
+              </button>
+            </div>
             <div style="display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: #e2e8f0; margin-top: 6px; flex-wrap: wrap;">
               <span style="background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono);">NIM: ${currentStudent.nim}</span>
               <span>&bull;</span>
@@ -871,6 +879,25 @@ export function renderMahasiswaPortal(container) {
       const newNim = e.target.value;
       appState.setRole('MAHASISWA', newNim);
       renderMahasiswaPortal(container);
+    });
+  }
+
+  // Student Self-Profile Edit Handlers
+  const btnEditProfileTop = container.querySelector('#btn-self-edit-profile-top');
+  if (btnEditProfileTop) {
+    btnEditProfileTop.addEventListener('click', () => {
+      if (window.simpelModals && window.simpelModals.openStudentSelfProfileModal) {
+        window.simpelModals.openStudentSelfProfileModal(currentStudent.nim);
+      }
+    });
+  }
+
+  const btnHeroEditProfile = container.querySelector('#btn-hero-edit-profile');
+  if (btnHeroEditProfile) {
+    btnHeroEditProfile.addEventListener('click', () => {
+      if (window.simpelModals && window.simpelModals.openStudentSelfProfileModal) {
+        window.simpelModals.openStudentSelfProfileModal(currentStudent.nim);
+      }
     });
   }
 

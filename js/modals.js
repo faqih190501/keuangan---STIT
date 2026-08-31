@@ -946,4 +946,112 @@ export class ModalManager {
     overlay.classList.add('active');
     footer.querySelector('#btn-close-img-preview').addEventListener('click', () => ModalManager.closeModal());
   }
+
+  /**
+   * 8. Student Self-Profile Edit Modal
+   */
+  static openStudentSelfProfileModal(studentNim) {
+    const state = appState.getState();
+    const student = state.students.find(s => s.nim === studentNim);
+    if (!student) return;
+
+    const scholarship = state.scholarshipSchemes.find(sc => sc.id === student.scholarshipId) || { name: 'Reguler' };
+
+    const { overlay, card, title, body, footer } = this.getModalElements();
+    card.classList.remove('modal-xl');
+    card.classList.add('modal-lg');
+
+    title.innerHTML = `👤 Edit Profil & Biodata Mahasiswa`;
+
+    body.innerHTML = `
+      <form id="form-self-profile" onsubmit="return false;">
+        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1.5px solid #bfdbfe; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 0.72rem; color: #1e40af; font-weight: 800; text-transform: uppercase;">Nomor Induk Mahasiswa (NIM):</div>
+            <div style="font-size: 1.25rem; font-weight: 900; font-family: var(--font-mono); color: #0f172a;">${student.nim}</div>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge" style="background:#2563eb; color:#ffffff; font-weight:800;">${student.prodi === 'BKPI' ? 'BKPI' : 'PIAUD'} - Semester ${student.semester}</span>
+            <div style="font-size: 0.72rem; color: #1e40af; font-weight: 700; margin-top: 3px;">Skema: ${scholarship.name.split('(')[0]}</div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap Mahasiswa <span class="required">*</span></label>
+            <input type="text" class="form-control" id="self-std-name" value="${student.name}" required placeholder="Nama lengkap sesuai ijazah/KTP">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nomor Telepon / WhatsApp Aktif <span class="required">*</span></label>
+            <input type="text" class="form-control" id="self-std-phone" value="${student.phone || '081234567890'}" required placeholder="Contoh: 081234567890">
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Alamat Email Aktif</label>
+            <input type="email" class="form-control" id="self-std-email" value="${student.email || `${student.nim}@student.stit-if.ac.id`}" placeholder="nama@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nomor Kontak Orang Tua / Wali</label>
+            <input type="text" class="form-control" id="self-std-parent-phone" value="${student.parentPhone || '082198765432'}" placeholder="Contoh: 082198765432">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label">Alamat Domisili / Tempat Tinggal</label>
+          <textarea class="form-control" id="self-std-address" rows="2" placeholder="Alamat lengkap RT/RW, Desa, Kecamatan, Kabupaten/Kota">${student.address || 'Pagentan, Magelang, Jawa Tengah'}</textarea>
+        </div>
+
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 10px 14px; margin-top: 14px; font-size: 0.76rem; color: #166534; line-height: 1.4;">
+          ℹ️ <strong>Catatan:</strong> Perubahan data Program Studi, Semester, dan Status Skema Beasiswa hanya dapat diproses melalui Bagian Administrasi Akademik (BAAK) & Bendahara.
+        </div>
+      </form>
+    `;
+
+    footer.innerHTML = `
+      <button class="btn btn-outline" id="btn-cancel-self-profile">Batal</button>
+      <button class="btn btn-primary" id="btn-save-self-profile" style="background: #1e40af; font-weight: 800;">
+        💾 Simpan Pembaruan Profil
+      </button>
+    `;
+
+    overlay.classList.add('active');
+
+    footer.querySelector('#btn-cancel-self-profile').addEventListener('click', () => ModalManager.closeModal());
+    footer.querySelector('#btn-save-self-profile').addEventListener('click', () => {
+      const newName = body.querySelector('#self-std-name').value.trim();
+      const newPhone = body.querySelector('#self-std-phone').value.trim();
+      const newEmail = body.querySelector('#self-std-email').value.trim();
+      const newParentPhone = body.querySelector('#self-std-parent-phone').value.trim();
+      const newAddress = body.querySelector('#self-std-address').value.trim();
+
+      if (!newName) {
+        window.simpelToast.show('Peringatan', 'Nama lengkap tidak boleh kosong.', 'warning');
+        return;
+      }
+
+      student.name = newName;
+      student.phone = newPhone;
+      student.email = newEmail;
+      student.parentPhone = newParentPhone;
+      student.address = newAddress;
+
+      // Update state current user name if active
+      if (state.currentUser && state.currentUser.nim === student.nim) {
+        state.currentUser.name = newName;
+      }
+
+      appState.addAuditLog(
+        'EDIT_STUDENT_SELF',
+        `${student.name} (${student.nim})`,
+        `Mahasiswa memperbarui profil biodata mandiri (Nama: ${newName}, Kontak: ${newPhone}).`
+      );
+      appState.notify();
+
+      window.simpelToast.show('Profil Berhasil Diperbarui!', 'Biodata profil Anda telah tersimpan dengan aman.', 'success');
+      ModalManager.closeModal();
+      if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+    });
+  }
 }
