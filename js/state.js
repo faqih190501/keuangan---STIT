@@ -576,6 +576,16 @@ class StateManager {
   constructor() {
     this.listeners = [];
     this.loadState();
+
+    // Cross-tab / cross-window realtime synchronization
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', (e) => {
+        if (e.key === STORAGE_KEY) {
+          this.loadState();
+          this.notifyListeners({ crossTab: true });
+        }
+      });
+    }
   }
 
   loadState() {
@@ -630,9 +640,19 @@ class StateManager {
     };
   }
 
-  notify() {
+  notify(options = {}) {
     this.saveState();
-    this.listeners.forEach(listener => listener(this.state));
+    this.notifyListeners(options);
+  }
+
+  notifyListeners(options = {}) {
+    this.listeners.forEach(listener => {
+      try {
+        listener(this.state, options);
+      } catch (err) {
+        console.error('Error in state subscriber:', err);
+      }
+    });
   }
 
   // Action: Switch Active Role

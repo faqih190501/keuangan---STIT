@@ -131,10 +131,18 @@ class Router {
       modalCloseBtn.addEventListener('click', () => ModalManager.closeModal());
     }
 
-    // Listen for state changes to update badge counters and active view
-    appState.subscribe(() => {
+    // Listen for state changes to update badge counters and auto-synchronize views
+    appState.subscribe((state, options = {}) => {
       this.updateBadges();
       AuthManager.renderRoleBar();
+
+      // Auto-synchronize and re-render current view if no modal is actively open and not on login page
+      const modalOverlay = document.getElementById('global-modal-overlay');
+      const isModalOpen = modalOverlay && modalOverlay.classList.contains('active');
+
+      if (!isModalOpen && this.currentView && this.currentView !== 'view-login' && !options?.silent) {
+        this.renderCurrentViewContent(false);
+      }
     });
 
     // Initial View Routing: Always land on view-login (Portal Login & Pendaftaran) by default
@@ -199,11 +207,14 @@ class Router {
     const sidebar = document.getElementById('sidebar');
     if (sidebar) sidebar.classList.remove('mobile-open');
 
-    // Render target view
+    this.renderCurrentViewContent(true);
+  }
+
+  renderCurrentViewContent(scrollToTop = true) {
     if (!this.container) return;
     this.container.innerHTML = '';
 
-    const state = appState.getState();
+    const viewName = this.currentView;
 
     switch (viewName) {
       case 'view-login':
@@ -262,11 +273,13 @@ class Router {
       DragScrollHelper.init(document);
     }, 50);
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (scrollToTop) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   refreshCurrentView() {
-    this.navigateTo(this.currentView);
+    this.renderCurrentViewContent(false);
   }
 
   setPageHeaders(title, breadcrumb) {
