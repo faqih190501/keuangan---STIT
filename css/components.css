@@ -773,3 +773,148 @@ textarea.form-control {
   font-family: var(--font-mono);
   color: var(--text-muted);
 }
+
+/* ==========================================================================
+   Student Portal User-Friendly Components
+   ========================================================================== */
+.student-welcome-hero {
+  background: linear-gradient(135deg, #091e42 0%, #1e3a8a 50%, #1d4ed8 100%);
+  color: #ffffff;
+  border-radius: var(--radius-2xl);
+  padding: 28px 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+  margin-bottom: 24px;
+}
+
+.student-welcome-hero::after {
+  content: '🎓';
+  position: absolute;
+  right: 20px;
+  bottom: -15px;
+  font-size: 8rem;
+  opacity: 0.08;
+  pointer-events: none;
+  transform: rotate(-10deg);
+}
+
+.student-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.student-stat-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+
+.student-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-300);
+}
+
+.student-stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.payment-method-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.payment-method-card {
+  border: 2px solid var(--border-light);
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.payment-method-card:hover {
+  border-color: var(--primary-500);
+  background: #f8fafc;
+}
+
+.payment-method-card.active {
+  border-color: var(--primary-700);
+  background: #eff6ff;
+  box-shadow: 0 0 0 1px var(--primary-700);
+}
+
+.faq-accordion-item {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  margin-bottom: 10px;
+  background: #ffffff;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.faq-accordion-header {
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 0.86rem;
+  color: var(--text-dark);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  user-select: none;
+}
+
+.faq-accordion-header:hover {
+  background: #f1f5f9;
+  color: var(--primary-700);
+}
+
+.faq-accordion-body {
+  padding: 14px 18px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--border-light);
+  display: none;
+}
+
+.faq-accordion-body.open {
+  display: block;
+}
+
+.helpdesk-box {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-xl);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
+}
+
