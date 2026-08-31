@@ -246,6 +246,97 @@ export class BillingEngine {
   }
 
   /**
+   * Process Self-Service Independent Payment (Tanpa Tagihan / Pembayaran Mandiri Bebas)
+   * e.g., Tabungan SPP, Infaq Kampus, Uang Muka, Heregistrasi Mandiri
+   */
+  static processMandiriPayment({
+    studentNim,
+    categoryName = 'SPP_MANDIRI',
+    categoryLabel = 'Pembayaran Mandiri SPP / Biaya Kuliah',
+    amount,
+    paymentChannel = 'QRIS', // 'QRIS', 'VA_BSI', 'TRANSFER_MANUAL'
+    senderData = null,
+    notes = ''
+  }) {
+    const state = appState.getState();
+    const student = state.students.find(s => s.nim === studentNim);
+    if (!student) return { success: false, message: 'Data mahasiswa tidak ditemukan' };
+
+    const now = new Date();
+    const pad = (n) => n.toString().padStart(2, '0');
+    const timeStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    
+    const invoiceId = `INV-MND-${Date.now().toString().slice(-6)}-${student.nim.slice(-3)}`;
+    const receiptSerial = Math.floor(1000 + Math.random() * 9000);
+    const receiptNumber = `KW-IF/${now.getFullYear()}/${pad(now.getMonth() + 1)}/${receiptSerial}`;
+
+    const isInstant = paymentChannel === 'QRIS' || paymentChannel === 'VA_BSI';
+
+    const newInvoice = {
+      id: invoiceId,
+      studentNim: student.nim,
+      semester: state.activeSemester,
+      createdDate: new Date().toISOString().slice(0, 10),
+      dueDate: new Date().toISOString().slice(0, 10),
+      items: [
+        {
+          componentId: categoryName,
+          name: categoryLabel,
+          baseAmount: amount,
+          discount: 0,
+          finalAmount: amount
+        }
+      ],
+      grossAmount: amount,
+      totalDiscount: 0,
+      netAmount: amount,
+      paidAmount: isInstant ? amount : 0,
+      status: isInstant ? STATUS_TAGIHAN.LUNAS : STATUS_TAGIHAN.MENUNGGU_VERIFIKASI,
+      paymentMethod: paymentChannel === 'QRIS' ? 'QRIS_NATIONAL' : (paymentChannel === 'VA_BSI' ? 'VA_BSI' : 'TRANSFER_MANUAL'),
+      receiptNumber: isInstant ? receiptNumber : null,
+      paymentDate: isInstant ? timeStr : null,
+      virtualAccount: '1056405743',
+      notes: notes || `Pembayaran mandiri mahasiswa (${categoryLabel}) via ${paymentChannel === 'QRIS' ? 'QRIS' : paymentChannel === 'VA_BSI' ? 'BSI VA' : 'Transfer BSI'}.`
+    };
+
+    state.invoices.unshift(newInvoice);
+
+    // If manual transfer, also create a verification queue entry
+    if (!isInstant && senderData) {
+      const scholarship = state.scholarshipSchemes.find(sc => sc.id === student.scholarshipId);
+      const newVerif = {
+        id: `VERIF-${Date.now().toString().slice(-4)}`,
+        invoiceId: invoiceId,
+        studentNim: student.nim,
+        studentName: student.name,
+        prodi: student.prodi,
+        semester: student.semester,
+        scholarshipName: scholarship ? scholarship.name : 'Reguler',
+        amount: amount,
+        transferDate: timeStr,
+        senderBank: senderData.senderBank || 'Bank BSI',
+        senderAccountName: senderData.senderAccountName || student.name.toUpperCase(),
+        senderAccountNumber: senderData.senderAccountNumber || '1056405743',
+        destinationBank: 'Bank BSI - STIT Ihsanul Fikri (No. Rek 1056405743)',
+        proofImage: senderData.proofImage || 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80',
+        status: 'PENDING',
+        notes: `Pembayaran Mandiri: ${categoryLabel}. ${notes}`,
+        submittedAt: timeStr
+      };
+      state.paymentVerifications.unshift(newVerif);
+    }
+
+    appState.addAuditLog(
+      isInstant ? 'PAYMENT_MANDIRI_SUCCESS' : 'SUBMIT_MANDIRI_TRANSFER',
+      `${invoiceId} (${student.name})`,
+      `Mahasiswa melakukan pembayaran mandiri ${categoryLabel} sebesar Rp ${amount.toLocaleString('id-ID')} via ${paymentChannel}.`
+    );
+
+    appState.notify();
+    return { success: true, invoice: newInvoice, receiptNumber: isInstant ? receiptNumber : null, isInstant };
+  }
+
+  /**
    * Submit manual transfer proof by Mahasiswa
    */
   static submitManualTransfer(invoiceId, transferData) {
