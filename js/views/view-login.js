@@ -57,7 +57,7 @@ export function renderLoginView(container) {
   const defaultNim = generateNewNim('PIAUD');
 
   container.innerHTML = `
-    <div style="max-width: 980px; margin: 16px auto 40px; animation: fadeIn 0.3s ease;">
+    <div style="max-width: 1020px; margin: 16px auto 40px; animation: fadeIn 0.3s ease;">
       
       <!-- Top Branding Hero -->
       <div style="text-align: center; margin-bottom: 28px;">
@@ -66,23 +66,26 @@ export function renderLoginView(container) {
           SIMPEL-IF &bull; STIT Ihsanul Fikri
         </h1>
         <p style="font-size: 0.84rem; color: var(--text-muted); max-width: 580px; margin: 4px auto 0;">
-          Sistem Informasi Manajemen Pembayaran Elektronik, Beasiswa & Portal Akademik Mahasiswa
+          Sistem Informasi Manajemen Pembayaran Elektronik, Tata Kelola Beasiswa & Portal Akademik
         </p>
       </div>
 
       <!-- Main Container Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 28px; align-items: start;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 28px; align-items: start;">
         
-        <!-- Left Column: Student Login & Registration Card -->
+        <!-- Left Column: Authentication & Registration Card -->
         <div class="card" style="padding: 28px; box-shadow: var(--shadow-lg); border-top: 5px solid var(--primary-700);">
           
-          <!-- Mode Tabs (Login vs Register) -->
-          <div style="display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-lg); margin-bottom: 22px; gap: 4px;">
-            <button type="button" id="tab-btn-login" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 800; font-size: 0.82rem; padding: 8px 12px; background: #ffffff; color: var(--primary-800); box-shadow: var(--shadow-sm); border: none; cursor: pointer; transition: all 0.2s;">
-              🔑 Masuk Mahasiswa
+          <!-- Mode Tabs (Mahasiswa vs Admin vs Register) -->
+          <div style="display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-lg); margin-bottom: 22px; gap: 4px; overflow-x: auto;">
+            <button type="button" id="tab-btn-student" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 800; font-size: 0.78rem; padding: 8px 10px; background: #ffffff; color: var(--primary-800); box-shadow: var(--shadow-sm); border: none; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
+              🎓 Masuk Mahasiswa
             </button>
-            <button type="button" id="tab-btn-register" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 700; font-size: 0.82rem; padding: 8px 12px; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: all 0.2s;">
-              📝 Daftar Mahasiswa Baru
+            <button type="button" id="tab-btn-admin" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 700; font-size: 0.78rem; padding: 8px 10px; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
+              👑 Masuk Admin
+            </button>
+            <button type="button" id="tab-btn-register" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 700; font-size: 0.78rem; padding: 8px 10px; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: all 0.2s; white-space: nowrap;">
+              📝 Daftar PMB
             </button>
           </div>
 
@@ -91,7 +94,7 @@ export function renderLoginView(container) {
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
               <div>
                 <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--text-dark); margin: 0;">Portal Login Mahasiswa</h2>
-                <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Masukkan NIM dan PIN/Password akun Anda</p>
+                <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Masukkan NIM dan PIN/Password akun mahasiswa</p>
               </div>
               <span style="font-size: 1.8rem;">🎓</span>
             </div>
@@ -103,7 +106,7 @@ export function renderLoginView(container) {
                   <input type="text" class="form-control" id="login-nim" placeholder="Contoh: 202486209012" required style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px;" value="202486209012">
                   <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">👤</span>
                 </div>
-                <span class="input-help-text">Gunakan NIM resmi yang terdaftar di STIT-IF</span>
+                <span class="input-help-text">Gunakan NIM resmi STIT Ihsanul Fikri (atau pilih akun cepat di samping)</span>
               </div>
 
               <div class="form-group">
@@ -115,17 +118,17 @@ export function renderLoginView(container) {
                     👁️
                   </button>
                 </div>
-                <span class="input-help-text">Default PIN simulasi: <code>123456</code> atau NIM</span>
+                <span class="input-help-text">Default PIN simulasi: <code>123456</code></span>
               </div>
 
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.78rem;">
                 <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted);">
-                  <input type="checkbox" id="remember-nim" checked> Ingat NIM di perangkat ini
+                  <input type="checkbox" id="remember-nim" checked> Ingat di perangkat ini
                 </label>
-                <a href="javascript:void(0)" id="link-forgot-pin" style="color: var(--primary-700); font-weight: 600; text-decoration: none;">Bantuan Login?</a>
+                <a href="javascript:void(0)" id="link-forgot-pin" style="color: var(--primary-700); font-weight: 600; text-decoration: none;">Bantuan Akun?</a>
               </div>
 
-              <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; font-size: 0.95rem; font-weight: 700;">
+              <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; font-size: 0.95rem; font-weight: 800;">
                 🚀 Masuk ke Portal Mahasiswa
               </button>
             </form>
@@ -133,21 +136,65 @@ export function renderLoginView(container) {
             <!-- Callout: Pendaftaran Mahasiswa Baru -->
             <div style="margin-top: 18px; padding: 14px 16px; background: linear-gradient(135deg, #f0fdf4, #ecfdf5); border: 1px dashed #059669; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
               <div>
-                <div style="font-size: 0.82rem; font-weight: 800; color: #065f46;">Belum Memiliki Akun Mahasiswa?</div>
-                <div style="font-size: 0.72rem; color: #047857;">Daftarkan diri Anda sebagai Mahasiswa Baru (PMB) & terbitkan tagihan awal.</div>
+                <div style="font-size: 0.82rem; font-weight: 800; color: #065f46;">Mahasiswa Baru (Belum Punya Akun)?</div>
+                <div style="font-size: 0.72rem; color: #047857;">Daftarkan diri Anda (PMB) & terbitkan tagihan awal.</div>
               </div>
               <button type="button" id="btn-quick-goto-register" class="btn btn-sm" style="background: #059669; color: #ffffff; font-weight: 800; white-space: nowrap; border: none; box-shadow: var(--shadow-sm); cursor: pointer;">
-                Daftar Sekarang ✨
+                Daftar PMB ✨
               </button>
-            </div>
-
-            <!-- Quick Notice -->
-            <div style="margin-top: 16px; padding: 12px 14px; background: var(--primary-50); border: 1px solid var(--primary-100); border-radius: var(--radius-md); font-size: 0.76rem; color: var(--primary-900); line-height: 1.45;">
-              <strong>💡 Informasi:</strong> Mahasiswa aktif prodi BKPI dan PIAUD dapat memeriksa rincian tagihan, skema beasiswa, dan pembayaran Virtual Account.
             </div>
           </div>
 
-          <!-- PANE 2: PENDAFTARAN MAHASISWA BARU (PMB) -->
+          <!-- PANE 2: LOGIN ADMIN (USERNAME & PASSWORD) -->
+          <div id="pane-admin-login" style="display: none;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+              <div>
+                <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--text-dark); margin: 0;">Login Admin / Pengelola</h2>
+                <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Akses pusat komando keuangan & tata kelola beasiswa</p>
+              </div>
+              <span style="font-size: 1.8rem;">👑</span>
+            </div>
+
+            <form id="form-admin-login">
+              <div class="form-group">
+                <label class="form-label" for="admin-username">Username / Email Admin <span class="required">*</span></label>
+                <div style="position: relative;">
+                  <input type="text" class="form-control" id="admin-username" placeholder="Masukkan username admin" required style="font-size: 0.95rem; padding-left: 38px;" value="admin">
+                  <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">💼</span>
+                </div>
+                <span class="input-help-text">Username admin: <code>admin</code> atau <code>bendahara</code></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="admin-password">Password Admin <span class="required">*</span></label>
+                <div style="position: relative;">
+                  <input type="password" class="form-control" id="admin-password" placeholder="Masukkan password admin" required style="padding-left: 38px; padding-right: 42px;" value="admin123">
+                  <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">🔑</span>
+                  <button type="button" id="btn-toggle-admin-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-light); padding: 4px;">
+                    👁️
+                  </button>
+                </div>
+                <span class="input-help-text">Password default: <code>admin123</code> atau <code>admin</code></span>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.78rem;">
+                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted);">
+                  <input type="checkbox" id="remember-admin" checked> Ingat sesi di perangkat ini
+                </label>
+                <span style="color: #0284c7; font-weight: 700;">Hak Akses: Pengelola Penuh</span>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; font-size: 0.95rem; font-weight: 800; background: linear-gradient(135deg, #1e3a8a, #0f172a); border: none;">
+                👑 Masuk ke Dashboard Admin
+              </button>
+            </form>
+
+            <div style="margin-top: 18px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-md); font-size: 0.76rem; color: var(--text-muted);">
+              <strong>🛡️ Keamanan Sistem:</strong> Halaman Dashboard Admin memiliki hak akses penuh atas penerbitan tagihan, konfirmasi transfer manual, serta konfigurasi skema beasiswa.
+            </div>
+          </div>
+
+          <!-- PANE 3: PENDAFTARAN MAHASISWA BARU (PMB) -->
           <div id="pane-student-register" style="display: none;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
               <div>
@@ -160,82 +207,74 @@ export function renderLoginView(container) {
             <form id="form-student-register">
               <div class="form-group">
                 <label class="form-label" for="reg-name">Nama Lengkap Mahasiswa <span class="required">*</span></label>
-                <div style="position: relative;">
-                  <input type="text" class="form-control" id="reg-name" placeholder="Contoh: Muhammad Raihan Al-Ghifari" required style="padding-left: 36px;">
-                  <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; color: var(--text-light);">✏️</span>
-                </div>
+                <input type="text" class="form-control" id="reg-name" placeholder="Contoh: Muhammad Ihsan Kamil" required>
               </div>
 
-              <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-grid">
                 <div class="form-group">
                   <label class="form-label" for="reg-gender">Jenis Kelamin <span class="required">*</span></label>
-                  <select class="filter-select" id="reg-gender" style="width: 100%;">
-                    <option value="L" selected>Laki-laki (Ikhwan)</option>
+                  <select class="form-control" id="reg-gender" required>
+                    <option value="L">Laki-laki (Ikhwan)</option>
                     <option value="P">Perempuan (Akhwat)</option>
                   </select>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label" for="reg-prodi">Program Studi <span class="required">*</span></label>
-                  <select class="filter-select" id="reg-prodi" style="width: 100%;">
-                    <option value="PIAUD" selected>PIAUD (PAUD Islam)</option>
-                    <option value="BKPI">BKPI (Bimbingan Konseling)</option>
+                  <select class="form-control" id="reg-prodi" required>
+                    <option value="PIAUD">Pendidikan Islam Anak Usia Dini (PIAUD)</option>
+                    <option value="BKPI">Bimbingan Konseling Pendidikan Islam (BKPI)</option>
                   </select>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label class="form-label" for="reg-nim">NIM / Nomor Pendaftaran PMB <span class="required">*</span></label>
-                <div style="position: relative;">
-                  <input type="text" class="form-control" id="reg-nim" value="${defaultNim}" required style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700; padding-left: 36px;">
-                  <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; color: var(--text-light);">🆔</span>
-                </div>
-                <span class="input-help-text">Nomor Induk Mahasiswa otomatis STIT Ihsanul Fikri</span>
+              <!-- Auto-Tagging Notice -->
+              <div id="reg-auto-tag-alert" style="display: none; background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #3b82f6; padding: 10px 14px; border-radius: var(--radius-md); margin-bottom: 14px; font-size: 0.78rem; color: #1e40af;">
+                <strong>🎯 Auto-Tagging Beasiswa Aktif:</strong> Pendaftar <strong>Laki-laki</strong> di Prodi <strong>PIAUD</strong> otomatis mendapatkan afirmasi <strong>Beasiswa PAUD Laki-laki (Diskon SPP 60%)</strong>!
               </div>
 
-              <!-- Skema Beasiswa -->
-              <div class="form-group">
-                <label class="form-label" for="reg-scholarship">Skema Pembiayaan / Beasiswa <span class="required">*</span></label>
-                <select class="filter-select" id="reg-scholarship" style="width: 100%;">
-                  ${state.scholarshipSchemes.map(sc => `
-                    <option value="${sc.id}" ${sc.id === 'PAUD_LAKI' ? 'selected' : ''}>
-                      ${sc.name} (${sc.id === 'REGULER' ? 'Tarif Standar' : sc.discountType === 'PERCENT' ? 'Diskon SPP ' + sc.discountValue + '%' : 'Subsidi ' + formatRupiah(sc.discountValue)})
-                    </option>
-                  `).join('')}
-                </select>
-                
-                <!-- Auto-tagging notification highlight -->
-                <div id="reg-auto-tag-alert" style="margin-top: 8px; padding: 8px 12px; background: #fdf2f8; border: 1px solid #fbcfe8; border-radius: var(--radius-md); font-size: 0.74rem; color: #be185d; line-height: 1.4; display: block;">
-                  ✨ <strong>Rekomendasi Cerdas:</strong> Terdeteksi mahasiswa putra prodi PIAUD. Skema <em>Beasiswa Afirmasi PAUD Laki-laki (Diskon SPP 60%)</em> otomatis diterapkan!
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="reg-nim">NIM Otomatis Generated <span class="required">*</span></label>
+                  <input type="text" class="form-control" id="reg-nim" value="${defaultNim}" readonly style="background: #f8fafc; font-family: var(--font-mono); font-weight: 700; color: var(--primary-800);">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg-scholarship">Pilihan Skema Beasiswa <span class="required">*</span></label>
+                  <select class="form-control" id="reg-scholarship" required>
+                    ${state.scholarshipSchemes.map(sch => `
+                      <option value="${sch.id}" ${sch.id === 'REGULER' ? 'selected' : ''}>${sch.name}</option>
+                    `).join('')}
+                  </select>
                 </div>
               </div>
 
-              <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-grid">
                 <div class="form-group">
-                  <label class="form-label" for="reg-phone">No. WhatsApp / HP <span class="required">*</span></label>
-                  <input type="tel" class="form-control" id="reg-phone" value="0812-7788-9900" placeholder="0812-xxxx-xxxx" required style="font-size: 0.84rem;">
+                  <label class="form-label" for="reg-email">Alamat Email Aktif <span class="required">*</span></label>
+                  <input type="email" class="form-control" id="reg-email" placeholder="nama@gmail.com" required>
                 </div>
+
                 <div class="form-group">
-                  <label class="form-label" for="reg-password">PIN / Password Login <span class="required">*</span></label>
+                  <label class="form-label" for="reg-password">Buat Password / PIN <span class="required">*</span></label>
                   <div style="position: relative;">
-                    <input type="password" class="form-control" id="reg-password" value="123456" required style="padding-right: 36px; font-size: 0.84rem;">
-                    <button type="button" id="btn-toggle-reg-pwd" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--text-light);">
+                    <input type="password" class="form-control" id="reg-password" placeholder="Minimal 6 karakter" required value="123456" style="padding-right: 38px;">
+                    <button type="button" id="btn-toggle-reg-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--text-light);">
                       👁️
                     </button>
                   </div>
                 </div>
               </div>
 
-              <!-- Live Tuition Fee Breakdown Simulation Card -->
-              <div style="margin: 16px 0; padding: 14px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                  <span style="font-size: 0.78rem; font-weight: 800; color: var(--text-dark);">📊 Simulasi Tagihan Semester 1 (Maba)</span>
-                  <span class="badge badge-scholarship" id="reg-sim-badge">PAUD Laki-laki</span>
+              <!-- Live Simulation Preview for Registration -->
+              <div style="background: #f8fafc; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 14px 16px; margin: 16px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <span style="font-size: 0.76rem; font-weight: 800; color: var(--text-dark); text-transform: uppercase;">Simulasi Tagihan Semester 1:</span>
+                  <span class="badge badge-scholarship" id="reg-sim-badge" style="font-size: 0.68rem;">Reguler</span>
                 </div>
-                
-                <div style="display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem; color: var(--text-muted);">
+                <div style="font-size: 0.78rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 3px;">
                   <div style="display: flex; justify-content: space-between;">
-                    <span>SPP Pokok Semester:</span>
+                    <span>SPP Pokok:</span>
                     <span style="font-family: var(--font-mono); color: var(--text-dark);" id="reg-sim-spp">Rp 2.500.000</span>
                   </div>
                   <div style="display: flex; justify-content: space-between;">
@@ -248,11 +287,11 @@ export function renderLoginView(container) {
                   </div>
                   <div style="display: flex; justify-content: space-between; color: #0284c7; font-weight: 700; border-top: 1px dashed #cbd5e1; padding-top: 4px; margin-top: 2px;">
                     <span>Potongan Subsidi Beasiswa:</span>
-                    <span style="font-family: var(--font-mono);" id="reg-sim-discount">-Rp 1.500.000</span>
+                    <span style="font-family: var(--font-mono);" id="reg-sim-discount">-Rp 0</span>
                   </div>
                   <div style="display: flex; justify-content: space-between; align-items: center; color: var(--primary-900); font-weight: 800; font-size: 0.88rem; border-top: 1px solid var(--border-light); padding-top: 6px; margin-top: 4px;">
                     <span>Estimasi Total Tagihan:</span>
-                    <span style="font-family: var(--font-mono); color: #0f172a;" id="reg-sim-total">Rp 1.650.000</span>
+                    <span style="font-family: var(--font-mono); color: #0f172a;" id="reg-sim-total">Rp 3.150.000</span>
                   </div>
                 </div>
               </div>
@@ -272,8 +311,18 @@ export function renderLoginView(container) {
 
         </div>
 
-        <!-- Right Column: Quick Demo Selectors for Testing Individual Students -->
+        <!-- Right Column: Quick Demo Selectors & Credentials Guide -->
         <div class="card" style="padding: 28px;">
+          
+          <!-- Keterangan Akun Demo / Default Credentials -->
+          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px;">
+            <div style="font-size: 0.76rem; font-weight: 800; color: #1e40af; text-transform: uppercase;">🔑 Kredensial Login Sistem:</div>
+            <div style="font-size: 0.76rem; color: #1e3a8a; margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
+              <div><strong>👑 Admin:</strong> Username: <code>admin</code> &bull; Password: <code>admin123</code></div>
+              <div><strong>🎓 Mahasiswa:</strong> Masukkan <strong>NIM</strong> terdaftar &bull; Password: <code>123456</code></div>
+            </div>
+          </div>
+
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
             <div>
               <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin: 0;">Pilih Cepat Akun Mahasiswa</h3>
@@ -282,16 +331,8 @@ export function renderLoginView(container) {
             <span class="badge badge-scholarship">Demo Mode</span>
           </div>
 
-          <div id="student-demo-list-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 520px; overflow-y: auto; padding-right: 4px;">
+          <div id="student-demo-list-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto; padding-right: 4px;">
             ${renderStudentDemoCards(students, state)}
-          </div>
-
-          <!-- Staff Login Alternative -->
-          <div style="margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--border-color); text-align: center;">
-            <span style="font-size: 0.78rem; color: var(--text-muted);">Bukan Mahasiswa? </span>
-            <button class="btn btn-outline btn-sm" id="btn-login-as-bendahara" style="margin-left: 6px; font-weight: 700;">
-              👑 Masuk Sebagai Admin
-            </button>
           </div>
         </div>
 
@@ -330,39 +371,54 @@ export function renderLoginView(container) {
 
   bindDemoCardListeners();
 
-  // 1. Tab Switching (Login vs Register)
-  const tabBtnLogin = container.querySelector('#tab-btn-login');
+  // 1. Tab Switching (Mahasiswa vs Admin vs Register)
+  const tabBtnStudent = container.querySelector('#tab-btn-student');
+  const tabBtnAdmin = container.querySelector('#tab-btn-admin');
   const tabBtnRegister = container.querySelector('#tab-btn-register');
-  const paneLogin = container.querySelector('#pane-student-login');
+
+  const paneStudent = container.querySelector('#pane-student-login');
+  const paneAdmin = container.querySelector('#pane-admin-login');
   const paneRegister = container.querySelector('#pane-student-register');
 
   function setMode(mode) {
-    if (mode === 'register') {
-      tabBtnLogin.style.background = 'transparent';
-      tabBtnLogin.style.color = 'var(--text-muted)';
-      tabBtnLogin.style.boxShadow = 'none';
+    // Reset all tabs
+    [tabBtnStudent, tabBtnAdmin, tabBtnRegister].forEach(b => {
+      if (b) {
+        b.style.background = 'transparent';
+        b.style.color = 'var(--text-muted)';
+        b.style.boxShadow = 'none';
+        b.style.fontWeight = '700';
+      }
+    });
 
+    // Hide all panes
+    [paneStudent, paneAdmin, paneRegister].forEach(p => {
+      if (p) p.style.display = 'none';
+    });
+
+    if (mode === 'admin') {
+      tabBtnAdmin.style.background = '#ffffff';
+      tabBtnAdmin.style.color = 'var(--primary-800)';
+      tabBtnAdmin.style.boxShadow = 'var(--shadow-sm)';
+      tabBtnAdmin.style.fontWeight = '800';
+      paneAdmin.style.display = 'block';
+    } else if (mode === 'register') {
       tabBtnRegister.style.background = '#ffffff';
       tabBtnRegister.style.color = 'var(--primary-800)';
       tabBtnRegister.style.boxShadow = 'var(--shadow-sm)';
-
-      paneLogin.style.display = 'none';
+      tabBtnRegister.style.fontWeight = '800';
       paneRegister.style.display = 'block';
     } else {
-      tabBtnRegister.style.background = 'transparent';
-      tabBtnRegister.style.color = 'var(--text-muted)';
-      tabBtnRegister.style.boxShadow = 'none';
-
-      tabBtnLogin.style.background = '#ffffff';
-      tabBtnLogin.style.color = 'var(--primary-800)';
-      tabBtnLogin.style.boxShadow = 'var(--shadow-sm)';
-
-      paneRegister.style.display = 'none';
-      paneLogin.style.display = 'block';
+      tabBtnStudent.style.background = '#ffffff';
+      tabBtnStudent.style.color = 'var(--primary-800)';
+      tabBtnStudent.style.boxShadow = 'var(--shadow-sm)';
+      tabBtnStudent.style.fontWeight = '800';
+      paneStudent.style.display = 'block';
     }
   }
 
-  tabBtnLogin.addEventListener('click', () => setMode('login'));
+  tabBtnStudent.addEventListener('click', () => setMode('student'));
+  tabBtnAdmin.addEventListener('click', () => setMode('admin'));
   tabBtnRegister.addEventListener('click', () => setMode('register'));
 
   const btnQuickRegister = container.querySelector('#btn-quick-goto-register');
@@ -372,7 +428,7 @@ export function renderLoginView(container) {
 
   const linkGotoLogin = container.querySelector('#link-goto-login');
   if (linkGotoLogin) {
-    linkGotoLogin.addEventListener('click', () => setMode('login'));
+    linkGotoLogin.addEventListener('click', () => setMode('student'));
   }
 
   // 2. Password Visibility Toggles
@@ -383,6 +439,16 @@ export function renderLoginView(container) {
       const isPwd = pwdInput.type === 'password';
       pwdInput.type = isPwd ? 'text' : 'password';
       btnToggle.textContent = isPwd ? '🙈' : '👁️';
+    });
+  }
+
+  const adminPwdInput = container.querySelector('#admin-password');
+  const btnToggleAdminPwd = container.querySelector('#btn-toggle-admin-pwd');
+  if (btnToggleAdminPwd && adminPwdInput) {
+    btnToggleAdminPwd.addEventListener('click', () => {
+      const isPwd = adminPwdInput.type === 'password';
+      adminPwdInput.type = isPwd ? 'text' : 'password';
+      btnToggleAdminPwd.textContent = isPwd ? '🙈' : '👁️';
     });
   }
 
@@ -452,101 +518,80 @@ export function renderLoginView(container) {
     }
   }
 
-  regGender.addEventListener('change', () => {
-    updateRegistrationSimulation();
-  });
-
-  regProdi.addEventListener('change', () => {
-    // Generate new NIM on prodi change
-    regNim.value = generateNewNim(regProdi.value);
-    updateRegistrationSimulation();
-  });
-
-  regScholarship.addEventListener('change', () => {
-    // If user manually changes away from PAUD_LAKI when male PIAUD
-    if (regScholarship.value !== 'PAUD_LAKI' && regGender.value === 'L' && regProdi.value === 'PIAUD') {
-      regAutoTagAlert.style.display = 'none';
-    }
-    updateRegistrationSimulation();
-  });
+  if (regGender && regProdi && regScholarship) {
+    regGender.addEventListener('change', () => {
+      regNim.value = generateNewNim(regProdi.value);
+      updateRegistrationSimulation();
+    });
+    regProdi.addEventListener('change', () => {
+      regNim.value = generateNewNim(regProdi.value);
+      updateRegistrationSimulation();
+    });
+    regScholarship.addEventListener('change', () => {
+      updateRegistrationSimulation();
+    });
+  }
 
   // 4. Submit Registration Form
   const formRegister = container.querySelector('#form-student-register');
   if (formRegister) {
     formRegister.addEventListener('submit', (e) => {
       e.preventDefault();
-
       const name = container.querySelector('#reg-name').value.trim();
-      const nim = regNim.value.trim();
       const gender = regGender.value;
       const prodi = regProdi.value;
+      const nim = regNim.value.trim();
       const scholarshipId = regScholarship.value;
-      const phone = container.querySelector('#reg-phone').value.trim();
-      const password = regPwdInput.value.trim();
+      const email = container.querySelector('#reg-email').value.trim();
 
-      if (!name || !nim) {
-        window.simpelToast.show('Data Belum Lengkap', 'Nama dan NIM mahasiswa wajib diisi.', 'warning');
+      if (!name) {
+        window.simpelToast.show('Validasi Gagal', 'Silakan masukkan nama lengkap mahasiswa.', 'warning');
         return;
       }
 
-      // Check duplicate NIM
-      const currentState = appState.getState();
-      if (currentState.students.some(s => s.nim === nim)) {
-        window.simpelToast.show('NIM Sudah Terdaftar', `NIM ${nim} sudah ada di database. Silakan gunakan NIM lain atau login langsung.`, 'danger');
-        return;
-      }
-
+      // 1. Create student model
       const newStudent = {
         nim,
         name,
         gender,
         prodi,
-        semester: 1,
         classYear: '2026',
-        statusAkademik: 'Aktif',
+        semester: 1,
+        statusAkademik: 'AKTIF',
         scholarshipId,
-        phone: phone || '0812-0000-0000',
-        email: `${name.toLowerCase().replace(/[^a-z0-9]/g, '.')}@mahasiswa.stit-ihsanulfikri.ac.id`
+        email
       };
 
-      // Add to state students
-      currentState.students.unshift(newStudent);
+      // Add to global state
+      appState.addStudent(newStudent);
 
-      // Automatically generate initial invoice for Semester 1 (Maba)
-      const calc = BillingEngine.calculateInvoice(newStudent, currentState.activeSemester);
-      const newInv = {
-        id: `INV-${Date.now().toString().slice(-6)}-${newStudent.nim.slice(-3)}`,
-        studentNim: newStudent.nim,
-        semester: currentState.activeSemester,
-        createdDate: new Date().toISOString().slice(0, 10),
-        dueDate: '2026-09-10',
-        items: calc.items,
-        grossAmount: calc.grossAmount,
-        totalDiscount: calc.totalDiscount,
-        netAmount: calc.netAmount,
+      // 2. Generate initial Semester 1 Invoice with Auto-Tagging discount
+      const calculatedInvoice = BillingEngine.calculateInvoice(newStudent, 1);
+      
+      const newInvoice = {
+        id: `INV-2026-1-${nim.slice(-4)}`,
+        studentNim: nim,
+        semester: 1,
+        academicYear: '2026/2027 Ganjil',
+        items: calculatedInvoice.items,
+        grossAmount: calculatedInvoice.grossAmount,
+        totalDiscount: calculatedInvoice.totalDiscount,
+        netAmount: calculatedInvoice.netAmount,
         paidAmount: 0,
         status: 'BELUM_BAYAR',
-        paymentMethod: null,
-        receiptNumber: null,
+        dueDate: '2026-09-30',
         paymentDate: null,
-        virtualAccount: calc.virtualAccount,
-        notes: `Pendaftaran mandiri mahasiswa baru. Tagihan semester 1 (${currentState.activeSemester}) otomatis diterbitkan.`
+        paymentMethod: null,
+        virtualAccount: `8809${nim.slice(-8)}`,
+        receiptNumber: null,
+        notes: 'Tagihan Awal PMB Mahasiswa Baru 2026/2027'
       };
-      currentState.invoices.unshift(newInv);
 
-      // Add Audit Log
-      appState.addAuditLog(
-        'REGISTRASI_MAHASISWA_BARU',
-        `${name} (${nim})`,
-        `Pendaftaran mandiri mahasiswa baru prodi ${prodi} dengan skema ${scholarshipId}. Tagihan awal semester 1 sebesar ${formatRupiah(calc.netAmount)} diterbitkan.`
-      );
-
-      // Save and notify state
-      appState.notify();
+      appState.addInvoice(newInvoice);
 
       window.simpelToast.show(
-        'Pendaftaran Mahasiswa Berhasil!',
-        `Selamat datang di STIT Ihsanul Fikri, ${name}! Akun mahasiswa & tagihan awal Anda telah aktif.`,
+        'Pendaftaran Berhasil!',
+        `Selamat Datang ${name}! Akun Mahasiswa Baru & Tagihan Semester 1 Anda telah dibuat.`,
         'success',
         5000
       );
@@ -557,17 +602,23 @@ export function renderLoginView(container) {
     });
   }
 
-  // 5. Submit Login Form
+  // 5. Submit Student Login Form
   const formLogin = container.querySelector('#form-student-login');
   if (formLogin) {
     formLogin.addEventListener('submit', (e) => {
       e.preventDefault();
       const nim = container.querySelector('#login-nim').value.trim();
+      const pwd = container.querySelector('#login-password').value.trim();
       const currentStudents = appState.getState().students;
 
       const student = currentStudents.find(s => s.nim === nim);
       if (!student) {
         window.simpelToast.show('NIM Tidak Ditemukan', `NIM ${nim} belum terdaftar di sistem STIT Ihsanul Fikri. Silakan gunakan tab Pendaftaran Mahasiswa Baru.`, 'danger');
+        return;
+      }
+
+      if (!pwd) {
+        window.simpelToast.show('Password Kosong', 'Silakan masukkan password atau PIN akun Anda.', 'warning');
         return;
       }
 
@@ -578,13 +629,28 @@ export function renderLoginView(container) {
     });
   }
 
-  // 6. Login as Admin button
-  const btnBendahara = container.querySelector('#btn-login-as-bendahara');
-  if (btnBendahara) {
-    btnBendahara.addEventListener('click', () => {
-      appState.setRole('ADMIN');
-      window.simpelToast.show('Login Admin Berhasil', 'Masuk sebagai Admin SIMPEL-IF STIT Ihsanul Fikri.', 'info');
-      if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
+  // 6. Submit Admin Login Form (Username & Password Validation)
+  const formAdminLogin = container.querySelector('#form-admin-login');
+  if (formAdminLogin) {
+    formAdminLogin.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = container.querySelector('#admin-username').value.trim().toLowerCase();
+      const password = container.querySelector('#admin-password').value.trim();
+
+      const validUsernames = ['admin', 'bendahara', 'stit-if', 'admin@stit-if.ac.id', 'admin@stit-ihsanulfikri.ac.id'];
+      const validPasswords = ['admin', 'admin123', '123456', 'stit123', 'adminstit'];
+
+      if (validUsernames.includes(username) && validPasswords.includes(password)) {
+        appState.setRole('ADMIN');
+        window.simpelToast.show('Login Admin Berhasil', 'Selamat datang di Pusat Komando SIMPEL-IF STIT Ihsanul Fikri.', 'success');
+        if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
+      } else {
+        window.simpelToast.show(
+          'Login Admin Gagal',
+          'Username atau Password Admin salah. Gunakan username: admin dan password: admin123',
+          'danger'
+        );
+      }
     });
   }
 
@@ -592,7 +658,7 @@ export function renderLoginView(container) {
   const linkHelp = container.querySelector('#link-forgot-pin');
   if (linkHelp) {
     linkHelp.addEventListener('click', () => {
-      alert('Informasi Bantuan Login:\n\nUntuk simulasi, Anda dapat menggunakan NIM yang terdaftar dengan PIN: 123456.\n\nJika baru ingin mendaftar sebagai mahasiswa baru, silakan klik tab "Daftar Mahasiswa Baru".\n\nUntuk bantuan BAAK, silakan hubungi Bagian Akademik & Keuangan STIT Ihsanul Fikri.');
+      alert('Informasi Bantuan Login:\n\n1. Login Mahasiswa: Masukkan NIM dan PIN: 123456.\n2. Login Admin: Gunakan Username: admin dan Password: admin123.\n3. Pendaftaran Mahasiswa Baru: Silakan klik tab "Daftar PMB".\n\nUntuk bantuan BAAK, hubungi Bagian Akademik & Keuangan STIT Ihsanul Fikri.');
     });
   }
 }
