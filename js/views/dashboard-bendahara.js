@@ -6,6 +6,7 @@
  */
 
 import { appState } from '../state.js';
+import { AuthManager } from '../auth.js';
 import { formatRupiah, formatDate, formatDateTime, getStatusBadge, getProdiBadge, getScholarshipBadge } from '../utils/formatters.js';
 import { STATUS_TAGIHAN } from '../models.js';
 import { BillingEngine } from '../billing-engine.js';
@@ -89,7 +90,7 @@ export function renderDashboardBendahara(container) {
         </div>
         <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">Pusat komando tata kelola finansial, analisis neraca prodi BKPI & PIAUD, serapan beasiswa, dan operasional tagihan mahasiswa STIT Ihsanul Fikri.</p>
       </div>
-      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
         <button class="btn btn-outline" id="btn-export-exec-summary">
           📊 Ekspor Neraca (.csv)
         </button>
@@ -98,6 +99,9 @@ export function renderDashboardBendahara(container) {
         </button>
         <button class="btn btn-primary" id="btn-quick-new-invoice">
           + Terbitkan Tagihan Baru
+        </button>
+        <button class="btn btn-outline" id="btn-admin-logout" style="border-color: #fca5a5; color: #b91c1c; background: #fff1f2; font-weight: 700;">
+          🚪 Keluar / Logout
         </button>
       </div>
     </div>
@@ -394,6 +398,13 @@ export function renderDashboardBendahara(container) {
   if (btnPrint) {
     btnPrint.addEventListener('click', () => {
       window.print();
+    });
+  }
+
+  const btnAdminLogout = container.querySelector('#btn-admin-logout');
+  if (btnAdminLogout) {
+    btnAdminLogout.addEventListener('click', () => {
+      AuthManager.logout();
     });
   }
 

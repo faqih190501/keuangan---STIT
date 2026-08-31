@@ -99,6 +99,14 @@ class Router {
       });
     }
 
+    // Topbar header logout button
+    const topbarLogoutBtn = document.getElementById('btn-topbar-logout');
+    if (topbarLogoutBtn) {
+      topbarLogoutBtn.addEventListener('click', () => {
+        AuthManager.logout();
+      });
+    }
+
     // Sync / Reset Data State button
     const btnSyncState = document.getElementById('btn-sync-reset-state');
     if (btnSyncState) {

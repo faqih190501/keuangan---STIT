@@ -4,6 +4,7 @@
  */
 
 import { appState } from '../state.js';
+import { AuthManager } from '../auth.js';
 import { formatRupiah, formatDate, formatDateTime, getStatusBadge, getProdiBadge, getScholarshipBadge } from '../utils/formatters.js';
 import { STATUS_TAGIHAN } from '../models.js';
 import { BillingEngine } from '../billing-engine.js';
@@ -33,6 +34,9 @@ export function renderMahasiswaPortal(container) {
         </div>
       </div>
       <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-outline btn-sm" id="btn-student-logout" style="border-color: #fca5a5; color: #b91c1c; background: #fff1f2; font-weight: 700;">
+          🚪 Keluar / Logout
+        </button>
         <button class="btn btn-outline btn-sm" id="btn-goto-login-view" style="color: var(--primary-700); font-weight: 700;">
           🔑 Halaman Login Mahasiswa
         </button>
@@ -334,6 +338,13 @@ export function renderMahasiswaPortal(container) {
   if (btnGotoLogin) {
     btnGotoLogin.addEventListener('click', () => {
       if (window.simpelRouter) window.simpelRouter.navigateTo('view-login');
+    });
+  }
+
+  const btnStudentLogout = container.querySelector('#btn-student-logout');
+  if (btnStudentLogout) {
+    btnStudentLogout.addEventListener('click', () => {
+      AuthManager.logout();
     });
   }
 
