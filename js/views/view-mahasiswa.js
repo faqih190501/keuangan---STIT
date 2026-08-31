@@ -1,6 +1,7 @@
 /**
- * SIMPEL-IF Portal Mahasiswa View (Ultra User-Friendly)
+ * SIMPEL-IF Portal Mahasiswa View
  * STIT Ihsanul Fikri
+ * Fitur: Pilihan Lunas / Cicilan & Saluran Pembayaran (QRIS, VA Multi-Bank, Transfer Manual)
  */
 
 import { appState } from '../state.js';
@@ -8,6 +9,7 @@ import { AuthManager } from '../auth.js';
 import { formatRupiah, formatDate, formatDateTime, getStatusBadge, getProdiBadge, getScholarshipBadge } from '../utils/formatters.js';
 import { STATUS_TAGIHAN } from '../models.js';
 import { BillingEngine } from '../billing-engine.js';
+import { generateQRCodeSVG } from '../utils/qr-engine.js';
 
 export function renderMahasiswaPortal(container) {
   const state = appState.getState();
@@ -23,12 +25,26 @@ export function renderMahasiswaPortal(container) {
   // Student history invoices
   const studentInvoices = state.invoices.filter(inv => inv.studentNim === currentStudent.nim);
 
-  // Calculate total saved from scholarship across history
-  const totalSaved = studentInvoices.reduce((acc, inv) => acc + (inv.totalDiscount || 0), 0);
-
   // Status helper flags
   const isLunas = currentInvoice && currentInvoice.status === STATUS_TAGIHAN.LUNAS;
   const isPending = currentInvoice && currentInvoice.status === STATUS_TAGIHAN.MENUNGGU_VERIFIKASI;
+  const isCicil = currentInvoice && currentInvoice.status === STATUS_TAGIHAN.DICICIL;
+
+  const totalNetAmount = currentInvoice ? currentInvoice.netAmount : 0;
+  const totalPaidAmount = currentInvoice ? (currentInvoice.paidAmount || 0) : 0;
+  const remainingAmount = Math.max(0, totalNetAmount - totalPaidAmount);
+  const halfAmount = Math.round(totalNetAmount / 2);
+
+  // Default active payment plan
+  let selectedPlan = 'FULL'; // 'FULL' or 'INSTALLMENT'
+  let selectedPayAmount = remainingAmount > 0 ? remainingAmount : totalNetAmount;
+  let selectedBankVA = 'BSI';
+
+  // Generate dynamic QRIS SVG payload
+  function getQrisSvg(amount) {
+    const qrisPayload = `00020101021226600016ID.CO.QRIS.WWW01189360098800000000000215ID1020268809123520454995303360540${amount}5802ID5918STIT IHSANUL FIKRI6008MAGELANG61055610062${currentInvoice ? currentInvoice.id : 'INV'}6304`;
+    return generateQRCodeSVG(qrisPayload, 175);
+  }
 
   container.innerHTML = `
     <!-- Top Bar: Account Switcher & Quick Actions -->
@@ -101,8 +117,8 @@ export function renderMahasiswaPortal(container) {
     <div class="student-summary-grid">
       <!-- Card 1: Status Pembayaran -->
       <div class="student-stat-card">
-        <div class="student-stat-icon" style="background: ${isLunas ? '#dcfce7' : isPending ? '#fef3c7' : '#fee2e2'}; color: ${isLunas ? '#15803d' : isPending ? '#b45309' : '#b91c1c'};">
-          ${isLunas ? '✅' : isPending ? '⏳' : '💳'}
+        <div class="student-stat-icon" style="background: ${isLunas ? '#dcfce7' : isPending ? '#fef3c7' : isCicil ? '#e0f2fe' : '#fee2e2'}; color: ${isLunas ? '#15803d' : isPending ? '#b45309' : isCicil ? '#0369a1' : '#b91c1c'};">
+          ${isLunas ? '✅' : isPending ? '⏳' : isCicil ? '🔄' : '💳'}
         </div>
         <div>
           <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">Status Semester ${state.activeSemester}</div>
@@ -112,20 +128,23 @@ export function renderMahasiswaPortal(container) {
         </div>
       </div>
 
-      <!-- Card 2: Total Kewajiban Semester Ini -->
+      <!-- Card 2: Total Kewajiban & Sisa Bayar -->
       <div class="student-stat-card">
         <div class="student-stat-icon" style="background: #eff6ff; color: #1d4ed8;">
           💰
         </div>
         <div>
-          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">Kewajiban Semester ${state.activeSemester}</div>
-          <div style="font-size: 1.15rem; font-weight: 900; color: var(--primary-900); font-family: var(--font-mono); margin-top: 2px;">
-            ${currentInvoice ? formatRupiah(currentInvoice.netAmount) : 'Rp 0'}
+          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">
+            ${isCicil ? 'Sisa Tagihan Berjalan' : 'Total Kewajiban Semester'}
           </div>
+          <div style="font-size: 1.15rem; font-weight: 900; color: ${isLunas ? '#15803d' : '#1e3a8a'}; font-family: var(--font-mono); margin-top: 2px;">
+            ${currentInvoice ? formatRupiah(isLunas ? currentInvoice.netAmount : remainingAmount) : 'Rp 0'}
+          </div>
+          ${isCicil ? `<div style="font-size:0.68rem; color:#0369a1; font-weight:700;">Telah dibayar: ${formatRupiah(totalPaidAmount)}</div>` : ''}
         </div>
       </div>
 
-      <!-- Card 3: Total Penghematan Subsidi Beasiswa -->
+      <!-- Card 3: Subsidi Beasiswa Hemat -->
       <div class="student-stat-card">
         <div class="student-stat-icon" style="background: #f0fdf4; color: #059669;">
           🎁
@@ -146,7 +165,7 @@ export function renderMahasiswaPortal(container) {
         <div>
           <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">Kwitansi Sah Digital</div>
           <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark); margin-top: 2px;">
-            ${isLunas ? `<span style="color:#059669; font-weight:800; font-family:var(--font-mono);">${currentInvoice.receiptNumber}</span>` : '<span style="color:var(--text-light); font-size:0.78rem;">Tersedia Saat Lunas</span>'}
+            ${isLunas || (isCicil && currentInvoice.receiptNumber) ? `<span style="color:#059669; font-weight:800; font-family:var(--font-mono);">${currentInvoice.receiptNumber}</span>` : '<span style="color:var(--text-light); font-size:0.78rem;">Tersedia Saat Bayar</span>'}
           </div>
         </div>
       </div>
@@ -211,11 +230,28 @@ export function renderMahasiswaPortal(container) {
 
           <div class="bill-total-row" style="background: #ffffff; padding: 16px 18px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); margin-top: 12px;">
             <div>
-              <span style="font-size: 0.9rem; font-weight: 800; color: var(--text-dark);">Total Kewajiban Bersih yang Harus Dibayar:</span>
+              <span style="font-size: 0.9rem; font-weight: 800; color: var(--text-dark);">Total Tagihan Bersih Semester Ini:</span>
               <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">Sudah termasuk seluruh komponen SPP & potongan beasiswa</div>
             </div>
             <span style="font-size: 1.55rem; font-weight: 900; color: var(--primary-900); font-family: var(--font-mono);">${formatRupiah(currentInvoice.netAmount)}</span>
           </div>
+
+          <!-- If Dicicil, show installment progress -->
+          ${isCicil ? `
+            <div style="margin-top: 12px; background: #e0f2fe; border: 1px solid #bae6fd; padding: 12px 16px; border-radius: var(--radius-md);">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; font-weight: 700; color: #0369a1; margin-bottom: 6px;">
+                <span>Progres Angsuran / Cicilan:</span>
+                <span>${formatRupiah(totalPaidAmount)} / ${formatRupiah(totalNetAmount)} (${Math.round((totalPaidAmount / totalNetAmount) * 100)}%)</span>
+              </div>
+              <div style="width: 100%; height: 8px; background: #bae6fd; border-radius: 4px; overflow: hidden;">
+                <div style="width: ${(totalPaidAmount / totalNetAmount) * 100}%; height: 100%; background: #0284c7; border-radius: 4px;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.76rem; color: #0c4a6e; margin-top: 6px;">
+                <span>Sisa Tunggakan yang Belum Dibayar:</span>
+                <strong style="font-family: var(--font-mono); font-size: 0.92rem; color: #b91c1c;">${formatRupiah(remainingAmount)}</strong>
+              </div>
+            </div>
+          ` : ''}
         </div>
 
         <!-- Dynamic Action Card Based on Status -->
@@ -249,7 +285,7 @@ export function renderMahasiswaPortal(container) {
               </div>
               <div>
                 <h4 style="font-size: 1.12rem; font-weight: 900; color: #78350f; margin: 0;">Bukti Transfer Sedang Diverifikasi oleh Bendahara</h4>
-                <p style="font-size: 0.82rem; color: #92400e; margin: 4px 0 0;">Anda telah mengunggah bukti pembayaran manual. Tim keuangan sedang mencocokkan mutasi kas (proses maks 1x24 jam kerja). Kwitansi resmi QR Code akan otomatis terbit setelah disetujui.</p>
+                <p style="font-size: 0.82rem; color: #92400e; margin: 4px 0 0;">Anda telah mengunggah bukti pembayaran manual. Tim keuangan sedang memvalidasi mutasi kas. Kwitansi resmi QR Code akan otomatis terbit setelah disetujui.</p>
               </div>
             </div>
             <div style="display: flex; gap: 8px;">
@@ -259,32 +295,186 @@ export function renderMahasiswaPortal(container) {
             </div>
           </div>
         ` : `
-          <!-- KONDISI 3: BELUM BAYAR (PILIH METODE PEMBAYARAN) -->
+          <!-- KONDISI 3: BELUM LUNAS / CICILAN (PILIH SKEMA & SALURAN PEMBAYARAN) -->
           <div style="margin-top: 28px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
-              <div>
-                <h4 style="font-size: 1.05rem; font-weight: 900; color: var(--text-dark); margin: 0;">Pusat Pembayaran Kuliah</h4>
-                <p style="font-size: 0.78rem; color: var(--text-light); margin: 2px 0 0;">Pilih salah satu metode pembayaran praktis di bawah ini:</p>
+            
+            <!-- LANGKAH 1: PILIH SKEMA PEMBAYARAN (LUNAS VS DICICIL) -->
+            <div style="background: #ffffff; border: 2px solid #e2e8f0; border-radius: var(--radius-xl); padding: 22px; margin-bottom: 24px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                <div>
+                  <h4 style="font-size: 1rem; font-weight: 900; color: var(--text-dark); margin: 0;">
+                    Langkah 1: Pilih Rencana Pembayaran
+                  </h4>
+                  <p style="font-size: 0.78rem; color: var(--text-light); margin: 2px 0 0;">
+                    Pilih apakah ingin melunasi seluruhnya atau mengangsur secara bertahap:
+                  </p>
+                </div>
+                <span class="badge badge-scholarship">Fleksibilitas Pembayaran</span>
               </div>
-              <span class="badge badge-warning" style="font-size: 0.74rem;">Batas Bayar: ${formatDate(currentInvoice.dueDate)}</span>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+                
+                <!-- Option 1: Bayar Lunas Sekaligus -->
+                <div class="payment-plan-card active" id="plan-card-full" style="border: 2px solid var(--primary-700); background: #eff6ff; border-radius: var(--radius-lg); padding: 16px 18px; cursor: pointer; transition: all 0.2s;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="radio" name="payment_plan" id="radio-plan-full" value="FULL" checked style="cursor: pointer; transform: scale(1.2);">
+                      <label for="radio-plan-full" style="font-weight: 800; font-size: 0.92rem; color: #1e40af; cursor: pointer;">
+                        ✨ Bayar Lunas Sekaligus (100%)
+                      </label>
+                    </div>
+                    <span class="badge" style="background:#dcfce7; color:#15803d; font-size:0.68rem; font-weight:800;">Bebas Tanggungan</span>
+                  </div>
+                  <p style="font-size: 0.76rem; color: #3b82f6; margin: 0 0 10px 24px;">
+                    Melunasi seluruh sisa kewajiban semester ini dalam 1 transaksi.
+                  </p>
+                  <div style="margin-left: 24px; font-size: 1.25rem; font-weight: 900; color: #0f172a; font-family: var(--font-mono);">
+                    ${formatRupiah(remainingAmount)}
+                  </div>
+                </div>
+
+                <!-- Option 2: Bayar Dicicil / Angsuran -->
+                <div class="payment-plan-card" id="plan-card-installment" style="border: 2px solid var(--border-light); background: #ffffff; border-radius: var(--radius-lg); padding: 16px 18px; cursor: pointer; transition: all 0.2s;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <input type="radio" name="payment_plan" id="radio-plan-installment" value="INSTALLMENT" style="cursor: pointer; transform: scale(1.2);">
+                      <label for="radio-plan-installment" style="font-weight: 800; font-size: 0.92rem; color: var(--text-dark); cursor: pointer;">
+                        🔄 Bayar Dicicil / Angsuran (Termin)
+                      </label>
+                    </div>
+                    <span class="badge" style="background:#fef3c7; color:#b45309; font-size:0.68rem; font-weight:800;">Dispensasi</span>
+                  </div>
+                  <p style="font-size: 0.76rem; color: var(--text-light); margin: 0 0 10px 24px;">
+                    Bayar sebagian sekarang, sisa dapat diangsur sebelum UAS.
+                  </p>
+
+                  <!-- Installment Sub-options (hidden by default) -->
+                  <div id="installment-presets-container" style="display: none; margin-left: 24px; margin-top: 8px; border-top: 1px dashed #cbd5e1; padding-top: 8px;">
+                    <div style="font-size: 0.74rem; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Pilih Besaran Angsuran Kali Ini:</div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                      <button type="button" class="btn btn-outline btn-sm btn-installment-preset active" data-amount="${halfAmount}" style="font-family: var(--font-mono); font-weight: 800; background: #e0f2fe; border-color: #0284c7; color: #0369a1;">
+                        Termin (50%): ${formatRupiah(halfAmount)}
+                      </button>
+                      <button type="button" class="btn btn-outline btn-sm btn-installment-preset" data-amount="500000" style="font-family: var(--font-mono); font-weight: 700;">
+                        Rp 500.000
+                      </button>
+                      <button type="button" class="btn btn-outline btn-sm btn-installment-preset" data-amount="1000000" style="font-family: var(--font-mono); font-weight: 700;">
+                        Rp 1.000.000
+                      </button>
+                    </div>
+                  </div>
+                  <div style="margin-left: 24px; font-size: 1.15rem; font-weight: 900; color: #0284c7; font-family: var(--font-mono); margin-top: 6px;" id="display-plan-installment-amount">
+                    ${formatRupiah(halfAmount)}
+                  </div>
+                </div>
+
+              </div>
             </div>
 
-            <!-- Tab Tombol Pilihan Metode -->
+            <!-- LANGKAH 2: PILIH SALURAN PEMBAYARAN (QRIS, VA, TRANSFER MANUAL) -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <h4 style="font-size: 1rem; font-weight: 900; color: var(--text-dark); margin: 0;">
+                  Langkah 2: Pilih Saluran Pembayaran
+                </h4>
+                <p style="font-size: 0.78rem; color: var(--text-light); margin: 2px 0 0;">
+                  Pilih kanal yang paling mudah bagi Anda (QRIS, Virtual Account, atau Transfer Manual):
+                </p>
+              </div>
+              <div style="background: #f8fafc; padding: 4px 12px; border-radius: var(--radius-md); border: 1px solid var(--border-light); font-size: 0.76rem; font-weight: 800; color: var(--text-dark);">
+                Nominal Bayar: <span style="font-family: var(--font-mono); color: #1e40af; font-size: 0.88rem;" id="active-pay-target-badge">${formatRupiah(selectedPayAmount)}</span>
+              </div>
+            </div>
+
+            <!-- Tabs Navigation -->
             <div class="tabs-container" style="margin-bottom: 20px;">
-              <button class="tab-nav-btn active" id="tab-btn-va">
-                💳 Virtual Account (Otomatis & Bebas Antre)
+              <button class="tab-nav-btn active" id="tab-btn-qris">
+                🔴 QRIS (Scan Semua e-Wallet & M-Banking)
+              </button>
+              <button class="tab-nav-btn" id="tab-btn-va">
+                💳 Virtual Account (BSI, Muamalat, Mandiri, BRI)
               </button>
               <button class="tab-nav-btn" id="tab-btn-manual">
-                🏦 Transfer Bank Rekening Yayasan (Upload Bukti)
+                🏦 Transfer Bank Rekening Yayasan (Upload Struk)
               </button>
             </div>
 
-            <!-- TAB 1: Virtual Account -->
-            <div id="tab-content-va">
+            <!-- TAB 1: QRIS PAYMENT (NATIONAL STANDARD) -->
+            <div id="tab-content-qris">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: center; background: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-2xl); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 20px;">
+                
+                <!-- Left: Official QRIS Box Design -->
+                <div style="text-align: center; background: #fafafa; border: 2px solid #e2e8f0; border-radius: var(--radius-xl); padding: 20px 16px; position: relative; max-width: 320px; margin: 0 auto; box-shadow: var(--shadow-sm);">
+                  
+                  <!-- QRIS Top Badge -->
+                  <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1.5px solid #dc2626; padding-bottom: 8px; margin-bottom: 12px;">
+                    <div style="font-weight: 900; font-size: 1.25rem; color: #dc2626; letter-spacing: 1px;">QRIS</div>
+                    <div style="font-size: 0.65rem; color: #64748b; text-align: right; line-height: 1.2;">
+                      STANDAR PEMBAYARAN<br><strong>NASIONAL INDONESIA</strong>
+                    </div>
+                  </div>
+
+                  <div style="font-size: 0.86rem; font-weight: 900; color: #0f172a; margin-bottom: 2px;">
+                    STIT IHSANUL FIKRI
+                  </div>
+                  <div style="font-size: 0.68rem; color: #64748b; font-family: var(--font-mono); margin-bottom: 12px;">
+                    NMID: ID102026880912 &bull; A01
+                  </div>
+
+                  <!-- Dynamic SVG QR Code Container -->
+                  <div id="qris-svg-wrapper" style="display: inline-block; padding: 8px; background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: var(--radius-lg); box-shadow: var(--shadow-xs);">
+                    ${getQrisSvg(selectedPayAmount)}
+                  </div>
+
+                  <div style="margin-top: 12px; font-size: 0.74rem; color: #334155;">
+                    Nominal Terkunci Otomatis:
+                  </div>
+                  <div style="font-size: 1.25rem; font-weight: 900; color: #dc2626; font-family: var(--font-mono); margin: 2px 0 6px;" id="qris-amount-display">
+                    ${formatRupiah(selectedPayAmount)}
+                  </div>
+                  <div style="font-size: 0.68rem; color: #64748b;">
+                    Dicetak untuk: <strong>${currentStudent.name.toUpperCase()}</strong>
+                  </div>
+                </div>
+
+                <!-- Right: QRIS Actions & Instructions -->
+                <div>
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                    <span style="font-size: 1.3rem;">📱</span>
+                    <h5 style="font-size: 0.98rem; font-weight: 900; color: var(--text-dark); margin: 0;">
+                      Cara Praktis Bayar Menggunakan QRIS
+                    </h5>
+                  </div>
+                  
+                  <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+                    Scan kode QR di samping langsung dari kamera HP Anda menggunakan aplikasi perbankan atau dompet digital apa pun (BSI Mobile, BCA Mobile, Livin Mandiri, GoPay, OVO, ShopeePay, DANA, LinkAja).
+                  </p>
+
+                  <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px;">
+                    <div style="font-size: 0.76rem; font-weight: 800; color: #166534; text-transform: uppercase;">
+                      ⚡ Keunggulan QRIS:
+                    </div>
+                    <ul style="margin: 6px 0 0; padding-left: 18px; font-size: 0.78rem; color: #15803d; line-height: 1.5;">
+                      <li>Nominal pas secara otomatis terisi (tidak perlu ketik manual).</li>
+                      <li>Pembayaran langsung terverifikasi secara realtime 24/7.</li>
+                      <li>Kwitansi sah ber-QR Code langsung terbit otomatis.</li>
+                    </ul>
+                  </div>
+
+                  <button class="btn btn-primary btn-lg" id="btn-pay-qris-instant" data-invoice-id="${currentInvoice.id}" style="width: 100%; font-weight: 900; background: linear-gradient(135deg, #dc2626, #991b1b); border: none; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);">
+                    ⚡ Simulasikan Scan QRIS & Bayar Berhasil
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- TAB 2: VIRTUAL ACCOUNT MULTI-BANK -->
+            <div id="tab-content-va" style="display: none;">
               
               <!-- Pilihan Bank VA -->
               <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-dark); text-transform: uppercase; margin-bottom: 10px;">
-                1. Pilih Bank Virtual Account:
+                Pilih Bank Virtual Account:
               </div>
               <div class="payment-method-selector">
                 <div class="payment-method-card active" data-bank="BSI">
@@ -318,9 +508,6 @@ export function renderMahasiswaPortal(container) {
               </div>
 
               <!-- VA Display Card -->
-              <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-dark); text-transform: uppercase; margin: 16px 0 8px;">
-                2. Rincian Pembayaran Virtual Account:
-              </div>
               <div class="va-box">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                   <div class="va-bank-title" id="va-bank-label">Bank Syariah Indonesia (BSI) Virtual Account</div>
@@ -334,8 +521,8 @@ export function renderMahasiswaPortal(container) {
 
                 <div style="background: rgba(255,255,255,0.1); padding: 10px 14px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
                   <div>
-                    <div style="font-size: 0.7rem; color: #93c5fd; text-transform: uppercase;">Nominal Pembayaran Pas:</div>
-                    <div style="font-size: 1.15rem; font-weight: 900; font-family: var(--font-mono); color: #ffffff;" id="va-amount-text">${formatRupiah(currentInvoice.netAmount)}</div>
+                    <div style="font-size: 0.7rem; color: #93c5fd; text-transform: uppercase;">Nominal Transfer Pas:</div>
+                    <div style="font-size: 1.15rem; font-weight: 900; font-family: var(--font-mono); color: #ffffff;" id="va-amount-text">${formatRupiah(selectedPayAmount)}</div>
                   </div>
                   <button class="copy-va-btn" id="btn-copy-amount" title="Salin Nominal Pembayaran" style="background: rgba(255,255,255,0.25);">
                     📋 Salin Nominal
@@ -347,11 +534,11 @@ export function renderMahasiswaPortal(container) {
                 </div>
               </div>
 
-              <!-- Quick Simulation Button & Guide Toggle -->
+              <!-- Quick Simulation Button -->
               <div style="display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: #f8fafc; padding: 16px 20px; border-radius: var(--radius-xl); border: 1px solid var(--border-light); margin-bottom: 20px;">
                 <div>
-                  <div style="font-size: 0.84rem; font-weight: 800; color: var(--text-dark);">Uji Coba Pembayaran Langsung:</div>
-                  <div style="font-size: 0.74rem; color: var(--text-muted);">Simulasikan notifikasi pembayaran otomatis dari perbankan</div>
+                  <div style="font-size: 0.84rem; font-weight: 800; color: var(--text-dark);">Uji Coba Pembayaran VA:</div>
+                  <div style="font-size: 0.74rem; color: var(--text-muted);">Simulasikan notifikasi pembayaran otomatis perbankan</div>
                 </div>
                 <button class="btn btn-primary btn-lg" id="btn-pay-va-instant" data-invoice-id="${currentInvoice.id}" style="background: linear-gradient(135deg, #1e40af, #0284c7); font-weight: 800; box-shadow: var(--shadow-sm);">
                   ⚡ Simulasikan Pembayaran VA Berhasil
@@ -372,27 +559,10 @@ export function renderMahasiswaPortal(container) {
                   <div class="faq-accordion-body open">
                     <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px;">
                       <li>Buka aplikasi Mobile Banking Anda dan lakukan Login.</li>
-                      <li>Pilih menu <strong>Bayar / Pembayaran</strong> &gt; <strong>Akademik / Institusi Pendidikan</strong> (atau menu <strong>Virtual Account</strong>).</li>
+                      <li>Pilih menu <strong>Bayar / Pembayaran</strong> &gt; <strong>Akademik / Virtual Account</strong>.</li>
                       <li>Masukkan Nomor Virtual Account: <code style="font-weight: 800; color: #1e40af;">${currentInvoice.virtualAccount}</code>.</li>
-                      <li>Periksa data yang muncul di layar: Pastikan nama adalah <strong>${currentStudent.name.toUpperCase()}</strong> dan nominal adalah <strong>${formatRupiah(currentInvoice.netAmount)}</strong>.</li>
+                      <li>Periksa data: Nama adalah <strong>${currentStudent.name.toUpperCase()}</strong> dan nominal adalah <strong id="guide-va-amount">${formatRupiah(selectedPayAmount)}</strong>.</li>
                       <li>Masukkan PIN M-Banking Anda dan konfirmasi transaksi.</li>
-                      <li>Selesai! Tagihan di SIMPEL-IF akan langsung otomatis <strong>LUNAS</strong> dan kwitansi resmi langsung terbit.</li>
-                    </ol>
-                  </div>
-                </div>
-
-                <div class="faq-accordion-item">
-                  <div class="faq-accordion-header">
-                    <span>🏧 Cara Bayar via Mesin ATM & Teller Bank</span>
-                    <span class="acc-icon">▼</span>
-                  </div>
-                  <div class="faq-accordion-body">
-                    <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px;">
-                      <li>Masukkan kartu ATM dan PIN Anda di mesin ATM.</li>
-                      <li>Pilih menu <strong>Transaksi Lainnya</strong> &gt; <strong>Pembayaran</strong> &gt; <strong>Lainnya / Virtual Account</strong>.</li>
-                      <li>Ketikkan nomor VA: <code style="font-weight: 800;">${currentInvoice.virtualAccount}</code>.</li>
-                      <li>Periksa rincian tagihan di layar ATM, lalu tekan <strong>Ya / Benar</strong>.</li>
-                      <li>Simpan struk ATM sebagai bukti transaksi sah Anda.</li>
                     </ol>
                   </div>
                 </div>
@@ -400,7 +570,7 @@ export function renderMahasiswaPortal(container) {
 
             </div>
 
-            <!-- TAB 2: Transfer Bank Manual -->
+            <!-- TAB 3: TRANSFER REKENING MANUAL -->
             <div id="tab-content-manual" style="display: none;">
               <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 18px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
@@ -454,8 +624,8 @@ export function renderMahasiswaPortal(container) {
                       <input type="text" class="form-control" id="manual-sender-acc" placeholder="Nomor rekening pengirim" required value="7128938291">
                     </div>
                     <div class="form-group">
-                      <label class="form-label">Nominal Transfer (Rp) <span class="required">*</span></label>
-                      <input type="number" class="form-control" id="manual-transfer-amount" required value="${currentInvoice.netAmount}">
+                      <label class="form-label">Nominal Ditransfer (Rp) <span class="required">*</span></label>
+                      <input type="number" class="form-control" id="manual-transfer-amount" required value="${selectedPayAmount}">
                     </div>
                   </div>
 
@@ -481,6 +651,7 @@ export function renderMahasiswaPortal(container) {
                 </form>
               </div>
             </div>
+
           </div>
         `}
       </div>
@@ -510,7 +681,7 @@ export function renderMahasiswaPortal(container) {
               <th>Semester</th>
               <th>Total Biaya</th>
               <th>Subsidi Beasiswa</th>
-              <th>Total Bayar</th>
+              <th>Total Terbayar</th>
               <th>Status</th>
               <th>No. Kwitansi Sah</th>
               <th>Aksi Kwitansi</th>
@@ -523,11 +694,13 @@ export function renderMahasiswaPortal(container) {
                 <td style="font-weight: 700;">Semester ${inv.semester}</td>
                 <td>${formatRupiah(inv.grossAmount)}</td>
                 <td style="color: #0284c7; font-weight: 700;">${inv.totalDiscount > 0 ? `-${formatRupiah(inv.totalDiscount)}` : '-'}</td>
-                <td style="font-weight: 900; color: var(--text-dark); font-family: var(--font-mono);">${formatRupiah(inv.netAmount)}</td>
+                <td style="font-weight: 900; color: var(--text-dark); font-family: var(--font-mono);">
+                  ${inv.paidAmount > 0 ? formatRupiah(inv.paidAmount) : formatRupiah(inv.netAmount)}
+                </td>
                 <td>${getStatusBadge(inv.status)}</td>
                 <td style="font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700;">${inv.receiptNumber || '<span style="color:var(--text-light);">-</span>'}</td>
                 <td>
-                  ${inv.status === STATUS_TAGIHAN.LUNAS ? `
+                  ${inv.status === STATUS_TAGIHAN.LUNAS || inv.paidAmount > 0 ? `
                     <button class="btn btn-outline btn-sm btn-view-my-receipt" data-invoice-id="${inv.id}" style="font-weight: 700; color: #166534; border-color: #86efac; background: #f0fdf4;">
                       🧾 Cetak Kwitansi
                     </button>
@@ -603,44 +776,155 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 2. Tabs Switcher (VA vs Manual)
+  // 2. Payment Plan Selector (LUNAS vs DICICIL)
+  const planCardFull = container.querySelector('#plan-card-full');
+  const planCardInstallment = container.querySelector('#plan-card-installment');
+  const radioPlanFull = container.querySelector('#radio-plan-full');
+  const radioPlanInstallment = container.querySelector('#radio-plan-installment');
+  const installmentPresets = container.querySelector('#installment-presets-container');
+
+  const qrisSvgWrapper = container.querySelector('#qris-svg-wrapper');
+  const qrisAmountDisplay = container.querySelector('#qris-amount-display');
+  const vaAmountText = container.querySelector('#va-amount-text');
+  const activePayBadge = container.querySelector('#active-pay-target-badge');
+  const guideVaAmount = container.querySelector('#guide-va-amount');
+  const manualAmountInput = container.querySelector('#manual-transfer-amount');
+
+  function updatePaymentPlan(plan, customAmount = null) {
+    selectedPlan = plan;
+    if (plan === 'FULL') {
+      selectedPayAmount = remainingAmount;
+      if (planCardFull) {
+        planCardFull.style.borderColor = 'var(--primary-700)';
+        planCardFull.style.background = '#eff6ff';
+        radioPlanFull.checked = true;
+      }
+      if (planCardInstallment) {
+        planCardInstallment.style.borderColor = 'var(--border-light)';
+        planCardInstallment.style.background = '#ffffff';
+        radioPlanInstallment.checked = false;
+      }
+      if (installmentPresets) installmentPresets.style.display = 'none';
+    } else {
+      selectedPayAmount = customAmount || halfAmount;
+      if (planCardInstallment) {
+        planCardInstallment.style.borderColor = 'var(--primary-700)';
+        planCardInstallment.style.background = '#eff6ff';
+        radioPlanInstallment.checked = true;
+      }
+      if (planCardFull) {
+        planCardFull.style.borderColor = 'var(--border-light)';
+        planCardFull.style.background = '#ffffff';
+        radioPlanFull.checked = false;
+      }
+      if (installmentPresets) installmentPresets.style.display = 'block';
+    }
+
+    // Update displays across QRIS, VA, and Manual
+    if (qrisSvgWrapper) qrisSvgWrapper.innerHTML = getQrisSvg(selectedPayAmount);
+    if (qrisAmountDisplay) qrisAmountDisplay.textContent = formatRupiah(selectedPayAmount);
+    if (vaAmountText) vaAmountText.textContent = formatRupiah(selectedPayAmount);
+    if (activePayBadge) activePayBadge.textContent = formatRupiah(selectedPayAmount);
+    if (guideVaAmount) guideVaAmount.textContent = formatRupiah(selectedPayAmount);
+    if (manualAmountInput) manualAmountInput.value = selectedPayAmount;
+  }
+
+  if (planCardFull) {
+    planCardFull.addEventListener('click', () => updatePaymentPlan('FULL'));
+  }
+  if (planCardInstallment) {
+    planCardInstallment.addEventListener('click', () => updatePaymentPlan('INSTALLMENT'));
+  }
+
+  container.querySelectorAll('.btn-installment-preset').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      container.querySelectorAll('.btn-installment-preset').forEach(b => {
+        b.classList.remove('active');
+        b.style.background = 'transparent';
+        b.style.borderColor = 'var(--border-color)';
+        b.style.color = 'var(--text-main)';
+      });
+      btn.classList.add('active');
+      btn.style.background = '#e0f2fe';
+      btn.style.borderColor = '#0284c7';
+      btn.style.color = '#0369a1';
+
+      const amt = Number(btn.getAttribute('data-amount')) || halfAmount;
+      const disp = container.querySelector('#display-plan-installment-amount');
+      if (disp) disp.textContent = formatRupiah(amt);
+      updatePaymentPlan('INSTALLMENT', amt);
+    });
+  });
+
+  // 3. Tabs Switcher (QRIS vs VA vs Manual)
+  const tabBtnQris = container.querySelector('#tab-btn-qris');
   const tabBtnVa = container.querySelector('#tab-btn-va');
   const tabBtnManual = container.querySelector('#tab-btn-manual');
+
+  const tabContentQris = container.querySelector('#tab-content-qris');
   const tabContentVa = container.querySelector('#tab-content-va');
   const tabContentManual = container.querySelector('#tab-content-manual');
 
-  if (tabBtnVa && tabBtnManual) {
-    tabBtnVa.addEventListener('click', () => {
-      tabBtnVa.classList.add('active');
-      tabBtnManual.classList.remove('active');
-      if (tabContentVa) tabContentVa.style.display = 'block';
-      if (tabContentManual) tabContentManual.style.display = 'none';
+  function setPaymentTab(tabName) {
+    [tabBtnQris, tabBtnVa, tabBtnManual].forEach(b => {
+      if (b) b.classList.remove('active');
+    });
+    [tabContentQris, tabContentVa, tabContentManual].forEach(c => {
+      if (c) c.style.display = 'none';
     });
 
-    tabBtnManual.addEventListener('click', () => {
-      tabBtnManual.classList.add('active');
-      tabBtnVa.classList.remove('active');
+    if (tabName === 'qris') {
+      if (tabBtnQris) tabBtnQris.classList.add('active');
+      if (tabContentQris) tabContentQris.style.display = 'block';
+    } else if (tabName === 'va') {
+      if (tabBtnVa) tabBtnVa.classList.add('active');
+      if (tabContentVa) tabContentVa.style.display = 'block';
+    } else {
+      if (tabBtnManual) tabBtnManual.classList.add('active');
       if (tabContentManual) tabContentManual.style.display = 'block';
-      if (tabContentVa) tabContentVa.style.display = 'none';
+    }
+  }
+
+  if (tabBtnQris) tabBtnQris.addEventListener('click', () => setPaymentTab('qris'));
+  if (tabBtnVa) tabBtnVa.addEventListener('click', () => setPaymentTab('va'));
+  if (tabBtnManual) tabBtnManual.addEventListener('click', () => setPaymentTab('manual'));
+
+  // 4. QRIS Instant Simulation Payment
+  const btnPayQris = container.querySelector('#btn-pay-qris-instant');
+  if (btnPayQris && currentInvoice) {
+    btnPayQris.addEventListener('click', () => {
+      const invId = btnPayQris.getAttribute('data-invoice-id');
+      const res = BillingEngine.processQRISPayment(invId, selectedPayAmount, selectedPlan);
+      if (res.success) {
+        window.simpelToast.show(
+          res.isFullyPaid ? 'Pembayaran QRIS Lunas!' : 'Pembayaran Angsuran QRIS Berhasil!',
+          `Nominal: ${formatRupiah(res.paidAmount)} telah diterima. No. Kwitansi: ${res.receiptNumber}`,
+          'success',
+          5000
+        );
+        renderMahasiswaPortal(container);
+        window.simpelModals.openReceiptModal(invId);
+      }
     });
   }
 
-  // 3. Bank Method Card Selection
+  // 5. VA Bank Selection
   container.querySelectorAll('.payment-method-card').forEach(card => {
     card.addEventListener('click', () => {
       container.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('active'));
       card.classList.add('active');
-      const b = card.getAttribute('data-bank');
+      selectedBankVA = card.getAttribute('data-bank');
       const vaBankLabel = container.querySelector('#va-bank-label');
       if (vaBankLabel) {
-        vaBankLabel.textContent = b === 'BSI' ? 'Bank Syariah Indonesia (BSI) Virtual Account' :
-                                  b === 'MUAMALAT' ? 'Bank Muamalat Virtual Account' :
-                                  b === 'MANDIRI' ? 'Bank Mandiri Virtual Account' : 'Bank BRI (BRIVA) Virtual Account';
+        vaBankLabel.textContent = selectedBankVA === 'BSI' ? 'Bank Syariah Indonesia (BSI) Virtual Account' :
+                                  selectedBankVA === 'MUAMALAT' ? 'Bank Muamalat Virtual Account' :
+                                  selectedBankVA === 'MANDIRI' ? 'Bank Mandiri Virtual Account' : 'Bank BRI (BRIVA) Virtual Account';
       }
     });
   });
 
-  // 4. Copy Buttons
+  // 6. Copy Buttons
   const btnCopyVa = container.querySelector('#btn-copy-va');
   const vaNumberText = container.querySelector('#va-number-text');
   if (btnCopyVa && vaNumberText) {
@@ -653,12 +937,12 @@ export function renderMahasiswaPortal(container) {
   }
 
   const btnCopyAmount = container.querySelector('#btn-copy-amount');
-  if (btnCopyAmount && currentInvoice) {
+  if (btnCopyAmount) {
     btnCopyAmount.addEventListener('click', () => {
-      navigator.clipboard.writeText(currentInvoice.netAmount.toString());
+      navigator.clipboard.writeText(selectedPayAmount.toString());
       btnCopyAmount.textContent = '✓ Disalin';
       setTimeout(() => btnCopyAmount.textContent = '📋 Salin Nominal', 2000);
-      window.simpelToast.show('Nominal Disalin', `Nominal Rp ${currentInvoice.netAmount.toLocaleString('id-ID')} disalin ke clipboard.`, 'info');
+      window.simpelToast.show('Nominal Disalin', `Nominal ${formatRupiah(selectedPayAmount)} disalin ke clipboard.`, 'info');
     });
   }
 
@@ -672,20 +956,21 @@ export function renderMahasiswaPortal(container) {
     });
   });
 
-  // 5. Pay Instant VA simulation
+  // 7. Pay Instant VA simulation
   const btnPayVa = container.querySelector('#btn-pay-va-instant');
-  if (btnPayVa) {
+  if (btnPayVa && currentInvoice) {
     btnPayVa.addEventListener('click', () => {
       const invId = btnPayVa.getAttribute('data-invoice-id');
       const activeCard = container.querySelector('.payment-method-card.active');
       const bankChoice = activeCard ? activeCard.querySelector('div div').textContent : 'Bank Syariah Indonesia';
       
-      const res = BillingEngine.processVAPayment(invId, bankChoice);
+      const res = BillingEngine.processVAPayment(invId, bankChoice, selectedPayAmount, selectedPlan);
       if (res.success) {
         window.simpelToast.show(
-          'Pembayaran Virtual Account Berhasil!',
-          `Kwitansi resmi ${res.receiptNumber} otomatis diterbitkan.`,
-          'success'
+          res.isFullyPaid ? 'Pembayaran Virtual Account Lunas!' : 'Pembayaran Angsuran VA Berhasil!',
+          `Nominal: ${formatRupiah(res.paidAmount)} diterima. No. Kwitansi: ${res.receiptNumber}`,
+          'success',
+          5000
         );
         renderMahasiswaPortal(container);
         window.simpelModals.openReceiptModal(invId);
@@ -693,7 +978,7 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 6. Manual Upload File handling
+  // 8. Manual Upload File handling
   const dropzone = container.querySelector('#manual-dropzone');
   const fileInput = container.querySelector('#manual-file-input');
   const previewWrapper = container.querySelector('#manual-preview-wrapper');
@@ -746,7 +1031,7 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 7. Submit Manual Transfer Form
+  // 9. Submit Manual Transfer Form
   const formManual = container.querySelector('#form-manual-transfer');
   if (formManual && currentInvoice) {
     formManual.addEventListener('submit', (e) => {
@@ -761,13 +1046,14 @@ export function renderMahasiswaPortal(container) {
         senderAccountName: senderName,
         senderAccountNumber: senderAcc,
         amount,
-        proofImage: selectedImageData
+        proofImage: selectedImageData,
+        planType: selectedPlan
       });
 
       if (res.success) {
         window.simpelToast.show(
           'Bukti Transfer Terkirim',
-          'Bukti pembayaran Anda berhasil masuk ke antrean verifikasi Bendahara.',
+          `Bukti pembayaran ${formatRupiah(amount)} berhasil masuk ke antrean verifikasi Bendahara.`,
           'success'
         );
         renderMahasiswaPortal(container);
@@ -775,7 +1061,7 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 8. View Receipt buttons
+  // 10. View Receipt buttons
   container.querySelectorAll('.btn-view-my-receipt').forEach(btn => {
     btn.addEventListener('click', () => {
       const invId = btn.getAttribute('data-invoice-id');
@@ -783,7 +1069,7 @@ export function renderMahasiswaPortal(container) {
     });
   });
 
-  // 9. FAQ Accordions
+  // 11. FAQ Accordions
   container.querySelectorAll('.faq-accordion-header').forEach(header => {
     header.addEventListener('click', () => {
       const body = header.nextElementSibling;

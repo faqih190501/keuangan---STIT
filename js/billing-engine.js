@@ -165,9 +165,9 @@ export class BillingEngine {
   }
 
   /**
-   * Process Instant Virtual Account Simulation Payment
+   * Process Instant QRIS Payment Simulation (Full or Installment)
    */
-  static processVAPayment(invoiceId, bankName = 'Bank BSI (Bank Syariah Indonesia)') {
+  static processQRISPayment(invoiceId, payAmount = null, planType = 'FULL') {
     const state = appState.getState();
     const invoice = state.invoices.find(i => i.id === invoiceId);
     if (!invoice) return { success: false, message: 'Tagihan tidak ditemukan' };
@@ -176,25 +176,74 @@ export class BillingEngine {
     const now = new Date();
     const pad = (n) => n.toString().padStart(2, '0');
     const timeStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-    
+
+    const currentPaid = invoice.paidAmount || 0;
+    const remainingBefore = invoice.netAmount - currentPaid;
+    const actualPay = payAmount ? Math.min(Number(payAmount), remainingBefore) : remainingBefore;
+    const newTotalPaid = currentPaid + actualPay;
+
+    const isFullyPaid = newTotalPaid >= invoice.netAmount;
     const receiptSerial = Math.floor(1000 + Math.random() * 9000);
     const receiptNumber = `KW-IF/${now.getFullYear()}/${pad(now.getMonth() + 1)}/${receiptSerial}`;
 
-    invoice.status = STATUS_TAGIHAN.LUNAS;
-    invoice.paidAmount = invoice.netAmount;
-    invoice.paymentMethod = bankName.includes('BSI') ? 'VA_BSI' : (bankName.includes('Mandiri') ? 'VA_MANDIRI' : 'VA_MUAMALAT');
+    invoice.paidAmount = newTotalPaid;
+    invoice.status = isFullyPaid ? STATUS_TAGIHAN.LUNAS : STATUS_TAGIHAN.DICICIL;
+    invoice.paymentMethod = 'QRIS_NATIONAL';
     invoice.paymentDate = timeStr;
     invoice.receiptNumber = receiptNumber;
-    invoice.notes = `Lunas via ${bankName} Virtual Account (Auto-Reconciled)`;
+    invoice.notes = isFullyPaid 
+      ? `Pelunasan via QRIS Standar Nasional (${planType === 'FULL' ? 'Lunas Sekaligus' : 'Pelunasan Termin Akhir'})` 
+      : `Pembayaran Angsuran Cicilan via QRIS Nasional (Terbayar Rp ${newTotalPaid.toLocaleString('id-ID')} dari Rp ${invoice.netAmount.toLocaleString('id-ID')})`;
 
     appState.addAuditLog(
-      'PAYMENT_VA_SUCCESS',
+      isFullyPaid ? 'PAYMENT_QRIS_LUNAS' : 'PAYMENT_QRIS_CICILAN',
       `${invoice.id} (${student ? student.name : invoice.studentNim})`,
-      `Pelunasan tagihan Rp ${invoice.netAmount.toLocaleString('id-ID')} via ${bankName}. Kwitansi resmi terbit: ${receiptNumber}.`
+      `${isFullyPaid ? 'Pelunasan tagihan' : 'Pembayaran angsuran cicilan'} sebesar Rp ${actualPay.toLocaleString('id-ID')} via QRIS. Kwitansi terbit: ${receiptNumber}.`
     );
 
     appState.notify();
-    return { success: true, receiptNumber, invoice };
+    return { success: true, receiptNumber, invoice, isFullyPaid, paidAmount: actualPay, totalPaid: newTotalPaid };
+  }
+
+  /**
+   * Process Instant Virtual Account Simulation Payment (Full or Installment)
+   */
+  static processVAPayment(invoiceId, bankName = 'Bank BSI (Bank Syariah Indonesia)', payAmount = null, planType = 'FULL') {
+    const state = appState.getState();
+    const invoice = state.invoices.find(i => i.id === invoiceId);
+    if (!invoice) return { success: false, message: 'Tagihan tidak ditemukan' };
+
+    const student = state.students.find(s => s.nim === invoice.studentNim);
+    const now = new Date();
+    const pad = (n) => n.toString().padStart(2, '0');
+    const timeStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+    const currentPaid = invoice.paidAmount || 0;
+    const remainingBefore = invoice.netAmount - currentPaid;
+    const actualPay = payAmount ? Math.min(Number(payAmount), remainingBefore) : remainingBefore;
+    const newTotalPaid = currentPaid + actualPay;
+
+    const isFullyPaid = newTotalPaid >= invoice.netAmount;
+    const receiptSerial = Math.floor(1000 + Math.random() * 9000);
+    const receiptNumber = `KW-IF/${now.getFullYear()}/${pad(now.getMonth() + 1)}/${receiptSerial}`;
+
+    invoice.paidAmount = newTotalPaid;
+    invoice.status = isFullyPaid ? STATUS_TAGIHAN.LUNAS : STATUS_TAGIHAN.DICICIL;
+    invoice.paymentMethod = bankName.includes('BSI') ? 'VA_BSI' : (bankName.includes('Mandiri') ? 'VA_MANDIRI' : bankName.includes('BRI') ? 'VA_BRI' : 'VA_MUAMALAT');
+    invoice.paymentDate = timeStr;
+    invoice.receiptNumber = receiptNumber;
+    invoice.notes = isFullyPaid 
+      ? `Lunas via ${bankName} Virtual Account (Auto-Reconciled)` 
+      : `Pembayaran Cicilan via ${bankName} Virtual Account (Terbayar Rp ${newTotalPaid.toLocaleString('id-ID')})`;
+
+    appState.addAuditLog(
+      isFullyPaid ? 'PAYMENT_VA_LUNAS' : 'PAYMENT_VA_CICILAN',
+      `${invoice.id} (${student ? student.name : invoice.studentNim})`,
+      `${isFullyPaid ? 'Pelunasan tagihan' : 'Pembayaran angsuran cicilan'} sebesar Rp ${actualPay.toLocaleString('id-ID')} via ${bankName}. Kwitansi terbit: ${receiptNumber}.`
+    );
+
+    appState.notify();
+    return { success: true, receiptNumber, invoice, isFullyPaid, paidAmount: actualPay, totalPaid: newTotalPaid };
   }
 
   /**
