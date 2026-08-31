@@ -1,0 +1,20 @@
+# Dependencies and environment
+.DS_Store
+Thumbs.db
+node_modules/
+dist/
+build/
+*.log
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Scratchpad and temporary test files
+scratch/
+.system_generated/

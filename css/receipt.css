@@ -1,0 +1,372 @@
+/* ==========================================================================
+   SIMPEL-IF Official Receipt Stylesheet
+   Institusi: STIT Ihsanul Fikri
+   ========================================================================== */
+
+.receipt-modal-container {
+  background: #525659;
+  padding: 24px;
+  overflow-y: auto;
+  max-height: 85vh;
+  display: flex;
+  justify-content: center;
+}
+
+.official-receipt-paper {
+  width: 100%;
+  max-width: 780px;
+  background: #ffffff;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  border-radius: 4px;
+  position: relative;
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  color: #1e293b;
+  overflow: hidden;
+}
+
+/* Watermark Background */
+.receipt-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 6.5rem;
+  font-weight: 900;
+  color: rgba(30, 64, 175, 0.04);
+  letter-spacing: 12px;
+  pointer-events: none;
+  white-space: nowrap;
+  text-transform: uppercase;
+  z-index: 1;
+}
+
+/* Kop Surat Resmi */
+.receipt-header-kop {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 16px;
+  border-bottom: 3px double #0f2042;
+  position: relative;
+  z-index: 2;
+}
+
+.receipt-kop-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.receipt-kop-text {
+  flex: 1;
+  text-align: center;
+}
+
+.kop-yayasan {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.kop-institution {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #0f2042;
+  letter-spacing: 0.5px;
+  margin: 2px 0;
+}
+
+.kop-prodi-info {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #0284c7;
+}
+
+.kop-address {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+/* Receipt Title & Meta */
+.receipt-title-box {
+  text-align: center;
+  margin: 24px 0 18px;
+  position: relative;
+  z-index: 2;
+}
+
+.receipt-title-heading {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f2042;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.receipt-number-tag {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+}
+
+/* Student & Meta Grid */
+.receipt-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  margin-bottom: 22px;
+  background: #f8fafc;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 0.82rem;
+  position: relative;
+  z-index: 2;
+}
+
+.receipt-info-row {
+  display: flex;
+  gap: 8px;
+}
+
+.receipt-info-label {
+  width: 130px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.receipt-info-val {
+  flex: 1;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Table Breakdown */
+.receipt-table-wrapper {
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.receipt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.receipt-table th {
+  background: #0f2042;
+  color: #ffffff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 700;
+  border: 1px solid #0f2042;
+}
+
+.receipt-table td {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+}
+
+.receipt-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.receipt-table .text-right {
+  text-align: right;
+}
+
+.receipt-table .total-row td {
+  background: #eff6ff;
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: #0f2042;
+  border-top: 2px solid #0f2042;
+}
+
+/* Terbilang Box */
+.receipt-terbilang-box {
+  background: #f1f5f9;
+  border-left: 4px solid #0284c7;
+  padding: 10px 16px;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: #334155;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Signatures & QR Section */
+.receipt-bottom-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.receipt-qr-validation {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #cbd5e1;
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff;
+  max-width: 320px;
+}
+
+.receipt-qr-code {
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+}
+
+.receipt-qr-instructions {
+  font-size: 0.7rem;
+  color: #475569;
+  line-height: 1.35;
+}
+
+.receipt-qr-instructions strong {
+  color: #0f2042;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.receipt-signature-box {
+  text-align: center;
+  min-width: 220px;
+}
+
+.signature-date {
+  font-size: 0.78rem;
+  color: #475569;
+  margin-bottom: 4px;
+}
+
+.signature-role {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f2042;
+}
+
+.signature-space {
+  height: 65px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signature-stamp-img {
+  position: absolute;
+  width: 90px;
+  opacity: 0.85;
+}
+
+.signature-digital-img {
+  font-family: 'Brush Script MT', 'Dancing Script', cursive, sans-serif;
+  font-size: 1.8rem;
+  color: #1e40af;
+  transform: rotate(-5deg);
+}
+
+.signature-name {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: #0f2042;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.signature-nip {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-family: var(--font-mono);
+}
+
+/* Paid Stamp */
+.paid-stamp-watermark {
+  position: absolute;
+  right: 50px;
+  top: 140px;
+  border: 3px solid #15803d;
+  color: #15803d;
+  font-size: 1.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 8px;
+  transform: rotate(-15deg);
+  opacity: 0.85;
+  letter-spacing: 2px;
+  z-index: 3;
+}
+
+/* ==========================================================================
+   Print Stylesheet
+   ========================================================================== */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .role-switcher-banner,
+  .sidebar,
+  .topbar,
+  .modal-header,
+  .modal-footer,
+  .toast-container,
+  .btn,
+  .no-print {
+    display: none !important;
+  }
+
+  .modal-overlay {
+    position: static;
+    display: block;
+    background: transparent;
+    padding: 0;
+  }
+
+  .modal-card {
+    box-shadow: none;
+    border: none;
+    max-width: 100% !important;
+    transform: none !important;
+  }
+
+  .receipt-modal-container {
+    background: transparent;
+    padding: 0;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .official-receipt-paper,
+  .official-receipt-paper * {
+    visibility: visible;
+  }
+
+  .official-receipt-paper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+    box-shadow: none;
+  }
+}

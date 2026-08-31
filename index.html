@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SIMPEL-IF (Sistem Informasi Manajemen Pembayaran Elektronik Ihsanul Fikri) - STIT Ihsanul Fikri. Tata kelola tagihan kuliah, skema beasiswa, virtual account, dan kwitansi resmi ber-QR Code.">
+  <meta name="theme-color" content="#1e40af">
+  <title>SIMPEL-IF &bull; Sistem Informasi & Pembayaran STIT Ihsanul Fikri</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="./assets/images/logo.png">
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets (Corporate Blue Theme) -->
+  <link rel="stylesheet" href="./css/variables.css?v=2.0.1">
+  <link rel="stylesheet" href="./css/layout.css?v=2.0.1">
+  <link rel="stylesheet" href="./css/components.css?v=2.0.1">
+  <link rel="stylesheet" href="./css/receipt.css?v=2.0.1">
+  <link rel="stylesheet" href="./css/responsive.css?v=2.0.1">
+</head>
+<body>
+
+  <!-- Top Role Switcher Banner for Showcase & Multi-Role Simulation -->
+  <header class="role-switcher-banner" id="role-switcher-banner">
+    <div class="role-brand-badge">
+      <img src="./assets/images/logo.png" alt="Logo" style="width: 24px; height: 24px; border-radius: 4px; object-fit: cover;">
+      <span>STIT IHSANUL FIKRI</span>
+      <span class="badge-tag">SIMPEL-IF V2.0</span>
+    </div>
+
+    <!-- Role Switch Buttons -->
+    <div class="role-buttons-group" id="role-buttons-container">
+      <!-- Injected dynamically by AuthManager -->
+    </div>
+
+    <div class="role-quick-info" style="display: flex; align-items: center; gap: 12px;">
+      <span>Peran: <strong class="current-user-name" id="topbar-user-role">Admin</strong></span>
+      <button id="btn-sync-reset-state" class="btn btn-sm" style="background: rgba(255,255,255,0.18); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); padding: 4px 10px; font-size: 0.72rem; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;" title="Reset / Sinkronkan Data Awal">
+        🔄 Sinkron Data
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Application Layout Container -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Sidebar Header & Logo -->
+      <div class="sidebar-header">
+        <img src="./assets/images/logo.png" alt="Logo STIT Ihsanul Fikri" class="sidebar-logo-img">
+        <div class="sidebar-brand-text">
+          <span class="sidebar-brand-title">SIMPEL-IF</span>
+          <span class="sidebar-brand-subtitle">STIT Ihsanul Fikri</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <div class="nav-section-label">Menu Utama</div>
+        <a class="nav-item active" data-view="dashboard-bendahara" id="nav-dashboard">
+          <span class="nav-icon">👑</span>
+          <span>Dashboard Admin</span>
+        </a>
+        <a class="nav-item" data-view="view-mahasiswa" id="nav-mahasiswa">
+          <span class="nav-icon">🎓</span>
+          <span>Portal Mahasiswa</span>
+        </a>
+
+        <div class="nav-section-label">Transaksi & Beasiswa</div>
+        <a class="nav-item" data-view="view-skema-tarif" id="nav-skema">
+          <span class="nav-icon">⚙️</span>
+          <span>Skema Beasiswa & Tarif</span>
+        </a>
+        <a class="nav-item" data-view="view-verifikasi" id="nav-verifikasi">
+          <span class="nav-icon">🔍</span>
+          <span>Antrean Verifikasi</span>
+          <span class="nav-badge" id="sidebar-verif-badge" style="display: none;">0</span>
+        </a>
+
+        <div class="nav-section-label">Master Data & Akademik</div>
+        <a class="nav-item" data-view="view-akademik" id="nav-akademik">
+          <span class="nav-icon">📚</span>
+          <span>Data Mahasiswa & Prodi</span>
+        </a>
+
+        <div class="nav-section-label">Eksekutif & Laporan</div>
+        <a class="nav-item" data-view="view-laporan" id="nav-laporan">
+          <span class="nav-icon">📈</span>
+          <span>Rekapitulasi Laporan</span>
+        </a>
+
+        <div class="nav-section-label">Integritas & Publik</div>
+        <a class="nav-item" data-view="view-qr-validator" id="nav-qr-validator">
+          <span class="nav-icon">🛡️</span>
+          <span>Validasi QR Kwitansi</span>
+        </a>
+        <a class="nav-item" data-view="view-audit-log" id="nav-audit-log">
+          <span class="nav-icon">📜</span>
+          <span>Audit Trail & Log</span>
+        </a>
+
+        <div class="nav-section-label">Autentikasi & Akun</div>
+        <a class="nav-item" data-view="view-login" id="nav-login">
+          <span class="nav-icon">🔑</span>
+          <span>Login / Pendaftaran</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Footer (Active User Profile) -->
+      <div class="sidebar-footer">
+        <div class="user-mini-profile">
+          <div class="user-avatar" id="topbar-user-avatar">AD</div>
+          <div class="user-info-text">
+            <span class="user-name" id="topbar-user-name">Admin SIMPEL-IF</span>
+            <span class="user-role-tag">Pengelola</span>
+          </div>
+        </div>
+        <button id="btn-sidebar-logout" title="Keluar / Ganti Akun" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 32px; height: 32px; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;" aria-label="Keluar atau Ganti Akun">
+          🚪
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+            ☰
+          </button>
+          <div class="page-title-context">
+            <h1 class="page-main-title" id="page-main-title">Dashboard Bendahara & Keuangan</h1>
+            <div class="page-breadcrumb" id="page-breadcrumb">SIMPEL-IF / Keuangan / Ringkasan</div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="academic-period-badge">
+            <span class="dot"></span>
+            <span>Tahun Akademik: <strong>2026/2027 Ganjil</strong></span>
+          </div>
+
+          <!-- Quick QR Validator shortcut button -->
+          <button class="btn-header-action" id="btn-quick-qr" title="Buka Validator QR Code Kwitansi">
+            🛡️
+          </button>
+
+          <!-- Notification Bell -->
+          <button class="btn-header-action" id="btn-notifications" title="Notifikasi Verifikasi">
+            🔔
+            <span class="notification-indicator" id="header-notif-indicator" style="display: none;"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Dynamic Content Container -->
+      <main class="content-area">
+        <div id="main-view-container">
+          <!-- Views injected dynamically by SPA Router -->
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Global Modal Overlay Container -->
+  <div class="modal-overlay" id="global-modal-overlay">
+    <div class="modal-card" id="global-modal-card">
+      <div class="modal-header">
+        <h3 id="global-modal-title">Modal Title</h3>
+        <button class="modal-close-btn" id="global-modal-close" aria-label="Close Modal">&times;</button>
+      </div>
+      <div class="modal-body" id="global-modal-body">
+        <!-- Modal content injected dynamically -->
+      </div>
+      <div class="modal-footer" id="global-modal-footer">
+        <!-- Modal action buttons -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification Stack -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Application Logic Modules -->
+  <script type="module" src="./js/app.js?v=2.0.1"></script>
+
+  <script>
+    // Quick shortcut listener for QR validator icon
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnQuickQr = document.getElementById('btn-quick-qr');
+      if (btnQuickQr) {
+        btnQuickQr.addEventListener('click', () => {
+          if (window.simpelRouter) window.simpelRouter.navigateTo('view-qr-validator');
+        });
+      }
+
+      const btnNotif = document.getElementById('btn-notifications');
+      if (btnNotif) {
+        btnNotif.addEventListener('click', () => {
+          if (window.simpelRouter) window.simpelRouter.navigateTo('view-verifikasi');
+        });
+      }
+
+      const btnSidebarLogout = document.getElementById('btn-sidebar-logout');
+      if (btnSidebarLogout) {
+        btnSidebarLogout.addEventListener('click', () => {
+          if (window.simpelRouter) window.simpelRouter.navigateTo('view-login');
+        });
+      }
+    });
+  </script>
+</body>
+</html>
