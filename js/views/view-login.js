@@ -582,7 +582,7 @@ export function renderLoginView(container) {
         dueDate: '2026-09-30',
         paymentDate: null,
         paymentMethod: null,
-        virtualAccount: `8809${nim.slice(-8)}`,
+        virtualAccount: '1056405743',
         receiptNumber: null,
         notes: 'Tagihan Awal PMB Mahasiswa Baru 2026/2027'
       };

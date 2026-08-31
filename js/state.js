@@ -323,7 +323,7 @@ const INITIAL_SEED_DATA = {
       paymentMethod: 'VA_BSI',
       receiptNumber: 'KW-IF/2026/08/0012',
       paymentDate: '2026-08-15 10:24:00',
-      virtualAccount: '988886209012001',
+      virtualAccount: '1056405743',
       notes: 'Lunas via Virtual Account Bank Syariah Indonesia (Auto-Reconciled)'
     },
     {
@@ -344,7 +344,7 @@ const INITIAL_SEED_DATA = {
       paymentMethod: 'TRANSFER_MANUAL',
       receiptNumber: null,
       paymentDate: '2026-08-28 14:10:00',
-      virtualAccount: '988886208005002',
+      virtualAccount: '1056405743',
       notes: 'Bukti transfer manual diunggah oleh mahasiswa, menunggu konfirmasi Bendahara'
     },
     {
@@ -366,7 +366,7 @@ const INITIAL_SEED_DATA = {
       paymentMethod: null,
       receiptNumber: null,
       paymentDate: null,
-      virtualAccount: '988886208001003',
+      virtualAccount: '1056405743',
       notes: 'Tagihan semester awal diterbitkan'
     },
     {
@@ -388,7 +388,7 @@ const INITIAL_SEED_DATA = {
       paymentMethod: 'VA_BSI',
       receiptNumber: 'KW-IF/2026/08/0014',
       paymentDate: '2026-08-20 09:15:00',
-      virtualAccount: '988886209002004',
+      virtualAccount: '1056405743',
       notes: 'Lunas via Virtual Account Bank Syariah Indonesia'
     },
     {
@@ -406,11 +406,11 @@ const INITIAL_SEED_DATA = {
       netAmount: 1600000,
       paidAmount: 1600000,
       status: 'LUNAS',
-      paymentMethod: 'VA_MANDIRI',
+      paymentMethod: 'VA_BSI',
       receiptNumber: 'KW-IF/2026/08/0015',
       paymentDate: '2026-08-18 16:30:00',
-      virtualAccount: '899986209008005',
-      notes: 'Lunas via Mandiri Virtual Account'
+      virtualAccount: '1056405743',
+      notes: 'Lunas via BSI Virtual Account'
     },
     {
       id: 'INV-2026-006',
@@ -430,7 +430,7 @@ const INITIAL_SEED_DATA = {
       paymentMethod: null,
       receiptNumber: null,
       paymentDate: null,
-      virtualAccount: '988886208014006',
+      virtualAccount: '1056405743',
       notes: 'Menunggu pembayaran'
     },
     {
@@ -452,7 +452,7 @@ const INITIAL_SEED_DATA = {
       paymentMethod: 'VA_BSI',
       receiptNumber: 'KW-IF/2026/08/0017',
       paymentDate: '2026-08-25 11:00:00',
-      virtualAccount: '988886208007007',
+      virtualAccount: '1056405743',
       notes: 'Lunas via Virtual Account BSI (Termasuk Override Beasiswa Tahfidz)'
     },
     {
@@ -473,7 +473,7 @@ const INITIAL_SEED_DATA = {
       paymentMethod: 'TRANSFER_MANUAL',
       receiptNumber: 'KW-IF/2026/08/0018-T1',
       paymentDate: '2026-08-22 13:45:00',
-      virtualAccount: '988886208011008',
+      virtualAccount: '1056405743',
       notes: 'Telah membayar cicilan Termin 1 (Rp 800.000). Sisa Termin 2 (Rp 800.000) jatuh tempo 15 Nov 2026.'
     }
   ],
@@ -588,7 +588,16 @@ class StateManager {
         }
         if (!this.state.feeComponents) this.state.feeComponents = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.feeComponents));
         if (!this.state.students) this.state.students = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.students));
-        if (!this.state.invoices) this.state.invoices = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.invoices));
+        if (!this.state.invoices) {
+          this.state.invoices = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.invoices));
+        } else {
+          // Normalize VA to Bank BSI 1056405743
+          this.state.invoices.forEach(inv => {
+            if (!inv.virtualAccount || inv.virtualAccount !== '1056405743') {
+              inv.virtualAccount = '1056405743';
+            }
+          });
+        }
         if (!this.state.paymentVerifications) this.state.paymentVerifications = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.paymentVerifications));
         if (!this.state.individualOverrides) this.state.individualOverrides = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.individualOverrides));
         if (!this.state.auditLogs) this.state.auditLogs = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.auditLogs));

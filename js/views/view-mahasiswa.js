@@ -1,7 +1,7 @@
 /**
  * SIMPEL-IF Portal Mahasiswa View
  * STIT Ihsanul Fikri
- * Fitur: Pilihan Lunas / Cicilan & Saluran Pembayaran (QRIS, VA Multi-Bank, Transfer Manual)
+ * Fitur: Pilihan Lunas / Cicilan & Saluran Pembayaran (QRIS, Bank BSI VA 1056405743, Transfer Manual)
  */
 
 import { appState } from '../state.js';
@@ -38,7 +38,6 @@ export function renderMahasiswaPortal(container) {
   // Default active payment plan
   let selectedPlan = 'FULL'; // 'FULL' or 'INSTALLMENT'
   let selectedPayAmount = remainingAmount > 0 ? remainingAmount : totalNetAmount;
-  let selectedBankVA = 'BSI';
 
   // Generate dynamic QRIS SVG payload
   function getQrisSvg(amount) {
@@ -348,7 +347,7 @@ export function renderMahasiswaPortal(container) {
                     Bayar sebagian sekarang, sisa dapat diangsur sebelum UAS.
                   </p>
 
-                  <!-- Installment Sub-options (hidden by default) -->
+                  <!-- Installment Sub-options -->
                   <div id="installment-presets-container" style="display: none; margin-left: 24px; margin-top: 8px; border-top: 1px dashed #cbd5e1; padding-top: 8px;">
                     <div style="font-size: 0.74rem; font-weight: 700; color: var(--text-dark); margin-bottom: 6px;">Pilih Besaran Angsuran Kali Ini:</div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -371,14 +370,14 @@ export function renderMahasiswaPortal(container) {
               </div>
             </div>
 
-            <!-- LANGKAH 2: PILIH SALURAN PEMBAYARAN (QRIS, VA, TRANSFER MANUAL) -->
+            <!-- LANGKAH 2: PILIH SALURAN PEMBAYARAN (QRIS, BSI VA 1056405743, TRANSFER MANUAL) -->
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
               <div>
                 <h4 style="font-size: 1rem; font-weight: 900; color: var(--text-dark); margin: 0;">
                   Langkah 2: Pilih Saluran Pembayaran
                 </h4>
                 <p style="font-size: 0.78rem; color: var(--text-light); margin: 2px 0 0;">
-                  Pilih kanal yang paling mudah bagi Anda (QRIS, Virtual Account, atau Transfer Manual):
+                  Pilih kanal pembayaran resmi STIT Ihsanul Fikri:
                 </p>
               </div>
               <div style="background: #f8fafc; padding: 4px 12px; border-radius: var(--radius-md); border: 1px solid var(--border-light); font-size: 0.76rem; font-weight: 800; color: var(--text-dark);">
@@ -392,10 +391,10 @@ export function renderMahasiswaPortal(container) {
                 🔴 QRIS (Scan Semua e-Wallet & M-Banking)
               </button>
               <button class="tab-nav-btn" id="tab-btn-va">
-                💳 Virtual Account (BSI, Muamalat, Mandiri, BRI)
+                🌙 BSI Virtual Account (1056405743)
               </button>
               <button class="tab-nav-btn" id="tab-btn-manual">
-                🏦 Transfer Bank Rekening Yayasan (Upload Struk)
+                🏦 Transfer Bank BSI Manual (Upload Struk)
               </button>
             </div>
 
@@ -469,100 +468,93 @@ export function renderMahasiswaPortal(container) {
               </div>
             </div>
 
-            <!-- TAB 2: VIRTUAL ACCOUNT MULTI-BANK -->
+            <!-- TAB 2: VIRTUAL ACCOUNT BANK BSI ONLY -->
             <div id="tab-content-va" style="display: none;">
               
-              <!-- Pilihan Bank VA -->
-              <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-dark); text-transform: uppercase; margin-bottom: 10px;">
-                Pilih Bank Virtual Account:
-              </div>
-              <div class="payment-method-selector">
-                <div class="payment-method-card active" data-bank="BSI">
-                  <span style="font-size: 1.5rem;">🌙</span>
-                  <div>
-                    <div style="font-weight: 800; font-size: 0.86rem; color: var(--text-dark);">Bank Syariah Indonesia</div>
-                    <div style="font-size: 0.7rem; color: var(--text-light);">BSI Virtual Account</div>
-                  </div>
-                </div>
-                <div class="payment-method-card" data-bank="MUAMALAT">
-                  <span style="font-size: 1.5rem;">🕌</span>
-                  <div>
-                    <div style="font-weight: 800; font-size: 0.86rem; color: var(--text-dark);">Bank Muamalat</div>
-                    <div style="font-size: 0.7rem; color: var(--text-light);">Muamalat VA</div>
-                  </div>
-                </div>
-                <div class="payment-method-card" data-bank="MANDIRI">
-                  <span style="font-size: 1.5rem;">🏛️</span>
-                  <div>
-                    <div style="font-weight: 800; font-size: 0.86rem; color: var(--text-dark);">Bank Mandiri</div>
-                    <div style="font-size: 0.7rem; color: var(--text-light);">Mandiri Bill Payment</div>
-                  </div>
-                </div>
-                <div class="payment-method-card" data-bank="BRI">
-                  <span style="font-size: 1.5rem;">🏢</span>
-                  <div>
-                    <div style="font-weight: 800; font-size: 0.86rem; color: var(--text-dark);">Bank BRI (BRIVA)</div>
-                    <div style="font-size: 0.7rem; color: var(--text-light);">BRI Virtual Account</div>
-                  </div>
-                </div>
-              </div>
-
               <!-- VA Display Card -->
-              <div class="va-box">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <div class="va-bank-title" id="va-bank-label">Bank Syariah Indonesia (BSI) Virtual Account</div>
-                  <span style="background: rgba(255,255,255,0.2); font-size: 0.68rem; padding: 2px 8px; border-radius: 4px; font-weight: 700;">REALTIME ONLINE</span>
+              <div class="va-box" style="background: linear-gradient(135deg, #0f766e 0%, #064e3b 100%); border-radius: var(--radius-xl); padding: 24px; color: #ffffff; box-shadow: var(--shadow-md); margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 12px; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 1.8rem;">🌙</span>
+                    <div>
+                      <div style="font-size: 1.15rem; font-weight: 900; color: #ffffff;">Bank Syariah Indonesia (BSI)</div>
+                      <div style="font-size: 0.74rem; color: #a7f3d0;">Layanan Virtual Account Resmi STIT Ihsanul Fikri</div>
+                    </div>
+                  </div>
+                  <span style="background: rgba(255,255,255,0.25); color: #ffffff; font-size: 0.7rem; padding: 4px 10px; border-radius: 6px; font-weight: 800; letter-spacing: 0.5px;">
+                    ONLINE 24/7 OTOMATIS
+                  </span>
                 </div>
                 
-                <div class="va-number-display">
-                  <span id="va-number-text">${currentInvoice.virtualAccount}</span>
-                  <button class="copy-va-btn" id="btn-copy-va" title="Salin Nomor VA">📋 Salin VA</button>
+                <div style="font-size: 0.76rem; color: #a7f3d0; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">
+                  Nomor Virtual Account Bank BSI:
+                </div>
+                <div class="va-number-display" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.25); padding: 12px 18px; border-radius: var(--radius-lg); border: 1.5px dashed rgba(255,255,255,0.4); margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                  <span id="va-number-text" style="font-size: 1.75rem; font-weight: 900; font-family: var(--font-mono); letter-spacing: 2px; color: #fef08a;">1056405743</span>
+                  <button class="copy-va-btn" id="btn-copy-va" title="Salin Nomor VA BSI" style="background: #fef08a; color: #713f12; font-weight: 900; padding: 8px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; font-size: 0.84rem;">
+                    📋 Salin No. VA BSI
+                  </button>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.1); padding: 10px 14px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                <div style="background: rgba(255,255,255,0.12); padding: 12px 16px; border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
                   <div>
-                    <div style="font-size: 0.7rem; color: #93c5fd; text-transform: uppercase;">Nominal Transfer Pas:</div>
-                    <div style="font-size: 1.15rem; font-weight: 900; font-family: var(--font-mono); color: #ffffff;" id="va-amount-text">${formatRupiah(selectedPayAmount)}</div>
+                    <div style="font-size: 0.72rem; color: #a7f3d0; text-transform: uppercase; font-weight: 700;">Nominal Transfer Pas:</div>
+                    <div style="font-size: 1.25rem; font-weight: 900; font-family: var(--font-mono); color: #ffffff;" id="va-amount-text">${formatRupiah(selectedPayAmount)}</div>
                   </div>
-                  <button class="copy-va-btn" id="btn-copy-amount" title="Salin Nominal Pembayaran" style="background: rgba(255,255,255,0.25);">
+                  <button class="copy-va-btn" id="btn-copy-amount" title="Salin Nominal Pembayaran" style="background: rgba(255,255,255,0.25); color: #ffffff; border: 1px solid rgba(255,255,255,0.4); padding: 6px 14px; border-radius: var(--radius-md); cursor: pointer; font-weight: 800; font-size: 0.8rem;">
                     📋 Salin Nominal
                   </button>
                 </div>
 
-                <div style="font-size: 0.74rem; color: #cbd5e1; margin-top: 12px;">
-                  Atas Nama: <strong style="color: #ffffff;">STIT IHSANUL FIKRI - ${currentStudent.name.toUpperCase()}</strong>
+                <div style="font-size: 0.78rem; color: #e6fffa; line-height: 1.4;">
+                  Atas Nama: <strong style="color: #ffffff; text-decoration: underline;">STIT IHSANUL FIKRI - ${currentStudent.name.toUpperCase()}</strong>
                 </div>
               </div>
 
               <!-- Quick Simulation Button -->
-              <div style="display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: #f8fafc; padding: 16px 20px; border-radius: var(--radius-xl); border: 1px solid var(--border-light); margin-bottom: 20px;">
+              <div style="display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: #f0fdf4; padding: 16px 20px; border-radius: var(--radius-xl); border: 1.5px solid #86efac; margin-bottom: 20px;">
                 <div>
-                  <div style="font-size: 0.84rem; font-weight: 800; color: var(--text-dark);">Uji Coba Pembayaran VA:</div>
-                  <div style="font-size: 0.74rem; color: var(--text-muted);">Simulasikan notifikasi pembayaran otomatis perbankan</div>
+                  <div style="font-size: 0.88rem; font-weight: 900; color: #14532d;">Simulasi Pembayaran BSI Virtual Account:</div>
+                  <div style="font-size: 0.76rem; color: #166534;">Simulasikan notifikasi pembayaran otomatis dari BSI Mobile / ATM</div>
                 </div>
-                <button class="btn btn-primary btn-lg" id="btn-pay-va-instant" data-invoice-id="${currentInvoice.id}" style="background: linear-gradient(135deg, #1e40af, #0284c7); font-weight: 800; box-shadow: var(--shadow-sm);">
-                  ⚡ Simulasikan Pembayaran VA Berhasil
+                <button class="btn btn-primary btn-lg" id="btn-pay-va-instant" data-invoice-id="${currentInvoice.id}" style="background: linear-gradient(135deg, #059669, #047857); font-weight: 900; border: none; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);">
+                  ⚡ Simulasikan Pembayaran BSI VA Berhasil
                 </button>
               </div>
 
               <!-- Cara Pembayaran Accordion -->
               <div style="margin-top: 20px;">
                 <div style="font-size: 0.84rem; font-weight: 800; color: var(--text-dark); margin-bottom: 10px;">
-                  📖 Panduan Cara Bayar Virtual Account:
+                  📖 Panduan Cara Bayar BSI Virtual Account (1056405743):
                 </div>
                 
                 <div class="faq-accordion-item">
                   <div class="faq-accordion-header">
-                    <span>📱 Cara Bayar via Mobile Banking (BSI Mobile / Livin Mandiri / Muamalat DIN)</span>
+                    <span>📱 Cara Bayar via BSI Mobile</span>
                     <span class="acc-icon">▼</span>
                   </div>
                   <div class="faq-accordion-body open">
-                    <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px;">
-                      <li>Buka aplikasi Mobile Banking Anda dan lakukan Login.</li>
-                      <li>Pilih menu <strong>Bayar / Pembayaran</strong> &gt; <strong>Akademik / Virtual Account</strong>.</li>
-                      <li>Masukkan Nomor Virtual Account: <code style="font-weight: 800; color: #1e40af;">${currentInvoice.virtualAccount}</code>.</li>
-                      <li>Periksa data: Nama adalah <strong>${currentStudent.name.toUpperCase()}</strong> dan nominal adalah <strong id="guide-va-amount">${formatRupiah(selectedPayAmount)}</strong>.</li>
-                      <li>Masukkan PIN M-Banking Anda dan konfirmasi transaksi.</li>
+                    <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 0.82rem; color: var(--text-dark);">
+                      <li>Buka aplikasi <strong>BSI Mobile</strong> dan lakukan Login.</li>
+                      <li>Pilih menu <strong>Bayar</strong> &gt; pilih <strong>Institusi / Akademik</strong> atau <strong>Virtual Account</strong>.</li>
+                      <li>Masukkan Nomor VA / Rekening: <code style="font-weight: 900; color: #047857; font-size: 0.92rem;">1056405743</code>.</li>
+                      <li>Periksa data: Nama adalah <strong>STIT IHSANUL FIKRI - ${currentStudent.name.toUpperCase()}</strong> dan nominal adalah <strong id="guide-va-amount">${formatRupiah(selectedPayAmount)}</strong>.</li>
+                      <li>Masukkan PIN BSI Mobile Anda dan selesaikan transaksi.</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="faq-accordion-item">
+                  <div class="faq-accordion-header">
+                    <span>🏧 Cara Bayar via ATM BSI & ATM Bersama</span>
+                    <span class="acc-icon">▼</span>
+                  </div>
+                  <div class="faq-accordion-body">
+                    <ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; font-size: 0.82rem; color: var(--text-dark);">
+                      <li>Masukkan kartu ATM dan PIN Anda di mesin ATM BSI / ATM Bersama.</li>
+                      <li>Pilih menu <strong>Transaksi Lainnya</strong> &gt; <strong>Transfer / Pembayaran</strong>.</li>
+                      <li>Masukkan Kode Bank BSI (<strong>451</strong> jika dari bank lain) + Nomor VA <strong>1056405743</strong>.</li>
+                      <li>Konfirmasi nama institusi <strong>STIT IHSANUL FIKRI</strong> dan nominal tagihan.</li>
                     </ol>
                   </div>
                 </div>
@@ -570,37 +562,23 @@ export function renderMahasiswaPortal(container) {
 
             </div>
 
-            <!-- TAB 3: TRANSFER REKENING MANUAL -->
+            <!-- TAB 3: TRANSFER REKENING BANK BSI MANUAL -->
             <div id="tab-content-manual" style="display: none;">
               <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 18px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                  <h5 style="font-size: 0.92rem; font-weight: 800; color: var(--text-dark); margin: 0;">Rekening Resmi Kampus STIT Ihsanul Fikri:</h5>
-                  <span class="badge badge-info">Transfer Antar Bank</span>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                  <h5 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0;">Rekening Resmi STIT Ihsanul Fikri:</h5>
+                  <span class="badge badge-success">Bank Syariah Indonesia</span>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 20px;">
-                  <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-lg); padding: 14px 18px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                      <div style="font-size: 0.72rem; color: #166534; font-weight: 800;">BANK SYARIAH INDONESIA (BSI)</div>
-                      <span style="font-size: 0.7rem; color: #15803d; font-weight: 700;">Utama</span>
-                    </div>
-                    <div style="font-size: 1.25rem; font-weight: 900; font-family: var(--font-mono); color: #0f172a; margin: 4px 0;">7123456789</div>
-                    <div style="font-size: 0.74rem; color: #334155; display: flex; justify-content: space-between; align-items: center;">
-                      <span>a.n. <strong>STIT IHSANUL FIKRI</strong></span>
-                      <button type="button" class="btn-copy-rek" data-rek="7123456789" style="background:none; border:none; color:#15803d; font-weight:800; font-size:0.74rem; cursor:pointer;">📋 Salin</button>
-                    </div>
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #86efac; border-radius: var(--radius-xl); padding: 18px 22px; margin-bottom: 20px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.76rem; color: #166534; font-weight: 800; text-transform: uppercase;">BANK SYARIAH INDONESIA (BSI)</div>
+                    <span style="font-size: 0.72rem; color: #15803d; font-weight: 700; background: #ffffff; padding: 2px 8px; border-radius: 4px; border: 1px solid #bbf7d0;">Rekening Utama Yayasan</span>
                   </div>
-
-                  <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-lg); padding: 14px 18px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                      <div style="font-size: 0.72rem; color: #1e40af; font-weight: 800;">BANK MUAMALAT</div>
-                      <span style="font-size: 0.7rem; color: #2563eb; font-weight: 700;">Syariah</span>
-                    </div>
-                    <div style="font-size: 1.25rem; font-weight: 900; font-family: var(--font-mono); color: #0f172a; margin: 4px 0;">5010098273</div>
-                    <div style="font-size: 0.74rem; color: #334155; display: flex; justify-content: space-between; align-items: center;">
-                      <span>a.n. <strong>STIT IHSANUL FIKRI</strong></span>
-                      <button type="button" class="btn-copy-rek" data-rek="5010098273" style="background:none; border:none; color:#1d4ed8; font-weight:800; font-size:0.74rem; cursor:pointer;">📋 Salin</button>
-                    </div>
+                  <div style="font-size: 1.65rem; font-weight: 900; font-family: var(--font-mono); color: #0f172a; margin: 8px 0 6px;">1056405743</div>
+                  <div style="font-size: 0.8rem; color: #166534; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <span>Atas Nama: <strong>STIT IHSANUL FIKRI</strong></span>
+                    <button type="button" class="btn-copy-rek" data-rek="1056405743" style="background: #16a34a; border: none; color: #ffffff; font-weight: 800; font-size: 0.78rem; padding: 4px 12px; border-radius: 6px; cursor: pointer;">📋 Salin No. Rekening BSI</button>
                   </div>
                 </div>
 
@@ -621,7 +599,7 @@ export function renderMahasiswaPortal(container) {
                     </div>
                     <div class="form-group">
                       <label class="form-label">Nomor Rekening Pengirim <span class="required">*</span></label>
-                      <input type="text" class="form-control" id="manual-sender-acc" placeholder="Nomor rekening pengirim" required value="7128938291">
+                      <input type="text" class="form-control" id="manual-sender-acc" placeholder="Nomor rekening pengirim" required value="1056405743">
                     </div>
                     <div class="form-group">
                       <label class="form-label">Nominal Ditransfer (Rp) <span class="required">*</span></label>
@@ -909,30 +887,15 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 5. VA Bank Selection
-  container.querySelectorAll('.payment-method-card').forEach(card => {
-    card.addEventListener('click', () => {
-      container.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      selectedBankVA = card.getAttribute('data-bank');
-      const vaBankLabel = container.querySelector('#va-bank-label');
-      if (vaBankLabel) {
-        vaBankLabel.textContent = selectedBankVA === 'BSI' ? 'Bank Syariah Indonesia (BSI) Virtual Account' :
-                                  selectedBankVA === 'MUAMALAT' ? 'Bank Muamalat Virtual Account' :
-                                  selectedBankVA === 'MANDIRI' ? 'Bank Mandiri Virtual Account' : 'Bank BRI (BRIVA) Virtual Account';
-      }
-    });
-  });
-
-  // 6. Copy Buttons
+  // 5. Copy Buttons
   const btnCopyVa = container.querySelector('#btn-copy-va');
   const vaNumberText = container.querySelector('#va-number-text');
   if (btnCopyVa && vaNumberText) {
     btnCopyVa.addEventListener('click', () => {
-      navigator.clipboard.writeText(vaNumberText.textContent.trim());
+      navigator.clipboard.writeText('1056405743');
       btnCopyVa.textContent = '✓ Disalin';
-      setTimeout(() => btnCopyVa.textContent = '📋 Salin VA', 2000);
-      window.simpelToast.show('Nomor VA Disalin', 'Nomor Virtual Account telah disalin ke clipboard.', 'info');
+      setTimeout(() => btnCopyVa.textContent = '📋 Salin No. VA BSI', 2000);
+      window.simpelToast.show('Nomor BSI VA Disalin', 'Nomor BSI Virtual Account (1056405743) disalin ke clipboard.', 'info');
     });
   }
 
@@ -948,27 +911,24 @@ export function renderMahasiswaPortal(container) {
 
   container.querySelectorAll('.btn-copy-rek').forEach(btn => {
     btn.addEventListener('click', () => {
-      const rek = btn.getAttribute('data-rek');
+      const rek = btn.getAttribute('data-rek') || '1056405743';
       navigator.clipboard.writeText(rek);
       btn.textContent = '✓ Disalin';
-      setTimeout(() => btn.textContent = '📋 Salin', 2000);
-      window.simpelToast.show('Nomor Rekening Disalin', `No. Rekening ${rek} telah disalin ke clipboard.`, 'info');
+      setTimeout(() => btn.textContent = '📋 Salin No. Rekening BSI', 2000);
+      window.simpelToast.show('Nomor Rekening Disalin', `No. Rekening BSI (${rek}) telah disalin ke clipboard.`, 'info');
     });
   });
 
-  // 7. Pay Instant VA simulation
+  // 6. Pay Instant VA simulation
   const btnPayVa = container.querySelector('#btn-pay-va-instant');
   if (btnPayVa && currentInvoice) {
     btnPayVa.addEventListener('click', () => {
       const invId = btnPayVa.getAttribute('data-invoice-id');
-      const activeCard = container.querySelector('.payment-method-card.active');
-      const bankChoice = activeCard ? activeCard.querySelector('div div').textContent : 'Bank Syariah Indonesia';
-      
-      const res = BillingEngine.processVAPayment(invId, bankChoice, selectedPayAmount, selectedPlan);
+      const res = BillingEngine.processVAPayment(invId, 'Bank Syariah Indonesia (BSI)', selectedPayAmount, selectedPlan);
       if (res.success) {
         window.simpelToast.show(
-          res.isFullyPaid ? 'Pembayaran Virtual Account Lunas!' : 'Pembayaran Angsuran VA Berhasil!',
-          `Nominal: ${formatRupiah(res.paidAmount)} diterima. No. Kwitansi: ${res.receiptNumber}`,
+          res.isFullyPaid ? 'Pembayaran BSI VA Lunas!' : 'Pembayaran Angsuran BSI VA Berhasil!',
+          `Nominal: ${formatRupiah(res.paidAmount)} diterima via BSI (1056405743). No. Kwitansi: ${res.receiptNumber}`,
           'success',
           5000
         );
@@ -978,7 +938,7 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 8. Manual Upload File handling
+  // 7. Manual Upload File handling
   const dropzone = container.querySelector('#manual-dropzone');
   const fileInput = container.querySelector('#manual-file-input');
   const previewWrapper = container.querySelector('#manual-preview-wrapper');
@@ -1031,7 +991,7 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 9. Submit Manual Transfer Form
+  // 8. Submit Manual Transfer Form
   const formManual = container.querySelector('#form-manual-transfer');
   if (formManual && currentInvoice) {
     formManual.addEventListener('submit', (e) => {
@@ -1045,6 +1005,7 @@ export function renderMahasiswaPortal(container) {
         senderBank,
         senderAccountName: senderName,
         senderAccountNumber: senderAcc,
+        destinationBank: 'Bank BSI (No. Rek 1056405743 a.n. STIT Ihsanul Fikri)',
         amount,
         proofImage: selectedImageData,
         planType: selectedPlan
@@ -1053,7 +1014,7 @@ export function renderMahasiswaPortal(container) {
       if (res.success) {
         window.simpelToast.show(
           'Bukti Transfer Terkirim',
-          `Bukti pembayaran ${formatRupiah(amount)} berhasil masuk ke antrean verifikasi Bendahara.`,
+          `Bukti pembayaran ${formatRupiah(amount)} ke Bank BSI (1056405743) berhasil masuk ke antrean verifikasi Bendahara.`,
           'success'
         );
         renderMahasiswaPortal(container);
@@ -1061,7 +1022,7 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 10. View Receipt buttons
+  // 9. View Receipt buttons
   container.querySelectorAll('.btn-view-my-receipt').forEach(btn => {
     btn.addEventListener('click', () => {
       const invId = btn.getAttribute('data-invoice-id');
@@ -1069,7 +1030,7 @@ export function renderMahasiswaPortal(container) {
     });
   });
 
-  // 11. FAQ Accordions
+  // 10. FAQ Accordions
   container.querySelectorAll('.faq-accordion-header').forEach(header => {
     header.addEventListener('click', () => {
       const body = header.nextElementSibling;

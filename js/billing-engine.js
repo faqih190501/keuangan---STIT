@@ -103,9 +103,8 @@ export class BillingEngine {
 
     const netAmount = grossAmount - totalDiscount;
 
-    // Generate unique Virtual Account based on NIM & prodi
-    const prodiCode = student.prodi === 'BKPI' ? '86208' : '86209';
-    const virtualAccount = `9888${prodiCode}${student.nim.slice(-4)}${Math.floor(100 + Math.random() * 900)}`;
+    // Virtual Account Resmi Bank Syariah Indonesia (BSI) STIT-IF
+    const virtualAccount = '1056405743';
 
     return {
       items,
@@ -274,7 +273,7 @@ export class BillingEngine {
       senderBank: transferData.senderBank || 'Bank BSI',
       senderAccountName: transferData.senderAccountName || student.name.toUpperCase(),
       senderAccountNumber: transferData.senderAccountNumber || '1234567890',
-      destinationBank: transferData.destinationBank || 'Bank BSI - STIT Ihsanul Fikri (No. Rek 1009827361)',
+      destinationBank: transferData.destinationBank || 'Bank BSI - STIT Ihsanul Fikri (No. Rek 1056405743)',
       proofImage: transferData.proofImage || 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80',
       status: 'PENDING',
       notes: transferData.notes || 'Pembayaran SPP dan Heregistrasi Semester Aktif',
