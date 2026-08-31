@@ -243,12 +243,15 @@ function renderStudentsTableRows(students, state) {
           ${getScholarshipBadge(s.scholarshipId)}
         </td>
         <td>
-          <div style="display: flex; gap: 6px;">
-            <button class="btn btn-outline btn-sm btn-edit-student" data-student-nim="${s.nim}">
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button class="btn btn-outline btn-sm btn-edit-student" data-student-nim="${s.nim}" title="Edit Data Mahasiswa">
               ✏️ Edit
             </button>
-            <button class="btn btn-ghost btn-sm btn-login-as-student" data-student-nim="${s.nim}" title="Simulasi Login Sebagai Mahasiswa Ini">
+            <button class="btn btn-ghost btn-sm btn-login-as-student" data-student-nim="${s.nim}" title="Buka Portal Mahasiswa Ini">
               🎓 Portal
+            </button>
+            <button class="btn btn-sm btn-delete-student" data-student-nim="${s.nim}" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; font-weight:700; cursor:pointer;" title="Hapus Data Mahasiswa Ini">
+              🗑️ Hapus
             </button>
           </div>
         </td>
@@ -270,6 +273,24 @@ function attachStudentRowActions(container) {
       const nim = btn.getAttribute('data-student-nim');
       appState.setRole('MAHASISWA', nim);
       if (window.simpelRouter) window.simpelRouter.navigateTo('view-mahasiswa');
+    });
+  });
+
+  container.querySelectorAll('.btn-delete-student').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nim = btn.getAttribute('data-student-nim');
+      const student = appState.getState().students.find(s => s.nim === nim);
+      if (!student) return;
+
+      const confirmMsg = `⚠️ KONFIRMASI HAPUS DATA MAHASISWA\n\nApakah Anda yakin ingin menghapus data mahasiswa berikut?\n\n• Nama: ${student.name}\n• NIM: ${student.nim}\n• Program Studi: ${student.prodi}\n• Semester: ${student.semester}\n\nPerhatian: Seluruh data tagihan dan verifikasi pembayaran terkait mahasiswa ini juga akan dibersihkan dari sistem.`;
+
+      if (confirm(confirmMsg)) {
+        const res = appState.deleteStudent(nim);
+        if (res.success) {
+          window.simpelToast.show('Mahasiswa Berhasil Dihapus', res.message, 'success');
+          renderAkademikView(container);
+        }
+      }
     });
   });
 }

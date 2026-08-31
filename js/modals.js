@@ -878,11 +878,33 @@ export class ModalManager {
     `;
 
     footer.innerHTML = `
-      <button class="btn btn-outline" id="btn-cancel-edit-student">Batal</button>
-      <button class="btn btn-primary" id="btn-save-edit-student">💾 Simpan Perubahan</button>
+      <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <button class="btn btn-outline btn-sm" id="btn-delete-student-modal" style="color: #b91c1c; border-color: #fca5a5; background: #fff1f2; font-weight: 700;">
+          🗑️ Hapus Mahasiswa Ini
+        </button>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-outline" id="btn-cancel-edit-student">Batal</button>
+          <button class="btn btn-primary" id="btn-save-edit-student">💾 Simpan Perubahan</button>
+        </div>
+      </div>
     `;
 
     overlay.classList.add('active');
+
+    // Delete Student Handler
+    const btnDeleteModal = footer.querySelector('#btn-delete-student-modal');
+    if (btnDeleteModal) {
+      btnDeleteModal.addEventListener('click', () => {
+        if (confirm(`⚠️ KONFIRMASI HAPUS DATA MAHASISWA\n\nApakah Anda yakin ingin menghapus "${student.name}" (NIM: ${student.nim})?\n\nSeluruh data tagihan dan verifikasi terkait mahasiswa ini akan dibersihkan.`)) {
+          const res = appState.deleteStudent(student.nim);
+          if (res.success) {
+            window.simpelToast.show('Mahasiswa Berhasil Dihapus', res.message, 'success');
+            ModalManager.closeModal();
+            if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+          }
+        }
+      });
+    }
 
     footer.querySelector('#btn-cancel-edit-student').addEventListener('click', () => ModalManager.closeModal());
     footer.querySelector('#btn-save-edit-student').addEventListener('click', () => {

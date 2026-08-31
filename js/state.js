@@ -666,13 +666,84 @@ class StateManager {
     const newLog = {
       id: `LOG-${Date.now().toString().slice(-4)}`,
       timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19),
-      userName: this.state.currentUser.name,
-      role: this.state.currentRole,
+      userName: this.state.currentUser ? this.state.currentUser.name : 'Sistem Admin',
+      role: this.state.currentRole || 'ADMIN',
       action,
       entity,
       details
     };
     this.state.auditLogs.unshift(newLog);
+    this.notify();
+  }
+
+  // Student Data Mutations
+  addStudent(student) {
+    this.state.students.unshift(student);
+    this.addAuditLog(
+      'ADD_STUDENT',
+      `${student.name} (NIM: ${student.nim})`,
+      `Penambahan data induk mahasiswa baru prodi ${student.prodi}.`
+    );
+    this.notify();
+    return { success: true, message: `Mahasiswa ${student.name} berhasil ditambahkan.` };
+  }
+
+  updateStudent(nim, updatedFields) {
+    const idx = this.state.students.findIndex(s => s.nim === nim);
+    if (idx === -1) return { success: false, message: 'Data mahasiswa tidak ditemukan.' };
+
+    this.state.students[idx] = { ...this.state.students[idx], ...updatedFields };
+    this.addAuditLog(
+      'EDIT_STUDENT',
+      `${this.state.students[idx].name} (NIM: ${nim})`,
+      `Pembaruan profil data mahasiswa.`
+    );
+    this.notify();
+    return { success: true, message: 'Data mahasiswa berhasil diperbarui.' };
+  }
+
+  deleteStudent(studentNim) {
+    const student = this.state.students.find(s => s.nim === studentNim);
+    if (!student) return { success: false, message: 'Data mahasiswa tidak ditemukan.' };
+
+    const studentName = student.name;
+    const studentProdi = student.prodi;
+
+    // 1. Remove from students list
+    this.state.students = this.state.students.filter(s => s.nim !== studentNim);
+
+    // 2. Remove corresponding invoices
+    this.state.invoices = this.state.invoices.filter(i => i.studentNim !== studentNim);
+
+    // 3. Remove corresponding payment verifications
+    this.state.paymentVerifications = this.state.paymentVerifications.filter(v => v.studentNim !== studentNim);
+
+    // 4. Remove individual overrides
+    this.state.individualOverrides = this.state.individualOverrides.filter(o => o.studentNim !== studentNim);
+
+    // 5. If current active user was this student, fallback to another student or Admin
+    if (this.state.currentUser && this.state.currentUser.nim === studentNim) {
+      if (this.state.students.length > 0) {
+        this.setRole('MAHASISWA', this.state.students[0].nim);
+      } else {
+        this.setRole('ADMIN');
+      }
+    }
+
+    // 6. Log Audit Trail
+    this.addAuditLog(
+      'DELETE_STUDENT',
+      `${studentName} (NIM: ${studentNim})`,
+      `Penghapusan data induk mahasiswa prodi ${studentProdi} beserta seluruh data tagihan & riwayat transaksi terkait.`
+    );
+
+    this.notify();
+    return { success: true, message: `Data mahasiswa ${studentName} (${studentNim}) berhasil dihapus dari sistem.` };
+  }
+
+  // Invoice Data Mutations
+  addInvoice(invoice) {
+    this.state.invoices.unshift(invoice);
     this.notify();
   }
 
