@@ -1,109 +1,185 @@
-# SIMPEL-IF: Sistem Informasi Manajemen Pembayaran Elektronik Ihsanul Fikri
-**Sekolah Tinggi Ilmu Tarbiyah (STIT) Ihsanul Fikri Pagentan Magelang**
+<div align="center">
+  <img src="./assets/images/logo.png" alt="Logo STIT Ihsanul Fikri" width="100" height="100" style="border-radius: 16px;">
+  <h1>SIMPEL-IF (Sistem Informasi Manajemen Pembayaran Elektronik Ihsanul Fikri)</h1>
+  <p><strong>Sekolah Tinggi Ilmu Tarbiyah (STIT) Ihsanul Fikri Pagentan Magelang</strong></p>
 
-SIMPEL-IF adalah aplikasi web tata kelola keuangan perguruan tinggi berbasis **Vanilla ES Modules & Responsive Design System** yang dirancang khusus untuk memfasilitasi transparansi tagihan perkuliahan, pengelolaan skema subsidi beasiswa (Asrama, Mitra, PAUD Laki-laki), transaksi Virtual Account perbankan syariah, dan penerbitan kwitansi sah ber-QR Code dengan verifikator digital.
+  <p>
+    <a href="https://faqih190501.github.io/keuangan---STIT/"><img src="https://img.shields.io/badge/Live_Demo-GitHub_Pages-blue?style=for-the-badge&logo=github" alt="Live Demo"></a>
+    <img src="https://img.shields.io/badge/Version-2.0.1-emerald?style=for-the-badge" alt="Version">
+    <img src="https://img.shields.io/badge/Vanilla-ES_Modules-f7df1e?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+    <img src="https://img.shields.io/badge/License-MIT-purple?style=for-the-badge" alt="License">
+  </p>
 
----
-
-## 🌟 Fitur Utama
-
-### 1. 👑 Dashboard Utama Admin (Eksekutif & Keuangan)
-- **Pusat Komando Finansial**: 5 Metrik KPI real-time (Realisasi Kas Masuk, Sisa Piutang Berjalan, Subsidi Beasiswa, Rasio Kepatuhan SPP, Total Mahasiswa Aktif).
-- **Visual Analytics Canvas**:
-  - *Grafik Batang*: Komparasi performa kas & piutang per prodi (**BKPI** vs **PIAUD**).
-  - *Grafik Donut*: Distribusi mahasiswa penerima beasiswa vs reguler.
-- **Neraca Komparasi Program Studi**: Tabel komparatif pendapatan dan tunggakan institusi dengan fitur ekspor `.csv`.
-- **Rekapitulasi Tagihan Mahasiswa**: Pencatatan pelunasan, verifikasi bukti bayar manual, dan penerbitan kwitansi resmi.
-
-### 2. 🎓 Portal Mahasiswa & Pendaftaran PMB Mandiri
-- **Rincian Tagihan Transparan**: Rincian SPP/UKT pokok, administrasi daftar ulang, dan potongan subsidi beasiswa.
-- **Multi-Bank Virtual Account**: Integrasi simulasi VA Bank Syariah Indonesia (BSI), Bank Muamalat, dan Bank BRI dengan tombol salin instan.
-- **Unggah Bukti Transfer Manual**: Verifikasi mandiri pembayaran non-VA.
-- **Pendaftaran PMB & Auto-Tagging**: Calon mahasiswa baru dapat mendaftar mandiri dengan deteksi otomatis beasiswa (*Auto-Tagging* afirmasi putra prodi PIAUD diskon SPP 60%).
-
-### 3. ⚙️ Manajemen Skema Beasiswa & Komponen Biaya
-- Pengeditan regulasi, nama program, prodi yang berhak, dan persentase (%) / nominal tetap (Rp) subsidi.
-- Penambahan program beasiswa baru (Tahfidz, Prestasi, Kader Dai, dll.).
-- Otomatisasi hitung ulang (*auto-recalculate*) tagihan berjalan saat skema diubah.
-
-### 4. 🛡️ Kwitansi Sah Digital & Validasi QR Code
-- Kwitansi resmi ber-QR Code dengan validasi kriptografis instan untuk mencegah pemalsuan dokumen.
-- Audit trail log transaksi lengkap.
-
-### 5. ↔️ Interaksi Horizontal Drag & Swipe
-- Seluruh tabel data, baris kartu KPI, dan tombol peran mendukung **klik-dan-geser (*mouse drag-to-scroll*)** pada PC serta **usap/geser (*touch swipe*)** pada HP/Tablet.
+  <p>
+    <strong>📞 Hotline & WhatsApp Admin:</strong> <a href="https://wa.me/6282342307414"><code>082342307414</code></a> &bull; 
+    <strong>🏦 Rekening / VA Resmi:</strong> Bank BSI <code>1056405743</code> a.n. STIT IHSANUL FIKRI
+  </p>
+</div>
 
 ---
 
-## 🚀 Cara Menjalankan Aplikasi Secara Lokal
+## 📖 Tentang SIMPEL-IF
 
-Aplikasi ini dibangun tanpa dependensi runtime yang berat (murni HTML5, CSS3, dan Modern JavaScript ES Modules).
-
-1. Clone repositori ini:
-   ```bash
-   git clone <URL_REPOSITORY_ANDA>
-   cd SIMPEL-IF
-   ```
-
-2. Jalankan HTTP server lokal sederhana (misal menggunakan Python, Live Server, atau PowerShell):
-   - **Dengan Python**:
-     ```bash
-     python -m http.server 8080
-     ```
-   - **Dengan Node.js / npx**:
-     ```bash
-     npx serve . -p 8080
-     ```
-   - **Dengan PowerShell**:
-     ```powershell
-     powershell -ExecutionPolicy Bypass -File scratch/server.ps1
-     ```
-
-3. Buka peramban di `http://127.0.0.1:8080/`.
+**SIMPEL-IF** adalah platform aplikasi web tata kelola keuangan perguruan tinggi modern berbasis **Vanilla ES Modules & Pure Responsive CSS** tanpa dependensi framework yang berat. Sistem ini dirancang untuk mewujudkan transparansi penuh dalam penagihan perkuliahan, pengelolaan skema subsidi beasiswa (Asrama, Mitra, PAUD Laki-laki, Prestasi), pembayaran fleksibel mandiri, verifikasi bukti bayar kilat, serta penerbitan kwitansi sah digital ber-QR Code kriptografis.
 
 ---
 
-## 📂 Struktur Direktori Proyek
+## 🌐 Demo Publik (Live Web)
+
+Aplikasi dapat langsung diakses secara publik melalui tautan GitHub Pages berikut:
+👉 **[https://faqih190501.github.io/keuangan---STIT/](https://faqih190501.github.io/keuangan---STIT/)**
+
+---
+
+## ✨ Fitur Unggulan Sistem
+
+### 1. 🎓 Portal Mahasiswa & Pembayaran Fleksibel
+* **Bebas Tentukan Nominal Pembayaran (*Custom Payment*)**: Mahasiswa dapat membayar dengan nominal berapapun sesuai kemampuan atau saldo rekening tanpa dipaksa membayar lunas satu invoice penuh.
+* **Pembayaran Mandiri Tanpa Menunggu Tagihan (*Self-Service Deposit*)**: Mahasiswa dapat berinisiatif melakukan transfer/setoran kapan saja (misal: Cicilan SPP, Tabungan Wisuda, KKN) sebelum invoice semester terbit.
+* **Rekening Eksklusif Bank Syariah Indonesia (BSI)**: Pembayaran terpusat pada Rekening/VA resmi **Bank BSI: `1056405743`** an. STIT IHSANUL FIKRI dengan tombol salin instan (*one-click copy*).
+* **Unggah Bukti Transfer & Riwayat**: Dilengkapi status verifikasi (*Menunggu Verifikasi*, *Terverifikasi*, *Ditolak*).
+* **Edit Profil & Biodata Mandiri**: Mahasiswa dapat mengelola data profil, email, no. HP/WhatsApp, dan alamat domisili.
+* **Kwitansi Digital Sah & Cetak**: Download atau cetak bukti pembayaran resmi lengkap dengan tanda tangan digital bendahara institusi dan QR Code.
+
+### 2. 👑 Dashboard Pusat Komando Admin & Bendahara
+* **5 Kartu KPI Real-Time**: Realisasi Kas Masuk, Sisa Piutang Berjalan, Total Subsidi Beasiswa, Rasio Kepatuhan SPP, dan Mahasiswa Aktif.
+* **Visual Analytics Engine**:
+  * **Grafik Batang (*Bar Chart*)**: Komparasi perolehan kas vs tunggakan per Program Studi (**BKPI** vs **PIAUD**).
+  * **Grafik Donut (*Donut Chart*)**: Proporsi mahasiswa Reguler vs Penerima Beasiswa.
+* **Antrean Verifikasi Kilat (*One-Click Approve/Reject*)**: Notifikasi badge transaksi masuk dengan pratinjau bukti bayar pop-up.
+* **Sinkronisasi Realtime Otomatis**: Setiap pembayaran yang disetujui langsung memperbarui saldo dashboard, neraca, rekapitulasi, dan kwitansi mahasiswa tanpa perlu refresh halaman manual.
+
+### 3. ⚙️ Tata Kelola Skema Tarif & Beasiswa
+* **Konfigurasi Fleksibel**: Dukungan subsidi berbasis persentase (`%`) maupun nominal tetap (`Rp`).
+* **Auto-Recalculate**: Otomatisasi kalkulasi ulang seluruh tagihan semester aktif saat nominal atau persentase beasiswa diperbarui.
+* **Auto-Tagging Mahasiswa Baru**: Calon mahasiswa laki-laki di prodi PIAUD secara otomatis mendapatkan afirmasi *Beasiswa PAUD Laki-laki* (Diskon SPP 60%).
+
+### 4. 🛡️ Validasi Keabsahan Kwitansi QR Code Publik
+* Setiap kwitansi memiliki kode verifikasi unik terenkripsi.
+* Pemindai QR Validator bawaan dapat digunakan oleh publik/pihak ketiga untuk memeriksa keaslian bukti bayar tanpa perlu login.
+
+### 5. ↔️ Pengalaman Pengguna (Universal Drag & Swipe)
+* Semua tabel data panjang, baris indikator KPI, dan pilihan peran dapat digeser dengan **Mouse Drag** di desktop PC dan **Touch Swipe** di ponsel pintar / tablet.
+
+---
+
+## 🔑 Kredensial Login Demo
+
+Sistem menyediakan akun simulasi langsung pada portal:
+
+| Peran Akun | Username / NIM | Password / PIN | Hak Akses |
+| :--- | :--- | :--- | :--- |
+| **👑 Admin / Bendahara** | `admin` | `admin123` | Akses penuh dashboard, verifikasi, master data, skema beasiswa, laporan |
+| **🎓 Mahasiswa (Contoh 1)** | `202486209012` | `123456` | Portal mahasiswa M. Ihsan Kamil (BKPI - Beasiswa Mitra 50%) |
+| **🎓 Mahasiswa (Contoh 2)** | `202486208005` | `123456` | Portal mahasiswa Siti Aisyah (PIAUD - Beasiswa Asrama 100%) |
+| **🎓 Mahasiswa (Contoh 3)** | `202386209001` | `123456` | Portal mahasiswa Ahmad Fauzi (BKPI - Reguler) |
+| **📝 Mahasiswa Baru** | *Daftar via Tab PMB* | `123456` | Pembuatan akun baru dengan tagihan Semester 1 otomatis |
+
+> 💬 **Bantuan Akun & Reset PIN:** Hubungi Admin di **`082342307414`** (WhatsApp).
+
+---
+
+## 🚀 Panduan Menjalankan Secara Lokal
+
+### Prasyarat
+Tidak memerlukan Node.js build step, runtime compiler, atau database eksternal — murni menggunakan browser modern dengan dukungan ES Modules.
+
+### 1. Clone Repositori
+```bash
+git clone https://github.com/faqih190501/keuangan---STIT.git
+cd keuangan---STIT
+```
+
+### 2. Jalankan HTTP Server Lokal
+Jalankan salah satu opsi web server lokal berikut:
+
+* **Opsi A: Menggunakan PowerShell bawaan (Windows)**
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File .\server.ps1
+  ```
+
+* **Opsi B: Menggunakan Python 3**
+  ```bash
+  python -m http.server 8080
+  ```
+
+* **Opsi C: Menggunakan Node.js / NPX**
+  ```bash
+  npx serve . -p 8080
+  ```
+
+* **Opsi D: Menggunakan VS Code Live Server Extension**
+  Klik kanan pada file `index.html` lalu pilih **"Open with Live Server"**.
+
+### 3. Buka di Browser
+Akses URL: `http://127.0.0.1:8080/`
+
+---
+
+## 📁 Struktur Direktori
 
 ```
 SIMPEL-IF/
 ├── assets/
 │   └── images/
-│       ├── logo.png
-│       └── ttd-bendahara.png
+│       ├── logo.png             # Logo resmi STIT Ihsanul Fikri
+│       └── ttd-bendahara.png    # Tanda tangan & cap resmi kwitansi
 ├── css/
-│   ├── components.css     # Komponen UI, badge, tombol, tabel, dan kartu
-│   ├── layout.css         # Struktur layout, sidebar, header, dan banner peran
-│   ├── receipt.css        # Format standar kwitansi resmi & layout cetak
-│   ├── responsive.css     # Media queries & adaptasi mobile / tablet
-│   └── variables.css      # Design tokens (Warna Corporate Blue, Font, Bayangan)
+│   ├── components.css           # Desain tombol, badge, modal, tabel, dan formulir
+│   ├── layout.css               # Header, sidebar navigasi, dan layout grid
+│   ├── receipt.css              # Standar tata letak kwitansi resmi & print preview
+│   ├── responsive.css           # Desain adaptif mobile (<768px), tablet, dan desktop
+│   └── variables.css            # Token desain warna Corporate Blue, font, bayangan
 ├── js/
 │   ├── utils/
-│   │   ├── chart-engine.js  # Engine grafik interaktif (Bar & Donut)
-│   │   ├── drag-scroll.js   # Universal horizontal drag & touch swipe
-│   │   ├── export-engine.js # Ekspor CSV & spreadsheet
-│   │   ├── formatters.js    # Pemformat Rupiah, Tanggal, dan Badge
-│   │   └── qr-generator.js  # Generator & validator QR Code
+│   │   ├── chart-engine.js      # Generator grafik interaktif (Bar & Donut Canvas)
+│   │   ├── drag-scroll.js       # Universal horizontal drag & touch swipe handler
+│   │   ├── export-engine.js     # Engine ekspor data ke Excel (CSV) dan print
+│   │   ├── formatters.js        # Formatter mata uang Rupiah, tanggal, dan terbilang
+│   │   └── qr-engine.js         # Generator & parser QR Code SVG kriptografis
 │   ├── views/
-│   │   ├── dashboard-bendahara.js # Dashboard Utama Admin Terpadu
-│   │   ├── view-akademik.js       # Master Data Mahasiswa & BAAK
-│   │   ├── view-audit-log.js      # Audit Trail & Log Aktivitas
-│   │   ├── view-laporan.js        # Laporan Arus Kas & Piutang
-│   │   ├── view-login.js          # Portal Login & Pendaftaran PMB
-│   │   ├── view-mahasiswa.js      # Portal Tagihan & VA Mahasiswa
-│   │   ├── view-pimpinan.js       # Integrasi Dashboard Eksekutif
-│   │   ├── view-qr-validator.js   # Pemindai Validasi QR Kwitansi
-│   │   └── view-skema-tarif.js    # Konfigurasi Beasiswa & Tarif
-│   ├── app.js             # Router & Inisialisasi Aplikasi
-│   ├── auth.js            # Role-Based Access Control (Admin & Mahasiswa)
-│   ├── billing-engine.js  # Mesin kalkulasi tagihan & subsidi beasiswa
-│   ├── modals.js          # Pengelola dialog interaktif & simulasi
-│   ├── models.js          # Definisi model data & enum
-│   └── state.js           # Reactive State Manager & Seed Data
-├── index.html             # Entry point aplikasi
-├── README.md              # Dokumentasi proyek
-└── .gitignore             # File yang diabaikan oleh Git
+│   │   ├── dashboard-bendahara.js # Pusat komando eksekutif & bendahara
+│   │   ├── view-akademik.js       # Manajemen data mahasiswa & program studi
+│   │   ├── view-audit-log.js      # Audit trail riwayat seluruh transaksi sistem
+│   │   ├── view-laporan.js        # Laporan arus kas masuk & rekapitulasi piutang
+│   │   ├── view-login.js          # Portal login mahasiswa, admin, dan PMB
+│   │   ├── view-mahasiswa.js      # Portal tagihan, bayar mandiri, dan profil mhs
+│   │   ├── view-pimpinan.js       # Ringkasan analitik pimpinan institusi
+│   │   ├── view-qr-validator.js   # Pemindai dan validasi keaslian kwitansi QR
+│   │   └── view-skema-tarif.js    # Konfigurasi beasiswa & komponen tarif biaya
+│   ├── app.js                   # Inisialisasi router SPA & event listener global
+│   ├── auth.js                  # Manajemen sesi dan Role-Based Access Control
+│   ├── billing-engine.js        # Algoritma perhitungan tagihan & beasiswa
+│   ├── modals.js                # Dialog interaktif (Kwitansi, Bayar, Profil, Edit)
+│   ├── models.js                # Definisi skema data, prodi, dan jenis beasiswa
+│   └── state.js                 # Reactive global state manager & data awal
+├── 404.html                     # Fallback routing untuk GitHub Pages
+├── index.html                   # Entry point aplikasi utama
+├── LICENSE                      # Lisensi MIT
+├── README.md                    # Dokumentasi lengkap sistem
+├── server.ps1                   # Web server lokal ringan
+└── test-endpoints.ps1           # Script pengujian integritas 28 endpoint
 ```
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+* **Bahasa Utama**: HTML5 Semantik, Vanilla CSS3 (Custom Properties & Responsive Design), Modern JavaScript (ES2022+ Modules).
+* **Typography**: Plus Jakarta Sans & JetBrains Mono (Google Fonts).
+* **Grafik**: HTML5 Canvas Rendering Engine (tanpa dependensi eksternal).
+* **QR Generator**: Custom SVG Cryptographic Matrix Generator.
+* **Keamanan & Validasi**: Role-Based Authorization, Cryptographic Token Verification, Cross-Browser Compatibility.
+
+---
+
+## 📞 Kontak & Dukungan Institusi
+
+**Sekolah Tinggi Ilmu Tarbiyah (STIT) Ihsanul Fikri**  
+📍 Jl. Pagentan, Pagentan, Kec. Tempuran, Kabupaten Magelang, Jawa Tengah 56161  
+📱 **WhatsApp / Hotline Admin Keuangan:** `082342307414`  
+🏦 **Rekening Resmi:** Bank BSI `1056405743` a.n. STIT IHSANUL FIKRI  
+🌐 **Website:** [https://stit-ihsanulfikri.ac.id](https://stit-ihsanulfikri.ac.id)
 
 ---
 

@@ -1,6 +1,8 @@
 $urls = @(
     'http://127.0.0.1:8080/',
     'http://127.0.0.1:8080/index.html',
+    'http://127.0.0.1:8080/404.html',
+    'http://127.0.0.1:8080/assets/images/logo.png',
     'http://127.0.0.1:8080/css/variables.css',
     'http://127.0.0.1:8080/css/layout.css',
     'http://127.0.0.1:8080/css/components.css',
