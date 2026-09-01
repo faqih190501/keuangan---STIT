@@ -99,6 +99,7 @@ export class AuthManager {
     const navDashboard = document.getElementById('nav-dashboard');
     const navSkema = document.getElementById('nav-skema');
     const navVerifikasi = document.getElementById('nav-verifikasi');
+    const navKalender = document.getElementById('nav-kalender');
     const navAkademik = document.getElementById('nav-akademik');
     const navLaporan = document.getElementById('nav-laporan');
     const navAuditLog = document.getElementById('nav-audit-log');
@@ -111,12 +112,14 @@ export class AuthManager {
       if (navAkademik) navAkademik.style.display = 'none';
       if (navLaporan) navLaporan.style.display = 'none';
       if (navAuditLog) navAuditLog.style.display = 'none';
+      if (navKalender) navKalender.style.display = 'flex';
       if (navMahasiswa) navMahasiswa.style.display = 'flex';
     } else {
       if (navDashboard) navDashboard.style.display = 'flex';
       if (navSkema) navSkema.style.display = 'flex';
       if (navVerifikasi) navVerifikasi.style.display = 'flex';
       if (navAkademik) navAkademik.style.display = 'flex';
+      if (navKalender) navKalender.style.display = 'flex';
       if (navLaporan) navLaporan.style.display = 'flex';
       if (navAuditLog) navAuditLog.style.display = 'flex';
       if (navMahasiswa) navMahasiswa.style.display = 'flex';
