@@ -80,7 +80,6 @@ Sistem menyediakan akun simulasi langsung pada portal:
 | **🎓 Mahasiswa (Contoh 1)** | `202486209012` | `123456` | Portal mahasiswa M. Ihsan Kamil (BKPI - Beasiswa Mitra 50%) |
 | **🎓 Mahasiswa (Contoh 2)** | `202486208005` | `123456` | Portal mahasiswa Siti Aisyah (PIAUD - Beasiswa Asrama 100%) |
 | **🎓 Mahasiswa (Contoh 3)** | `202386209001` | `123456` | Portal mahasiswa Ahmad Fauzi (BKPI - Reguler) |
-| **📝 Mahasiswa Baru** | *Daftar via Tab PMB* | `123456` | Pembuatan akun baru dengan tagihan Semester 1 otomatis |
 
 > 💬 **Bantuan Akun & Reset PIN:** Hubungi Admin di **`082342307414`** (WhatsApp).
 
