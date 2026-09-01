@@ -60,7 +60,7 @@ export function renderLoginView(container) {
     <div style="max-width: 1020px; margin: 16px auto 40px; animation: fadeIn 0.3s ease;">
       
       <!-- Top Branding Hero -->
-      <div style="text-align: center; margin-bottom: 28px;">
+      <div style="text-align: center; margin-bottom: 24px;">
         <img src="./assets/images/logo.png" alt="Logo STIT Ihsanul Fikri" style="width: 80px; height: 80px; border-radius: var(--radius-xl); object-fit: contain; box-shadow: var(--shadow-md); margin-bottom: 12px; border: 2px solid #ffffff; background: #0f1e3c; padding: 4px;">
         <h1 style="font-size: 1.45rem; font-weight: 900; color: var(--primary-950); letter-spacing: -0.3px; margin: 0;">
           SIMPEL-IF &bull; STIT Ihsanul Fikri
@@ -68,6 +68,12 @@ export function renderLoginView(container) {
         <p style="font-size: 0.84rem; color: var(--text-muted); max-width: 580px; margin: 4px auto 0;">
           Sistem Informasi Manajemen Pembayaran Elektronik, Tata Kelola Beasiswa & Portal Akademik
         </p>
+        
+        <!-- Admin Contact Badge -->
+        <div style="margin-top: 10px; display: inline-flex; align-items: center; gap: 8px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 999px; padding: 4px 14px; font-size: 0.76rem; color: #166534; box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
+          <span>💬 Layanan Bantuan & Admin STIT IF:</span>
+          <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20login%20SIMPEL-IF" target="_blank" rel="noopener" style="font-weight: 800; color: #15803d; text-decoration: none; font-family: var(--font-mono); letter-spacing: 0.3px;">082342307414 (WhatsApp)</a>
+        </div>
       </div>
 
       <!-- Main Container Grid -->
@@ -133,8 +139,24 @@ export function renderLoginView(container) {
               </button>
             </form>
 
+            <!-- Callout: Kontak Admin & Bantuan Login -->
+            <div style="margin-top: 16px; padding: 12px 14px; background: #f0fdf4; border: 1px solid #86efac; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: #22c55e; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; box-shadow: 0 2px 4px rgba(34,197,94,0.3);">
+                  📞
+                </div>
+                <div>
+                  <div style="font-size: 0.78rem; font-weight: 800; color: #166534;">Kendala Login / Butuh Bantuan?</div>
+                  <div style="font-size: 0.74rem; color: #15803d;">Admin: <strong style="font-family: var(--font-mono); font-weight: 800; letter-spacing: 0.3px;">082342307414</strong></div>
+                </div>
+              </div>
+              <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20login%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-sm" style="background: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.72rem; padding: 6px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; border: none; box-shadow: var(--shadow-sm);">
+                <span>Chat WA 💬</span>
+              </a>
+            </div>
+
             <!-- Callout: Pendaftaran Mahasiswa Baru -->
-            <div style="margin-top: 18px; padding: 14px 16px; background: linear-gradient(135deg, #f0fdf4, #ecfdf5); border: 1px dashed #059669; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+            <div style="margin-top: 12px; padding: 14px 16px; background: linear-gradient(135deg, #f0fdf4, #ecfdf5); border: 1px dashed #059669; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
               <div>
                 <div style="font-size: 0.82rem; font-weight: 800; color: #065f46;">Mahasiswa Baru (Belum Punya Akun)?</div>
                 <div style="font-size: 0.72rem; color: #047857;">Daftarkan diri Anda (PMB) & terbitkan tagihan awal.</div>
@@ -189,7 +211,16 @@ export function renderLoginView(container) {
               </button>
             </form>
 
-            <div style="margin-top: 18px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-md); font-size: 0.76rem; color: var(--text-muted);">
+            <!-- Admin Help / Support hotline -->
+            <div style="margin-top: 16px; padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: var(--text-muted);">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span>📞</span>
+                <span>Bantuan Teknis Admin: <strong style="font-family: var(--font-mono); color: var(--text-dark);">082342307414</strong></span>
+              </div>
+              <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20bantuan%20akses%20admin%20SIMPEL-IF" target="_blank" rel="noopener" style="color: #0284c7; font-weight: 700; text-decoration: none;">Hubungi WA ➔</a>
+            </div>
+
+            <div style="margin-top: 12px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-md); font-size: 0.76rem; color: var(--text-muted);">
               <strong>🛡️ Keamanan Sistem:</strong> Halaman Dashboard Admin memiliki hak akses penuh atas penerbitan tagihan, konfirmasi transfer manual, serta konfigurasi skema beasiswa.
             </div>
           </div>
@@ -300,6 +331,15 @@ export function renderLoginView(container) {
                 🚀 Daftar & Buat Akun Mahasiswa
               </button>
 
+              <!-- PMB WhatsApp hotline -->
+              <div style="margin-top: 14px; padding: 10px 14px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: #166534;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span>💬</span>
+                  <span>Info Pendaftaran & Beasiswa: <strong style="font-family: var(--font-mono);">082342307414</strong></span>
+                </div>
+                <a href="https://wa.me/6282342307414?text=Halo%20Admin%20PMB%20STIT%20Ihsanul%20Fikri,%20saya%20ingin%20tanya%20seputar%20pendaftaran" target="_blank" rel="noopener" style="color: #16a34a; font-weight: 800; text-decoration: none;">Chat WA ➔</a>
+              </div>
+
               <div style="text-align: center; margin-top: 14px; font-size: 0.78rem; color: var(--text-muted);">
                 Sudah memiliki akun? 
                 <a href="javascript:void(0)" id="link-goto-login" style="color: var(--primary-700); font-weight: 800; text-decoration: none; margin-left: 4px;">
@@ -315,12 +355,31 @@ export function renderLoginView(container) {
         <div class="card" style="padding: 28px;">
           
           <!-- Keterangan Akun Demo / Default Credentials -->
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px;">
+          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 16px;">
             <div style="font-size: 0.76rem; font-weight: 800; color: #1e40af; text-transform: uppercase;">🔑 Kredensial Login Sistem:</div>
             <div style="font-size: 0.76rem; color: #1e3a8a; margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
               <div><strong>👑 Admin:</strong> Username: <code>admin</code> &bull; Password: <code>admin123</code></div>
               <div><strong>🎓 Mahasiswa:</strong> Masukkan <strong>NIM</strong> terdaftar &bull; Password: <code>123456</code></div>
             </div>
+          </div>
+
+          <!-- Dedicated Admin Support Card with WhatsApp & Phone -->
+          <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 42px; height: 42px; border-radius: 50%; background: #22c55e; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(34,197,94,0.35);">
+                📱
+              </div>
+              <div>
+                <div style="font-size: 0.76rem; font-weight: 800; color: #166534; text-transform: uppercase; letter-spacing: 0.3px;">Kontak & Helpdesk Admin</div>
+                <div style="font-size: 0.95rem; font-weight: 900; color: #14532d; font-family: var(--font-mono); margin-top: 1px;">
+                  082342307414
+                </div>
+                <div style="font-size: 0.70rem; color: #15803d;">WhatsApp / Telepon Layanan STIT Ihsanul Fikri</div>
+              </div>
+            </div>
+            <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20layanan%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-sm" style="background: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.76rem; padding: 8px 14px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; box-shadow: 0 2px 4px rgba(22,163,74,0.3); border: none;">
+              <span>Hubungi WA 💬</span>
+            </a>
           </div>
 
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
@@ -654,11 +713,57 @@ export function renderLoginView(container) {
     });
   }
 
-  // 7. Forgot PIN help
+  // 7. Forgot PIN & Account Help
   const linkHelp = container.querySelector('#link-forgot-pin');
   if (linkHelp) {
     linkHelp.addEventListener('click', () => {
-      alert('Informasi Bantuan Login:\n\n1. Login Mahasiswa: Masukkan NIM dan PIN: 123456.\n2. Login Admin: Gunakan Username: admin dan Password: admin123.\n3. Pendaftaran Mahasiswa Baru: Silakan klik tab "Daftar PMB".\n\nUntuk bantuan BAAK, hubungi Bagian Akademik & Keuangan STIT Ihsanul Fikri.');
+      if (window.simpelModals) {
+        const { overlay, card, title, body, footer } = window.simpelModals.getModalElements();
+        title.innerHTML = '💬 Pusat Bantuan Akun & Kontak Admin';
+        body.innerHTML = `
+          <div style="text-align: center; margin-bottom: 20px;">
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #22c55e; color: #fff; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; box-shadow: 0 4px 12px rgba(34,197,94,0.3);">
+              📞
+            </div>
+            <h4 style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin: 0;">Butuh Bantuan Akses SIMPEL-IF?</h4>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 6px 0 0;">Layanan Administrasi BAAK & Keuangan STIT Ihsanul Fikri</p>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 18px; font-size: 0.84rem; display: flex; flex-direction: column; gap: 10px;">
+            <div>
+              <strong>🎓 Login Mahasiswa:</strong> Masukkan <strong>NIM</strong> Anda dan default password/PIN <code>123456</code>.
+            </div>
+            <div>
+              <strong>👑 Login Admin:</strong> Gunakan Username <code>admin</code> dan Password <code>admin123</code>.
+            </div>
+            <div>
+              <strong>📝 Mahasiswa Baru:</strong> Silakan gunakan tab <strong>"Daftar PMB"</strong> untuk membuat akun baru.
+            </div>
+          </div>
+
+          <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: var(--radius-lg); padding: 18px; text-align: center;">
+            <div style="font-size: 0.82rem; font-weight: 700; color: #166534;">Nomor Resmi Hotline Admin / BAAK:</div>
+            <div style="font-size: 1.45rem; font-weight: 900; color: #14532d; font-family: var(--font-mono); margin: 6px 0; letter-spacing: 0.5px;">
+              082342307414
+            </div>
+            <div style="font-size: 0.76rem; color: #15803d; margin-bottom: 14px;">Tersedia untuk panggilan telepon dan konsultasi via WhatsApp</div>
+            <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20login%20atau%20reset%20password%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-primary" style="background: #16a34a; border: none; font-weight: 800; font-size: 0.88rem; padding: 10px 20px; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-md); text-decoration: none; color: #ffffff; box-shadow: 0 2px 6px rgba(22,163,74,0.35);">
+              <span>💬 Chat WhatsApp Sekarang</span>
+            </a>
+          </div>
+        `;
+        footer.innerHTML = `
+          <button class="btn btn-secondary" id="btn-close-help-modal">Tutup</button>
+        `;
+        const btnClose = footer.querySelector('#btn-close-help-modal');
+        if (btnClose) {
+          btnClose.addEventListener('click', () => window.simpelModals.closeModal());
+        }
+        if (overlay) overlay.classList.add('active');
+      } else {
+        alert('Informasi Bantuan Login & Akun STIT Ihsanul Fikri:\n\n1. Login Mahasiswa: Masukkan NIM dan default PIN: 123456.\n2. Login Admin: Username: admin dan Password: admin123.\n3. Pendaftaran Mahasiswa Baru: Silakan gunakan tab "Daftar PMB".\n\nUntuk bantuan login, reset password, dan administrasi hubungi Admin di nomor:\n082342307414 (WhatsApp / Telepon)');
+      }
     });
   }
 }
+
