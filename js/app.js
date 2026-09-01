@@ -13,6 +13,7 @@ import { renderSkemaTarifView } from './views/view-skema-tarif.js';
 import { renderVerifikasiView } from './views/view-verifikasi.js';
 import { renderMahasiswaPortal } from './views/view-mahasiswa.js';
 import { renderAkademikView } from './views/view-akademik.js';
+import { renderKalenderView } from './views/view-kalender.js';
 import { renderPimpinanView } from './views/view-pimpinan.js';
 import { renderLaporanView } from './views/view-laporan.js';
 import { renderAuditLogView } from './views/view-audit-log.js';
@@ -281,6 +282,11 @@ class Router {
       case 'view-akademik':
         this.setPageHeaders('Master Data Mahasiswa & Akademik', 'SIMPEL-IF / Akademik / Data Induk');
         renderAkademikView(this.container);
+        break;
+
+      case 'view-kalender':
+        this.setPageHeaders('Kalender Akademik & Jadwal Finansial', 'SIMPEL-IF / Akademik / Kalender');
+        renderKalenderView(this.container);
         break;
 
       case 'view-laporan':

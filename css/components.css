@@ -918,3 +918,43 @@ textarea.form-control {
   margin-top: 24px;
 }
 
+/* Kalender Akademik Component Styles */
+.event-timeline-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.calendar-cell {
+  user-select: none;
+}
+
+.calendar-cell:hover {
+  background: #f8fafc !important;
+  border-color: var(--primary-300) !important;
+}
+
+.calendar-cell.today-cell:hover {
+  background: #dbeafe !important;
+}
+
+.cal-mini-event {
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.cal-mini-event:hover {
+  transform: scale(1.02);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .calendar-cell {
+    min-height: 65px !important;
+    padding: 4px !important;
+  }
+  .cal-mini-event {
+    font-size: 0.58rem !important;
+    padding: 1px 2px !important;
+  }
+}
+
+

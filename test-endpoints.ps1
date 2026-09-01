@@ -22,6 +22,7 @@ $urls = @(
     'http://127.0.0.1:8080/js/views/dashboard-bendahara.js',
     'http://127.0.0.1:8080/js/views/view-akademik.js',
     'http://127.0.0.1:8080/js/views/view-audit-log.js',
+    'http://127.0.0.1:8080/js/views/view-kalender.js',
     'http://127.0.0.1:8080/js/views/view-laporan.js',
     'http://127.0.0.1:8080/js/views/view-login.js',
     'http://127.0.0.1:8080/js/views/view-mahasiswa.js',

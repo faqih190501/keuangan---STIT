@@ -187,6 +187,22 @@ export function renderMahasiswaPortal(container) {
       </div>
     </div>
 
+    <!-- Kalender Akademik & Jadwal Penting Banner -->
+    <div style="margin-bottom: 22px; padding: 14px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1px solid #86efac; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: var(--shadow-sm); flex-wrap: wrap;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 38px; height: 38px; border-radius: var(--radius-full); background: #059669; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(5,150,105,0.3);">
+          📅
+        </div>
+        <div>
+          <div style="font-size: 0.84rem; font-weight: 800; color: #065f46;">Kalender Akademik & Jadwal Perkuliahan</div>
+          <div style="font-size: 0.74rem; color: #047857;">Periksa jadwal penting registrasi ulang, pengisian KRS online, ujian UTS/UAS, dan wisuda sarjana.</div>
+        </div>
+      </div>
+      <button type="button" id="btn-quick-open-calendar" class="btn btn-sm" style="background: #059669; color: #ffffff; font-weight: 800; font-size: 0.75rem; border: none; box-shadow: var(--shadow-sm); cursor: pointer; padding: 6px 14px; border-radius: var(--radius-md); white-space: nowrap;">
+        Buka Kalender Akademik ➔
+      </button>
+    </div>
+
     <!-- 3. Navigation Mode Switcher -->
     <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
       ${currentInvoice && !isLunas ? `
@@ -864,14 +880,22 @@ export function renderMahasiswaPortal(container) {
         </div>
       </div>
       <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <a href="https://wa.me/6281234567890?text=Assalamu'alaikum%20Admin%20Keuangan%20STIT-IF,%20saya%20${encodeURIComponent(currentStudent.name)}%20(NIM:%20${currentStudent.nim})%20ingin%20bertanya%20mengenai%20pembayaran." target="_blank" class="btn btn-primary btn-sm" style="background: #059669; border: none; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
-          📱 Hubungi WhatsApp Keuangan
+        <a href="https://wa.me/6282342307414?text=Assalamu'alaikum%20Admin%20Keuangan%20STIT-IF,%20saya%20${encodeURIComponent(currentStudent.name)}%20(NIM:%20${currentStudent.nim})%20ingin%20bertanya%20mengenai%20pembayaran." target="_blank" class="btn btn-primary btn-sm" style="background: #059669; border: none; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+          📱 Hubungi WhatsApp Admin (082342307414)
         </a>
       </div>
     </div>
   `;
 
   // Attach Event Listeners
+  // Quick open academic calendar
+  const btnOpenCal = container.querySelector('#btn-quick-open-calendar');
+  if (btnOpenCal) {
+    btnOpenCal.addEventListener('click', () => {
+      if (window.simpelRouter) window.simpelRouter.navigateTo('view-kalender');
+    });
+  }
+
   // 1. Switch Student demo
   const selectStudent = container.querySelector('#select-active-student');
   if (selectStudent) {

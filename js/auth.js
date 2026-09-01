@@ -14,6 +14,7 @@ export const ROLE_PERMISSIONS = {
       'view-skema-tarif',
       'view-verifikasi',
       'view-akademik',
+      'view-kalender',
       'view-laporan',
       'view-audit-log',
       'view-qr-validator',
@@ -24,6 +25,7 @@ export const ROLE_PERMISSIONS = {
   MAHASISWA: {
     allowedViews: [
       'view-mahasiswa',
+      'view-kalender',
       'view-qr-validator',
       'view-login'
     ],

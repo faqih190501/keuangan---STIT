@@ -584,6 +584,202 @@ const INITIAL_SEED_DATA = {
       entity: 'VERIF-002 (Bilal Al-Habasyi)',
       details: 'Persetujuan bukti bayar manual transfer Termin 1 cicilan sebesar Rp 800.000.'
     }
+  ],
+
+  // Academic Calendar Schedule
+  academicCalendar: [
+    {
+      id: 'EVT-01',
+      title: 'Pembayaran SPP & Heregistrasi Mahasiswa Lama (Ganjil 2026/2027)',
+      category: 'KEUANGAN',
+      startDate: '2026-08-01',
+      endDate: '2026-08-31',
+      semester: '2026/2027 Ganjil',
+      location: 'Online via SIMPEL-IF / Bank BSI (1056405743)',
+      description: 'Periode pelunasan/cicilan SPP dan daftar ulang administrasi akademik semester ganjil.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-02',
+      title: 'Masa Pendaftaran & Her-Registrasi Mahasiswa Baru (PMB Gel. III)',
+      category: 'KEUANGAN',
+      startDate: '2026-08-10',
+      endDate: '2026-09-05',
+      semester: '2026/2027 Ganjil',
+      location: 'Kantor BAAK / Portal PMB Online',
+      description: 'Penerbitan NIM dan pembayaran paket awal orientasi & SPP mahasiswa baru.',
+      isMandatory: true,
+      targetRoles: ['MAHASISWA', 'ADMIN']
+    },
+    {
+      id: 'EVT-03',
+      title: 'Pengajuan & Verifikasi Afirmasi Beasiswa Semester Ganjil',
+      category: 'KEUANGAN',
+      startDate: '2026-08-15',
+      endDate: '2026-09-10',
+      semester: '2026/2027 Ganjil',
+      location: 'Ruang Bendahara & BAU STIT Ihsanul Fikri',
+      description: 'Batas akhir upload berkas beasiswa Asrama, Mitra Lembaga, dan Prestasi Tahfidz.',
+      isMandatory: false,
+      targetRoles: ['MAHASISWA', 'ADMIN']
+    },
+    {
+      id: 'EVT-04',
+      title: 'Pengisian & Validasi Kartu Rencana Studi (KRS Online)',
+      category: 'AKADEMIK',
+      startDate: '2026-09-01',
+      endDate: '2026-09-12',
+      semester: '2026/2027 Ganjil',
+      location: 'SIAKAD STIT Ihsanul Fikri',
+      description: 'Konsultasi Dosen Pembimbing Akademik (DPA) dan entri mata kuliah semester ganjil.',
+      isMandatory: true,
+      targetRoles: ['MAHASISWA', 'ADMIN']
+    },
+    {
+      id: 'EVT-05',
+      title: 'Orientasi Studi & Ta\'aruf Mahasiswa Baru (OSPEK / Ta\'aruf)',
+      category: 'KEGIATAN',
+      startDate: '2026-09-08',
+      endDate: '2026-09-10',
+      semester: '2026/2027 Ganjil',
+      location: 'Auditorium Utama Kampus STIT Ihsanul Fikri',
+      description: 'Pengenalan nilai-nilai keislaman, tradisi ilmiah, dan tata tertib perguruan tinggi.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-06',
+      title: 'Kuliah Perdana & Awal Perkuliahan Efektif Semester Ganjil',
+      category: 'AKADEMIK',
+      startDate: '2026-09-14',
+      endDate: '2026-11-06',
+      semester: '2026/2027 Ganjil',
+      location: 'Gedung Perkuliahan BKPI & PIAUD',
+      description: 'Masa perkuliahan tatap muka dan blended learning paruh pertama (Pertemuan 1 - 7).',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-07',
+      title: 'Batas Akhir Perubahan Rencana Studi (KPRS / Drop Matkul)',
+      category: 'AKADEMIK',
+      startDate: '2026-09-25',
+      endDate: '2026-09-26',
+      semester: '2026/2027 Ganjil',
+      location: 'Biro Administrasi Akademik (BAAK)',
+      description: 'Batas terakhir revisi pengambilan mata kuliah yang telah disetujui DPA.',
+      isMandatory: false,
+      targetRoles: ['MAHASISWA', 'ADMIN']
+    },
+    {
+      id: 'EVT-08',
+      title: 'Pendaftaran Ujian Munaqasyah & Skripsi Periode I',
+      category: 'KEGIATAN',
+      startDate: '2026-10-01',
+      endDate: '2026-10-15',
+      semester: '2026/2027 Ganjil',
+      location: 'Sekretariat Program Studi BKPI / PIAUD',
+      description: 'Penyerahan naskah skripsi lengkap dan bukti bebas administrasi keuangan.',
+      isMandatory: false,
+      targetRoles: ['MAHASISWA', 'ADMIN']
+    },
+    {
+      id: 'EVT-09',
+      title: 'Ujian Tengah Semester (UTS) Gasal 2026/2027',
+      category: 'AKADEMIK',
+      startDate: '2026-11-09',
+      endDate: '2026-11-20',
+      semester: '2026/2027 Ganjil',
+      location: 'Ruang Ujian Kampus STIT IF',
+      description: 'Evaluasi tengah semester (Syarat mengikuti ujian: minimal cicilan SPP 50%).',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-10',
+      title: 'Masa Perkuliahan Efektif Paruh Kedua (Pertemuan 9 - 16)',
+      category: 'AKADEMIK',
+      startDate: '2026-11-23',
+      endDate: '2027-01-08',
+      semester: '2026/2027 Ganjil',
+      location: 'Kampus STIT Ihsanul Fikri',
+      description: 'Penyelesaian silabus perkuliahan dan praktikum lapangan.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-11',
+      title: 'Wisuda Sarjana & Pelepasan Lulusan Ke-VIII',
+      category: 'KEGIATAN',
+      startDate: '2026-12-19',
+      endDate: '2026-12-19',
+      semester: '2026/2027 Ganjil',
+      location: 'Grand Ballroom Hotel Atria Magelang',
+      description: 'Rapat Senat Terbuka Wisuda Sarjana S1 Prodi BKPI & PIAUD.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-12',
+      title: 'Batas Pelunasan SPP & Syarat Kartu Ujian Akhir (UAS)',
+      category: 'KEUANGAN',
+      startDate: '2026-12-20',
+      endDate: '2027-01-05',
+      semester: '2026/2027 Ganjil',
+      location: 'Sistem SIMPEL-IF',
+      description: 'Penerbitan Surat Keterangan Lunas Keuangan untuk cetak kartu UAS.',
+      isMandatory: true,
+      targetRoles: ['MAHASISWA', 'ADMIN']
+    },
+    {
+      id: 'EVT-13',
+      title: 'Ujian Akhir Semester (UAS) Gasal 2026/2027',
+      category: 'AKADEMIK',
+      startDate: '2027-01-11',
+      endDate: '2027-01-22',
+      semester: '2026/2027 Ganjil',
+      location: 'Kampus STIT Ihsanul Fikri',
+      description: 'Evaluasi akhir semester penentu nilai mutu KHS.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-14',
+      title: 'Batas Akhir Input Nilai & Publikasi KHS Online',
+      category: 'AKADEMIK',
+      startDate: '2027-01-25',
+      endDate: '2027-02-05',
+      semester: '2026/2027 Ganjil',
+      location: 'Portal SIAKAD Dosen & Mahasiswa',
+      description: 'Pengumuman indeks prestasi semester (IPS) dan evaluasi akademik.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-15',
+      title: 'Libur Semester Gasal & Masa Riset / Pengabdian',
+      category: 'LIBUR',
+      startDate: '2027-01-25',
+      endDate: '2027-02-19',
+      semester: '2026/2027 Ganjil',
+      location: '-',
+      description: 'Masa jeda akademik semester gasal menuju semester genap.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-16',
+      title: 'Heregistrasi & Pembayaran SPP Semester Genap 2026/2027',
+      category: 'KEUANGAN',
+      startDate: '2027-02-01',
+      endDate: '2027-02-20',
+      semester: '2026/2027 Genap',
+      location: 'SIMPEL-IF / Bank BSI (1056405743)',
+      description: 'Aktivasi status mahasiswa dan validasi KRS semester genap.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    }
   ]
 };
 
@@ -629,6 +825,9 @@ class StateManager {
         if (!this.state.paymentVerifications) this.state.paymentVerifications = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.paymentVerifications));
         if (!this.state.individualOverrides) this.state.individualOverrides = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.individualOverrides));
         if (!this.state.auditLogs) this.state.auditLogs = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.auditLogs));
+        if (!this.state.academicCalendar || this.state.academicCalendar.length === 0) {
+          this.state.academicCalendar = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.academicCalendar));
+        }
       } else {
         this.state = JSON.parse(JSON.stringify(INITIAL_SEED_DATA));
         this.saveState();
@@ -819,6 +1018,81 @@ class StateManager {
   // Invoice Data Mutations
   addInvoice(invoice) {
     this.state.invoices.unshift(invoice);
+    this.notify();
+  }
+
+  // Academic Calendar Mutations
+  addAcademicEvent(eventData) {
+    const id = eventData.id || `EVT-${Date.now().toString().slice(-4)}`;
+    const newEvent = {
+      id,
+      title: eventData.title || 'Agenda Baru',
+      category: eventData.category || 'AKADEMIK',
+      startDate: eventData.startDate || new Date().toISOString().split('T')[0],
+      endDate: eventData.endDate || eventData.startDate || new Date().toISOString().split('T')[0],
+      semester: eventData.semester || this.state.activeSemester,
+      location: eventData.location || 'Kampus STIT Ihsanul Fikri',
+      description: eventData.description || '',
+      isMandatory: !!eventData.isMandatory,
+      targetRoles: eventData.targetRoles || ['ALL']
+    };
+
+    if (!this.state.academicCalendar) this.state.academicCalendar = [];
+    this.state.academicCalendar.push(newEvent);
+    this.state.academicCalendar.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+    this.addAuditLog(
+      'CREATE_ACADEMIC_EVENT',
+      newEvent.title,
+      `Penambahan agenda akademik "${newEvent.title}" (${newEvent.startDate} s/d ${newEvent.endDate}) pada semester ${newEvent.semester}.`
+    );
+
+    this.notify();
+    return newEvent;
+  }
+
+  updateAcademicEvent(id, updatedFields) {
+    if (!this.state.academicCalendar) return null;
+    const index = this.state.academicCalendar.findIndex(e => e.id === id);
+    if (index === -1) return null;
+
+    const oldEvent = this.state.academicCalendar[index];
+    this.state.academicCalendar[index] = {
+      ...oldEvent,
+      ...updatedFields
+    };
+
+    this.state.academicCalendar.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+    this.addAuditLog(
+      'UPDATE_ACADEMIC_EVENT',
+      this.state.academicCalendar[index].title,
+      `Pembaruan data agenda akademik "${this.state.academicCalendar[index].title}".`
+    );
+
+    this.notify();
+    return this.state.academicCalendar[index];
+  }
+
+  deleteAcademicEvent(id) {
+    if (!this.state.academicCalendar) return false;
+    const eventToDelete = this.state.academicCalendar.find(e => e.id === id);
+    if (!eventToDelete) return false;
+
+    this.state.academicCalendar = this.state.academicCalendar.filter(e => e.id !== id);
+
+    this.addAuditLog(
+      'DELETE_ACADEMIC_EVENT',
+      eventToDelete.title,
+      `Penghapusan agenda akademik "${eventToDelete.title}" dari kalender akademik.`
+    );
+
+    this.notify();
+    return true;
+  }
+
+  resetAcademicCalendar() {
+    this.state.academicCalendar = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.academicCalendar));
     this.notify();
   }
 

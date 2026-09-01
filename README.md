@@ -54,11 +54,18 @@ Aplikasi dapat langsung diakses secara publik melalui tautan GitHub Pages beriku
 * **Auto-Recalculate**: Otomatisasi kalkulasi ulang seluruh tagihan semester aktif saat nominal atau persentase beasiswa diperbarui.
 * **Auto-Tagging Mahasiswa Baru**: Calon mahasiswa laki-laki di prodi PIAUD secara otomatis mendapatkan afirmasi *Beasiswa PAUD Laki-laki* (Diskon SPP 60%).
 
-### 4. 🛡️ Validasi Keabsahan Kwitansi QR Code Publik
+### 4. 📅 Kalender Akademik & Jadwal Finansial Terpadu
+* **Dual View Mode (Linimasa & Kalender Bulanan)**: Pilihan tampilan antara daftar linimasa kronologis (*Timeline Cards*) dan matriks kalender bulanan interaktif (*Interactive Monthly Grid*).
+* **Klasifikasi & Filter Multi-Kategori**: Pengelompokan warna otomatis untuk 💰 *Keuangan & SPP*, 📚 *Perkuliahan & Ujian*, 🎉 *Kegiatan & Wisuda*, serta 🌴 *Hari Libur & Cuti*.
+* **Manajemen Penuh untuk Admin**: Fitur tambah, sunting, dan hapus jadwal agenda akademik serta sinkronisasi batas jatuh tempo tagihan.
+* **Notifikasi & Hitung Mundur untuk Mahasiswa**: Penghitung sisa hari (*countdown*), penanda status agenda (*Sedang Berlangsung*, *X Hari Lagi*, *Selesai*), dan tombol langsung bayar tagihan.
+* **Ekspor & Sinkronisasi Eksternal**: Fitur unduh kalender berformat `.ics` (kompatibel langsung dengan Google Calendar, Apple Calendar, Outlook) serta format cetak resmi.
+
+### 5. 🛡️ Validasi Keabsahan Kwitansi QR Code Publik
 * Setiap kwitansi memiliki kode verifikasi unik terenkripsi.
 * Pemindai QR Validator bawaan dapat digunakan oleh publik/pihak ketiga untuk memeriksa keaslian bukti bayar tanpa perlu login.
 
-### 5. ↔️ Pengalaman Pengguna (Universal Drag & Swipe)
+### 6. ↔️ Pengalaman Pengguna (Universal Drag & Swipe)
 * Semua tabel data panjang, baris indikator KPI, dan pilihan peran dapat digeser dengan **Mouse Drag** di desktop PC dan **Touch Swipe** di ponsel pintar / tablet.
 
 ---
@@ -141,6 +148,7 @@ SIMPEL-IF/
 │   │   ├── dashboard-bendahara.js # Pusat komando eksekutif & bendahara
 │   │   ├── view-akademik.js       # Manajemen data mahasiswa & program studi
 │   │   ├── view-audit-log.js      # Audit trail riwayat seluruh transaksi sistem
+│   │   ├── view-kalender.js       # Kalender akademik, linimasa agenda & jadwal SPP
 │   │   ├── view-laporan.js        # Laporan arus kas masuk & rekapitulasi piutang
 │   │   ├── view-login.js          # Portal login mahasiswa, admin, dan PMB
 │   │   ├── view-mahasiswa.js      # Portal tagihan, bayar mandiri, dan profil mhs
@@ -158,7 +166,7 @@ SIMPEL-IF/
 ├── LICENSE                      # Lisensi MIT
 ├── README.md                    # Dokumentasi lengkap sistem
 ├── server.ps1                   # Web server lokal ringan
-└── test-endpoints.ps1           # Script pengujian integritas 28 endpoint
+└── test-endpoints.ps1           # Script pengujian integritas 31 endpoint
 ```
 
 ---

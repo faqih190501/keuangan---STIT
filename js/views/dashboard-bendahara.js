@@ -94,6 +94,9 @@ export function renderDashboardBendahara(container) {
         <button class="btn btn-outline" id="btn-admin-open-profile" style="font-weight: 700;">
           👤 Profil Saya
         </button>
+        <button class="btn btn-outline" id="btn-goto-kalender" style="font-weight: 700;">
+          📅 Kalender Akademik
+        </button>
         <button class="btn btn-outline" id="btn-export-exec-summary">
           📊 Ekspor Neraca (.csv)
         </button>
@@ -394,6 +397,13 @@ export function renderDashboardBendahara(container) {
   if (btnAdminProfile) {
     btnAdminProfile.addEventListener('click', () => {
       window.simpelModals.openAdminSelfProfileModal();
+    });
+  }
+
+  const btnGotoCal = container.querySelector('#btn-goto-kalender');
+  if (btnGotoCal) {
+    btnGotoCal.addEventListener('click', () => {
+      if (window.simpelRouter) window.simpelRouter.navigateTo('view-kalender');
     });
   }
 
