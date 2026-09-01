@@ -80,9 +80,19 @@ export function renderDashboardBendahara(container) {
   const piaudTarget = piaudPaid + piaudReceivable;
   const piaudRate = piaudTarget > 0 ? ((piaudPaid / piaudTarget) * 100).toFixed(1) : '0.0';
 
+  const admin = state.adminProfile || {
+    name: 'Ustadzah Siti Fatimah, S.E.',
+    title: 'Kepala Bagian Keuangan & Bendahara Penerimaan',
+    department: 'Biro Keuangan & Administrasi Umum (BAU)',
+    email: 'bendahara@stit-if.ac.id',
+    phone: '081392817263',
+    nip: '19840512 201201 2 003',
+    avatarText: 'SF'
+  };
+
   container.innerHTML = `
     <!-- Top Header: Executive Actions -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
       <div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <h2 style="font-size: 1.28rem; font-weight: 800; color: var(--text-dark); margin: 0;">👑 Dashboard Utama Admin</h2>
@@ -110,6 +120,30 @@ export function renderDashboardBendahara(container) {
           🚪 Keluar / Logout
         </button>
       </div>
+    </div>
+
+    <!-- Admin Profile Identity Banner -->
+    <div style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: #ffffff; border-radius: var(--radius-xl); padding: 18px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; box-shadow: var(--shadow-sm);">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #ffffff; color: #1e40af; font-weight: 900; font-size: 1.35rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.18); flex-shrink: 0;">
+          ${admin.avatarText || 'SF'}
+        </div>
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <h3 style="font-size: 1.08rem; font-weight: 900; margin: 0; color: #ffffff;">${admin.name}</h3>
+            <span class="badge" style="background: #3b82f6; color: #ffffff; font-weight: 800; font-size: 0.7rem; padding: 2px 8px;">${admin.nip ? `NIP: ${admin.nip}` : 'Bendahara'}</span>
+          </div>
+          <div style="font-size: 0.78rem; opacity: 0.92; margin-top: 3px;">
+            ${admin.title} &bull; <span style="opacity: 0.85;">${admin.department}</span>
+          </div>
+          <div style="font-size: 0.72rem; opacity: 0.8; margin-top: 2px;">
+            📧 ${admin.email} &bull; 📱 ${admin.phone}
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-sm" id="btn-banner-edit-admin-profile" style="background: rgba(255,255,255,0.2); color: #ffffff; border: 1px solid rgba(255,255,255,0.4); font-weight: 800; font-size: 0.78rem; padding: 8px 16px; border-radius: var(--radius-md); backdrop-filter: blur(4px); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+        ✏️ Edit Profil Saya
+      </button>
     </div>
 
     <!-- Alert for Pending Verifications (if any) -->
@@ -396,6 +430,13 @@ export function renderDashboardBendahara(container) {
   const btnAdminProfile = container.querySelector('#btn-admin-open-profile');
   if (btnAdminProfile) {
     btnAdminProfile.addEventListener('click', () => {
+      window.simpelModals.openAdminSelfProfileModal();
+    });
+  }
+
+  const btnBannerAdminProfile = container.querySelector('#btn-banner-edit-admin-profile');
+  if (btnBannerAdminProfile) {
+    btnBannerAdminProfile.addEventListener('click', () => {
       window.simpelModals.openAdminSelfProfileModal();
     });
   }
