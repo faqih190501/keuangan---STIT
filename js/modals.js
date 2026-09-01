@@ -843,7 +843,7 @@ export class ModalManager {
   }
 
   /**
-   * 6. Edit Student Modal
+   * 6. Edit Student & Credential Management Modal (Username, Password, Biodata)
    */
   static openEditStudentModal(studentNim) {
     const state = appState.getState();
@@ -851,21 +851,80 @@ export class ModalManager {
     if (!student) return;
 
     const { overlay, card, title, body, footer } = this.getModalElements();
-    card.classList.remove('modal-xl');
+    card.classList.remove('modal-sm');
     card.classList.add('modal-lg');
 
-    title.textContent = `✏️ Edit Data Mahasiswa: ${student.name}`;
+    title.innerHTML = `✏️ Edit Data & Akun Mahasiswa: <span style="color:var(--primary-700);">${student.name}</span>`;
+
+    const currentPwd = student.password || student.pin || '123456';
+    const currentUsername = student.username || student.nim;
 
     body.innerHTML = `
-      <form id="form-edit-student">
+      <form id="form-edit-student" onsubmit="return false;">
+        
+        <!-- Account Credentials Card -->
+        <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.2rem;">🔐</span>
+              <div>
+                <h4 style="margin: 0; font-size: 0.92rem; font-weight: 800; color: #166534;">Kredensial Akun & Akses Login Mahasiswa</h4>
+                <p style="margin: 2px 0 0; font-size: 0.72rem; color: #15803d;">Admin dapat mengubah Username, NIM, dan Password/PIN akun mahasiswa</p>
+              </div>
+            </div>
+            <span class="badge" style="background: #22c55e; color: #ffffff; font-weight: 800; font-size: 0.68rem;">Akses Admin</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Nomor Induk Mahasiswa (NIM) <span class="required">*</span></label>
+              <input type="text" class="form-control" id="edit-std-nim" value="${student.nim}" required style="font-family:var(--font-mono); font-weight: 800; background: #ffffff;">
+              <span class="input-help-text" style="color: #15803d;">NIM digunakan sebagai ID unik resmi transaksi.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Username Login Mahasiswa <span class="required">*</span></label>
+              <input type="text" class="form-control" id="edit-std-username" value="${currentUsername}" required style="font-weight: 700; background: #ffffff;">
+              <span class="input-help-text" style="color: #15803d;">Dapat digunakan mahasiswa untuk login selain NIM.</span>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 10px;">
+            <label class="form-label">Password / PIN Akun Mahasiswa <span class="required">*</span></label>
+            <div style="display: flex; gap: 8px;">
+              <div style="position: relative; flex: 1;">
+                <input type="password" class="form-control" id="edit-std-password" value="${currentPwd}" required style="font-family: var(--font-mono); font-weight: 700; padding-right: 40px; background: #ffffff;">
+                <button type="button" id="btn-toggle-edit-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-light); padding: 4px;">
+                  👁️
+                </button>
+              </div>
+              <button type="button" class="btn btn-outline btn-sm" id="btn-reset-default-pwd" style="white-space: nowrap; font-size: 0.76rem; font-weight: 700; background: #ffffff;">
+                🔄 Reset (123456)
+              </button>
+              <button type="button" class="btn btn-outline btn-sm" id="btn-random-pwd" style="white-space: nowrap; font-size: 0.76rem; font-weight: 700; background: #ffffff;">
+                🎲 Acak PIN
+              </button>
+            </div>
+            <span class="input-help-text" style="color: #15803d;">Password yang dimasukkan akan langsung aktif dan dapat digunakan mahasiswa untuk login.</span>
+          </div>
+        </div>
+
+        <!-- Biodata Mahasiswa -->
+        <h4 style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark); margin: 0 0 12px; display: flex; align-items: center; gap: 6px;">
+          <span>👤</span> Data Pokok & Akademik Mahasiswa
+        </h4>
+
         <div class="form-grid">
           <div class="form-group">
-            <label class="form-label">Nomor Induk Mahasiswa (NIM)</label>
-            <input type="text" class="form-control" value="${student.nim}" disabled style="font-family:var(--font-mono);">
+            <label class="form-label">Nama Lengkap Mahasiswa <span class="required">*</span></label>
+            <input type="text" class="form-control" id="edit-std-name" value="${student.name}" required style="font-weight: 700;">
           </div>
           <div class="form-group">
-            <label class="form-label">Nama Lengkap Mahasiswa <span class="required">*</span></label>
-            <input type="text" class="form-control" id="edit-std-name" value="${student.name}" required>
+            <label class="form-label">Jenis Kelamin <span class="required">*</span></label>
+            <select class="filter-select" id="edit-std-gender" style="width: 100%;">
+              <option value="L" ${student.gender === 'L' ? 'selected' : ''}>Laki-laki (Ikhwan)</option>
+              <option value="P" ${student.gender === 'P' ? 'selected' : ''}>Perempuan (Akhwat)</option>
+            </select>
           </div>
         </div>
 
@@ -893,7 +952,7 @@ export class ModalManager {
             <input type="number" class="form-control" id="edit-std-sem" value="${student.semester}" min="1" max="8">
           </div>
           <div class="form-group">
-            <label class="form-label">Skema Beasiswa</label>
+            <label class="form-label">Skema Beasiswa Terpasang</label>
             <select class="filter-select" id="edit-std-sch" style="width: 100%;">
               ${state.scholarshipSchemes.map(sc => `
                 <option value="${sc.id}" ${student.scholarshipId === sc.id ? 'selected' : ''}>
@@ -901,6 +960,18 @@ export class ModalManager {
                 </option>
               `).join('')}
             </select>
+          </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="form-grid" style="margin-top: 4px;">
+          <div class="form-group">
+            <label class="form-label">Nomor WhatsApp Aktif</label>
+            <input type="text" class="form-control" id="edit-std-phone" value="${student.phone || '082342307414'}" placeholder="08xxxxxxxxxx">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Mahasiswa</label>
+            <input type="email" class="form-control" id="edit-std-email" value="${student.email || ''}" placeholder="nama@mahasiswa.stit-ihsanulfikri.ac.id">
           </div>
         </div>
       </form>
@@ -913,12 +984,44 @@ export class ModalManager {
         </button>
         <div style="display: flex; gap: 10px;">
           <button class="btn btn-outline" id="btn-cancel-edit-student">Batal</button>
-          <button class="btn btn-primary" id="btn-save-edit-student">💾 Simpan Perubahan</button>
+          <button class="btn btn-primary" id="btn-save-edit-student" style="font-weight: 800;">💾 Simpan Kredensial & Profil</button>
         </div>
       </div>
     `;
 
     overlay.classList.add('active');
+
+    // Password Toggle & Helper Buttons
+    const pwdInput = body.querySelector('#edit-std-password');
+    const btnTogglePwd = body.querySelector('#btn-toggle-edit-pwd');
+    if (btnTogglePwd && pwdInput) {
+      btnTogglePwd.addEventListener('click', () => {
+        const isPwd = pwdInput.type === 'password';
+        pwdInput.type = isPwd ? 'text' : 'password';
+        btnTogglePwd.textContent = isPwd ? '🙈' : '👁️';
+      });
+    }
+
+    const btnResetPwd = body.querySelector('#btn-reset-default-pwd');
+    if (btnResetPwd && pwdInput) {
+      btnResetPwd.addEventListener('click', () => {
+        pwdInput.value = '123456';
+        pwdInput.type = 'text';
+        if (btnTogglePwd) btnTogglePwd.textContent = '🙈';
+        window.simpelToast.show('PIN Direset', 'Password diisi dengan default: 123456', 'info');
+      });
+    }
+
+    const btnRandomPwd = body.querySelector('#btn-random-pwd');
+    if (btnRandomPwd && pwdInput) {
+      btnRandomPwd.addEventListener('click', () => {
+        const randPIN = Math.floor(100000 + Math.random() * 900000).toString();
+        pwdInput.value = randPIN;
+        pwdInput.type = 'text';
+        if (btnTogglePwd) btnTogglePwd.textContent = '🙈';
+        window.simpelToast.show('PIN Baru Diacak', `PIN Baru dibuat: ${randPIN}`, 'info');
+      });
+    }
 
     // Delete Student Handler
     const btnDeleteModal = footer.querySelector('#btn-delete-student-modal');
@@ -937,18 +1040,155 @@ export class ModalManager {
 
     footer.querySelector('#btn-cancel-edit-student').addEventListener('click', () => ModalManager.closeModal());
     footer.querySelector('#btn-save-edit-student').addEventListener('click', () => {
-      student.name = body.querySelector('#edit-std-name').value;
-      student.prodi = body.querySelector('#edit-std-prodi').value;
-      student.statusAkademik = body.querySelector('#edit-std-status').value;
-      student.semester = Number(body.querySelector('#edit-std-sem').value) || student.semester;
-      student.scholarshipId = body.querySelector('#edit-std-sch').value;
+      const newNim = body.querySelector('#edit-std-nim').value.trim();
+      const newUsername = body.querySelector('#edit-std-username').value.trim();
+      const newPassword = body.querySelector('#edit-std-password').value.trim();
+      const name = body.querySelector('#edit-std-name').value.trim();
+      const gender = body.querySelector('#edit-std-gender').value;
+      const prodi = body.querySelector('#edit-std-prodi').value;
+      const statusAkademik = body.querySelector('#edit-std-status').value;
+      const semester = Number(body.querySelector('#edit-std-sem').value) || student.semester;
+      const scholarshipId = body.querySelector('#edit-std-sch').value;
+      const phone = body.querySelector('#edit-std-phone').value.trim();
+      const email = body.querySelector('#edit-std-email').value.trim();
 
-      appState.addAuditLog('EDIT_STUDENT', `${student.name} (${student.nim})`, 'Pembaruan profil data mahasiswa dan status beasiswa.');
-      appState.notify();
+      if (!name) {
+        window.simpelToast.show('Nama Kosong', 'Nama lengkap mahasiswa wajib diisi.', 'warning');
+        return;
+      }
 
-      window.simpelToast.show('Data Disimpan', `Perubahan data ${student.name} berhasil disimpan.`, 'success');
-      ModalManager.closeModal();
-      if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+      if (!newNim) {
+        window.simpelToast.show('NIM Kosong', 'NIM mahasiswa wajib diisi.', 'warning');
+        return;
+      }
+
+      if (!newPassword) {
+        window.simpelToast.show('Password Kosong', 'Password / PIN mahasiswa wajib diisi.', 'warning');
+        return;
+      }
+
+      const res = appState.updateStudentCredentials(student.nim, {
+        nim: newNim,
+        username: newUsername,
+        password: newPassword,
+        name,
+        gender,
+        prodi,
+        statusAkademik,
+        semester,
+        scholarshipId,
+        phone,
+        email
+      });
+
+      if (res.success) {
+        window.simpelToast.show('Akun Berhasil Diperbarui', res.message, 'success');
+        ModalManager.closeModal();
+        if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+      } else {
+        window.simpelToast.show('Gagal Memperbarui', res.message, 'danger');
+      }
+    });
+  }
+
+  /**
+   * 6c. Dedicated Quick Password / PIN Reset Modal for Student
+   */
+  static openChangeStudentPasswordModal(studentNim) {
+    const state = appState.getState();
+    const student = state.students.find(s => s.nim === studentNim);
+    if (!student) return;
+
+    const { overlay, card, title, body, footer } = this.getModalElements();
+    card.classList.remove('modal-xl');
+    card.classList.add('modal-md');
+
+    title.innerHTML = `🔑 Ganti Password / PIN: <span style="color:var(--primary-700);">${student.name}</span>`;
+
+    const currentPwd = student.password || student.pin || '123456';
+    const currentUsername = student.username || student.nim;
+
+    body.innerHTML = `
+      <form id="form-change-student-pwd" onsubmit="return false;">
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 18px;">
+          <div style="font-size: 0.72rem; color: #1e40af; font-weight: 800; text-transform: uppercase;">Akun Mahasiswa Terdaftar:</div>
+          <div style="font-size: 1.05rem; font-weight: 900; color: #0f172a; margin-top: 2px;">${student.name}</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <span>NIM: <strong style="font-family:var(--font-mono);">${student.nim}</strong></span>
+            <span>&bull;</span>
+            <span>Username: <strong style="font-family:var(--font-mono);">${currentUsername}</strong></span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password / PIN Baru Mahasiswa <span class="required">*</span></label>
+          <div style="position: relative;">
+            <input type="password" class="form-control" id="quick-pwd-input" value="${currentPwd}" required style="font-family: var(--font-mono); font-size: 1.1rem; font-weight: 800; padding-right: 42px;">
+            <button type="button" id="btn-toggle-quick-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-light); padding: 4px;">
+              👁️
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <button type="button" class="btn btn-outline btn-sm" id="btn-quick-set-default" style="font-size: 0.76rem; font-weight: 700;">
+            🔄 Default (123456)
+          </button>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-quick-set-random" style="font-size: 0.76rem; font-weight: 700;">
+            🎲 Acak PIN 6 Angka
+          </button>
+        </div>
+
+        <div style="margin-top: 14px; padding: 10px 14px; background: #f8fafc; border-radius: var(--radius-md); border: 1px solid #e2e8f0; font-size: 0.74rem; color: var(--text-light);">
+          ℹ️ Mahasiswa dapat langsung masuk ke portal dengan password baru ini tanpa perlu konfirmasi email.
+        </div>
+      </form>
+    `;
+
+    footer.innerHTML = `
+      <button class="btn btn-outline" id="btn-cancel-quick-pwd">Batal</button>
+      <button class="btn btn-primary" id="btn-save-quick-pwd" style="font-weight: 800;">💾 Simpan Password Baru</button>
+    `;
+
+    overlay.classList.add('active');
+
+    const pwdInp = body.querySelector('#quick-pwd-input');
+    const toggleBtn = body.querySelector('#btn-toggle-quick-pwd');
+    if (toggleBtn && pwdInp) {
+      toggleBtn.addEventListener('click', () => {
+        const isP = pwdInp.type === 'password';
+        pwdInp.type = isP ? 'text' : 'password';
+        toggleBtn.textContent = isP ? '🙈' : '👁️';
+      });
+    }
+
+    body.querySelector('#btn-quick-set-default').addEventListener('click', () => {
+      pwdInp.value = '123456';
+      pwdInp.type = 'text';
+      if (toggleBtn) toggleBtn.textContent = '🙈';
+    });
+
+    body.querySelector('#btn-quick-set-random').addEventListener('click', () => {
+      const randPIN = Math.floor(100000 + Math.random() * 900000).toString();
+      pwdInp.value = randPIN;
+      pwdInp.type = 'text';
+      if (toggleBtn) toggleBtn.textContent = '🙈';
+    });
+
+    footer.querySelector('#btn-cancel-quick-pwd').addEventListener('click', () => ModalManager.closeModal());
+    footer.querySelector('#btn-save-quick-pwd').addEventListener('click', () => {
+      const newPassword = pwdInp.value.trim();
+      if (!newPassword) {
+        window.simpelToast.show('Password Kosong', 'Password / PIN baru tidak boleh kosong.', 'warning');
+        return;
+      }
+
+      const res = appState.updateStudentCredentials(student.nim, { password: newPassword });
+      if (res.success) {
+        window.simpelToast.show('Password Berhasil Diubah', `Password baru untuk ${student.name} (${student.nim}) telah disimpan.`, 'success');
+        ModalManager.closeModal();
+        if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+      }
     });
   }
 
@@ -1044,9 +1284,26 @@ export class ModalManager {
           <!-- Column 1: Kontak & Biodata -->
           <div style="border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 18px 22px; background: #ffffff;">
             <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0 0 14px; display: flex; align-items: center; gap: 8px;">
-              <span>📱</span> Kontak & Identitas Akun
+              <span>📱</span> Kredensial Akun & Kontak Mahasiswa
             </h4>
             <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.84rem;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">
+                <span style="color: var(--text-light);">NIM Resmi:</span>
+                <strong style="color: var(--primary-800); font-family: var(--font-mono);">${student.nim}</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">
+                <span style="color: var(--text-light);">Username Login:</span>
+                <strong style="color: #1e40af; font-family: var(--font-mono);">${student.username || student.nim}</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px; align-items: center;">
+                <span style="color: var(--text-light);">Password / PIN:</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <strong style="font-family: var(--font-mono); color: var(--text-dark); background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">${student.password || '123456'}</strong>
+                  <button type="button" class="btn btn-sm" id="btn-detail-quick-chg-pwd" style="background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; font-size: 0.68rem; padding: 2px 8px; border-radius: 4px; font-weight: 800; cursor: pointer;">
+                    🔑 Ganti PIN
+                  </button>
+                </div>
+              </div>
               <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">
                 <span style="color: var(--text-light);">Jenis Kelamin:</span>
                 <strong style="color: ${student.gender === 'L' ? '#1e40af' : '#be185d'};">${student.gender === 'L' ? 'Laki-laki (Ikhwan)' : 'Perempuan (Akhwat)'}</strong>
@@ -1152,11 +1409,14 @@ export class ModalManager {
           📱 Hubungi via WhatsApp (${student.phone || '082342307414'})
         </a>
         <div style="display: flex; gap: 8px;">
+          <button class="btn btn-outline btn-sm" id="btn-detail-open-chg-pwd" style="font-weight: 700; color: #0284c7; border-color: #bae6fd; background: #f0f9ff;">
+            🔑 Ganti Password
+          </button>
           <button class="btn btn-outline btn-sm" id="btn-goto-student-portal-detail" style="font-weight: 700;">
             🎓 Buka Portal Mahasiswa
           </button>
           <button class="btn btn-outline btn-sm" id="btn-edit-student-from-detail" style="font-weight: 700;">
-            ✏️ Edit Biodata
+            ✏️ Edit Akun & Biodata
           </button>
           <button class="btn btn-secondary btn-sm" id="btn-close-student-detail">
             Tutup
@@ -1172,6 +1432,17 @@ export class ModalManager {
       ModalManager.closeModal();
       ModalManager.openEditStudentModal(student.nim);
     });
+    footer.querySelector('#btn-detail-open-chg-pwd').addEventListener('click', () => {
+      ModalManager.closeModal();
+      ModalManager.openChangeStudentPasswordModal(student.nim);
+    });
+    const quickChgBtn = body.querySelector('#btn-detail-quick-chg-pwd');
+    if (quickChgBtn) {
+      quickChgBtn.addEventListener('click', () => {
+        ModalManager.closeModal();
+        ModalManager.openChangeStudentPasswordModal(student.nim);
+      });
+    }
     footer.querySelector('#btn-goto-student-portal-detail').addEventListener('click', () => {
       ModalManager.closeModal();
       appState.setRole('MAHASISWA', student.nim);

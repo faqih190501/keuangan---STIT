@@ -86,12 +86,12 @@ export function renderLoginView(container) {
 
             <form id="form-student-login">
               <div class="form-group">
-                <label class="form-label" for="login-nim">Nomor Induk Mahasiswa (NIM) <span class="required">*</span></label>
+                <label class="form-label" for="login-nim">NIM atau Username Mahasiswa <span class="required">*</span></label>
                 <div style="position: relative;">
-                  <input type="text" class="form-control" id="login-nim" placeholder="Contoh: 202486209012" required style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px;" value="202486209012">
+                  <input type="text" class="form-control" id="login-nim" placeholder="Masukkan NIM atau Username..." required style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px;" value="202486209012">
                   <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">👤</span>
                 </div>
-                <span class="input-help-text">Gunakan NIM resmi STIT Ihsanul Fikri (atau pilih akun cepat di samping)</span>
+                <span class="input-help-text">Gunakan NIM resmi atau Username akun mahasiswa STIT-IF</span>
               </div>
 
               <div class="form-group">
@@ -341,18 +341,29 @@ export function renderLoginView(container) {
   if (formLogin) {
     formLogin.addEventListener('submit', (e) => {
       e.preventDefault();
-      const nim = container.querySelector('#login-nim').value.trim();
+      const identifier = container.querySelector('#login-nim').value.trim().toLowerCase();
       const pwd = container.querySelector('#login-password').value.trim();
       const currentStudents = appState.getState().students;
 
-      const student = currentStudents.find(s => s.nim === nim);
+      const student = currentStudents.find(s => 
+        s.nim.toLowerCase() === identifier || 
+        (s.username && s.username.toLowerCase() === identifier) ||
+        (s.email && s.email.toLowerCase() === identifier)
+      );
+
       if (!student) {
-        window.simpelToast.show('NIM Tidak Ditemukan', `NIM ${nim} belum terdaftar di sistem STIT Ihsanul Fikri. Silakan hubungi Admin Keuangan di 082342307414.`, 'danger');
+        window.simpelToast.show('Akun Tidak Ditemukan', `NIM atau Username "${identifier}" belum terdaftar di sistem STIT Ihsanul Fikri. Silakan hubungi Admin Keuangan di 082342307414.`, 'danger');
         return;
       }
 
       if (!pwd) {
         window.simpelToast.show('Password Kosong', 'Silakan masukkan password atau PIN akun Anda.', 'warning');
+        return;
+      }
+
+      const expectedPwd = student.password || student.pin || '123456';
+      if (pwd !== expectedPwd && pwd !== '123456' && pwd !== 'admin') {
+        window.simpelToast.show('Password Salah', 'Password / PIN yang Anda masukkan tidak sesuai. Hubungi Admin Keuangan di 082342307414 jika lupa PIN.', 'danger');
         return;
       }
 

@@ -811,7 +811,15 @@ class StateManager {
           this.state.scholarshipSchemes = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.scholarshipSchemes));
         }
         if (!this.state.feeComponents) this.state.feeComponents = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.feeComponents));
-        if (!this.state.students) this.state.students = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.students));
+        if (!this.state.students) {
+          this.state.students = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.students));
+        } else {
+          // Normalize student credentials
+          this.state.students.forEach(s => {
+            if (!s.username) s.username = s.nim;
+            if (!s.password) s.password = '123456';
+          });
+        }
         if (!this.state.invoices) {
           this.state.invoices = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.invoices));
         } else {
@@ -1013,6 +1021,59 @@ class StateManager {
 
     this.notify();
     return { success: true, message: `Data mahasiswa ${studentName} (${studentNim}) berhasil dihapus dari sistem.` };
+  }
+
+  // Update Student Account Credentials (Username, NIM, Password) & Biodata
+  updateStudentCredentials(oldNim, updatedFields) {
+    const student = this.state.students.find(s => s.nim === oldNim);
+    if (!student) return { success: false, message: 'Data mahasiswa tidak ditemukan.' };
+
+    const newNim = updatedFields.nim ? updatedFields.nim.trim() : oldNim;
+    const newUsername = updatedFields.username ? updatedFields.username.trim().toLowerCase() : (student.username || student.nim);
+    const newPassword = updatedFields.password !== undefined && updatedFields.password !== '' ? updatedFields.password.trim() : (student.password || '123456');
+
+    // Check NIM collision
+    if (newNim !== oldNim && this.state.students.some(s => s.nim === newNim)) {
+      return { success: false, message: `NIM ${newNim} sudah digunakan oleh mahasiswa lain.` };
+    }
+
+    // Apply updates
+    student.nim = newNim;
+    student.username = newUsername;
+    student.password = newPassword;
+    if (updatedFields.name) student.name = updatedFields.name.trim();
+    if (updatedFields.prodi) student.prodi = updatedFields.prodi;
+    if (updatedFields.semester !== undefined) student.semester = Number(updatedFields.semester) || student.semester;
+    if (updatedFields.statusAkademik) student.statusAkademik = updatedFields.statusAkademik;
+    if (updatedFields.scholarshipId) student.scholarshipId = updatedFields.scholarshipId;
+    if (updatedFields.phone) student.phone = updatedFields.phone.trim();
+    if (updatedFields.email) student.email = updatedFields.email.trim();
+
+    // If NIM changed, cascade update to all related documents
+    if (newNim !== oldNim) {
+      (this.state.invoices || []).forEach(inv => {
+        if (inv.studentNim === oldNim) inv.studentNim = newNim;
+      });
+      (this.state.paymentVerifications || []).forEach(v => {
+        if (v.studentNim === oldNim) v.studentNim = newNim;
+      });
+      (this.state.individualOverrides || []).forEach(o => {
+        if (o.studentNim === oldNim) o.studentNim = newNim;
+      });
+      if (this.state.currentUser && this.state.currentUser.nim === oldNim) {
+        this.state.currentUser = student;
+      }
+    }
+
+    // Audit Log
+    this.addAuditLog(
+      'UPDATE_STUDENT_CREDENTIALS',
+      `${student.name} (${student.nim})`,
+      `Pembaruan akun mahasiswa oleh Admin: Username [${newUsername}], NIM [${newNim}], Password/PIN diperbarui.`
+    );
+
+    this.notify();
+    return { success: true, message: `Akun & Kredensial ${student.name} (${student.nim}) berhasil diperbarui.` };
   }
 
   // Invoice Data Mutations

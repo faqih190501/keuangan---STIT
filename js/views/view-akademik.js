@@ -380,7 +380,10 @@ function renderStudentsTableRows(students, state, getStudentInvoiceSummary) {
             <button class="btn btn-outline btn-sm btn-detail-student" data-student-nim="${s.nim}" title="Lihat Profil Lengkap & Histori Tagihan" style="font-weight: 700;">
               👁️ Detail
             </button>
-            <button class="btn btn-outline btn-sm btn-edit-student" data-student-nim="${s.nim}" title="Edit Data Mahasiswa">
+            <button class="btn btn-outline btn-sm btn-pwd-student" data-student-nim="${s.nim}" title="Ganti Password / PIN Mahasiswa Ini" style="color: #0284c7; border-color: #bae6fd; background: #f0f9ff; font-weight: 700;">
+              🔑
+            </button>
+            <button class="btn btn-outline btn-sm btn-edit-student" data-student-nim="${s.nim}" title="Edit Data & Akun Mahasiswa">
               ✏️
             </button>
             <button class="btn btn-ghost btn-sm btn-login-as-student" data-student-nim="${s.nim}" title="Buka Portal Mahasiswa Ini">
@@ -410,6 +413,14 @@ function attachStudentRowActions(container) {
     nameEl.addEventListener('click', () => {
       const nim = nameEl.getAttribute('data-student-nim');
       if (nim) window.simpelModals.openStudentDetailModal(nim);
+    });
+  });
+
+  // Quick Password Change button handler
+  container.querySelectorAll('.btn-pwd-student').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nim = btn.getAttribute('data-student-nim');
+      window.simpelModals.openChangeStudentPasswordModal(nim);
     });
   });
 
