@@ -4,6 +4,7 @@
  */
 
 import { PRODI, STATUS_TAGIHAN, SCHOLARSHIP_TYPES } from '../models.js';
+import { appState } from '../state.js';
 
 export function formatRupiah(amount) {
   if (amount === null || amount === undefined || isNaN(amount)) return 'Rp 0';
@@ -103,12 +104,24 @@ export function getProdiBadge(prodiId) {
 }
 
 export function getScholarshipBadge(scholarshipId) {
-  const s = SCHOLARSHIP_TYPES[scholarshipId];
-  if (scholarshipId === 'REGULER') {
+  if (!scholarshipId || scholarshipId === 'REGULER') {
     return `<span class="badge badge-unpaid">Reguler</span>`;
   }
+  const s = SCHOLARSHIP_TYPES[scholarshipId];
   if (s) {
     return `<span class="badge badge-scholarship"><span class="badge-dot"></span>${s.name}</span>`;
   }
-  return `<span class="badge badge-scholarship"><span class="badge-dot"></span>${scholarshipId || 'Beasiswa'}</span>`;
+  try {
+    const state = appState.getState();
+    if (state && state.scholarshipSchemes) {
+      const dynamicScheme = state.scholarshipSchemes.find(sc => sc.id === scholarshipId);
+      if (dynamicScheme) {
+        const shortName = dynamicScheme.name.split('(')[0].trim();
+        return `<span class="badge badge-scholarship"><span class="badge-dot"></span>${shortName}</span>`;
+      }
+    }
+  } catch (e) {
+    // state fallback
+  }
+  return `<span class="badge badge-scholarship"><span class="badge-dot"></span>${scholarshipId}</span>`;
 }

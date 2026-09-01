@@ -384,10 +384,17 @@ export class BillingEngine {
   }
 
   /**
-   * Approve manual payment proof by Bendahara
+   * Approve manual payment proof by Bendahara (ADMIN ONLY)
    */
   static approveManualPayment(verificationId, bendaharaNote = '') {
     const state = appState.getState();
+    if (state.currentRole !== 'ADMIN') {
+      return { 
+        success: false, 
+        message: 'Akses Ditolak: Hanya Admin / Bendahara STIT Ihsanul Fikri yang berwenang menyetujui pembayaran dan menerbitkan kwitansi resmi.' 
+      };
+    }
+
     const verif = state.paymentVerifications.find(v => v.id === verificationId);
     if (!verif) return { success: false, message: 'Data verifikasi tidak ditemukan' };
 
@@ -400,21 +407,23 @@ export class BillingEngine {
     const receiptSerial = Math.floor(1000 + Math.random() * 9000);
     const receiptNumber = `KW-IF/${now.getFullYear()}/${pad(now.getMonth() + 1)}/${receiptSerial}`;
 
+    const adminName = state.currentUser?.name || (state.adminProfile?.name) || 'Bendahara STIT-IF';
+
     verif.status = 'APPROVED';
     verif.processedAt = timeStr;
-    verif.processedBy = state.currentUser.name;
+    verif.processedBy = adminName;
     if (bendaharaNote) verif.notes = `${verif.notes} | Catatan Bendahara: ${bendaharaNote}`;
 
     invoice.status = STATUS_TAGIHAN.LUNAS;
     invoice.paidAmount = verif.amount;
     invoice.paymentDate = timeStr;
     invoice.receiptNumber = receiptNumber;
-    invoice.notes = `Disetujui oleh Bendahara (${state.currentUser.name}). Kwitansi: ${receiptNumber}`;
+    invoice.notes = `Disetujui oleh Bendahara (${adminName}). Kwitansi: ${receiptNumber}`;
 
     appState.addAuditLog(
       'VERIFY_TRANSFER_APPROVE',
       `${verif.id} (${verif.studentName})`,
-      `Bendahara menyetujui transfer manual Rp ${verif.amount.toLocaleString('id-ID')}. Kwitansi terbit: ${receiptNumber}.`
+      `Bendahara (${adminName}) menyetujui transfer manual Rp ${verif.amount.toLocaleString('id-ID')}. Kwitansi terbit: ${receiptNumber}.`
     );
 
     appState.notify();
@@ -422,10 +431,17 @@ export class BillingEngine {
   }
 
   /**
-   * Reject manual payment proof by Bendahara
+   * Reject manual payment proof by Bendahara (ADMIN ONLY)
    */
   static rejectManualPayment(verificationId, rejectReason) {
     const state = appState.getState();
+    if (state.currentRole !== 'ADMIN') {
+      return { 
+        success: false, 
+        message: 'Akses Ditolak: Hanya Admin / Bendahara STIT Ihsanul Fikri yang berwenang menolak verifikasi pembayaran.' 
+      };
+    }
+
     const verif = state.paymentVerifications.find(v => v.id === verificationId);
     if (!verif) return { success: false, message: 'Data verifikasi tidak ditemukan' };
 
@@ -435,15 +451,17 @@ export class BillingEngine {
       invoice.notes = `Bukti transfer ditolak oleh Bendahara: ${rejectReason}`;
     }
 
+    const adminName = state.currentUser?.name || (state.adminProfile?.name) || 'Bendahara STIT-IF';
+
     verif.status = 'REJECTED';
     verif.processedAt = new Date().toISOString().replace('T', ' ').slice(0, 19);
-    verif.processedBy = state.currentUser.name;
+    verif.processedBy = adminName;
     verif.rejectionReason = rejectReason;
 
     appState.addAuditLog(
       'VERIFY_TRANSFER_REJECT',
       `${verif.id} (${verif.studentName})`,
-      `Bendahara menolak bukti transfer. Alasan: "${rejectReason}".`
+      `Bendahara (${adminName}) menolak bukti transfer. Alasan: "${rejectReason}".`
     );
 
     appState.notify();
@@ -619,5 +637,99 @@ export class BillingEngine {
 
     appState.notify();
     return { success: true, override: newOverride };
+  }
+
+  /**
+   * Delete Individual Override by Bendahara
+   */
+  static deleteIndividualOverride(overrideId) {
+    const state = appState.getState();
+    if (!state.individualOverrides) return { success: false, message: 'Data override tidak ditemukan.' };
+
+    const index = state.individualOverrides.findIndex(o => o.id === overrideId);
+    if (index === -1) return { success: false, message: 'Data override tidak ditemukan.' };
+
+    const ovr = state.individualOverrides[index];
+    const student = state.students.find(s => s.nim === ovr.studentNim);
+    const studentName = student ? student.name : ovr.studentNim;
+
+    state.individualOverrides.splice(index, 1);
+
+    // Recalculate student's invoice if unpaid
+    if (student) {
+      const inv = state.invoices.find(i => i.studentNim === student.nim && i.semester === ovr.semester);
+      if (inv && (inv.status === STATUS_TAGIHAN.BELUM_BAYAR || inv.status === STATUS_TAGIHAN.DICICIL)) {
+        const reCalc = this.calculateInvoice(student, ovr.semester);
+        inv.items = reCalc.items;
+        inv.grossAmount = reCalc.grossAmount;
+        inv.totalDiscount = reCalc.totalDiscount;
+        inv.netAmount = reCalc.netAmount;
+        inv.notes = `Override dicabut. Tagihan dikembalikan ke skema reguler/beasiswa aktif.`;
+      }
+    }
+
+    appState.addAuditLog(
+      'DELETE_OVERRIDE',
+      `Override Mahasiswa (${studentName})`,
+      `Pencabutan override/dispensasi [${ovr.id}]: "${ovr.reason}".`
+    );
+
+    appState.notify();
+    return { success: true, message: `Override ${ovr.id} berhasil dihapus.` };
+  }
+
+  /**
+   * Process Direct Manual/Cashier Payment by Admin (ADMIN ONLY - Kasir Kampus / Loket Bendahara)
+   */
+  static processManualPayment({ invoiceId, amount = null, method = 'KASIR_TUNAI', verifiedBy = null, notes = '' }) {
+    const state = appState.getState();
+    if (state.currentRole !== 'ADMIN') {
+      return { 
+        success: false, 
+        message: 'Akses Ditolak: Hanya Admin / Bendahara STIT Ihsanul Fikri yang berwenang mengesahkan pelunasan pembayaran kasir.' 
+      };
+    }
+
+    const invoice = state.invoices.find(i => i.id === invoiceId);
+    if (!invoice) return { success: false, message: 'Tagihan tidak ditemukan.' };
+
+    const student = state.students.find(s => s.nim === invoice.studentNim);
+    const now = new Date();
+    const pad = (n) => n.toString().padStart(2, '0');
+    const timeStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+    const currentPaid = Number(invoice.paidAmount) || 0;
+    const remainingBefore = invoice.netAmount - currentPaid;
+    const actualPay = amount !== null && amount !== undefined ? Math.min(Number(amount), remainingBefore) : remainingBefore;
+    const newTotalPaid = currentPaid + actualPay;
+
+    const isFullyPaid = newTotalPaid >= invoice.netAmount;
+    const receiptSerial = Math.floor(1000 + Math.random() * 9000);
+    const receiptNumber = `KW-IF/${now.getFullYear()}/${pad(now.getMonth() + 1)}/${receiptSerial}`;
+
+    invoice.paidAmount = newTotalPaid;
+    invoice.status = isFullyPaid ? STATUS_TAGIHAN.LUNAS : STATUS_TAGIHAN.DICICIL;
+    invoice.paymentMethod = method;
+    invoice.paymentDate = timeStr;
+    invoice.receiptNumber = receiptNumber;
+    invoice.notes = isFullyPaid
+      ? (notes || `Pelunasan langsung via ${method === 'KASIR_TUNAI' ? 'Kasir Tunai Kampus' : 'Bank Manual'}. Diverifikasi oleh ${verifiedBy}.`)
+      : (notes || `Pembayaran angsuran Rp ${actualPay.toLocaleString('id-ID')} via ${method}. Total terbayar Rp ${newTotalPaid.toLocaleString('id-ID')} dari Rp ${invoice.netAmount.toLocaleString('id-ID')}.`);
+
+    appState.addAuditLog(
+      isFullyPaid ? 'PAYMENT_MANUAL_LUNAS' : 'PAYMENT_MANUAL_CICILAN',
+      `${invoice.id} (${student ? student.name : invoice.studentNim})`,
+      `Penerimaan pembayaran ${isFullyPaid ? 'lunas' : 'angsuran'} sebesar Rp ${actualPay.toLocaleString('id-ID')} via ${method} oleh ${verifiedBy}. Kwitansi resmi terbit: ${receiptNumber}.`
+    );
+
+    appState.notify();
+    return {
+      success: true,
+      receiptNumber,
+      invoice,
+      isFullyPaid,
+      paidAmount: actualPay,
+      totalPaid: newTotalPaid
+    };
   }
 }

@@ -107,6 +107,27 @@ class Router {
       });
     }
 
+    // Self-Profile click handler (Sidebar user avatar & Topbar profile button)
+    const handleOpenSelfProfile = () => {
+      const state = appState.getState();
+      if (state.currentRole === 'MAHASISWA') {
+        const studentNim = state.currentUser?.nim || (state.students[0] && state.students[0].nim);
+        if (studentNim) ModalManager.openStudentSelfProfileModal(studentNim);
+      } else {
+        ModalManager.openAdminSelfProfileModal();
+      }
+    };
+
+    const sidebarProfile = document.getElementById('sidebar-user-profile');
+    if (sidebarProfile) {
+      sidebarProfile.addEventListener('click', handleOpenSelfProfile);
+    }
+
+    const topbarProfileBtn = document.getElementById('btn-topbar-profile');
+    if (topbarProfileBtn) {
+      topbarProfileBtn.addEventListener('click', handleOpenSelfProfile);
+    }
+
     // Sync / Reset Data State button
     const btnSyncState = document.getElementById('btn-sync-reset-state');
     if (btnSyncState) {
@@ -192,6 +213,20 @@ class Router {
   }
 
   navigateTo(viewName) {
+    const state = appState.getState();
+    const currentRole = state.currentRole || 'ADMIN';
+    const allowedViews = ROLE_PERMISSIONS[currentRole]?.allowedViews || [];
+
+    // Enforce role-based access control (Hanya Admin yang dapat mengakses modul keuangan & persetujuan)
+    if (viewName && !allowedViews.includes(viewName) && viewName !== 'view-login' && viewName !== 'view-qr-validator') {
+      window.simpelToast.show(
+        'Akses Terbatas',
+        'Hanya Admin / Bendahara STIT-IF yang berwenang mengakses modul ini.',
+        'danger'
+      );
+      viewName = ROLE_PERMISSIONS[currentRole]?.defaultView || 'view-mahasiswa';
+    }
+
     this.currentView = viewName;
 
     // Highlight active nav item

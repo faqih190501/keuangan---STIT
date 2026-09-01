@@ -113,11 +113,11 @@
 
       <!-- Sidebar Footer (Active User Profile) -->
       <div class="sidebar-footer">
-        <div class="user-mini-profile">
-          <div class="user-avatar" id="topbar-user-avatar">AD</div>
+        <div class="user-mini-profile" id="sidebar-user-profile" style="cursor: pointer; transition: opacity 0.2s;" title="Klik untuk mengedit profil Anda">
+          <div class="user-avatar" id="topbar-user-avatar">SF</div>
           <div class="user-info-text">
-            <span class="user-name" id="topbar-user-name">Admin SIMPEL-IF</span>
-            <span class="user-role-tag">Pengelola</span>
+            <span class="user-name" id="topbar-user-name">Ustadzah Siti Fatimah, S.E.</span>
+            <span class="user-role-tag" id="topbar-user-role">Bendahara ⚙️</span>
           </div>
         </div>
         <button id="btn-sidebar-logout" title="Keluar / Ganti Akun" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 32px; height: 32px; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;" aria-label="Keluar atau Ganti Akun">
@@ -146,6 +146,12 @@
             <span class="dot"></span>
             <span>Tahun Akademik: <strong>2026/2027 Ganjil</strong></span>
           </div>
+
+          <!-- User Profile Trigger Button -->
+          <button class="btn btn-outline btn-sm" id="btn-topbar-profile" title="Klik untuk mengedit profil Anda" style="font-weight: 700; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-md); cursor: pointer; background: var(--bg-surface);">
+            <span>👤</span>
+            <span id="btn-topbar-profile-name">Profil Saya</span>
+          </button>
 
           <!-- Quick QR Validator shortcut button -->
           <button class="btn-header-action" id="btn-quick-qr" title="Buka Validator QR Code Kwitansi">

@@ -78,11 +78,14 @@ export class AuthManager {
     const userNameEl = document.getElementById('topbar-user-name');
     const userRoleEl = document.getElementById('topbar-user-role');
     const userAvatarEl = document.getElementById('topbar-user-avatar');
+    const topbarProfNameEl = document.getElementById('btn-topbar-profile-name');
 
     const roleObj = USER_ROLES[currentRole] || USER_ROLES.ADMIN;
-    if (userNameEl) userNameEl.textContent = currentUser.name || roleObj.defaultUser;
-    if (userRoleEl) userRoleEl.textContent = `${roleObj.shortTitle}`;
+    const displayName = currentUser.name || roleObj.defaultUser;
+    if (userNameEl) userNameEl.textContent = displayName;
+    if (userRoleEl) userRoleEl.textContent = `${currentRole === 'ADMIN' ? (currentUser.title ? 'Bendahara' : 'Admin') : 'Mahasiswa'} ⚙️`;
     if (userAvatarEl) userAvatarEl.textContent = currentUser.avatarText || roleObj.avatarText;
+    if (topbarProfNameEl) topbarProfNameEl.textContent = currentRole === 'ADMIN' ? 'Profil Admin' : 'Profil Mahasiswa';
 
     this.updateSidebarNav();
   }

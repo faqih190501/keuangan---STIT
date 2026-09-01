@@ -9,21 +9,76 @@ import { BillingEngine } from '../billing-engine.js';
 
 export function renderVerifikasiView(container) {
   const state = appState.getState();
+
+  // Strict Access Guard: Only Admin / Bendahara can approve payments
+  if (state.currentRole !== 'ADMIN') {
+    container.innerHTML = `
+      <div class="card" style="text-align: center; padding: 48px 24px; border: 2px solid #fecaca; background: #fff5f5; border-radius: var(--radius-xl); box-shadow: var(--shadow-md); max-width: 650px; margin: 40px auto;">
+        <div style="font-size: 3.2rem; margin-bottom: 12px;">🔒</div>
+        <h3 style="color: #991b1b; font-size: 1.3rem; font-weight: 900; margin-bottom: 8px;">Akses Terbatas: Khusus Admin & Bendahara</h3>
+        <p style="color: #7f1d1d; font-size: 0.86rem; max-width: 500px; margin: 0 auto 24px; line-height: 1.5;">
+          Sesuai SOP Keuangan STIT Ihsanul Fikri, <strong>hanya Admin Keuangan / Bendahara</strong> yang memiliki wewenang untuk menyetujui, menolak, dan menerbitkan kwitansi sah atas bukti transfer manual mahasiswa.
+        </p>
+        <button class="btn btn-primary" id="btn-redirect-portal-mhs" style="font-weight: 800; padding: 10px 22px;">
+          Kembali ke Portal Mahasiswa &rarr;
+        </button>
+      </div>
+    `;
+    const btnRedir = container.querySelector('#btn-redirect-portal-mhs');
+    if (btnRedir) {
+      btnRedir.addEventListener('click', () => {
+        if (window.simpelRouter) window.simpelRouter.navigateTo('view-mahasiswa');
+      });
+    }
+    return;
+  }
+
   const verifications = state.paymentVerifications || [];
+  const pendingCount = verifications.filter(v => v.status === 'PENDING').length;
+  const approvedCount = verifications.filter(v => v.status === 'APPROVED').length;
+  const rejectedCount = verifications.filter(v => v.status === 'REJECTED').length;
 
   container.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
       <div>
-        <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark);">🔍 Antrean Verifikasi Bukti Pembayaran Manual</h2>
-        <p style="font-size: 0.8rem; color: var(--text-light);">Tinjau bukti transfer bank manual yang diunggah oleh mahasiswa STIT Ihsanul Fikri sebelum menerbitkan kwitansi resmi.</p>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin: 0;">🔍 Antrean Verifikasi & Persetujuan Pembayaran</h2>
+          <span class="badge" style="background: #1e3a8a; color: #fff; font-weight: 800; font-size: 0.72rem;">👑 Otoritas Khusus Admin</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">Tinjau, validasi rekening koran, dan setujui bukti transfer bank manual untuk menerbitkan kwitansi resmi QR Code.</p>
       </div>
       <div class="filter-group">
-        <select class="filter-select" id="filter-verif-status">
-          <option value="ALL">Semua Status</option>
-          <option value="PENDING" selected>Menunggu Verifikasi (Pending)</option>
-          <option value="APPROVED">Telah Disetujui (Approved)</option>
-          <option value="REJECTED">Ditolak (Rejected)</option>
+        <select class="filter-select" id="filter-verif-status" style="font-weight: 700;">
+          <option value="ALL">Semua Status (${verifications.length})</option>
+          <option value="PENDING" selected>Menunggu Verifikasi (${pendingCount})</option>
+          <option value="APPROVED">Telah Disetujui (${approvedCount})</option>
+          <option value="REJECTED">Ditolak (${rejectedCount})</option>
         </select>
+      </div>
+    </div>
+
+    <!-- Quick Status Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px;">
+      <div style="background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <div style="font-size: 0.72rem; color: #b45309; font-weight: 700; text-transform: uppercase;">Menunggu Verifikasi</div>
+          <div style="font-size: 1.25rem; font-weight: 900; color: #92400e;">${pendingCount} Berkas</div>
+        </div>
+        <div style="font-size: 1.6rem;">⏳</div>
+      </div>
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a; padding: 12px 16px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <div style="font-size: 0.72rem; color: #15803d; font-weight: 700; text-transform: uppercase;">Telah Disetujui</div>
+          <div style="font-size: 1.25rem; font-weight: 900; color: #166534;">${approvedCount} Berkas</div>
+        </div>
+        <div style="font-size: 1.6rem;">✅</div>
+      </div>
+      <div style="background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #dc2626; padding: 12px 16px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <div style="font-size: 0.72rem; color: #b91c1c; font-weight: 700; text-transform: uppercase;">Ditolak / Batal</div>
+          <div style="font-size: 1.25rem; font-weight: 900; color: #991b1b;">${rejectedCount} Berkas</div>
+        </div>
+        <div style="font-size: 1.6rem;">❌</div>
       </div>
     </div>
 

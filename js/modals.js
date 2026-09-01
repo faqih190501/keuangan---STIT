@@ -57,6 +57,14 @@ export class ModalManager {
     const { overlay, card, title, body, footer } = this.getModalElements();
     card.classList.add('modal-xl');
 
+    const admin = state.adminProfile || {
+      name: 'Ustadzah Siti Fatimah, S.E.',
+      title: 'Bendahara Penerimaan Kampus',
+      nip: '19840512 201201 2 003'
+    };
+
+    const signatureShort = (admin.name || 'Siti Fatimah').replace(/^(Ustadz|Ustadzah|Bpk|Ibu|Dr|Dra|Drs)\.?\s+/i, '').split(',')[0].trim();
+
     title.innerHTML = `🧾 Kwitansi Elektronik Resmi — STIT Ihsanul Fikri`;
     
     body.innerHTML = `
@@ -79,82 +87,103 @@ export class ModalManager {
             </div>
           </div>
 
-          <!-- Title -->
-          <div class="receipt-title-box">
-            <div class="receipt-title-heading">BUKTI PEMBAYARAN BIAYA PENDIDIKAN (KWITANSI RESMI)</div>
-            <div class="receipt-number-tag">NOMOR: ${invoice.receiptNumber || 'KW-IF/2026/08/' + invoice.id.slice(-4)}</div>
-          </div>
-
-          <!-- Student Meta Grid -->
-          <div class="receipt-info-grid">
-            <div class="receipt-info-row">
-              <span class="receipt-info-label">Nama Mahasiswa</span>
-              <span class="receipt-info-val">: ${student.name}</span>
+          <!-- Receipt Details -->
+          <div class="receipt-meta-grid">
+            <div>
+              <div class="receipt-meta-label">Nomor Kwitansi Resmi:</div>
+              <div class="receipt-meta-value receipt-number-highlight">${invoice.receiptNumber || 'KW-IF/2026/08/0001'}</div>
             </div>
-            <div class="receipt-info-row">
-              <span class="receipt-info-label">Semester / TA</span>
-              <span class="receipt-info-val">: Semester ${student.semester} (${invoice.semester})</span>
-            </div>
-            <div class="receipt-info-row">
-              <span class="receipt-info-label">Nomor Induk (NIM)</span>
-              <span class="receipt-info-val" style="font-family:var(--font-mono);">: ${student.nim}</span>
-            </div>
-            <div class="receipt-info-row">
-              <span class="receipt-info-label">Kanal Pembayaran</span>
-              <span class="receipt-info-val">: ${invoice.paymentMethod === 'VA_BSI' ? 'Virtual Account BSI' : invoice.paymentMethod === 'VA_MANDIRI' ? 'Virtual Account Bank Mandiri' : 'Transfer Manual Bank'}</span>
-            </div>
-            <div class="receipt-info-row">
-              <span class="receipt-info-label">Program Studi</span>
-              <span class="receipt-info-val">: ${student.prodi === 'BKPI' ? 'Bimbingan Konseling Pendidikan Islam (BKPI)' : 'Pendidikan Islam Anak Usia Dini (PIAUD)'}</span>
-            </div>
-            <div class="receipt-info-row">
-              <span class="receipt-info-label">Skema Pembiayaan</span>
-              <span class="receipt-info-val">: <strong>${scholarship.name}</strong></span>
+            <div style="text-align: right;">
+              <div class="receipt-meta-label">Status Verifikasi Kas:</div>
+              <span class="badge ${invoice.status === 'LUNAS' ? 'badge-paid' : 'badge-installment'}">
+                <span class="badge-dot"></span>${invoice.status === 'LUNAS' ? 'LUNAS (SAH)' : 'DICICIL'}
+              </span>
             </div>
           </div>
 
-          <!-- Table Breakdown -->
-          <div class="receipt-table-wrapper">
-            <table class="receipt-table">
-              <thead>
+          <!-- Student & Payment Profile Section -->
+          <div class="receipt-student-profile">
+            <div class="receipt-profile-row">
+              <span class="receipt-profile-label">Telah Diterima Dari:</span>
+              <span class="receipt-profile-value" style="font-size: 1rem; font-weight: 800;">${student.name}</span>
+            </div>
+            <div class="receipt-profile-row">
+              <span class="receipt-profile-label">Nomor Induk Mahasiswa (NIM):</span>
+              <span class="receipt-profile-value" style="font-family: var(--font-mono); font-weight: 700;">${student.nim}</span>
+            </div>
+            <div class="receipt-profile-row">
+              <span class="receipt-profile-label">Program Studi & Semester:</span>
+              <span class="receipt-profile-value">${student.prodi === 'BKPI' ? 'Bimbingan Konseling Pendidikan Islam (BKPI)' : 'Pendidikan Islam Anak Usia Dini (PIAUD)'} &bull; Semester ${student.semester}</span>
+            </div>
+            <div class="receipt-profile-row">
+              <span class="receipt-profile-label">Skema Pembiayaan:</span>
+              <span class="receipt-profile-value">${scholarship ? scholarship.name : 'Reguler Mandiri'}</span>
+            </div>
+            <div class="receipt-profile-row">
+              <span class="receipt-profile-label">Tahun Akademik:</span>
+              <span class="receipt-profile-value">${invoice.semester || state.activeSemester}</span>
+            </div>
+          </div>
+
+          <!-- Invoice Breakdown Table -->
+          <table class="receipt-breakdown-table">
+            <thead>
+              <tr>
+                <th style="width: 50px; text-align: center;">No.</th>
+                <th>Rincian Pos Pembayaran</th>
+                <th style="text-align: right;">Tarif Pokok</th>
+                <th style="text-align: right;">Subsidi Beasiswa</th>
+                <th style="text-align: right;">Kewajiban Bersih</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${invoice.items.map((item, idx) => `
                 <tr>
-                  <th style="width: 40px; text-align: center;">No</th>
-                  <th>Komponen Biaya Pendidikan</th>
-                  <th class="text-right">Tarif Dasar</th>
-                  <th class="text-right">Subsidi / Beasiswa</th>
-                  <th class="text-right">Jumlah Dibayar</th>
+                  <td style="text-align: center; font-family: var(--font-mono);">${idx + 1}</td>
+                  <td>
+                    <div style="font-weight: 700;">${item.name}</div>
+                    <div style="font-size: 0.72rem; color: var(--text-light);">${item.category === 'INITIAL' ? 'Biaya Registrasi Awal' : item.category === 'FINAL' ? 'Biaya Akhir Studi' : 'Biaya Rutin Semester'}</div>
+                  </td>
+                  <td style="text-align: right; font-family: var(--font-mono);">${formatRupiah(item.grossAmount)}</td>
+                  <td style="text-align: right; font-family: var(--font-mono); color: #0284c7;">
+                    ${item.discountAmount > 0 ? `-${formatRupiah(item.discountAmount)}` : '-'}
+                  </td>
+                  <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">
+                    ${formatRupiah(item.netAmount)}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                ${invoice.items.map((item, idx) => `
-                  <tr>
-                    <td style="text-align: center;">${idx + 1}</td>
-                    <td>
-                      <strong>${item.name}</strong>
-                      ${item.discount > 0 ? `<div style="font-size:0.7rem; color:#0284c7;">Alokasi Beasiswa: ${scholarship.name}</div>` : ''}
-                    </td>
-                    <td class="text-right">${formatRupiah(item.baseAmount)}</td>
-                    <td class="text-right" style="color: #0284c7;">${item.discount > 0 ? `-${formatRupiah(item.discount)}` : '-'}</td>
-                    <td class="text-right" style="font-weight: 700;">${formatRupiah(item.finalAmount)}</td>
-                  </tr>
-                `).join('')}
-                <tr class="total-row">
-                  <td colspan="4" style="text-align: right; padding-right: 14px;">TOTAL PEMBAYARAN KAS LUNAS:</td>
-                  <td class="text-right" style="color: #0f2042; font-size: 1.05rem;">${formatRupiah(invoice.paidAmount || invoice.netAmount)}</td>
+              `).join('')}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" style="text-align: right; font-weight: 700;">TOTAL BIAYA PENDIDIKAN:</td>
+                <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">${formatRupiah(invoice.grossAmount)}</td>
+              </tr>
+              ${invoice.totalDiscount > 0 ? `
+                <tr style="color: #0284c7;">
+                  <td colspan="4" style="text-align: right; font-weight: 700;">TOTAL SUBSIDI BEASISWA / POTONGAN:</td>
+                  <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">-${formatRupiah(invoice.totalDiscount)}</td>
                 </tr>
-              </tbody>
-            </table>
-          </div>
+              ` : ''}
+              <tr class="receipt-grand-total-row">
+                <td colspan="4" style="text-align: right; font-weight: 800; font-size: 0.95rem;">TOTAL DITERIMA KAS (NET):</td>
+                <td style="text-align: right; font-family: var(--font-mono); font-weight: 900; font-size: 1.1rem; color: #1e40af;">
+                  ${formatRupiah(invoice.paidAmount || invoice.netAmount)}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
 
           <!-- Terbilang Box -->
           <div class="receipt-terbilang-box">
-            <strong>Terbilang:</strong> # ${terbilangText} Rupiah #
+            <div class="terbilang-label">Terbilang:</div>
+            <div class="terbilang-text">&ldquo;${terbilangText}&rdquo;</div>
           </div>
 
-          <!-- Bottom Section (QR Validation & Signature) -->
-          <div class="receipt-bottom-section">
-            <div class="receipt-qr-validation">
-              <div class="receipt-qr-code">
+          <!-- Bottom Row: QR Authenticity & Official Signature -->
+          <div class="receipt-bottom-grid">
+            <div class="receipt-qr-section">
+              <div class="receipt-qr-box">
                 ${qrSVG}
               </div>
               <div class="receipt-qr-instructions">
@@ -166,12 +195,12 @@ export class ModalManager {
 
             <div class="receipt-signature-box">
               <div class="signature-date">STIT Ihsanul Fikri, ${formatDate(invoice.paymentDate || invoice.createdDate)}</div>
-              <div class="signature-role">Bendahara Penerimaan Kampus,</div>
+              <div class="signature-role">${admin.title || 'Bendahara Penerimaan Kampus'},</div>
               <div class="signature-space">
-                <div class="signature-digital-img">Siti Fatimah</div>
+                <div class="signature-digital-img">${signatureShort}</div>
               </div>
-              <div class="signature-name">Ustadzah Siti Fatimah, S.E.</div>
-              <div class="signature-nip">NIDN: 2108840291</div>
+              <div class="signature-name">${admin.name}</div>
+              <div class="signature-nip">${admin.nip ? `NIP/NIDN: ${admin.nip}` : 'NIP: 19840512 201201 2 003'}</div>
             </div>
           </div>
         </div>
@@ -1052,6 +1081,143 @@ export class ModalManager {
       window.simpelToast.show('Profil Berhasil Diperbarui!', 'Biodata profil Anda telah tersimpan dengan aman.', 'success');
       ModalManager.closeModal();
       if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+    });
+  }
+
+  /**
+   * 9. Admin / Bendahara Self-Profile Edit Modal
+   */
+  static openAdminSelfProfileModal() {
+    const state = appState.getState();
+    const admin = state.adminProfile || {
+      id: 'USR-ADMIN',
+      name: 'Ustadzah Siti Fatimah, S.E.',
+      role: 'ADMIN',
+      email: 'bendahara@stit-if.ac.id',
+      phone: '081392817263',
+      title: 'Kepala Bagian Keuangan & Bendahara Penerimaan',
+      department: 'Biro Keuangan & Administrasi Umum (BAU)',
+      nip: '19840512 201201 2 003',
+      avatarText: 'SF'
+    };
+
+    const { overlay, card, title, body, footer } = this.getModalElements();
+    card.classList.remove('modal-xl');
+    card.classList.add('modal-lg');
+
+    title.innerHTML = `👑 Profil & Pengaturan Identitas Admin / Bendahara`;
+
+    body.innerHTML = `
+      <form id="form-admin-profile" onsubmit="return false;">
+        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: #ffffff; border-radius: var(--radius-xl); padding: 18px 22px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 52px; height: 52px; border-radius: 50%; background: #ffffff; color: #1e40af; font-weight: 900; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+              ${admin.avatarText || 'SF'}
+            </div>
+            <div>
+              <div style="font-size: 1.05rem; font-weight: 800;">${admin.name}</div>
+              <div style="font-size: 0.76rem; opacity: 0.9;">${admin.title}</div>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge" style="background: #3b82f6; color: #ffffff; font-weight: 800; font-size: 0.74rem;">STIT Ihsanul Fikri</span>
+            <div style="font-size: 0.72rem; opacity: 0.85; margin-top: 3px;">Pagentan, Magelang</div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap & Gelar Pejabat <span class="required">*</span></label>
+            <input type="text" class="form-control" id="admin-prof-name" value="${admin.name}" required placeholder="Contoh: Ustadzah Siti Fatimah, S.E.">
+            <small style="font-size: 0.72rem; color: var(--text-light); margin-top: 2px; display: block;">Nama ini dicantumkan sebagai penandatangan pada kwitansi sah & bukti bayar.</small>
+          </div>
+          <div class="form-group">
+            <label class="form-label">NIP / NIDN / No. Induk Pegawai</label>
+            <input type="text" class="form-control" id="admin-prof-nip" value="${admin.nip || '19840512 201201 2 003'}" placeholder="Contoh: 19840512 201201 2 003">
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Jabatan Struktural / Tugas Pokok <span class="required">*</span></label>
+            <input type="text" class="form-control" id="admin-prof-title" value="${admin.title || 'Kepala Bagian Keuangan & Bendahara Penerimaan'}" required placeholder="Contoh: Kepala Bagian Keuangan">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Unit Kerja / Biro Administrasi</label>
+            <input type="text" class="form-control" id="admin-prof-dept" value="${admin.department || 'Biro Keuangan & Administrasi Umum (BAU)'}" placeholder="Biro Keuangan & Administrasi Umum">
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Email Resmi Institusi <span class="required">*</span></label>
+            <input type="email" class="form-control" id="admin-prof-email" value="${admin.email || 'bendahara@stit-if.ac.id'}" required placeholder="nama@stit-if.ac.id">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nomor WhatsApp / HP Aktif <span class="required">*</span></label>
+            <input type="text" class="form-control" id="admin-prof-phone" value="${admin.phone || '081392817263'}" required placeholder="0813-xxxx-xxxx">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label">Inisial Avatar (Maks. 2 Huruf)</label>
+          <input type="text" class="form-control" id="admin-prof-avatar" value="${admin.avatarText || 'SF'}" maxlength="2" style="width: 120px; font-weight: 800; text-transform: uppercase; text-align: center;">
+        </div>
+
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 12px 16px; margin-top: 16px; font-size: 0.78rem; color: #166534; line-height: 1.45;">
+          🛡️ <strong>Keterangan Integritas:</strong> Informasi identitas ini disinkronkan secara otomatis ke seluruh komponen aplikasi, kop surat kwitansi pembayaran, pusat verifikasi QR, serta log audit sistem.
+        </div>
+      </form>
+    `;
+
+    footer.innerHTML = `
+      <button class="btn btn-outline" id="btn-cancel-admin-profile">Batal</button>
+      <button class="btn btn-primary" id="btn-save-admin-profile" style="background: #1e40af; font-weight: 800;">
+        💾 Simpan Perubahan Profil Admin
+      </button>
+    `;
+
+    overlay.classList.add('active');
+
+    footer.querySelector('#btn-cancel-admin-profile').addEventListener('click', () => ModalManager.closeModal());
+    footer.querySelector('#btn-save-admin-profile').addEventListener('click', () => {
+      const name = body.querySelector('#admin-prof-name').value.trim();
+      const nip = body.querySelector('#admin-prof-nip').value.trim();
+      const titleText = body.querySelector('#admin-prof-title').value.trim();
+      const department = body.querySelector('#admin-prof-dept').value.trim();
+      const email = body.querySelector('#admin-prof-email').value.trim();
+      const phone = body.querySelector('#admin-prof-phone').value.trim();
+      let avatarText = body.querySelector('#admin-prof-avatar').value.trim().toUpperCase();
+
+      if (!name) {
+        window.simpelToast.show('Peringatan', 'Nama lengkap Admin/Bendahara tidak boleh kosong.', 'warning');
+        return;
+      }
+      if (!email) {
+        window.simpelToast.show('Peringatan', 'Email resmi institusi tidak boleh kosong.', 'warning');
+        return;
+      }
+
+      if (!avatarText) {
+        const words = name.replace(/[^a-zA-Z\s]/g, '').trim().split(/\s+/).filter(Boolean);
+        avatarText = words.slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'AD';
+      }
+
+      const res = appState.updateAdminProfile({
+        name,
+        nip,
+        title: titleText,
+        department,
+        email,
+        phone,
+        avatarText
+      });
+
+      if (res.success) {
+        window.simpelToast.show('Profil Berhasil Diperbarui!', `Identitas ${name} telah diperbarui di sistem.`, 'success');
+        ModalManager.closeModal();
+        if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+      }
     });
   }
 }

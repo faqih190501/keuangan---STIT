@@ -91,6 +91,9 @@ export function renderDashboardBendahara(container) {
         <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">Pusat komando tata kelola finansial, analisis neraca prodi BKPI & PIAUD, serapan beasiswa, dan operasional tagihan mahasiswa STIT Ihsanul Fikri.</p>
       </div>
       <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <button class="btn btn-outline" id="btn-admin-open-profile" style="font-weight: 700;">
+          👤 Profil Saya
+        </button>
         <button class="btn btn-outline" id="btn-export-exec-summary">
           📊 Ekspor Neraca (.csv)
         </button>
@@ -387,6 +390,13 @@ export function renderDashboardBendahara(container) {
     });
   }
 
+  const btnAdminProfile = container.querySelector('#btn-admin-open-profile');
+  if (btnAdminProfile) {
+    btnAdminProfile.addEventListener('click', () => {
+      window.simpelModals.openAdminSelfProfileModal();
+    });
+  }
+
   const btnNewInv = container.querySelector('#btn-quick-new-invoice');
   if (btnNewInv) {
     btnNewInv.addEventListener('click', () => {
@@ -573,19 +583,21 @@ function attachTableActionListeners(tbody, state) {
       const studentName = student ? student.name : inv.studentNim;
 
       const isInstallment = inv.status === STATUS_TAGIHAN.DICICIL;
-      const sisaBayar = isInstallment ? (inv.netAmount - inv.paidAmount) : inv.netAmount;
+      const sisaBayar = isInstallment ? (inv.netAmount - (inv.paidAmount || 0)) : inv.netAmount;
 
-      if (confirm(`Konfirmasi Pembayaran Kasir / Bank:\n\nMahasiswa: ${studentName}\nTagihan: ${inv.id}\nNominal Tagihan: ${formatRupiah(sisaBayar)}\n\nLanjutkan pelunasan sekarang?`)) {
+      if (confirm(`Konfirmasi Penerimaan Pembayaran Kasir / Bank:\n\n• Mahasiswa: ${studentName}\n• Tagihan: ${inv.id}\n• Sisa Wajib Bayar: ${formatRupiah(sisaBayar)}\n\nLanjutkan pelunasan kasir dan terbitkan kwitansi resmi sekarang?`)) {
         const res = BillingEngine.processManualPayment({
           invoiceId: inv.id,
           amount: sisaBayar,
-          method: 'TRANSFER_MANUAL',
-          verifiedBy: state.currentUser.name
+          method: 'KASIR_TUNAI',
+          verifiedBy: state.currentUser.name || 'Admin Bendahara',
+          notes: 'Pelunasan langsung kasir kampus STIT Ihsanul Fikri'
         });
 
         if (res.success) {
-          window.simpelToast.show('Pembayaran Berhasil Dilunasi', `Kwitansi resmi ${res.invoice.receiptNumber} telah diterbitkan.`, 'success');
+          window.simpelToast.show('Pembayaran Berhasil Dilunasi', `Kwitansi resmi ${res.receiptNumber} telah diterbitkan.`, 'success');
           if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+          window.simpelModals.openReceiptModal(res.invoice.id);
         }
       }
     });

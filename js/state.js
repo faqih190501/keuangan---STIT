@@ -10,13 +10,28 @@ const STORAGE_KEY = 'SIMPEL_IF_STATE_V3';
 const INITIAL_SEED_DATA = {
   activeSemester: '2026/2027 Ganjil',
   currentRole: 'ADMIN',
+  adminProfile: {
+    id: 'USR-ADMIN',
+    name: 'Ustadzah Siti Fatimah, S.E.',
+    role: 'ADMIN',
+    email: 'bendahara@stit-if.ac.id',
+    phone: '081392817263',
+    title: 'Kepala Bagian Keuangan & Bendahara Penerimaan',
+    department: 'Biro Keuangan & Administrasi Umum (BAU)',
+    nip: '19840512 201201 2 003',
+    avatarText: 'SF'
+  },
   currentUser: {
     id: 'USR-ADMIN',
-    name: 'Admin SIMPEL-IF',
+    name: 'Ustadzah Siti Fatimah, S.E.',
     role: 'ADMIN',
-    email: 'admin@stit-ihsanulfikri.ac.id',
-    avatarText: 'AD',
-    prodi: 'Pusat Keuangan & Akademik'
+    email: 'bendahara@stit-if.ac.id',
+    phone: '081392817263',
+    title: 'Kepala Bagian Keuangan & Bendahara Penerimaan',
+    department: 'Biro Keuangan & Administrasi Umum (BAU)',
+    nip: '19840512 201201 2 003',
+    avatarText: 'SF',
+    prodi: 'Bendahara Penerimaan'
   },
 
   // Fee Components Configuration
@@ -593,6 +608,9 @@ class StateManager {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         this.state = JSON.parse(saved);
+        if (!this.state.adminProfile) {
+          this.state.adminProfile = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.adminProfile));
+        }
         if (!this.state.scholarshipSchemes || this.state.scholarshipSchemes.length === 0) {
           this.state.scholarshipSchemes = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.scholarshipSchemes));
         }
@@ -677,17 +695,45 @@ class StateManager {
         semester: student.semester
       };
     } else {
+      const adminData = this.state.adminProfile || INITIAL_SEED_DATA.adminProfile;
       this.state.currentUser = {
-        id: `USR-ADMIN`,
-        name: roleDef.defaultUser,
-        role: 'ADMIN',
-        email: 'admin@stit-ihsanulfikri.ac.id',
-        avatarText: roleDef.avatarText,
-        prodi: roleDef.shortTitle
+        ...adminData,
+        role: 'ADMIN'
       };
     }
 
     this.notify();
+  }
+
+  // Action: Update Admin Profile
+  updateAdminProfile(updatedFields) {
+    if (!this.state.adminProfile) {
+      this.state.adminProfile = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.adminProfile));
+    }
+
+    this.state.adminProfile = { ...this.state.adminProfile, ...updatedFields };
+
+    // Auto-generate avatarText if name changed and not explicitly set
+    if (updatedFields.name && !updatedFields.avatarText) {
+      const cleanWords = updatedFields.name.replace(/[^a-zA-Z\s]/g, '').trim().split(/\s+/).filter(Boolean);
+      this.state.adminProfile.avatarText = cleanWords.slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'AD';
+    }
+
+    if (this.state.currentRole === 'ADMIN') {
+      this.state.currentUser = {
+        ...this.state.adminProfile,
+        role: 'ADMIN'
+      };
+    }
+
+    this.addAuditLog(
+      'EDIT_ADMIN_PROFILE',
+      this.state.adminProfile.name,
+      `Pembaruan profil data identitas Bendahara / Admin institusi STIT-IF.`
+    );
+
+    this.notify();
+    return { success: true, message: 'Profil Admin & Bendahara berhasil diperbarui.' };
   }
 
   // Action: Add Audit Log

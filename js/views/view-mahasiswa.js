@@ -1060,11 +1060,30 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
+  function copyToClipboardSafe(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+
   // 6. Copy Buttons
   const btnCopyVa = container.querySelector('#btn-copy-va');
   if (btnCopyVa) {
     btnCopyVa.addEventListener('click', () => {
-      navigator.clipboard.writeText('1056405743');
+      copyToClipboardSafe('1056405743');
       btnCopyVa.textContent = '✓ Disalin';
       setTimeout(() => btnCopyVa.textContent = '📋 Salin No. VA BSI', 2000);
       window.simpelToast.show('Nomor BSI VA Disalin', 'Nomor BSI Virtual Account (1056405743) disalin ke clipboard.', 'info');
@@ -1074,7 +1093,7 @@ export function renderMahasiswaPortal(container) {
   const btnCopyAmount = container.querySelector('#btn-copy-amount');
   if (btnCopyAmount) {
     btnCopyAmount.addEventListener('click', () => {
-      navigator.clipboard.writeText(selectedPayAmount.toString());
+      copyToClipboardSafe(selectedPayAmount.toString());
       btnCopyAmount.textContent = '✓ Disalin';
       setTimeout(() => btnCopyAmount.textContent = '📋 Salin Nominal', 2000);
       window.simpelToast.show('Nominal Disalin', `Nominal ${formatRupiah(selectedPayAmount)} disalin ke clipboard.`, 'info');
@@ -1084,7 +1103,7 @@ export function renderMahasiswaPortal(container) {
   container.querySelectorAll('.btn-copy-rek').forEach(btn => {
     btn.addEventListener('click', () => {
       const rek = btn.getAttribute('data-rek') || '1056405743';
-      navigator.clipboard.writeText(rek);
+      copyToClipboardSafe(rek);
       btn.textContent = '✓ Disalin';
       setTimeout(() => btn.textContent = '📋 Salin No. Rekening BSI', 2000);
       window.simpelToast.show('Nomor Rekening Disalin', `No. Rekening BSI (${rek}) disalin ke clipboard.`, 'info');
@@ -1296,7 +1315,7 @@ export function renderMahasiswaPortal(container) {
   const btnCopyMandiriVa = container.querySelector('#btn-copy-mandiri-va');
   if (btnCopyMandiriVa) {
     btnCopyMandiriVa.addEventListener('click', () => {
-      navigator.clipboard.writeText('1056405743');
+      copyToClipboardSafe('1056405743');
       btnCopyMandiriVa.textContent = '✓ Disalin';
       setTimeout(() => btnCopyMandiriVa.textContent = '📋 Salin No. VA', 2000);
       window.simpelToast.show('Nomor BSI VA Disalin', 'Nomor BSI Virtual Account (1056405743) disalin.', 'info');

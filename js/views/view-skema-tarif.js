@@ -182,12 +182,13 @@ export function renderSkemaTarifView(container) {
               <th>Alasan & Rujukan SK</th>
               <th>Ditetapkan Oleh</th>
               <th>Status</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             ${individualOverrides.length === 0 ? `
               <tr>
-                <td colspan="8" class="table-empty-state">
+                <td colspan="9" class="table-empty-state">
                   <div class="table-empty-icon">📂</div>
                   <p>Belum ada penetapan override individual untuk semester ini.</p>
                 </td>
@@ -223,6 +224,11 @@ export function renderSkemaTarifView(container) {
                   <td>
                     <span class="badge badge-paid">Aktif</span>
                   </td>
+                  <td>
+                    <button class="btn btn-outline btn-sm btn-delete-override" data-ovr-id="${ovr.id}" data-student="${student.name}" style="color: #b91c1c; border-color: #fca5a5; background: #fff1f2; font-weight: 700;" title="Hapus / Batalkan Override">
+                      🗑️ Hapus
+                    </button>
+                  </td>
                 </tr>
               `;
             }).join('')}
@@ -256,4 +262,19 @@ export function renderSkemaTarifView(container) {
   const btnAddOvr2 = container.querySelector('#btn-add-override-table');
   if (btnAddOvr1) btnAddOvr1.addEventListener('click', () => window.simpelModals.openOverrideModal());
   if (btnAddOvr2) btnAddOvr2.addEventListener('click', () => window.simpelModals.openOverrideModal());
+
+  // Delete Override Handlers
+  container.querySelectorAll('.btn-delete-override').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ovrId = btn.getAttribute('data-ovr-id');
+      const studentName = btn.getAttribute('data-student');
+      if (confirm(`Apakah Anda yakin ingin menghapus override "${ovrId}" untuk ${studentName}?\n\nTagihan mahasiswa akan otomatis dihitung ulang sesuai skema tarif normal.`)) {
+        const res = BillingEngine.deleteIndividualOverride(ovrId);
+        if (res.success) {
+          window.simpelToast.show('Override Dihapus', res.message, 'info');
+          renderSkemaTarifView(container);
+        }
+      }
+    });
+  });
 }
