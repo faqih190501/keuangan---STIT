@@ -953,6 +953,233 @@ export class ModalManager {
   }
 
   /**
+   * 6b. Comprehensive Student & User Detail Inspector Modal
+   */
+  static openStudentDetailModal(studentNim) {
+    const state = appState.getState();
+    const student = state.students.find(s => s.nim === studentNim);
+    if (!student) return;
+
+    const scholarship = state.scholarshipSchemes.find(sc => sc.id === student.scholarshipId) || { name: 'Reguler', discountType: 'NONE', discountValue: 0 };
+    const studentInvoices = state.invoices.filter(i => i.studentNim === student.nim);
+    const totalPaid = studentInvoices.reduce((sum, i) => sum + (i.paidAmount || 0), 0);
+    const totalGross = studentInvoices.reduce((sum, i) => sum + (i.grossAmount || 0), 0);
+    const totalDiscount = studentInvoices.reduce((sum, i) => sum + (i.totalDiscount || 0), 0);
+    const totalNet = studentInvoices.reduce((sum, i) => sum + (i.netAmount || 0), 0);
+    const totalRemaining = Math.max(0, totalNet - totalPaid);
+
+    const cleanPhone = (student.phone || '082342307414').replace(/[^0-9]/g, '');
+    const waNumber = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : cleanPhone;
+
+    const { overlay, card, title, body, footer } = this.getModalElements();
+    card.classList.remove('modal-sm');
+    card.classList.add('modal-xl');
+
+    title.innerHTML = `👨‍🎓 Detail Profil Mahasiswa: <span style="color:var(--primary-700);">${student.name}</span>`;
+
+    body.innerHTML = `
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- Header Banner -->
+        <div style="background: linear-gradient(135deg, ${student.gender === 'L' ? '#1e3a8a 0%, #1e40af 100%' : '#831843 0%, #9d174d 100%'}); color: #ffffff; border-radius: var(--radius-xl); padding: 22px 26px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: #ffffff; color: ${student.gender === 'L' ? '#1e40af' : '#9d174d'}; font-weight: 900; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.18); flex-shrink: 0;">
+              ${student.name.split(' ').map(n => n[0]).slice(0, 2).join('')}
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <h3 style="font-size: 1.2rem; font-weight: 900; margin: 0; color: #ffffff;">${student.name}</h3>
+                <span class="badge" style="background: rgba(255,255,255,0.25); color: #ffffff; font-weight: 800; font-size: 0.72rem; padding: 2px 8px;">NIM: ${student.nim}</span>
+              </div>
+              <div style="font-size: 0.82rem; opacity: 0.95; margin-top: 4px; display: flex; gap: 12px; flex-wrap: wrap;">
+                <span>Prodi: <strong>${student.prodi === 'BKPI' ? 'BKPI (Bimbingan Konseling)' : 'PIAUD (PAUD Islam)'}</strong></span>
+                <span>&bull;</span>
+                <span>Semester: <strong>${student.semester}</strong></span>
+                <span>&bull;</span>
+                <span>Angkatan: <strong>${student.classYear}</strong></span>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            ${getProdiBadge(student.prodi)}
+            ${getScholarshipBadge(student.scholarshipId)}
+            <span class="badge" style="background: ${student.statusAkademik === 'Aktif' ? '#dcfce7' : '#fef3c7'}; color: ${student.statusAkademik === 'Aktif' ? '#15803d' : '#b45309'}; font-weight: 800;">
+              ${student.statusAkademik}
+            </span>
+          </div>
+        </div>
+
+        <!-- 3 Info Summary Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-lg); padding: 14px 18px;">
+            <div style="font-size: 0.72rem; color: #1e40af; font-weight: 800; text-transform: uppercase;">Total Tagihan Terbit</div>
+            <div style="font-size: 1.25rem; font-weight: 900; color: #1e3a8a; font-family: var(--font-mono); margin-top: 2px;">
+              ${formatRupiah(totalNet)}
+            </div>
+            <div style="font-size: 0.7rem; color: #0284c7; margin-top: 2px;">Subsidi: -${formatRupiah(totalDiscount)}</div>
+          </div>
+
+          <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-lg); padding: 14px 18px;">
+            <div style="font-size: 0.72rem; color: #15803d; font-weight: 800; text-transform: uppercase;">Total Dana Terbayar</div>
+            <div style="font-size: 1.25rem; font-weight: 900; color: #166534; font-family: var(--font-mono); margin-top: 2px;">
+              ${formatRupiah(totalPaid)}
+            </div>
+            <div style="font-size: 0.7rem; color: #16a34a; margin-top: 2px;">${studentInvoices.filter(i => i.status === 'LUNAS').length} Invoice Lunas</div>
+          </div>
+
+          <div style="background: ${totalRemaining > 0 ? '#fef2f2' : '#f0fdf4'}; border: 1px solid ${totalRemaining > 0 ? '#fecaca' : '#bbf7d0'}; border-radius: var(--radius-lg); padding: 14px 18px;">
+            <div style="font-size: 0.72rem; color: ${totalRemaining > 0 ? '#b91c1c' : '#15803d'}; font-weight: 800; text-transform: uppercase;">Sisa Piutang Berjalan</div>
+            <div style="font-size: 1.25rem; font-weight: 900; color: ${totalRemaining > 0 ? '#991b1b' : '#166534'}; font-family: var(--font-mono); margin-top: 2px;">
+              ${formatRupiah(totalRemaining)}
+            </div>
+            <div style="font-size: 0.7rem; color: ${totalRemaining > 0 ? '#dc2626' : '#16a34a'}; margin-top: 2px;">
+              ${totalRemaining > 0 ? '⚠️ Menunggu Pembayaran' : '✅ Semua Tagihan Lunas'}
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Columns Detail Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+          
+          <!-- Column 1: Kontak & Biodata -->
+          <div style="border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 18px 22px; background: #ffffff;">
+            <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0 0 14px; display: flex; align-items: center; gap: 8px;">
+              <span>📱</span> Kontak & Identitas Akun
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.84rem;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">
+                <span style="color: var(--text-light);">Jenis Kelamin:</span>
+                <strong style="color: ${student.gender === 'L' ? '#1e40af' : '#be185d'};">${student.gender === 'L' ? 'Laki-laki (Ikhwan)' : 'Perempuan (Akhwat)'}</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">
+                <span style="color: var(--text-light);">Email Mahasiswa:</span>
+                <strong style="color: var(--text-dark);">${student.email || '-'}</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px; align-items: center;">
+                <span style="color: var(--text-light);">No. WhatsApp:</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <strong style="font-family: var(--font-mono); color: var(--text-dark);">${student.phone || '-'}</strong>
+                  <a href="https://wa.me/${waNumber}?text=Assalamu'alaikum%20${encodeURIComponent(student.name)},%20ini%20dari%20Admin%20Keuangan%20STIT%20Ihsanul%20Fikri." target="_blank" rel="noopener" class="btn btn-sm" style="background: #16a34a; color: #fff; font-size: 0.68rem; padding: 2px 8px; border-radius: var(--radius-sm); text-decoration: none; font-weight: 700;">
+                    WA 💬
+                  </a>
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 6px;">
+                <span style="color: var(--text-light);">Status Akun:</span>
+                <span class="badge" style="background: #dcfce7; color: #15803d; font-weight: 800; font-size: 0.7rem;">Terdaftar di SIMPEL-IF</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-light);">Rekening VA Resmi:</span>
+                <strong style="font-family: var(--font-mono); color: var(--primary-800);">Bank BSI (1056405743)</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Program Beasiswa -->
+          <div style="border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 18px 22px; background: #ffffff;">
+            <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0 0 14px; display: flex; align-items: center; gap: 8px;">
+              <span>🎓</span> Skema Beasiswa & Pembiayaan
+            </h4>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 12px;">
+              <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">Skema Terdaftar:</div>
+              <div style="font-size: 1rem; font-weight: 800; color: var(--primary-900); margin-top: 2px;">
+                ${scholarship.name}
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">
+                ${scholarship.description || 'Skema pembayaran reguler mandiri penuh.'}
+              </div>
+            </div>
+            <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;">
+              Besaran subsidi: <strong style="color: #0284c7;">${scholarship.id === 'REGULER' ? 'Rp 0 (Mandiri)' : scholarship.discountType === 'PERCENT' ? scholarship.discountValue + '% Biaya SPP' : formatRupiah(scholarship.discountValue)}</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Histori Tagihan & Kwitansi Mahasiswa -->
+        <div style="border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 18px 22px; background: #ffffff;">
+          <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0 0 14px; display: flex; align-items: center; justify-content: space-between;">
+            <span>📜 Riwayat Tagihan & Kwitansi (${studentInvoices.length} Transaksi)</span>
+          </h4>
+          <div class="table-responsive">
+            <table class="custom-table" style="font-size: 0.82rem;">
+              <thead>
+                <tr>
+                  <th>No. Invoice</th>
+                  <th>Semester</th>
+                  <th>Kewajiban Pokok</th>
+                  <th>Subsidi</th>
+                  <th>Total Bersih</th>
+                  <th>Terbayar</th>
+                  <th>Status</th>
+                  <th>No. Kwitansi</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${studentInvoices.length > 0 ? studentInvoices.map(inv => `
+                  <tr>
+                    <td style="font-family: var(--font-mono); font-weight: 700; color: var(--primary-700);">${inv.id}</td>
+                    <td>Semester ${inv.semester || state.activeSemester}</td>
+                    <td>${formatRupiah(inv.grossAmount)}</td>
+                    <td style="color: #0284c7; font-weight: 700;">${inv.totalDiscount > 0 ? `-${formatRupiah(inv.totalDiscount)}` : '-'}</td>
+                    <td style="font-weight: 800; color: var(--text-dark);">${formatRupiah(inv.netAmount)}</td>
+                    <td style="font-weight: 800; color: #166534; font-family: var(--font-mono);">${inv.paidAmount > 0 ? formatRupiah(inv.paidAmount) : '-'}</td>
+                    <td>
+                      <span class="badge" style="background: ${inv.status === 'LUNAS' ? '#dcfce7' : inv.status === 'DICICIL' ? '#e0f2fe' : '#fef2f2'}; color: ${inv.status === 'LUNAS' ? '#15803d' : inv.status === 'DICICIL' ? '#0369a1' : '#b91c1c'}; font-weight: 800;">
+                        ${inv.status}
+                      </span>
+                    </td>
+                    <td style="font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700;">
+                      ${inv.receiptNumber || '<span style="color:var(--text-light);">-</span>'}
+                    </td>
+                  </tr>
+                `).join('') : `
+                  <tr>
+                    <td colspan="8" style="text-align: center; color: var(--text-light); padding: 18px;">Belum ada riwayat tagihan terbit.</td>
+                  </tr>
+                `}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    `;
+
+    footer.innerHTML = `
+      <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <a href="https://wa.me/${waNumber}?text=Assalamu'alaikum%20${encodeURIComponent(student.name)},%20ini%20dari%20Admin%20Keuangan%20STIT%20Ihsanul%20Fikri." target="_blank" rel="noopener" class="btn btn-sm" style="background: #16a34a; color: #ffffff; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+          📱 Hubungi via WhatsApp (${student.phone || '082342307414'})
+        </a>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-outline btn-sm" id="btn-goto-student-portal-detail" style="font-weight: 700;">
+            🎓 Buka Portal Mahasiswa
+          </button>
+          <button class="btn btn-outline btn-sm" id="btn-edit-student-from-detail" style="font-weight: 700;">
+            ✏️ Edit Biodata
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btn-close-student-detail">
+            Tutup
+          </button>
+        </div>
+      </div>
+    `;
+
+    overlay.classList.add('active');
+
+    footer.querySelector('#btn-close-student-detail').addEventListener('click', () => ModalManager.closeModal());
+    footer.querySelector('#btn-edit-student-from-detail').addEventListener('click', () => {
+      ModalManager.closeModal();
+      ModalManager.openEditStudentModal(student.nim);
+    });
+    footer.querySelector('#btn-goto-student-portal-detail').addEventListener('click', () => {
+      ModalManager.closeModal();
+      appState.setRole('MAHASISWA', student.nim);
+      if (window.simpelRouter) window.simpelRouter.navigateTo('view-mahasiswa');
+    });
+  }
+
+  /**
    * 7. Fullscreen Image Preview Modal
    */
   static openImagePreviewModal(imageUrl) {

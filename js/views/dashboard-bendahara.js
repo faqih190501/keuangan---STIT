@@ -104,6 +104,9 @@ export function renderDashboardBendahara(container) {
         <button class="btn btn-outline" id="btn-admin-open-profile" style="font-weight: 700;">
           👤 Profil Saya
         </button>
+        <button class="btn btn-outline" id="btn-goto-akademik" style="font-weight: 700;">
+          👥 Data Mahasiswa (${students.length})
+        </button>
         <button class="btn btn-outline" id="btn-goto-kalender" style="font-weight: 700;">
           📅 Kalender Akademik
         </button>
@@ -212,10 +215,13 @@ export function renderDashboardBendahara(container) {
         <div class="stat-icon-wrapper">📈</div>
       </div>
 
-      <!-- Card 5: Total Mahasiswa Terdaftar -->
-      <div class="stat-card stat-purple">
+      <!-- Card 5: Total Mahasiswa Terdaftar (Clickable) -->
+      <div class="stat-card stat-purple" id="card-goto-akademik" style="cursor: pointer; transition: transform 0.2s;" title="Klik untuk membuka Direktori Lengkap Mahasiswa & Pengguna Terdaftar">
         <div class="stat-content">
-          <span class="stat-label">Total Mahasiswa Aktif</span>
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <span class="stat-label">Total Mahasiswa Terdaftar</span>
+            <span style="font-size: 0.68rem; color: #7c3aed; font-weight: 800; text-decoration: underline;">Buka Data ➔</span>
+          </div>
           <span class="stat-value">${students.length} <span style="font-size: 1rem; font-weight: 600;">Org</span></span>
           <span class="stat-subtext">
             BKPI: ${bkpiStudents.length} | PIAUD: ${piaudStudents.length}
@@ -445,6 +451,20 @@ export function renderDashboardBendahara(container) {
   if (btnGotoCal) {
     btnGotoCal.addEventListener('click', () => {
       if (window.simpelRouter) window.simpelRouter.navigateTo('view-kalender');
+    });
+  }
+
+  const btnGotoAkademik = container.querySelector('#btn-goto-akademik');
+  if (btnGotoAkademik) {
+    btnGotoAkademik.addEventListener('click', () => {
+      if (window.simpelRouter) window.simpelRouter.navigateTo('view-akademik');
+    });
+  }
+
+  const cardGotoAkademik = container.querySelector('#card-goto-akademik');
+  if (cardGotoAkademik) {
+    cardGotoAkademik.addEventListener('click', () => {
+      if (window.simpelRouter) window.simpelRouter.navigateTo('view-akademik');
     });
   }
 
