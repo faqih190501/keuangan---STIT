@@ -83,7 +83,7 @@ export class ModalManager {
               <div class="kop-yayasan">YAYASAN PENDIDIKAN DAN DAKWAH IHSANUL FIKRI</div>
               <div class="kop-institution">SEKOLAH TINGGI ILMU TARBIYAH (STIT) IHSANUL FIKRI</div>
               <div class="kop-prodi-info">Program Studi: Bimbingan Konseling Pendidikan Islam (BKPI) &bull; Pendidikan Islam Anak Usia Dini (PIAUD)</div>
-              <div class="kop-address">Kampus: Pabelan 1, Pabelan, Kec. Mungkid, Kabupaten Magelang, Jawa Tengah 56512 &bull; WA: 082342307414 &bull; Email: stit.ihsanulfikri@ac.id</div>
+              <div class="kop-address">Kampus: Pabelan 1, Pabelan, Kec. Mungkid, Kabupaten Magelang, Jawa Tengah 56512 &bull; WA: 082342307414 &bull; Web: <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" style="color: inherit; font-weight: 700; text-decoration: underline;">www.stitihsanulfikri.ac.id</a> &bull; Email: stit.ihsanulfikri@ac.id</div>
             </div>
           </div>
 
@@ -971,7 +971,7 @@ export class ModalManager {
           </div>
           <div class="form-group">
             <label class="form-label">Email Mahasiswa</label>
-            <input type="email" class="form-control" id="edit-std-email" value="${student.email || ''}" placeholder="nama@mahasiswa.stit-ihsanulfikri.ac.id">
+            <input type="email" class="form-control" id="edit-std-email" value="${student.email || ''}" placeholder="nama@mahasiswa.stitihsanulfikri.ac.id">
           </div>
         </div>
       </form>
@@ -2456,7 +2456,7 @@ export class ModalManager {
 
           <div class="form-group">
             <label class="form-label" for="reg-student-email" style="font-weight: 700;">Alamat Email</label>
-            <input type="email" class="form-control" id="reg-student-email" placeholder="Contoh: nama@mahasiswa.stit-ihsanulfikri.ac.id" value="${prefillData.email || ''}" style="border-radius: var(--radius-md);">
+            <input type="email" class="form-control" id="reg-student-email" placeholder="Contoh: nama@mahasiswa.stitihsanulfikri.ac.id" value="${prefillData.email || ''}" style="border-radius: var(--radius-md);">
           </div>
 
           <div class="form-grid">

@@ -918,7 +918,10 @@ export function renderMahasiswaPortal(container) {
         </div>
       </div>
       <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <a href="https://wa.me/6282342307414?text=Assalamu'alaikum%20Admin%20Keuangan%20STIT-IF,%20saya%20${encodeURIComponent(currentStudent.name)}%20(NIM:%20${currentStudent.nim})%20ingin%20bertanya%20mengenai%20pembayaran." target="_blank" class="btn btn-primary btn-sm" style="background: #059669; border: none; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+        <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-shimmer" style="border-color: #059669; color: #065f46; background: #ecfdf5; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+          🌐 Website Kampus (stitihsanulfikri.ac.id) ↗
+        </a>
+        <a href="https://wa.me/6282342307414?text=Assalamu'alaikum%20Admin%20Keuangan%20STIT-IF,%20saya%20${encodeURIComponent(currentStudent.name)}%20(NIM:%20${currentStudent.nim})%20ingin%20bertanya%20mengenai%20pembayaran." target="_blank" class="btn btn-primary btn-sm btn-shimmer" style="background: #059669; border: none; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; box-shadow: 0 2px 6px rgba(5,150,105,0.25);">
           📱 Hubungi WhatsApp Admin (082342307414)
         </a>
       </div>

@@ -17,7 +17,7 @@ export function renderQrValidatorView(container) {
         </div>
         <h2 style="font-size: 1.4rem; font-weight: 900; color: var(--text-dark); letter-spacing: -0.3px;">Pusat Validasi Dokumen & QR Code Kwitansi</h2>
         <p style="font-size: 0.84rem; color: var(--text-muted); max-width: 620px; margin: 6px auto 0; line-height: 1.5;">
-          Layanan publik resmi <strong>STIT Ihsanul Fikri (Pabelan, Mungkid, Magelang)</strong> untuk memverifikasi keaslian, integritas kriptografis, dan status penerimaan kas pada kwitansi pembayaran kuliah mahasiswa.
+          Layanan publik resmi <strong><a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" style="color: var(--primary-800); text-decoration: underline;">STIT Ihsanul Fikri (Pabelan, Mungkid, Magelang)</a></strong> untuk memverifikasi keaslian, integritas kriptografis, dan status penerimaan kas pada kwitansi pembayaran kuliah mahasiswa.
         </p>
       </div>
 

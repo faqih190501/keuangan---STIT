@@ -186,7 +186,7 @@ SIMPEL-IF/
 📍 Pabelan 1, Pabelan, Kec. Mungkid, Kabupaten Magelang, Jawa Tengah 56512  
 📱 **WhatsApp / Hotline Admin Keuangan:** `082342307414`  
 🏦 **Rekening Resmi:** Bank BSI `1056405743` a.n. STIT IHSANUL FIKRI  
-🌐 **Website:** [https://stit-ihsanulfikri.ac.id](https://stit-ihsanulfikri.ac.id)
+🌐 **Website:** [https://www.stitihsanulfikri.ac.id/](https://www.stitihsanulfikri.ac.id/)
 
 ---
 

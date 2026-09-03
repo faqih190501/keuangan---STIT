@@ -64,11 +64,17 @@ export function renderLoginView(container) {
           </p>
           
           <!-- Admin Hotline & Online Status Badge -->
-          <div style="margin-top: 12px; display: inline-flex; align-items: center; gap: 10px; background: rgba(240, 253, 244, 0.9); backdrop-filter: blur(8px); border: 1px solid #86efac; border-radius: 999px; padding: 5px 16px; font-size: 0.76rem; color: #166534; box-shadow: 0 2px 6px rgba(34,197,94,0.12);">
-            <span class="pulsing-dot pulsing-dot-green"></span>
-            <span>Layanan Bantuan & WhatsApp Admin STIT-IF:</span>
-            <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20login%20SIMPEL-IF" target="_blank" rel="noopener" style="font-weight: 800; color: #15803d; text-decoration: none; font-family: var(--font-mono); letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 4px;">
-              <span>082342307414</span> <span>💬</span>
+          <div style="margin-top: 12px; display: inline-flex; align-items: center; gap: 10px; background: rgba(240, 253, 244, 0.9); backdrop-filter: blur(8px); border: 1px solid #86efac; border-radius: 999px; padding: 5px 16px; font-size: 0.76rem; color: #166534; box-shadow: 0 2px 6px rgba(34,197,94,0.12); flex-wrap: wrap; justify-content: center;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span class="pulsing-dot pulsing-dot-green"></span>
+              <span>WhatsApp Admin:</span>
+              <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20login%20SIMPEL-IF" target="_blank" rel="noopener" style="font-weight: 800; color: #15803d; text-decoration: none; font-family: var(--font-mono); letter-spacing: 0.3px;">
+                082342307414 💬
+              </a>
+            </div>
+            <span style="color: #86efac;">&bull;</span>
+            <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 4px; color: #15803d; font-weight: 800; text-decoration: underline;" title="Buka Website Resmi STIT Ihsanul Fikri">
+              <span>🌐</span> <span>www.stitihsanulfikri.ac.id ↗</span>
             </a>
           </div>
         </div>
@@ -265,7 +271,7 @@ export function renderLoginView(container) {
           </div>
 
           <!-- Dedicated Admin Support Card with WhatsApp & Phone -->
-          <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: var(--radius-xl); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: var(--shadow-sm);">
+          <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: var(--radius-xl); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: var(--shadow-sm); flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 12px;">
               <div style="width: 42px; height: 42px; border-radius: 50%; background: #22c55e; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(34,197,94,0.35);">
                 📱
@@ -275,12 +281,17 @@ export function renderLoginView(container) {
                 <div style="font-size: 0.95rem; font-weight: 900; color: #14532d; font-family: var(--font-mono); margin-top: 1px;">
                   082342307414
                 </div>
-                <div style="font-size: 0.70rem; color: #15803d;">WhatsApp / Telepon Layanan STIT Ihsanul Fikri</div>
+                <div style="font-size: 0.70rem; color: #15803d;">WhatsApp / Telepon &bull; <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" style="color: #15803d; font-weight: 700; text-decoration: underline;">stitihsanulfikri.ac.id</a></div>
               </div>
             </div>
-            <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20layanan%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-sm btn-shimmer" style="background: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.76rem; padding: 8px 14px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; box-shadow: 0 2px 6px rgba(22,163,74,0.3); border: none;">
-              <span>Hubungi WA 💬</span>
-            </a>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" class="btn btn-sm btn-shimmer" style="background: #ffffff; color: #166534; border: 1px solid #86efac; font-weight: 800; font-size: 0.74rem; padding: 7px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                <span>🌐 Web ↗</span>
+              </a>
+              <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20layanan%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-sm btn-shimmer" style="background: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.74rem; padding: 7px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; box-shadow: 0 2px 6px rgba(22,163,74,0.3); border: none;">
+                <span>WA 💬</span>
+              </a>
+            </div>
           </div>
 
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 8px;">
