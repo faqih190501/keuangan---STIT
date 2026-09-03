@@ -79,9 +79,15 @@ export function renderMahasiswaPortal(container) {
               </option>`;
             }).join('')}
           </select>
+          <button class="btn btn-primary btn-sm" id="btn-quick-add-student-top" style="font-size: 0.76rem; font-weight: 800; padding: 6px 12px; background: #2563eb; border: none; border-radius: var(--radius-md); display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 3px rgba(37,99,235,0.25); white-space: nowrap; cursor: pointer;" title="Tambah / Buat Akun Mahasiswa Baru">
+            <span>➕</span> <span>Buat Akun</span>
+          </button>
         </div>
         <button class="btn btn-outline btn-sm" id="btn-self-edit-profile-top" style="color: #1e40af; border-color: #93c5fd; background: #eff6ff; font-weight: 800; display: flex; align-items: center; gap: 4px;">
           👤 Edit Profil Saya
+        </button>
+        <button class="btn btn-outline btn-sm" id="btn-topbar-register-student" style="color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;" title="Buat / Registrasi Akun Mahasiswa Baru">
+          📝 Buat Akun Baru
         </button>
         <button class="btn btn-outline btn-sm" id="btn-goto-login-view" style="color: var(--primary-700); font-weight: 700;">
           🔑 Halaman Login
@@ -90,6 +96,22 @@ export function renderMahasiswaPortal(container) {
           🚪 Keluar / Logout
         </button>
       </div>
+    </div>
+
+    <!-- PMB / New Student Self-Registration Alert Banner -->
+    <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1.5px dashed #3b82f6; border-radius: var(--radius-xl); padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; box-shadow: var(--shadow-sm);">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(37,99,235,0.3);">
+          📝
+        </div>
+        <div>
+          <div style="font-size: 0.90rem; font-weight: 800; color: #1e3a8a;">Pendaftaran / Registrasi Akun Mahasiswa Baru (PMB Mandiri)</div>
+          <div style="font-size: 0.76rem; color: #1e40af; margin-top: 2px;">Ingin membuat akun mahasiswa baru atau mendaftarkan calon mahasiswa lain di SIMPEL-IF?</div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm" id="btn-banner-register-student" style="font-weight: 800; font-size: 0.80rem; padding: 8px 18px; background: #2563eb; border: none; border-radius: var(--radius-md); box-shadow: 0 2px 5px rgba(37,99,235,0.3); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;">
+        <span>✨</span> <span>Buat Akun Mahasiswa Baru ➔</span>
+      </button>
     </div>
 
     <!-- 1. Warm Islamic Welcome Hero Banner -->
@@ -929,6 +951,33 @@ export function renderMahasiswaPortal(container) {
   if (btnGotoLogin) {
     btnGotoLogin.addEventListener('click', () => {
       if (window.simpelRouter) window.simpelRouter.navigateTo('view-login');
+    });
+  }
+
+  const btnTopbarRegister = container.querySelector('#btn-topbar-register-student');
+  if (btnTopbarRegister) {
+    btnTopbarRegister.addEventListener('click', () => {
+      if (window.simpelModals && window.simpelModals.openStudentRegistrationModal) {
+        window.simpelModals.openStudentRegistrationModal();
+      }
+    });
+  }
+
+  const btnQuickAddTop = container.querySelector('#btn-quick-add-student-top');
+  if (btnQuickAddTop) {
+    btnQuickAddTop.addEventListener('click', () => {
+      if (window.simpelModals && window.simpelModals.openStudentRegistrationModal) {
+        window.simpelModals.openStudentRegistrationModal();
+      }
+    });
+  }
+
+  const btnBannerRegister = container.querySelector('#btn-banner-register-student');
+  if (btnBannerRegister) {
+    btnBannerRegister.addEventListener('click', () => {
+      if (window.simpelModals && window.simpelModals.openStudentRegistrationModal) {
+        window.simpelModals.openStudentRegistrationModal();
+      }
     });
   }
 

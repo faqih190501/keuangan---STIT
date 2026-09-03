@@ -104,6 +104,10 @@ export class AuthManager {
     const navLaporan = document.getElementById('nav-laporan');
     const navAuditLog = document.getElementById('nav-audit-log');
     const navMahasiswa = document.getElementById('nav-mahasiswa');
+    const navKelolaAdmin = document.getElementById('nav-kelola-admin');
+    const navDaftarMahasiswa = document.getElementById('nav-daftar-mahasiswa');
+
+    if (navDaftarMahasiswa) navDaftarMahasiswa.style.display = 'flex';
 
     if (isStudent) {
       if (navDashboard) navDashboard.style.display = 'none';
@@ -112,6 +116,7 @@ export class AuthManager {
       if (navAkademik) navAkademik.style.display = 'none';
       if (navLaporan) navLaporan.style.display = 'none';
       if (navAuditLog) navAuditLog.style.display = 'none';
+      if (navKelolaAdmin) navKelolaAdmin.style.display = 'none';
       if (navKalender) navKalender.style.display = 'flex';
       if (navMahasiswa) navMahasiswa.style.display = 'flex';
     } else {
@@ -122,6 +127,7 @@ export class AuthManager {
       if (navKalender) navKalender.style.display = 'flex';
       if (navLaporan) navLaporan.style.display = 'flex';
       if (navAuditLog) navAuditLog.style.display = 'flex';
+      if (navKelolaAdmin) navKelolaAdmin.style.display = 'flex';
       if (navMahasiswa) navMahasiswa.style.display = 'flex';
     }
   }

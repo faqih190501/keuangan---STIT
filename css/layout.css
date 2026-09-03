@@ -479,6 +479,28 @@ body {
   }
 }
 
+@keyframes slideInRight {
+  from {
+    opacity: 0.3;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0.3;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* ==========================================================================
    Modals & Dialogs
    ========================================================================== */

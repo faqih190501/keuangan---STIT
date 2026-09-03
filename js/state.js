@@ -11,18 +11,8 @@ const INITIAL_SEED_DATA = {
   activeSemester: '2026/2027 Ganjil',
   currentRole: 'ADMIN',
   adminProfile: {
-    id: 'USR-ADMIN',
-    name: 'Ustadzah Siti Fatimah, S.E.',
-    role: 'ADMIN',
-    email: 'bendahara@stit-if.ac.id',
-    phone: '081392817263',
-    title: 'Kepala Bagian Keuangan & Bendahara Penerimaan',
-    department: 'Biro Keuangan & Administrasi Umum (BAU)',
-    nip: '19840512 201201 2 003',
-    avatarText: 'SF'
-  },
-  currentUser: {
-    id: 'USR-ADMIN',
+    id: 'ADM-001',
+    username: 'admin',
     name: 'Ustadzah Siti Fatimah, S.E.',
     role: 'ADMIN',
     email: 'bendahara@stit-if.ac.id',
@@ -31,7 +21,73 @@ const INITIAL_SEED_DATA = {
     department: 'Biro Keuangan & Administrasi Umum (BAU)',
     nip: '19840512 201201 2 003',
     avatarText: 'SF',
-    prodi: 'Bendahara Penerimaan'
+    status: 'AKTIF',
+    isSuperAdmin: true
+  },
+  adminUsers: [
+    {
+      id: 'ADM-001',
+      username: 'admin',
+      password: 'admin123',
+      name: 'Ustadzah Siti Fatimah, S.E.',
+      role: 'ADMIN',
+      email: 'bendahara@stit-if.ac.id',
+      phone: '081392817263',
+      title: 'Kepala Bagian Keuangan & Bendahara Penerimaan',
+      department: 'Biro Keuangan & Administrasi Umum (BAU)',
+      nip: '19840512 201201 2 003',
+      avatarText: 'SF',
+      status: 'AKTIF',
+      isSuperAdmin: true,
+      createdAt: '2026-08-01 08:00:00'
+    },
+    {
+      id: 'ADM-002',
+      username: 'ridwan.hakim',
+      password: 'admin123',
+      name: 'Ustadz Ridwan Hakim, M.Pd.',
+      role: 'ADMIN',
+      email: 'baak@stit-if.ac.id',
+      phone: '081298765432',
+      title: 'Kepala Biro Administrasi Akademik & Kemahasiswaan (BAAK)',
+      department: 'Biro Administrasi Akademik (BAAK)',
+      nip: '19820315 201001 1 002',
+      avatarText: 'RH',
+      status: 'AKTIF',
+      isSuperAdmin: false,
+      createdAt: '2026-08-01 08:00:00'
+    },
+    {
+      id: 'ADM-003',
+      username: 'bendahara',
+      password: 'admin123',
+      name: 'Ustadzah Nurul Hidayah, S.Ak.',
+      role: 'ADMIN',
+      email: 'keuangan@stit-if.ac.id',
+      phone: '085712345678',
+      title: 'Staf Administrasi Keuangan & Kasir Kampus',
+      department: 'Biro Keuangan & Administrasi Umum (BAU)',
+      nip: '19901020 201802 2 005',
+      avatarText: 'NH',
+      status: 'AKTIF',
+      isSuperAdmin: false,
+      createdAt: '2026-08-05 09:00:00'
+    }
+  ],
+  currentUser: {
+    id: 'ADM-001',
+    username: 'admin',
+    name: 'Ustadzah Siti Fatimah, S.E.',
+    role: 'ADMIN',
+    email: 'bendahara@stit-if.ac.id',
+    phone: '081392817263',
+    title: 'Kepala Bagian Keuangan & Bendahara Penerimaan',
+    department: 'Biro Keuangan & Administrasi Umum (BAU)',
+    nip: '19840512 201201 2 003',
+    avatarText: 'SF',
+    prodi: 'Bendahara Penerimaan',
+    status: 'AKTIF',
+    isSuperAdmin: true
   },
 
   // Fee Components Configuration
@@ -586,199 +642,526 @@ const INITIAL_SEED_DATA = {
     }
   ],
 
-  // Academic Calendar Schedule
+  // Official Academic Calendar Schedule based on SK.01/051/STIT-IF/VIII/2026 (21 Agustus 2026)
   academicCalendar: [
+    // --- SEMESTER GASAL 2026/2027 ---
     {
-      id: 'EVT-01',
-      title: 'Pembayaran SPP & Heregistrasi Mahasiswa Lama (Ganjil 2026/2027)',
+      id: 'EVT-2026-01',
+      title: 'Pembayaran SPP & Heregistrasi Mahasiswa Lama Gasal',
       category: 'KEUANGAN',
       startDate: '2026-08-01',
       endDate: '2026-08-31',
       semester: '2026/2027 Ganjil',
       location: 'Online via SIMPEL-IF / Bank BSI (1056405743)',
-      description: 'Periode pelunasan/cicilan SPP dan daftar ulang administrasi akademik semester ganjil.',
+      description: 'Periode pelunasan/cicilan SPP dan daftar ulang administrasi akademik semester gasal 2026/2027.',
       isMandatory: true,
       targetRoles: ['ALL']
     },
     {
-      id: 'EVT-02',
-      title: 'Masa Pendaftaran & Her-Registrasi Mahasiswa Baru (PMB Gel. III)',
+      id: 'EVT-2026-02',
+      title: 'Workshop RPS dan Persiapan Mengajar',
+      category: 'AKADEMIK',
+      startDate: '2026-08-09',
+      endDate: '2026-08-09',
+      semester: '2026/2027 Ganjil',
+      location: 'Ruang Dosen STIT Ihsanul Fikri',
+      description: 'Penyelarasan rencana pembelajaran semester dan persiapan materi perkuliahan dosen pengampu.',
+      isMandatory: true,
+      targetRoles: ['ADMIN']
+    },
+    {
+      id: 'EVT-2026-03',
+      title: 'Penyusunan RPS dan Modul',
+      category: 'AKADEMIK',
+      startDate: '2026-08-10',
+      endDate: '2026-08-29',
+      semester: '2026/2027 Ganjil',
+      location: 'Kampus STIT Ihsanul Fikri',
+      description: 'Penyusunan modul ajar, rubrik asesmen, dan silabus kurikulum program studi BKPI dan PIAUD.',
+      isMandatory: false,
+      targetRoles: ['ADMIN']
+    },
+    {
+      id: 'EVT-2026-04',
+      title: 'Masa Pendaftaran & Her-Registrasi Mahasiswa Baru (PMB)',
       category: 'KEUANGAN',
       startDate: '2026-08-10',
       endDate: '2026-09-05',
       semester: '2026/2027 Ganjil',
       location: 'Kantor BAAK / Portal PMB Online',
-      description: 'Penerbitan NIM dan pembayaran paket awal orientasi & SPP mahasiswa baru.',
+      description: 'Penerbitan NIM dan pembayaran paket awal orientasi & SPP mahasiswa baru angkatan 2026.',
       isMandatory: true,
-      targetRoles: ['MAHASISWA', 'ADMIN']
+      targetRoles: ['ALL']
     },
     {
-      id: 'EVT-03',
-      title: 'Pengajuan & Verifikasi Afirmasi Beasiswa Semester Ganjil',
+      id: 'EVT-2026-05',
+      title: 'Pengajuan & Verifikasi Afirmasi Beasiswa Semester Gasal',
       category: 'KEUANGAN',
       startDate: '2026-08-15',
       endDate: '2026-09-10',
       semester: '2026/2027 Ganjil',
       location: 'Ruang Bendahara & BAU STIT Ihsanul Fikri',
-      description: 'Batas akhir upload berkas beasiswa Asrama, Mitra Lembaga, dan Prestasi Tahfidz.',
+      description: 'Batas akhir upload berkas beasiswa Asrama Pesantren, Mitra Lembaga, dan Prestasi Tahfidz.',
       isMandatory: false,
-      targetRoles: ['MAHASISWA', 'ADMIN']
+      targetRoles: ['ALL']
     },
     {
-      id: 'EVT-04',
-      title: 'Pengisian & Validasi Kartu Rencana Studi (KRS Online)',
+      id: 'EVT-2026-06',
+      title: 'Hari Kemerdekaan Republik Indonesia Ke-81',
+      category: 'LIBUR',
+      startDate: '2026-08-17',
+      endDate: '2026-08-17',
+      semester: '2026/2027 Ganjil',
+      location: 'Nasional',
+      description: 'Hari libur nasional peringatan Hari Kemerdekaan Republik Indonesia.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-07',
+      title: 'Pembekalan PLP dan KKN',
+      category: 'KEGIATAN',
+      startDate: '2026-08-21',
+      endDate: '2026-08-21',
+      semester: '2026/2027 Ganjil',
+      location: 'Auditorium Utama STIT Ihsanul Fikri',
+      description: 'Pengarahan teknis pelaksanaan Pengenalan Lapangan Persekolahan (PLP) & Kuliah Kerja Nyata (KKN).',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-08',
+      title: 'Maulid Nabi Muhammad SAW',
+      category: 'LIBUR',
+      startDate: '2026-08-25',
+      endDate: '2026-08-25',
+      semester: '2026/2027 Ganjil',
+      location: 'Nasional / Islam',
+      description: 'Hari libur keagamaan peringatan Maulid Nabi Muhammad SAW 1448 H.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-09',
+      title: 'Sosialisasi PLP kepada Instansi Mitra',
+      category: 'AKADEMIK',
+      startDate: '2026-08-28',
+      endDate: '2026-08-28',
+      semester: '2026/2027 Ganjil',
+      location: 'Sekolah & Instansi Mitra',
+      description: 'Koordinasi pimpinan prodi dengan pimpinan sekolah mitra magang PLP BKPI dan PIAUD.',
+      isMandatory: false,
+      targetRoles: ['ADMIN']
+    },
+    {
+      id: 'EVT-2026-10',
+      title: 'KRS Online Mahasiswa Lama (Semester Gasal)',
+      category: 'AKADEMIK',
+      startDate: '2026-08-31',
+      endDate: '2026-09-05',
+      semester: '2026/2027 Ganjil',
+      location: 'SIAKAD STIT Ihsanul Fikri',
+      description: 'Pengisian Kartu Rencana Studi (KRS) online dan bimbingan DPA bagi mahasiswa lama semester 3, 5, dan 7.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-11',
+      title: 'Penerjunan PLP',
       category: 'AKADEMIK',
       startDate: '2026-09-01',
+      endDate: '2026-09-01',
+      semester: '2026/2027 Ganjil',
+      location: 'Lokasi Sekolah Mitra',
+      description: 'Pemberangkatan resmi mahasiswa ke sekolah laboratorium dan mitra magang kependidikan.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-12',
+      title: 'PBAK (Pengenalan Budaya Akademik dan Kemahasiswaan)',
+      category: 'KEGIATAN',
+      startDate: '2026-09-04',
+      endDate: '2026-09-05',
+      semester: '2026/2027 Ganjil',
+      location: 'Kampus STIT Ihsanul Fikri',
+      description: 'Orientasi studi, ta\'aruf sivitas akademika, dan wawasan keislaman bagi mahasiswa baru 2026/2027.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-13',
+      title: 'KRS Online Mahasiswa Baru (Semester Gasal)',
+      category: 'AKADEMIK',
+      startDate: '2026-09-07',
       endDate: '2026-09-12',
       semester: '2026/2027 Ganjil',
       location: 'SIAKAD STIT Ihsanul Fikri',
-      description: 'Konsultasi Dosen Pembimbing Akademik (DPA) dan entri mata kuliah semester ganjil.',
-      isMandatory: true,
-      targetRoles: ['MAHASISWA', 'ADMIN']
-    },
-    {
-      id: 'EVT-05',
-      title: 'Orientasi Studi & Ta\'aruf Mahasiswa Baru (OSPEK / Ta\'aruf)',
-      category: 'KEGIATAN',
-      startDate: '2026-09-08',
-      endDate: '2026-09-10',
-      semester: '2026/2027 Ganjil',
-      location: 'Auditorium Utama Kampus STIT Ihsanul Fikri',
-      description: 'Pengenalan nilai-nilai keislaman, tradisi ilmiah, dan tata tertib perguruan tinggi.',
+      description: 'Pengisian KRS perdana dan validasi kartu studi mahasiswa baru angkatan 2026.',
       isMandatory: true,
       targetRoles: ['ALL']
     },
     {
-      id: 'EVT-06',
-      title: 'Kuliah Perdana & Awal Perkuliahan Efektif Semester Ganjil',
+      id: 'EVT-2026-14',
+      title: 'Perkuliahan Tahap I Semester Gasal',
       category: 'AKADEMIK',
-      startDate: '2026-09-14',
-      endDate: '2026-11-06',
+      startDate: '2026-09-09',
+      endDate: '2026-10-24',
       semester: '2026/2027 Ganjil',
       location: 'Gedung Perkuliahan BKPI & PIAUD',
-      description: 'Masa perkuliahan tatap muka dan blended learning paruh pertama (Pertemuan 1 - 7).',
+      description: 'Masa perkuliahan tatap muka dan blended learning paruh pertama semester gasal (Pertemuan 1 s.d. 7).',
       isMandatory: true,
       targetRoles: ['ALL']
     },
     {
-      id: 'EVT-07',
-      title: 'Batas Akhir Perubahan Rencana Studi (KPRS / Drop Matkul)',
+      id: 'EVT-2026-15',
+      title: 'Ujian Tengah Semester (UTS) Gasal',
       category: 'AKADEMIK',
-      startDate: '2026-09-25',
-      endDate: '2026-09-26',
-      semester: '2026/2027 Ganjil',
-      location: 'Biro Administrasi Akademik (BAAK)',
-      description: 'Batas terakhir revisi pengambilan mata kuliah yang telah disetujui DPA.',
-      isMandatory: false,
-      targetRoles: ['MAHASISWA', 'ADMIN']
-    },
-    {
-      id: 'EVT-08',
-      title: 'Pendaftaran Ujian Munaqasyah & Skripsi Periode I',
-      category: 'KEGIATAN',
-      startDate: '2026-10-01',
-      endDate: '2026-10-15',
-      semester: '2026/2027 Ganjil',
-      location: 'Sekretariat Program Studi BKPI / PIAUD',
-      description: 'Penyerahan naskah skripsi lengkap dan bukti bebas administrasi keuangan.',
-      isMandatory: false,
-      targetRoles: ['MAHASISWA', 'ADMIN']
-    },
-    {
-      id: 'EVT-09',
-      title: 'Ujian Tengah Semester (UTS) Gasal 2026/2027',
-      category: 'AKADEMIK',
-      startDate: '2026-11-09',
-      endDate: '2026-11-20',
+      startDate: '2026-10-28',
+      endDate: '2026-11-07',
       semester: '2026/2027 Ganjil',
       location: 'Ruang Ujian Kampus STIT IF',
-      description: 'Evaluasi tengah semester (Syarat mengikuti ujian: minimal cicilan SPP 50%).',
+      description: 'Evaluasi tengah semester gasal (Syarat mengikuti ujian: minimal cicilan SPP 50%).',
       isMandatory: true,
       targetRoles: ['ALL']
     },
     {
-      id: 'EVT-10',
-      title: 'Masa Perkuliahan Efektif Paruh Kedua (Pertemuan 9 - 16)',
+      id: 'EVT-2026-16',
+      title: 'Penarikan PLP',
       category: 'AKADEMIK',
-      startDate: '2026-11-23',
-      endDate: '2027-01-08',
+      startDate: '2026-10-30',
+      endDate: '2026-10-30',
+      semester: '2026/2027 Ganjil',
+      location: 'Sekolah Mitra & Kampus',
+      description: 'Penutupan program magang dan penarikan mahasiswa praktikan dari sekolah mitra.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-17',
+      title: 'Penerjunan KKN',
+      category: 'KEGIATAN',
+      startDate: '2026-11-02',
+      endDate: '2026-11-02',
+      semester: '2026/2027 Ganjil',
+      location: 'Lokasi Pengabdian Desa Binaan',
+      description: 'Pemberangkatan mahasiswa peserta Kuliah Kerja Nyata (KKN) STIT Ihsanul Fikri.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-18',
+      title: 'Perkuliahan Tahap II Semester Gasal',
+      category: 'AKADEMIK',
+      startDate: '2026-11-11',
+      endDate: '2026-12-26',
       semester: '2026/2027 Ganjil',
       location: 'Kampus STIT Ihsanul Fikri',
-      description: 'Penyelesaian silabus perkuliahan dan praktikum lapangan.',
+      description: 'Masa perkuliahan efektif paruh kedua semester gasal (Pertemuan 9 s.d. 16).',
       isMandatory: true,
       targetRoles: ['ALL']
     },
     {
-      id: 'EVT-11',
-      title: 'Wisuda Sarjana & Pelepasan Lulusan Ke-VIII',
+      id: 'EVT-2026-19',
+      title: 'Penarikan / Penutupan KKN',
       category: 'KEGIATAN',
-      startDate: '2026-12-19',
-      endDate: '2026-12-19',
+      startDate: '2026-12-11',
+      endDate: '2026-12-11',
       semester: '2026/2027 Ganjil',
-      location: 'Grand Ballroom Hotel Atria Magelang',
-      description: 'Rapat Senat Terbuka Wisuda Sarjana S1 Prodi BKPI & PIAUD.',
-      isMandatory: false,
+      location: 'Lokasi KKN / Kampus STIT-IF',
+      description: 'Penutupan resmi kegiatan pengabdian masyarakat KKN dan penarikan peserta.',
+      isMandatory: true,
       targetRoles: ['ALL']
     },
     {
-      id: 'EVT-12',
-      title: 'Batas Pelunasan SPP & Syarat Kartu Ujian Akhir (UAS)',
+      id: 'EVT-2026-20',
+      title: 'Batas Pelunasan SPP & Syarat Kartu UAS Gasal',
       category: 'KEUANGAN',
       startDate: '2026-12-20',
       endDate: '2027-01-05',
       semester: '2026/2027 Ganjil',
       location: 'Sistem SIMPEL-IF',
-      description: 'Penerbitan Surat Keterangan Lunas Keuangan untuk cetak kartu UAS.',
+      description: 'Penerbitan Surat Keterangan Lunas Keuangan untuk cetak kartu Ujian Akhir Semester.',
       isMandatory: true,
-      targetRoles: ['MAHASISWA', 'ADMIN']
+      targetRoles: ['ALL']
     },
     {
-      id: 'EVT-13',
-      title: 'Ujian Akhir Semester (UAS) Gasal 2026/2027',
+      id: 'EVT-2026-21',
+      title: 'Wisuda Akademik Ke-3 STIT Ihsanul Fikri',
+      category: 'KEGIATAN',
+      startDate: '2026-12-26',
+      endDate: '2026-12-26',
+      semester: '2026/2027 Ganjil',
+      location: 'Grand Ballroom / Auditorium Utama',
+      description: 'Rapat Senat Terbuka Wisuda Sarjana S1 Program Studi BKPI & PIAUD Ke-3.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-22',
+      title: 'Ujian Akhir Semester (UAS) Gasal',
       category: 'AKADEMIK',
-      startDate: '2027-01-11',
-      endDate: '2027-01-22',
+      startDate: '2026-12-30',
+      endDate: '2027-01-09',
       semester: '2026/2027 Ganjil',
       location: 'Kampus STIT Ihsanul Fikri',
-      description: 'Evaluasi akhir semester penentu nilai mutu KHS.',
+      description: 'Evaluasi akhir semester penentu kelulusan mata kuliah (Syarat: Kartu Ujian Lunas SPP).',
       isMandatory: true,
       targetRoles: ['ALL']
     },
     {
-      id: 'EVT-14',
-      title: 'Batas Akhir Input Nilai & Publikasi KHS Online',
-      category: 'AKADEMIK',
-      startDate: '2027-01-25',
-      endDate: '2027-02-05',
+      id: 'EVT-2026-23',
+      title: 'Isra\' Mi\'raj Nabi Muhammad SAW',
+      category: 'LIBUR',
+      startDate: '2027-01-05',
+      endDate: '2027-01-05',
       semester: '2026/2027 Ganjil',
-      location: 'Portal SIAKAD Dosen & Mahasiswa',
-      description: 'Pengumuman indeks prestasi semester (IPS) dan evaluasi akademik.',
+      location: 'Nasional / Islam',
+      description: 'Hari libur nasional peringatan Isra\' Mi\'raj Nabi Muhammad SAW 1448 H.',
       isMandatory: false,
       targetRoles: ['ALL']
     },
     {
-      id: 'EVT-15',
-      title: 'Libur Semester Gasal & Masa Riset / Pengabdian',
+      id: 'EVT-2026-24',
+      title: 'Remedial Mahasiswa Semester Gasal',
+      category: 'AKADEMIK',
+      startDate: '2027-01-11',
+      endDate: '2027-01-16',
+      semester: '2026/2027 Ganjil',
+      location: 'Kampus STIT Ihsanul Fikri',
+      description: 'Masa ujian perbaikan dan pemenuhan tugas remedial nilai mata kuliah semester gasal.',
+      isMandatory: false,
+      targetRoles: ['MAHASISWA']
+    },
+    {
+      id: 'EVT-2026-25',
+      title: 'Libur Mahasiswa Semester Gasal',
       category: 'LIBUR',
-      startDate: '2027-01-25',
-      endDate: '2027-02-19',
+      startDate: '2027-01-18',
+      endDate: '2027-02-20',
       semester: '2026/2027 Ganjil',
       location: '-',
-      description: 'Masa jeda akademik semester gasal menuju semester genap.',
+      description: 'Masa libur perkuliahan jeda semester gasal menuju semester genap.',
       isMandatory: false,
-      targetRoles: ['ALL']
+      targetRoles: ['MAHASISWA']
     },
     {
-      id: 'EVT-16',
+      id: 'EVT-2026-26',
+      title: 'Batas Akhir Pengumpulan Nilai Semester Gasal',
+      category: 'AKADEMIK',
+      startDate: '2027-01-30',
+      endDate: '2027-01-30',
+      semester: '2026/2027 Ganjil',
+      location: 'Portal SIAKAD Dosen',
+      description: 'Batas akhir pengunggahan nilai oleh dosen dan penerbitan KHS online semester gasal.',
+      isMandatory: true,
+      targetRoles: ['ADMIN']
+    },
+
+    // --- SEMESTER GENAP 2026/2027 ---
+    {
+      id: 'EVT-2026-27',
       title: 'Heregistrasi & Pembayaran SPP Semester Genap 2026/2027',
       category: 'KEUANGAN',
       startDate: '2027-02-01',
       endDate: '2027-02-20',
       semester: '2026/2027 Genap',
       location: 'SIMPEL-IF / Bank BSI (1056405743)',
-      description: 'Aktivasi status mahasiswa dan validasi KRS semester genap.',
+      description: 'Aktivasi status akademik dan pembayaran SPP semester genap via Virtual Account.',
       isMandatory: true,
       targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-28',
+      title: 'Koordinasi Persiapan Mengajar Semester Genap',
+      category: 'AKADEMIK',
+      startDate: '2027-02-05',
+      endDate: '2027-02-05',
+      semester: '2026/2027 Genap',
+      location: 'Ruang Rapat Dosen STIT-IF',
+      description: 'Rapat koordinasi dosen pengampu mata kuliah semester genap tahun akademik 2026/2027.',
+      isMandatory: true,
+      targetRoles: ['ADMIN']
+    },
+    {
+      id: 'EVT-2026-29',
+      title: 'Serasi (Semarak Ramadhan & Silaturahmi)',
+      category: 'KEGIATAN',
+      startDate: '2027-02-07',
+      endDate: '2027-03-06',
+      semester: '2026/2027 Genap',
+      location: 'Kampus & Masjid STIT-IF',
+      description: 'Rangkaian kegiatan dakwah kemahasiswaan, kajian Islam, dan bakti sosial menyambut Ramadhan 1448 H.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-30',
+      title: 'Penyusunan RPS dan Modul Semester Genap',
+      category: 'AKADEMIK',
+      startDate: '2027-02-08',
+      endDate: '2027-02-27',
+      semester: '2026/2027 Genap',
+      location: 'Kampus STIT Ihsanul Fikri',
+      description: 'Penyusunan modul ajar dan silabus perkuliahan semester genap prodi BKPI & PIAUD.',
+      isMandatory: false,
+      targetRoles: ['ADMIN']
+    },
+    {
+      id: 'EVT-2026-31',
+      title: 'Perkuliahan Tahap I Semester Genap',
+      category: 'AKADEMIK',
+      startDate: '2027-02-18',
+      endDate: '2027-04-24',
+      semester: '2026/2027 Genap',
+      location: 'Gedung Perkuliahan BKPI & PIAUD',
+      description: 'Masa perkuliahan efektif paruh pertama semester genap (Pertemuan 1 s.d. 7).',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-32',
+      title: 'KRS Online Mahasiswa (Semester Genap)',
+      category: 'AKADEMIK',
+      startDate: '2027-02-22',
+      endDate: '2027-02-27',
+      semester: '2026/2027 Genap',
+      location: 'SIAKAD STIT Ihsanul Fikri',
+      description: 'Pengisian Kartu Rencana Studi (KRS) online dan konsultasi DPA semester genap.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-33',
+      title: 'Libur Hari Raya Idul Fitri 1448 H',
+      category: 'LIBUR',
+      startDate: '2027-03-01',
+      endDate: '2027-03-20',
+      semester: '2026/2027 Genap',
+      location: 'Nasional',
+      description: 'Cuti bersama dan libur perkuliahan Hari Raya Idul Fitri 1448 H.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-34',
+      title: 'Hari Raya Idul Fitri 1448 H (1 Syawal 1448 H)',
+      category: 'LIBUR',
+      startDate: '2027-03-10',
+      endDate: '2027-03-10',
+      semester: '2026/2027 Genap',
+      location: 'Nasional / Islam',
+      description: 'Hari Raya Idul Fitri 1 Syawal 1448 Hijriyah.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-35',
+      title: 'Ujian Tengah Semester (UTS) Genap',
+      category: 'AKADEMIK',
+      startDate: '2027-04-28',
+      endDate: '2027-05-08',
+      semester: '2026/2027 Genap',
+      location: 'Ruang Ujian Kampus STIT IF',
+      description: 'Evaluasi tengah semester genap 2026/2027 bagi mahasiswa prodi BKPI dan PIAUD.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-36',
+      title: 'Kegiatan Qur\'an Mahasiswa',
+      category: 'KEGIATAN',
+      startDate: '2027-05-09',
+      endDate: '2027-05-15',
+      semester: '2026/2027 Genap',
+      location: 'Masjid & Pesantren STIT-IF',
+      description: 'Pekan pembinaan Al-Qur\'an, tahsin, tahfidz bersanad, dan halaqah intensif mahasiswa.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-37',
+      title: 'Perkuliahan Tahap II Semester Genap',
+      category: 'AKADEMIK',
+      startDate: '2027-05-12',
+      endDate: '2027-06-19',
+      semester: '2026/2027 Genap',
+      location: 'Kampus STIT Ihsanul Fikri',
+      description: 'Masa perkuliahan efektif paruh kedua semester genap (Pertemuan 9 s.d. 16).',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-38',
+      title: 'Hari Raya Idul Adha 1448 H',
+      category: 'LIBUR',
+      startDate: '2027-05-16',
+      endDate: '2027-05-16',
+      semester: '2026/2027 Genap',
+      location: 'Nasional / Islam',
+      description: 'Hari Raya Idul Adha 10 Dzulhijjah 1448 Hijriyah.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-39',
+      title: 'Tahun Baru Hijriyah 1449 H',
+      category: 'LIBUR',
+      startDate: '2027-06-06',
+      endDate: '2027-06-06',
+      semester: '2026/2027 Genap',
+      location: 'Nasional / Islam',
+      description: 'Hari libur tahun baru Islam 1 Muharram 1449 Hijriyah.',
+      isMandatory: false,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-40',
+      title: 'Remedial Mahasiswa Semester Genap',
+      category: 'AKADEMIK',
+      startDate: '2027-06-14',
+      endDate: '2027-06-19',
+      semester: '2026/2027 Genap',
+      location: 'Kampus STIT Ihsanul Fikri',
+      description: 'Masa ujian perbaikan nilai dan pemenuhan tugas remedial semester genap.',
+      isMandatory: false,
+      targetRoles: ['MAHASISWA']
+    },
+    {
+      id: 'EVT-2026-41',
+      title: 'Libur Mahasiswa Semester Genap',
+      category: 'LIBUR',
+      startDate: '2027-06-21',
+      endDate: '2027-08-30',
+      semester: '2026/2027 Genap',
+      location: '-',
+      description: 'Libur panjang akhir tahun akademik 2026/2027.',
+      isMandatory: false,
+      targetRoles: ['MAHASISWA']
+    },
+    {
+      id: 'EVT-2026-42',
+      title: 'Ujian Akhir Semester (UAS) Genap',
+      category: 'AKADEMIK',
+      startDate: '2027-06-30',
+      endDate: '2027-07-10',
+      semester: '2026/2027 Genap',
+      location: 'Kampus STIT Ihsanul Fikri',
+      description: 'Evaluasi akhir semester genap penentu nilai mutu KHS dan kelulusan mata kuliah.',
+      isMandatory: true,
+      targetRoles: ['ALL']
+    },
+    {
+      id: 'EVT-2026-43',
+      title: 'Batas Pengumpulan Nilai Semester Genap',
+      category: 'AKADEMIK',
+      startDate: '2027-07-31',
+      endDate: '2027-07-31',
+      semester: '2026/2027 Genap',
+      location: 'Portal SIAKAD Dosen',
+      description: 'Batas akhir pengumpulan nilai semester genap oleh dosen pengampu mata kuliah.',
+      isMandatory: true,
+      targetRoles: ['ADMIN']
     }
   ]
 };
@@ -804,8 +1187,30 @@ class StateManager {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         this.state = JSON.parse(saved);
+        if (!this.state.adminUsers || !Array.isArray(this.state.adminUsers) || this.state.adminUsers.length === 0) {
+          this.state.adminUsers = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.adminUsers));
+          if (this.state.adminProfile) {
+            this.state.adminUsers[0] = {
+              ...this.state.adminUsers[0],
+              ...this.state.adminProfile,
+              id: this.state.adminUsers[0].id || 'ADM-001',
+              username: this.state.adminUsers[0].username || 'admin',
+              password: this.state.adminUsers[0].password || 'admin123',
+              isSuperAdmin: true,
+              status: 'AKTIF'
+            };
+          }
+        } else {
+          // Normalize admin users
+          this.state.adminUsers.forEach((adm, idx) => {
+            if (!adm.id) adm.id = `ADM-${String(idx + 1).padStart(3, '0')}`;
+            if (!adm.status) adm.status = 'AKTIF';
+            if (!adm.password) adm.password = 'admin123';
+            if (idx === 0) adm.isSuperAdmin = true;
+          });
+        }
         if (!this.state.adminProfile) {
-          this.state.adminProfile = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.adminProfile));
+          this.state.adminProfile = JSON.parse(JSON.stringify(this.state.adminUsers[0]));
         }
         if (!this.state.scholarshipSchemes || this.state.scholarshipSchemes.length === 0) {
           this.state.scholarshipSchemes = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.scholarshipSchemes));
@@ -833,7 +1238,9 @@ class StateManager {
         if (!this.state.paymentVerifications) this.state.paymentVerifications = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.paymentVerifications));
         if (!this.state.individualOverrides) this.state.individualOverrides = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.individualOverrides));
         if (!this.state.auditLogs) this.state.auditLogs = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.auditLogs));
-        if (!this.state.academicCalendar || this.state.academicCalendar.length === 0) {
+        
+        // Auto-update to official SK Academic Calendar if missing or from old seed
+        if (!this.state.academicCalendar || this.state.academicCalendar.length < 35) {
           this.state.academicCalendar = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.academicCalendar));
         }
       } else {
@@ -902,9 +1309,13 @@ class StateManager {
         semester: student.semester
       };
     } else {
-      const adminData = this.state.adminProfile || INITIAL_SEED_DATA.adminProfile;
+      const activeAdmin = (this.state.adminUsers && this.state.adminUsers.find(a => a.id === this.state.adminProfile?.id && a.status === 'AKTIF')) ||
+                          (this.state.adminUsers && this.state.adminUsers.find(a => a.status === 'AKTIF')) ||
+                          this.state.adminProfile ||
+                          INITIAL_SEED_DATA.adminProfile;
+      this.state.adminProfile = { ...activeAdmin };
       this.state.currentUser = {
-        ...adminData,
+        ...activeAdmin,
         role: 'ADMIN'
       };
     }
@@ -912,35 +1323,208 @@ class StateManager {
     this.notify();
   }
 
-  // Action: Update Admin Profile
+  // Action: Set Active Admin User Session
+  setActiveAdmin(adminId) {
+    if (!this.state.adminUsers) this.state.adminUsers = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.adminUsers));
+    const admin = this.state.adminUsers.find(a => a.id === adminId);
+    if (!admin) return { success: false, message: 'Data admin tidak ditemukan.' };
+    if (admin.status === 'NON_AKTIF') return { success: false, message: 'Akun admin ini non-aktif.' };
+
+    this.state.currentRole = 'ADMIN';
+    this.state.adminProfile = { ...admin };
+    this.state.currentUser = {
+      ...admin,
+      role: 'ADMIN'
+    };
+
+    this.addAuditLog(
+      'SWITCH_ADMIN_SESSION',
+      admin.name,
+      `Beralih sesi aktif ke Admin: ${admin.name} (${admin.title || 'Admin'}).`
+    );
+
+    this.notify();
+    return { success: true, message: `Beralih ke akun ${admin.name}.`, admin };
+  }
+
+  // Action: Add New Admin User
+  addAdminUser(adminData) {
+    if (!this.state.adminUsers) this.state.adminUsers = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.adminUsers));
+
+    const username = (adminData.username || '').trim().toLowerCase();
+    const name = (adminData.name || '').trim();
+    const password = (adminData.password || 'admin123').trim();
+    const email = (adminData.email || '').trim().toLowerCase();
+
+    if (!name) return { success: false, message: 'Nama lengkap admin wajib diisi.' };
+    if (!username) return { success: false, message: 'Username login admin wajib diisi.' };
+    if (!password) return { success: false, message: 'Password admin wajib diisi.' };
+
+    // Check duplicate username
+    const exists = this.state.adminUsers.some(a => a.username.toLowerCase() === username);
+    if (exists) {
+      return { success: false, message: `Username "${username}" sudah digunakan oleh admin lain.` };
+    }
+
+    // Auto-generate avatarText
+    let avatarText = (adminData.avatarText || '').trim().toUpperCase();
+    if (!avatarText) {
+      const words = name.replace(/[^a-zA-Z\s]/g, '').trim().split(/\s+/).filter(Boolean);
+      avatarText = words.slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'AD';
+    }
+
+    const newId = `ADM-${Date.now().toString().slice(-4)}`;
+    const newAdmin = {
+      id: newId,
+      username,
+      password,
+      name,
+      role: 'ADMIN',
+      email: email || `${username}@stit-if.ac.id`,
+      phone: (adminData.phone || '').trim() || '082342307414',
+      title: (adminData.title || 'Staf Pengelola & Administrasi').trim(),
+      department: (adminData.department || 'Biro Keuangan & Administrasi Umum (BAU)').trim(),
+      nip: (adminData.nip || '-').trim(),
+      avatarText,
+      status: adminData.status === 'NON_AKTIF' ? 'NON_AKTIF' : 'AKTIF',
+      isSuperAdmin: false,
+      createdAt: new Date().toISOString().replace('T', ' ').slice(0, 19)
+    };
+
+    this.state.adminUsers.push(newAdmin);
+
+    this.addAuditLog(
+      'ADD_ADMIN_USER',
+      `${newAdmin.name} (@${newAdmin.username})`,
+      `Penambahan akun admin baru oleh ${this.state.currentUser?.name || 'Admin'}: ${newAdmin.title} (${newAdmin.department}).`
+    );
+
+    this.notify();
+    return { success: true, message: `Admin baru "${newAdmin.name}" berhasil ditambahkan ke sistem!`, admin: newAdmin };
+  }
+
+  // Action: Update Admin User
+  updateAdminUser(adminId, updatedFields) {
+    if (!this.state.adminUsers) this.state.adminUsers = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.adminUsers));
+    const idx = this.state.adminUsers.findIndex(a => a.id === adminId);
+    if (idx === -1) return { success: false, message: 'Data admin tidak ditemukan.' };
+
+    const targetAdmin = this.state.adminUsers[idx];
+
+    // Check username uniqueness if changed
+    if (updatedFields.username) {
+      const newUsername = updatedFields.username.trim().toLowerCase();
+      if (newUsername !== targetAdmin.username.toLowerCase()) {
+        const duplicate = this.state.adminUsers.some((a, i) => i !== idx && a.username.toLowerCase() === newUsername);
+        if (duplicate) {
+          return { success: false, message: `Username "${newUsername}" sudah digunakan oleh admin lain.` };
+        }
+        updatedFields.username = newUsername;
+      }
+    }
+
+    // Auto-generate avatar if name changed
+    if (updatedFields.name && !updatedFields.avatarText) {
+      const cleanWords = updatedFields.name.replace(/[^a-zA-Z\s]/g, '').trim().split(/\s+/).filter(Boolean);
+      updatedFields.avatarText = cleanWords.slice(0, 2).map(w => w[0].toUpperCase()).join('') || targetAdmin.avatarText || 'AD';
+    }
+
+    // Protect super admin flag and prevent deactivation of active session
+    if (targetAdmin.isSuperAdmin) {
+      delete updatedFields.isSuperAdmin;
+      delete updatedFields.status; // Super admin cannot be deactivated
+    }
+
+    this.state.adminUsers[idx] = { ...targetAdmin, ...updatedFields };
+
+    // If updating current active admin profile, sync state.adminProfile and state.currentUser
+    if (this.state.adminProfile && this.state.adminProfile.id === adminId) {
+      this.state.adminProfile = { ...this.state.adminUsers[idx] };
+      if (this.state.currentRole === 'ADMIN') {
+        this.state.currentUser = {
+          ...this.state.adminUsers[idx],
+          role: 'ADMIN'
+        };
+      }
+    }
+
+    this.addAuditLog(
+      'UPDATE_ADMIN_USER',
+      `${this.state.adminUsers[idx].name} (@${this.state.adminUsers[idx].username})`,
+      `Pembaruan profil/kredensial admin oleh ${this.state.currentUser?.name || 'Admin'}.`
+    );
+
+    this.notify();
+    return { success: true, message: `Data admin "${this.state.adminUsers[idx].name}" berhasil diperbarui.`, admin: this.state.adminUsers[idx] };
+  }
+
+  // Action: Delete Admin User
+  deleteAdminUser(adminId) {
+    if (!this.state.adminUsers) return { success: false, message: 'Data admin tidak ditemukan.' };
+    const admin = this.state.adminUsers.find(a => a.id === adminId);
+    if (!admin) return { success: false, message: 'Data admin tidak ditemukan.' };
+
+    if (admin.isSuperAdmin) {
+      return { success: false, message: 'Akun Super Admin Utama tidak dapat dihapus demi keamanan sistem.' };
+    }
+
+    if (this.state.currentUser && this.state.currentUser.id === adminId) {
+      return { success: false, message: 'Anda tidak dapat menghapus akun admin yang sedang Anda gunakan untuk login saat ini.' };
+    }
+
+    if (this.state.adminUsers.length <= 1) {
+      return { success: false, message: 'Sistem harus memiliki setidaknya satu akun admin aktif.' };
+    }
+
+    const adminName = admin.name;
+    const adminUsername = admin.username;
+    this.state.adminUsers = this.state.adminUsers.filter(a => a.id !== adminId);
+
+    this.addAuditLog(
+      'DELETE_ADMIN_USER',
+      `${adminName} (@${adminUsername})`,
+      `Penghapusan akun admin "${adminName}" oleh ${this.state.currentUser?.name || 'Admin'}.`
+    );
+
+    this.notify();
+    return { success: true, message: `Akun admin "${adminName}" berhasil dihapus dari sistem.` };
+  }
+
+  // Action: Toggle Admin Active Status
+  toggleAdminUserStatus(adminId) {
+    if (!this.state.adminUsers) return { success: false, message: 'Data admin tidak ditemukan.' };
+    const admin = this.state.adminUsers.find(a => a.id === adminId);
+    if (!admin) return { success: false, message: 'Data admin tidak ditemukan.' };
+
+    if (admin.isSuperAdmin) {
+      return { success: false, message: 'Status akun Super Admin Utama selalu aktif dan tidak dapat dinonaktifkan.' };
+    }
+
+    if (this.state.currentUser && this.state.currentUser.id === adminId) {
+      return { success: false, message: 'Anda tidak dapat menonaktifkan akun admin yang sedang Anda gunakan saat ini.' };
+    }
+
+    const newStatus = admin.status === 'AKTIF' ? 'NON_AKTIF' : 'AKTIF';
+    admin.status = newStatus;
+
+    this.addAuditLog(
+      'TOGGLE_ADMIN_STATUS',
+      `${admin.name} (@${admin.username})`,
+      `Status akun admin diubah menjadi ${newStatus}.`
+    );
+
+    this.notify();
+    return { success: true, message: `Status admin "${admin.name}" berhasil diubah menjadi ${newStatus}.`, newStatus };
+  }
+
+  // Action: Update Admin Profile (Backward-compatible for self profile modal)
   updateAdminProfile(updatedFields) {
     if (!this.state.adminProfile) {
       this.state.adminProfile = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.adminProfile));
     }
 
-    this.state.adminProfile = { ...this.state.adminProfile, ...updatedFields };
-
-    // Auto-generate avatarText if name changed and not explicitly set
-    if (updatedFields.name && !updatedFields.avatarText) {
-      const cleanWords = updatedFields.name.replace(/[^a-zA-Z\s]/g, '').trim().split(/\s+/).filter(Boolean);
-      this.state.adminProfile.avatarText = cleanWords.slice(0, 2).map(w => w[0].toUpperCase()).join('') || 'AD';
-    }
-
-    if (this.state.currentRole === 'ADMIN') {
-      this.state.currentUser = {
-        ...this.state.adminProfile,
-        role: 'ADMIN'
-      };
-    }
-
-    this.addAuditLog(
-      'EDIT_ADMIN_PROFILE',
-      this.state.adminProfile.name,
-      `Pembaruan profil data identitas Bendahara / Admin institusi STIT-IF.`
-    );
-
-    this.notify();
-    return { success: true, message: 'Profil Admin & Bendahara berhasil diperbarui.' };
+    const currentId = this.state.adminProfile.id || 'ADM-001';
+    return this.updateAdminUser(currentId, updatedFields);
   }
 
   // Action: Add Audit Log
@@ -958,7 +1542,157 @@ class StateManager {
     this.notify();
   }
 
-  // Student Data Mutations
+  // Student Data Mutations & Self-Registration
+  registerStudent(studentData) {
+    const rawNim = (studentData.nim || '').trim();
+    const rawName = (studentData.name || '').trim();
+    const rawUsername = (studentData.username || rawNim).trim();
+    const rawPassword = studentData.password || '123456';
+
+    if (!rawNim) {
+      return { success: false, message: 'NIM / Nomor Pendaftaran wajib diisi.' };
+    }
+    if (!rawName) {
+      return { success: false, message: 'Nama lengkap calon mahasiswa wajib diisi.' };
+    }
+
+    // Check NIM collision
+    const existingNim = this.state.students.find(s => s.nim.toLowerCase() === rawNim.toLowerCase());
+    if (existingNim) {
+      return { success: false, message: `NIM ${rawNim} sudah terdaftar atas nama "${existingNim.name}". Silakan gunakan NIM lain atau login langsung.` };
+    }
+
+    // Check Username collision
+    if (rawUsername) {
+      const existingUser = this.state.students.find(s => s.username && s.username.toLowerCase() === rawUsername.toLowerCase());
+      if (existingUser) {
+        return { success: false, message: `Username "${rawUsername}" sudah digunakan oleh akun mahasiswa lain. Silakan pilih username lain.` };
+      }
+    }
+
+    const prodi = studentData.prodi || 'BKPI';
+    const semester = parseInt(studentData.semester, 10) || 1;
+    const angkatan = studentData.angkatan || '2026';
+    const gender = studentData.gender || 'L';
+    const scholarshipId = studentData.scholarshipId || 'REGULER';
+    const phone = (studentData.phone || '').trim();
+    const email = (studentData.email || '').trim();
+
+    // Create student object
+    const newStudent = {
+      id: `MHS-${String(this.state.students.length + 1).padStart(3, '0')}`,
+      nim: rawNim,
+      name: rawName,
+      username: rawUsername,
+      password: rawPassword,
+      prodi: prodi,
+      angkatan: angkatan,
+      semester: semester,
+      gender: gender,
+      scholarshipId: scholarshipId,
+      email: email || `${rawUsername.toLowerCase()}@mahasiswa.stit-ihsanulfikri.ac.id`,
+      phone: phone || '082342307414',
+      status: 'AKTIF',
+      virtualAccount: '1056405743',
+      registeredAt: new Date().toISOString().replace('T', ' ').split('.')[0]
+    };
+
+    // Add to students collection
+    this.state.students.unshift(newStudent);
+
+    // Calculate invoice items based on fee components and scholarship scheme
+    const feeComponents = this.state.feeComponents || [];
+    const scholarship = (this.state.scholarshipSchemes || []).find(sc => sc.id === scholarshipId) || { id: 'REGULER', discountValue: 0, discountType: 'NONE' };
+
+    const items = [];
+    let grossAmount = 0;
+    let totalDiscount = 0;
+
+    // 1. SPP / UKT Pokok
+    const sppComp = feeComponents.find(c => c.id === 'SPP') || { name: 'SPP / UKT Pokok Semester', defaultAmount: 1800000 };
+    let sppDiscount = 0;
+    if (scholarship.id !== 'REGULER') {
+      if (scholarship.discountType === 'PERCENT') {
+        sppDiscount = (sppComp.defaultAmount * scholarship.discountValue) / 100;
+      } else if (scholarship.discountType === 'FIXED') {
+        sppDiscount = Math.min(scholarship.discountValue, sppComp.defaultAmount);
+      }
+    }
+    sppDiscount = Math.min(sppDiscount, sppComp.defaultAmount);
+    const sppFinal = sppComp.defaultAmount - sppDiscount;
+
+    items.push({
+      componentId: 'SPP',
+      name: sppComp.name,
+      baseAmount: sppComp.defaultAmount,
+      discount: sppDiscount,
+      finalAmount: sppFinal
+    });
+    grossAmount += sppComp.defaultAmount;
+    totalDiscount += sppDiscount;
+
+    // 2. Daftar Ulang / Heregistrasi
+    const duComp = feeComponents.find(c => c.id === 'DAFTAR_ULANG') || { name: 'Heregistrasi & Administrasi', defaultAmount: 150000 };
+    items.push({
+      componentId: 'DAFTAR_ULANG',
+      name: duComp.name,
+      baseAmount: duComp.defaultAmount,
+      discount: 0,
+      finalAmount: duComp.defaultAmount
+    });
+    grossAmount += duComp.defaultAmount;
+
+    // 3. Pendaftaran Maba jika Semester 1
+    if (semester === 1) {
+      const pendComp = feeComponents.find(c => c.id === 'PENDAFTARAN') || { name: 'Paket Orientasi & Jas Almamater Maba', defaultAmount: 350000 };
+      items.push({
+        componentId: 'PENDAFTARAN',
+        name: pendComp.name,
+        baseAmount: pendComp.defaultAmount,
+        discount: 0,
+        finalAmount: pendComp.defaultAmount
+      });
+      grossAmount += pendComp.defaultAmount;
+    }
+
+    const netAmount = grossAmount - totalDiscount;
+
+    // Generate initial invoice
+    const newInvoice = {
+      id: `INV-2026-${String(this.state.invoices.length + 1).padStart(3, '0')}`,
+      studentNim: rawNim,
+      semester: this.state.activeSemester || '2026/2027 Ganjil',
+      grossAmount: grossAmount,
+      discountAmount: totalDiscount,
+      netAmount: netAmount,
+      paidAmount: 0,
+      remainingAmount: netAmount,
+      status: 'PENDING',
+      dueDate: '2026-09-12',
+      virtualAccount: '1056405743',
+      items: items,
+      payments: []
+    };
+
+    this.state.invoices.unshift(newInvoice);
+
+    // Audit Trail
+    this.addAuditLog(
+      'REGISTER_STUDENT_SELF',
+      `${newStudent.name} (NIM: ${newStudent.nim})`,
+      `Registrasi mandiri mahasiswa baru prodi ${newStudent.prodi} jalur ${scholarship.name || scholarshipId}. Tagihan perdana ${newInvoice.id} sebesar Rp ${netAmount.toLocaleString('id-ID')} diterbitkan.`
+    );
+
+    this.notify();
+
+    return {
+      success: true,
+      student: newStudent,
+      invoice: newInvoice,
+      message: `Selamat datang, ${newStudent.name}! Akun mahasiswa Anda berhasil dibuat.`
+    };
+  }
+
   addStudent(student) {
     this.state.students.unshift(student);
     this.addAuditLog(

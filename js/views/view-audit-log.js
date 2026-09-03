@@ -38,11 +38,13 @@ export function renderAuditLogView(container) {
         <div style="display: flex; gap: 10px;">
           <select class="filter-select" id="filter-audit-category" style="width: 100%;">
             <option value="ALL">Semua Kategori Aksi</option>
-            <option value="PAYMENT">Pembayaran & Virtual Account</option>
-            <option value="VERIFY">Verifikasi Transfer Manual</option>
-            <option value="REGISTRASI">Pendaftaran Mahasiswa Baru</option>
-            <option value="SKEMA">Skema Beasiswa & Tarif</option>
-            <option value="OVERRIDE">Override & Dispensasi</option>
+            <option value="ADMIN">👑 Akun Admin & Pengelola</option>
+            <option value="PAYMENT">💳 Pembayaran & Virtual Account</option>
+            <option value="VERIFY">🔍 Verifikasi Transfer Manual</option>
+            <option value="STUDENT">🎓 Data Mahasiswa & Akun</option>
+            <option value="SKEMA">⚙️ Skema Beasiswa & Tarif</option>
+            <option value="OVERRIDE">✍️ Override & Dispensasi</option>
+            <option value="ACADEMIC">📅 Kalender Akademik</option>
           </select>
         </div>
       </div>
@@ -57,12 +59,14 @@ export function renderAuditLogView(container) {
   `;
 
   function getActionIcon(action) {
+    if (action.includes('ADMIN')) return '👑';
     if (action.includes('PAYMENT')) return '💳';
     if (action.includes('VERIFY_TRANSFER_APPROVE')) return '✅';
     if (action.includes('VERIFY_TRANSFER_REJECT')) return '❌';
     if (action.includes('REGISTRASI') || action.includes('STUDENT')) return '🎓';
     if (action.includes('OVERRIDE')) return '✍️';
     if (action.includes('SKEMA') || action.includes('TARIF')) return '⚙️';
+    if (action.includes('ACADEMIC') || action.includes('EVENT')) return '📅';
     return '📜';
   }
 

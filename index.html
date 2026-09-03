@@ -29,11 +29,11 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Core Stylesheets (Corporate Blue Theme) -->
-  <link rel="stylesheet" href="./css/variables.css?v=2.0.1">
-  <link rel="stylesheet" href="./css/layout.css?v=2.0.1">
-  <link rel="stylesheet" href="./css/components.css?v=2.0.1">
-  <link rel="stylesheet" href="./css/receipt.css?v=2.0.1">
-  <link rel="stylesheet" href="./css/responsive.css?v=2.0.1">
+  <link rel="stylesheet" href="./css/variables.css?v=2.2.0">
+  <link rel="stylesheet" href="./css/layout.css?v=2.2.0">
+  <link rel="stylesheet" href="./css/components.css?v=2.2.0">
+  <link rel="stylesheet" href="./css/receipt.css?v=2.2.0">
+  <link rel="stylesheet" href="./css/responsive.css?v=2.2.0">
 </head>
 <body>
 
@@ -50,7 +50,10 @@
       <!-- Injected dynamically by AuthManager -->
     </div>
 
-    <div class="role-quick-info" style="display: flex; align-items: center; gap: 12px;">
+    <div class="role-quick-info" style="display: flex; align-items: center; gap: 10px;">
+      <button id="btn-topbar-register" class="btn btn-sm" style="background: #2563eb; color: #ffffff; border: 1px solid #60a5fa; padding: 4px 11px; font-size: 0.74rem; font-weight: 800; border-radius: var(--radius-sm); cursor: pointer; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" title="Buat Akun / Registrasi Mahasiswa Baru">
+        <span>📝</span> <span>Buat Akun Baru</span>
+      </button>
       <span>Peran: <strong class="current-user-name" id="topbar-user-role">Admin</strong></span>
       <button id="btn-sync-reset-state" class="btn btn-sm" style="background: rgba(255,255,255,0.18); color: #ffffff; border: 1px solid rgba(255,255,255,0.3); padding: 4px 10px; font-size: 0.72rem; font-weight: 700; border-radius: var(--radius-sm); cursor: pointer;" title="Reset / Sinkronkan Data Awal">
         🔄 Sinkron Data
@@ -121,7 +124,15 @@
           <span>Audit Trail & Log</span>
         </a>
 
-        <div class="nav-section-label">Autentikasi & Akun</div>
+        <div class="nav-section-label">Pengaturan & Akun</div>
+        <a class="nav-item" id="nav-daftar-mahasiswa" title="Buat Akun / Registrasi Mahasiswa Baru" style="color: #93c5fd; font-weight: 700;">
+          <span class="nav-icon">📝</span>
+          <span>Buat Akun Baru</span>
+        </a>
+        <a class="nav-item" id="nav-kelola-admin" title="Kelola Akun Admin & Tambah Admin Baru">
+          <span class="nav-icon">👥</span>
+          <span>Kelola Admin</span>
+        </a>
         <a class="nav-item" data-view="view-login" id="nav-login">
           <span class="nav-icon">🔑</span>
           <span>Portal Login</span>
@@ -218,11 +229,30 @@
   <div class="toast-container" id="toast-container"></div>
 
   <!-- Application Logic Modules -->
-  <script type="module" src="./js/app.js?v=2.0.1"></script>
+  <script type="module" src="./js/app.js?v=2.2.0"></script>
 
   <script>
-    // Quick shortcut listener for QR validator icon
+    // Quick shortcut listener for QR validator & register buttons
     document.addEventListener('DOMContentLoaded', () => {
+      const btnTopRegister = document.getElementById('btn-topbar-register');
+      if (btnTopRegister) {
+        btnTopRegister.addEventListener('click', () => {
+          if (window.simpelModals && window.simpelModals.openStudentRegistrationModal) {
+            window.simpelModals.openStudentRegistrationModal();
+          }
+        });
+      }
+
+      const navDaftar = document.getElementById('nav-daftar-mahasiswa');
+      if (navDaftar) {
+        navDaftar.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (window.simpelModals && window.simpelModals.openStudentRegistrationModal) {
+            window.simpelModals.openStudentRegistrationModal();
+          }
+        });
+      }
+
       const btnQuickQr = document.getElementById('btn-quick-qr');
       if (btnQuickQr) {
         btnQuickQr.addEventListener('click', () => {

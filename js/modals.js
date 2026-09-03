@@ -1669,14 +1669,24 @@ export class ModalManager {
     `;
 
     footer.innerHTML = `
-      <button class="btn btn-outline" id="btn-cancel-admin-profile">Batal</button>
-      <button class="btn btn-primary" id="btn-save-admin-profile" style="background: #1e40af; font-weight: 800;">
-        💾 Simpan Perubahan Profil Admin
-      </button>
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <button class="btn btn-outline" id="btn-open-manage-admins-from-profile" style="color: #1e40af; border-color: #93c5fd; font-weight: 700;">
+          👥 Kelola Semua Akun Admin
+        </button>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-outline" id="btn-cancel-admin-profile">Batal</button>
+          <button class="btn btn-primary" id="btn-save-admin-profile" style="background: #1e40af; font-weight: 800;">
+            💾 Simpan Perubahan Profil
+          </button>
+        </div>
+      </div>
     `;
 
     overlay.classList.add('active');
 
+    footer.querySelector('#btn-open-manage-admins-from-profile').addEventListener('click', () => {
+      ModalManager.openAdminManagementModal();
+    });
     footer.querySelector('#btn-cancel-admin-profile').addEventListener('click', () => ModalManager.closeModal());
     footer.querySelector('#btn-save-admin-profile').addEventListener('click', () => {
       const name = body.querySelector('#admin-prof-name').value.trim();
@@ -1717,5 +1727,950 @@ export class ModalManager {
         if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
       }
     });
+  }
+
+  /**
+   * 10. Master Admin & Staff Management Modal (Multi-Admin)
+   */
+  static openAdminManagementModal() {
+    const state = appState.getState();
+    const adminUsers = state.adminUsers || [state.adminProfile];
+    const currentAdminId = state.currentUser?.id || state.adminProfile?.id || 'ADM-001';
+
+    const { overlay, card, title, body, footer } = this.getModalElements();
+    card.classList.remove('modal-lg');
+    card.classList.add('modal-xl');
+
+    title.innerHTML = `👑 Manajemen Akun Admin & Pengelola Kampus`;
+
+    const totalAdmins = adminUsers.length;
+    const activeAdmins = adminUsers.filter(a => a.status === 'AKTIF').length;
+
+    function renderAdminList(list) {
+      if (list.length === 0) {
+        return `
+          <div style="text-align: center; padding: 36px 20px; background: #f8fafc; border-radius: var(--radius-lg); border: 1px dashed var(--border-light);">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">👤</div>
+            <div style="font-weight: 700; color: var(--text-dark); font-size: 0.95rem;">Tidak Ada Akun Admin Ditemukan</div>
+            <div style="font-size: 0.78rem; color: var(--text-light); margin-top: 4px;">Coba gunakan kata kunci pencarian yang lain atau tambah admin baru.</div>
+          </div>
+        `;
+      }
+
+      return list.map(adm => {
+        const isCurrent = adm.id === currentAdminId;
+        const isActive = adm.status === 'AKTIF';
+        const isSuper = !!adm.isSuperAdmin;
+
+        return `
+          <div class="admin-user-card" data-admin-id="${adm.id}" style="background: #ffffff; border: 1px solid ${isCurrent ? '#3b82f6' : 'var(--border-light)'}; border-radius: var(--radius-lg); padding: 16px 20px; transition: all 0.2s; box-shadow: ${isCurrent ? '0 4px 12px rgba(59,130,246,0.12)' : 'var(--shadow-sm)'}; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 14px; min-width: 280px; flex: 1;">
+              <div style="width: 48px; height: 48px; border-radius: 50%; background: ${isCurrent ? 'linear-gradient(135deg, #1e40af, #3b82f6)' : 'linear-gradient(135deg, #334155, #64748b)'}; color: #ffffff; font-weight: 900; font-size: 1.15rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+                ${adm.avatarText || 'AD'}
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark);">${adm.name}</span>
+                  ${isSuper ? '<span class="badge" style="background: #f59e0b; color: #ffffff; font-size: 0.68rem; font-weight: 800; padding: 2px 6px;">👑 Super Admin</span>' : ''}
+                  ${isCurrent ? '<span class="badge" style="background: #22c55e; color: #ffffff; font-size: 0.68rem; font-weight: 800; padding: 2px 6px;">⭐ Sesi Aktif</span>' : ''}
+                  <span class="badge" style="background: ${isActive ? '#ecfdf5; color: #047857; border: 1px solid #a7f3d0;' : '#fef2f2; color: #b91c1c; border: 1px solid #fecaca;'} font-size: 0.68rem; font-weight: 700; padding: 2px 6px;">
+                    ${isActive ? '🟢 Aktif' : '⚪ Non-Aktif'}
+                  </span>
+                </div>
+                <div style="font-size: 0.78rem; color: var(--primary-800); font-weight: 700; margin-top: 2px;">
+                  ${adm.title || 'Pengelola SIMPEL-IF'} &bull; <span style="color: var(--text-muted); font-weight: 500;">${adm.department || 'BAU'}</span>
+                </div>
+                <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 3px; display: flex; gap: 12px; flex-wrap: wrap; font-family: var(--font-mono);">
+                  <span>👤 Username: <strong style="color: var(--text-dark);">${adm.username}</strong></span>
+                  <span>🔑 Password: <strong style="color: var(--text-dark);">${adm.password || '••••••'}</strong></span>
+                  <span>📧 ${adm.email}</span>
+                  <span>📱 ${adm.phone || '-'}</span>
+                  ${adm.nip && adm.nip !== '-' ? `<span>🪪 NIP: ${adm.nip}</span>` : ''}
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              ${!isCurrent && isActive ? `
+                <button class="btn btn-sm btn-outline btn-switch-admin" data-id="${adm.id}" title="Login / Beralih sebagai Admin ini" style="font-size: 0.76rem; font-weight: 700; color: #1e40af; border-color: #bfdbfe; background: #eff6ff;">
+                  🔄 Beralih Sesi
+                </button>
+              ` : ''}
+              <button class="btn btn-sm btn-outline btn-edit-admin" data-id="${adm.id}" title="Edit Data & Password" style="font-size: 0.76rem; font-weight: 700;">
+                ✏️ Edit Akun
+              </button>
+              ${!isSuper && !isCurrent ? `
+                <button class="btn btn-sm btn-outline btn-toggle-admin-status" data-id="${adm.id}" title="${isActive ? 'Nonaktifkan Akun' : 'Aktifkan Akun'}" style="font-size: 0.76rem; font-weight: 700; color: ${isActive ? '#b45309' : '#15803d'};">
+                  ${isActive ? '⛔ Nonaktifkan' : '✅ Aktifkan'}
+                </button>
+                <button class="btn btn-sm btn-outline btn-delete-admin" data-id="${adm.id}" title="Hapus Akun Admin" style="font-size: 0.76rem; font-weight: 700; color: #b91c1c; border-color: #fecaca; background: #fff1f2;">
+                  🗑️ Hapus
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    body.innerHTML = `
+      <!-- Top Overview Stats -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px;">
+        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: #ffffff; padding: 14px 18px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.74rem; font-weight: 700; opacity: 0.85; text-transform: uppercase;">Total Akun Admin</div>
+          <div style="font-size: 1.55rem; font-weight: 900; margin-top: 2px;">${totalAdmins} Pengelola</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #065f46 0%, #059669 100%); color: #ffffff; padding: 14px 18px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.74rem; font-weight: 700; opacity: 0.85; text-transform: uppercase;">Admin Aktif</div>
+          <div style="font-size: 1.55rem; font-weight: 900; margin-top: 2px;">${activeAdmins} Akun</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #b45309 0%, #d97706 100%); color: #ffffff; padding: 14px 18px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+          <div style="font-size: 0.74rem; font-weight: 700; opacity: 0.85; text-transform: uppercase;">Otoritas & Akses</div>
+          <div style="font-size: 1.15rem; font-weight: 900; margin-top: 6px;">Penuh (Keuangan & BAAK)</div>
+        </div>
+      </div>
+
+      <!-- Action Toolbar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+        <div class="search-box-wrapper" style="flex: 1; min-width: 240px;">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="search-admin-input" placeholder="Cari nama admin, username, jabatan, email...">
+        </div>
+        <button class="btn btn-primary" id="btn-modal-add-new-admin" style="font-weight: 800; display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px;">
+          <span>+</span> Tambah Admin Baru
+        </button>
+      </div>
+
+      <!-- Admin List Container -->
+      <div id="admin-cards-list-container" style="display: flex; flex-direction: column; gap: 12px; max-height: 440px; overflow-y: auto; padding-right: 4px;">
+        ${renderAdminList(adminUsers)}
+      </div>
+
+      <!-- Security Notice -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-md); padding: 10px 14px; margin-top: 18px; font-size: 0.76rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+        <span>🛡️</span>
+        <span>Setiap penambahan dan modifikasi akun admin diverifikasi secara otomatis serta tercatat dalam Audit Trail SIMPEL-IF.</span>
+      </div>
+    `;
+
+    footer.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <span style="font-size: 0.78rem; color: var(--text-light);">STIT Ihsanul Fikri &bull; Tata Kelola Akun Institusi</span>
+        <button class="btn btn-secondary" id="btn-close-admin-mgmt">Tutup</button>
+      </div>
+    `;
+
+    overlay.classList.add('active');
+
+    function bindAdminListActions() {
+      // 1. Switch Active Admin Session
+      body.querySelectorAll('.btn-switch-admin').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const res = appState.setActiveAdmin(id);
+          if (res.success) {
+            window.simpelToast.show('Sesi Berhasil Diganti', res.message, 'success');
+            ModalManager.closeModal();
+            if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+          } else {
+            window.simpelToast.show('Gagal', res.message, 'warning');
+          }
+        });
+      });
+
+      // 2. Edit Admin User
+      body.querySelectorAll('.btn-edit-admin').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          ModalManager.openEditAdminModal(id);
+        });
+      });
+
+      // 3. Toggle Status
+      body.querySelectorAll('.btn-toggle-admin-status').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const res = appState.toggleAdminUserStatus(id);
+          if (res.success) {
+            window.simpelToast.show('Status Diperbarui', res.message, 'info');
+            ModalManager.openAdminManagementModal();
+          } else {
+            window.simpelToast.show('Peringatan', res.message, 'warning');
+          }
+        });
+      });
+
+      // 4. Delete Admin User
+      body.querySelectorAll('.btn-delete-admin').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const admin = appState.getState().adminUsers.find(a => a.id === id);
+          if (confirm(`Apakah Anda yakin ingin menghapus akun admin "${admin ? admin.name : id}" dari sistem?\n\nAksi ini tidak dapat dibatalkan.`)) {
+            const res = appState.deleteAdminUser(id);
+            if (res.success) {
+              window.simpelToast.show('Admin Dihapus', res.message, 'success');
+              ModalManager.openAdminManagementModal();
+            } else {
+              window.simpelToast.show('Gagal Menghapus', res.message, 'danger');
+            }
+          }
+        });
+      });
+    }
+
+    bindAdminListActions();
+
+    // Search Filtering
+    const searchInput = body.querySelector('#search-admin-input');
+    const listContainer = body.querySelector('#admin-cards-list-container');
+    if (searchInput && listContainer) {
+      searchInput.addEventListener('input', () => {
+        const q = searchInput.value.toLowerCase().trim();
+        const filtered = (appState.getState().adminUsers || []).filter(a =>
+          a.name.toLowerCase().includes(q) ||
+          a.username.toLowerCase().includes(q) ||
+          (a.title && a.title.toLowerCase().includes(q)) ||
+          (a.department && a.department.toLowerCase().includes(q)) ||
+          (a.email && a.email.toLowerCase().includes(q)) ||
+          (a.phone && a.phone.toLowerCase().includes(q)) ||
+          (a.nip && a.nip.toLowerCase().includes(q))
+        );
+        listContainer.innerHTML = renderAdminList(filtered);
+        bindAdminListActions();
+      });
+    }
+
+    // Add New Admin Button
+    const btnAddNew = body.querySelector('#btn-modal-add-new-admin');
+    if (btnAddNew) {
+      btnAddNew.addEventListener('click', () => {
+        ModalManager.openAddAdminModal();
+      });
+    }
+
+    footer.querySelector('#btn-close-admin-mgmt').addEventListener('click', () => ModalManager.closeModal());
+  }
+
+  /**
+   * 11. Modal Tambah Admin Baru
+   */
+  static openAddAdminModal() {
+    const { overlay, card, title, body, footer } = this.getModalElements();
+    card.classList.remove('modal-xl');
+    card.classList.add('modal-lg');
+
+    title.innerHTML = `➕ Tambah Akun Admin / Pengelola Baru`;
+
+    body.innerHTML = `
+      <form id="form-add-new-admin" onsubmit="return false;">
+        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: #ffffff; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 1.8rem;">👑</span>
+          <div>
+            <div style="font-weight: 800; font-size: 0.95rem;">Entri Data Akun Admin Baru</div>
+            <div style="font-size: 0.74rem; opacity: 0.9;">Buat akun pengelola untuk staf keuangan, kasir, BAAK, atau pimpinan STIT-IF.</div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap & Gelar Pejabat <span class="required">*</span></label>
+            <input type="text" class="form-control" id="add-admin-name" required placeholder="Contoh: Ustadz Ahmad Farhan, S.Kom.">
+          </div>
+          <div class="form-group">
+            <label class="form-label">NIP / NIDN / No. Induk Pegawai</label>
+            <input type="text" class="form-control" id="add-admin-nip" placeholder="Contoh: 19920101 202001 1 004">
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Username Login <span class="required">*</span></label>
+            <div style="position: relative;">
+              <input type="text" class="form-control" id="add-admin-username" required placeholder="Contoh: farhan.admin" style="padding-left: 32px; font-family: var(--font-mono);">
+              <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: var(--text-light);">@</span>
+            </div>
+            <small style="font-size: 0.72rem; color: var(--text-light); margin-top: 2px; display: block;">Digunakan saat login ke Dashboard Admin (huruf kecil tanpa spasi).</small>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password Login <span class="required">*</span></label>
+            <div style="position: relative;">
+              <input type="password" class="form-control" id="add-admin-password" required value="admin123" placeholder="Masukkan password" style="padding-right: 40px;">
+              <button type="button" id="btn-toggle-add-admin-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-light); padding: 4px;">
+                👁️
+              </button>
+            </div>
+            <small style="font-size: 0.72rem; color: var(--text-light); margin-top: 2px; display: block;">Default awal: <code>admin123</code></small>
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Jabatan Struktural / Peran <span class="required">*</span></label>
+            <input type="text" class="form-control" id="add-admin-title" required placeholder="Contoh: Staf Keuangan & Pembayaran" value="Staf Administrasi & Keuangan">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Unit Kerja / Biro</label>
+            <input type="text" class="form-control" id="add-admin-dept" placeholder="Biro Keuangan & Administrasi Umum (BAU)" value="Biro Keuangan & Administrasi Umum (BAU)">
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Email Resmi Institusi</label>
+            <input type="email" class="form-control" id="add-admin-email" placeholder="nama@stit-if.ac.id">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nomor WhatsApp / HP Aktif</label>
+            <input type="text" class="form-control" id="add-admin-phone" placeholder="0813-xxxx-xxxx" value="082342307414">
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Inisial Avatar (Opsional, 2 Huruf)</label>
+            <input type="text" class="form-control" id="add-admin-avatar" maxlength="2" placeholder="Auto" style="width: 120px; text-transform: uppercase; font-weight: 800; text-align: center;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status Akun</label>
+            <select class="form-control" id="add-admin-status">
+              <option value="AKTIF" selected>🟢 Aktif (Dapat Login)</option>
+              <option value="NON_AKTIF">⚪ Non-Aktif (Ditangguhkan)</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    `;
+
+    footer.innerHTML = `
+      <button class="btn btn-outline" id="btn-cancel-add-admin">Batal</button>
+      <button class="btn btn-primary" id="btn-save-new-admin" style="background: #1e40af; font-weight: 800;">
+        💾 Simpan & Tambahkan Admin
+      </button>
+    `;
+
+    overlay.classList.add('active');
+
+    // Toggle Password Visibility
+    const pwdInput = body.querySelector('#add-admin-password');
+    const btnTogglePwd = body.querySelector('#btn-toggle-add-admin-pwd');
+    if (pwdInput && btnTogglePwd) {
+      btnTogglePwd.addEventListener('click', () => {
+        const isPwd = pwdInput.type === 'password';
+        pwdInput.type = isPwd ? 'text' : 'password';
+        btnTogglePwd.textContent = isPwd ? '🙈' : '👁️';
+      });
+    }
+
+    footer.querySelector('#btn-cancel-add-admin').addEventListener('click', () => {
+      ModalManager.openAdminManagementModal();
+    });
+
+    footer.querySelector('#btn-save-new-admin').addEventListener('click', () => {
+      const name = body.querySelector('#add-admin-name').value.trim();
+      const username = body.querySelector('#add-admin-username').value.trim().toLowerCase();
+      const password = body.querySelector('#add-admin-password').value.trim();
+      const nip = body.querySelector('#add-admin-nip').value.trim();
+      const titleText = body.querySelector('#add-admin-title').value.trim();
+      const department = body.querySelector('#add-admin-dept').value.trim();
+      const email = body.querySelector('#add-admin-email').value.trim();
+      const phone = body.querySelector('#add-admin-phone').value.trim();
+      const avatarText = body.querySelector('#add-admin-avatar').value.trim().toUpperCase();
+      const status = body.querySelector('#add-admin-status').value;
+
+      if (!name) {
+        window.simpelToast.show('Peringatan', 'Nama lengkap admin wajib diisi.', 'warning');
+        return;
+      }
+      if (!username) {
+        window.simpelToast.show('Peringatan', 'Username login admin wajib diisi.', 'warning');
+        return;
+      }
+      if (!password) {
+        window.simpelToast.show('Peringatan', 'Password admin wajib diisi.', 'warning');
+        return;
+      }
+
+      const res = appState.addAdminUser({
+        name,
+        username,
+        password,
+        nip,
+        title: titleText,
+        department,
+        email,
+        phone,
+        avatarText,
+        status
+      });
+
+      if (res.success) {
+        window.simpelToast.show('Admin Baru Ditambahkan!', res.message, 'success');
+        ModalManager.openAdminManagementModal();
+        if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+      } else {
+        window.simpelToast.show('Gagal Menambahkan Admin', res.message, 'danger');
+      }
+    });
+  }
+
+  /**
+   * 12. Modal Edit Akun Admin & Reset Password
+   */
+  static openEditAdminModal(adminId) {
+    const state = appState.getState();
+    const admin = (state.adminUsers || []).find(a => a.id === adminId) || state.adminProfile;
+    if (!admin) {
+      window.simpelToast.show('Error', 'Data admin tidak ditemukan.', 'danger');
+      return;
+    }
+
+    const { overlay, card, title, body, footer } = this.getModalElements();
+    card.classList.remove('modal-xl');
+    card.classList.add('modal-lg');
+
+    const isSuper = !!admin.isSuperAdmin;
+
+    title.innerHTML = `✏️ Edit Akun Admin — ${admin.name}`;
+
+    body.innerHTML = `
+      <form id="form-edit-admin" onsubmit="return false;">
+        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: #ffffff; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: #ffffff; color: #1e40af; font-weight: 900; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;">
+              ${admin.avatarText || 'AD'}
+            </div>
+            <div>
+              <div style="font-weight: 800; font-size: 0.95rem;">${admin.name}</div>
+              <div style="font-size: 0.74rem; opacity: 0.9;">ID: ${admin.id} &bull; @${admin.username}</div>
+            </div>
+          </div>
+          ${isSuper ? '<span class="badge" style="background: #f59e0b; color: #fff; font-weight: 800;">👑 Super Admin Utama</span>' : ''}
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap & Gelar <span class="required">*</span></label>
+            <input type="text" class="form-control" id="edit-admin-name" value="${admin.name}" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">NIP / NIDN / No. Induk Pegawai</label>
+            <input type="text" class="form-control" id="edit-admin-nip" value="${admin.nip || ''}">
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Username Login <span class="required">*</span></label>
+            <div style="position: relative;">
+              <input type="text" class="form-control" id="edit-admin-username" value="${admin.username}" required style="padding-left: 32px; font-family: var(--font-mono);">
+              <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: var(--text-light);">@</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password Login <span class="required">*</span></label>
+            <div style="position: relative;">
+              <input type="password" class="form-control" id="edit-admin-password" value="${admin.password || 'admin123'}" required style="padding-right: 40px;">
+              <button type="button" id="btn-toggle-edit-admin-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-light); padding: 4px;">
+                👁️
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Jabatan Struktural / Peran <span class="required">*</span></label>
+            <input type="text" class="form-control" id="edit-admin-title" value="${admin.title || ''}" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Unit Kerja / Biro</label>
+            <input type="text" class="form-control" id="edit-admin-dept" value="${admin.department || ''}">
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Email Resmi Institusi</label>
+            <input type="email" class="form-control" id="edit-admin-email" value="${admin.email || ''}">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nomor WhatsApp / HP</label>
+            <input type="text" class="form-control" id="edit-admin-phone" value="${admin.phone || ''}">
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 10px;">
+          <div class="form-group">
+            <label class="form-label">Inisial Avatar (Maks. 2 Huruf)</label>
+            <input type="text" class="form-control" id="edit-admin-avatar" value="${admin.avatarText || ''}" maxlength="2" style="width: 120px; text-transform: uppercase; font-weight: 800; text-align: center;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status Akun</label>
+            <select class="form-control" id="edit-admin-status" ${isSuper ? 'disabled' : ''}>
+              <option value="AKTIF" ${admin.status === 'AKTIF' ? 'selected' : ''}>🟢 Aktif (Dapat Login)</option>
+              <option value="NON_AKTIF" ${admin.status === 'NON_AKTIF' ? 'selected' : ''}>⚪ Non-Aktif (Ditangguhkan)</option>
+            </select>
+            ${isSuper ? '<small style="font-size: 0.72rem; color: var(--text-light); margin-top: 2px; display: block;">Status Super Admin selalu aktif.</small>' : ''}
+          </div>
+        </div>
+      </form>
+    `;
+
+    footer.innerHTML = `
+      <button class="btn btn-outline" id="btn-cancel-edit-admin">Batal</button>
+      <button class="btn btn-primary" id="btn-save-edit-admin" style="background: #1e40af; font-weight: 800;">
+        💾 Simpan Perubahan
+      </button>
+    `;
+
+    overlay.classList.add('active');
+
+    // Toggle Password Visibility
+    const pwdInput = body.querySelector('#edit-admin-password');
+    const btnTogglePwd = body.querySelector('#btn-toggle-edit-admin-pwd');
+    if (pwdInput && btnTogglePwd) {
+      btnTogglePwd.addEventListener('click', () => {
+        const isPwd = pwdInput.type === 'password';
+        pwdInput.type = isPwd ? 'text' : 'password';
+        btnTogglePwd.textContent = isPwd ? '🙈' : '👁️';
+      });
+    }
+
+    footer.querySelector('#btn-cancel-edit-admin').addEventListener('click', () => {
+      ModalManager.openAdminManagementModal();
+    });
+
+    footer.querySelector('#btn-save-edit-admin').addEventListener('click', () => {
+      const name = body.querySelector('#edit-admin-name').value.trim();
+      const username = body.querySelector('#edit-admin-username').value.trim().toLowerCase();
+      const password = body.querySelector('#edit-admin-password').value.trim();
+      const nip = body.querySelector('#edit-admin-nip').value.trim();
+      const titleText = body.querySelector('#edit-admin-title').value.trim();
+      const department = body.querySelector('#edit-admin-dept').value.trim();
+      const email = body.querySelector('#edit-admin-email').value.trim();
+      const phone = body.querySelector('#edit-admin-phone').value.trim();
+      const avatarText = body.querySelector('#edit-admin-avatar').value.trim().toUpperCase();
+      const status = body.querySelector('#edit-admin-status').value;
+
+      if (!name) {
+        window.simpelToast.show('Peringatan', 'Nama lengkap admin wajib diisi.', 'warning');
+        return;
+      }
+      if (!username) {
+        window.simpelToast.show('Peringatan', 'Username login admin wajib diisi.', 'warning');
+        return;
+      }
+      if (!password) {
+        window.simpelToast.show('Peringatan', 'Password admin wajib diisi.', 'warning');
+        return;
+      }
+
+      const res = appState.updateAdminUser(admin.id, {
+        name,
+        username,
+        password,
+        nip,
+        title: titleText,
+        department,
+        email,
+        phone,
+        avatarText,
+        status
+      });
+
+      if (res.success) {
+        window.simpelToast.show('Data Admin Diperbarui!', res.message, 'success');
+        ModalManager.openAdminManagementModal();
+        if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+      } else {
+        window.simpelToast.show('Gagal Memperbarui Admin', res.message, 'danger');
+      }
+    });
+  }
+
+  /**
+   * Modal Registrasi Mandiri Mahasiswa Baru / Buat Akun Mandiri
+   */
+  static openStudentRegistrationModal(prefillData = {}) {
+    const state = appState.getState();
+    const { overlay, card, title, body, footer } = this.getModalElements();
+    if (!overlay) return;
+
+    const scholarshipSchemes = state.scholarshipSchemes || [];
+    const feeComponents = state.feeComponents || [];
+
+    // Helper to generate a unique recommended NIM
+    function generateRecommendedNim(prodi, angkatan = '2026') {
+      const prodiCode = prodi === 'PIAUD' ? '86209' : '86208';
+      const existingInProdi = state.students.filter(s => s.nim.startsWith(angkatan + prodiCode));
+      const nextSeq = existingInProdi.length + 1;
+      return `${angkatan}${prodiCode}${String(nextSeq).padStart(3, '0')}`;
+    }
+
+    const defaultProdi = prefillData.prodi || 'BKPI';
+    const defaultNim = prefillData.nim || generateRecommendedNim(defaultProdi, '2026');
+
+    title.innerHTML = '🎓 Registrasi Akun Mahasiswa Baru SIMPEL-IF';
+
+    body.innerHTML = `
+      <div style="max-height: 70vh; overflow-y: auto; padding-right: 4px;">
+        
+        <!-- Welcome Banner -->
+        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-left: 5px solid #2563eb; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25);">
+              ✨
+            </div>
+            <div>
+              <div style="font-size: 0.88rem; font-weight: 800; color: #1e3a8a;">
+                Formulir Pendaftaran Akun Mahasiswa Mandiri
+              </div>
+              <div style="font-size: 0.76rem; color: #1e40af; margin-top: 2px;">
+                Institut STIT Ihsanul Fikri Pabelan Magelang &bull; T.A. ${state.activeSemester || '2026/2027 Ganjil'}
+              </div>
+            </div>
+          </div>
+          <span class="badge" style="background: #ffffff; color: #1e40af; border: 1px solid #bfdbfe; font-size: 0.72rem; font-weight: 800; padding: 4px 10px;">
+            ✓ Akun Langsung Aktif
+          </span>
+        </div>
+
+        <form id="form-register-student">
+          
+          <!-- Section 1: Data Identitas Mahasiswa -->
+          <div style="font-size: 0.82rem; font-weight: 800; color: var(--primary-900); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <span>👤</span> 1. Biodata & Program Studi
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-student-name">Nama Lengkap Mahasiswa <span class="required">*</span></label>
+            <input type="text" class="form-control" id="reg-student-name" required placeholder="Contoh: Muhammad Hanif Pratama" value="${prefillData.name || ''}" style="font-size: 0.95rem;">
+            <span class="input-help-text">Nama lengkap sesuai ijazah terakhir / identitas KTP</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="reg-student-gender">Jenis Kelamin <span class="required">*</span></label>
+              <select class="form-control" id="reg-student-gender" required>
+                <option value="L" ${prefillData.gender === 'L' ? 'selected' : ''}>Laki-laki (Ikhwan)</option>
+                <option value="P" ${prefillData.gender === 'P' ? 'selected' : ''}>Perempuan (Akhwat)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-student-prodi">Program Studi (Prodi) <span class="required">*</span></label>
+              <select class="form-control" id="reg-student-prodi" required>
+                <option value="BKPI" ${defaultProdi === 'BKPI' ? 'selected' : ''}>S1 - Bimbingan & Konseling Pend. Islam (BKPI)</option>
+                <option value="PIAUD" ${defaultProdi === 'PIAUD' ? 'selected' : ''}>S1 - Pend. Islam Anak Usia Dini (PIAUD)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="reg-student-angkatan">Tahun Angkatan <span class="required">*</span></label>
+              <select class="form-control" id="reg-student-angkatan" required>
+                <option value="2026" selected>2026 (Mahasiswa Baru)</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-student-semester">Semester Masuk <span class="required">*</span></label>
+              <select class="form-control" id="reg-student-semester" required>
+                <option value="1" selected>Semester 1 (Maba Gasal)</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Section 2: Skema Beasiswa & Tempat Tinggal -->
+          <div style="font-size: 0.82rem; font-weight: 800; color: var(--primary-900); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px; display: flex; align-items: center; gap: 6px;">
+            <span>🏅</span> 2. Jalur Beasiswa & Status Tempat Tinggal
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-student-scholarship">Pilihan Jalur Masuk / Skema Biaya <span class="required">*</span></label>
+            <select class="form-control" id="reg-student-scholarship" required style="font-weight: 700;">
+              ${scholarshipSchemes.map(sch => `
+                <option value="${sch.id}" ${sch.id === 'REGULER' ? 'selected' : ''}>
+                  ${sch.name} ${sch.discountValue > 0 ? `(Diskon SPP ${sch.discountValue}${sch.discountType === 'PERCENT' ? '%' : ' Rupiah'})` : '(Biaya Normal Tanpa Beasiswa)'}
+                </option>
+              `).join('')}
+            </select>
+            <span class="input-help-text">Pilih jalur afirmasi beasiswa jika Anda santri asrama tahfidz, mitra lembaga, atau penerima beasiswa khusus.</span>
+          </div>
+
+          <!-- Section 3: Kredensial Login & Kontak -->
+          <div style="font-size: 0.82rem; font-weight: 800; color: var(--primary-900); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px; display: flex; align-items: center; gap: 6px;">
+            <span>🔐</span> 3. Nomor Induk (NIM) & Kredensial Akun
+          </div>
+
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="form-label" for="reg-student-nim" style="margin: 0;">Nomor Induk Mahasiswa (NIM) <span class="required">*</span></label>
+              <button type="button" id="btn-generate-nim" class="btn btn-outline btn-sm" style="padding: 2px 8px; font-size: 0.72rem; font-weight: 700;">
+                🎲 Generate NIM Otomatis
+              </button>
+            </div>
+            <input type="text" class="form-control" id="reg-student-nim" required placeholder="Contoh: 202686208013" value="${defaultNim}" style="font-family: var(--font-mono); font-size: 0.95rem;">
+            <span class="input-help-text">Gunakan NIM resmi STIT-IF atau klik tombol generate di atas.</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="reg-student-username">Username Login <span class="required">*</span></label>
+              <input type="text" class="form-control" id="reg-student-username" required placeholder="Username akun..." value="${defaultNim}" style="font-family: var(--font-mono);">
+              <span class="input-help-text">Dapat menggunakan NIM atau nama panggilan unik</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-student-phone">No. WhatsApp / HP</label>
+              <input type="text" class="form-control" id="reg-student-phone" placeholder="Contoh: 082342307414" value="${prefillData.phone || ''}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-student-email">Alamat Email</label>
+            <input type="email" class="form-control" id="reg-student-email" placeholder="Contoh: nama@mahasiswa.stit-ihsanulfikri.ac.id" value="${prefillData.email || ''}">
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="reg-student-password">PIN / Password Baru <span class="required">*</span></label>
+              <div style="position: relative;">
+                <input type="password" class="form-control" id="reg-student-password" required placeholder="Minimal 6 karakter" value="123456" style="padding-right: 40px;">
+                <button type="button" id="btn-toggle-reg-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--text-light);">
+                  👁️
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-student-pwd-confirm">Konfirmasi Password <span class="required">*</span></label>
+              <input type="password" class="form-control" id="reg-student-pwd-confirm" required placeholder="Ulangi password" value="123456">
+            </div>
+          </div>
+
+          <!-- Section 4: Live Breakdown Estimasi Tagihan Perdana -->
+          <div style="background: #f8fafc; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 16px; margin-top: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-dark);">
+                🧾 Rincian Estimasi Tagihan Semester Perdana
+              </span>
+              <span class="badge" style="background: #ecfdf5; color: #065f46; font-size: 0.70rem; font-weight: 800; padding: 2px 8px; border: 1px solid #a7f3d0;">
+                BSI VA: 1056405743
+              </span>
+            </div>
+
+            <div id="reg-live-fee-breakdown" style="font-size: 0.78rem; display: flex; flex-direction: column; gap: 6px; color: var(--text-muted);">
+              <!-- Will be updated dynamically via JS -->
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    `;
+
+    footer.innerHTML = `
+      <button class="btn btn-secondary" onclick="window.simpelModals.closeModal()">Batal</button>
+      <button class="btn btn-primary" id="btn-submit-register" style="font-weight: 800; background: linear-gradient(135deg, #1e40af, #0284c7); border: none; display: inline-flex; align-items: center; gap: 6px;">
+        <span>🚀</span> <span>Daftar & Masuk Sekarang</span>
+      </button>
+    `;
+
+    // Live Fee Calculator Updater
+    function updateLiveFeeBreakdown() {
+      const prodiVal = body.querySelector('#reg-student-prodi').value;
+      const semVal = parseInt(body.querySelector('#reg-student-semester').value, 10) || 1;
+      const schId = body.querySelector('#reg-student-scholarship').value;
+      const scholarship = scholarshipSchemes.find(s => s.id === schId) || scholarshipSchemes[0];
+
+      const sppComp = feeComponents.find(c => c.id === 'SPP') || { defaultAmount: 1800000 };
+      const duComp = feeComponents.find(c => c.id === 'DAFTAR_ULANG') || { defaultAmount: 150000 };
+      const pendComp = feeComponents.find(c => c.id === 'PENDAFTARAN') || { defaultAmount: 350000 };
+
+      let sppDiscount = 0;
+      if (scholarship.id !== 'REGULER') {
+        if (scholarship.discountType === 'PERCENT') {
+          sppDiscount = (sppComp.defaultAmount * scholarship.discountValue) / 100;
+        } else if (scholarship.discountType === 'FIXED') {
+          sppDiscount = Math.min(scholarship.discountValue, sppComp.defaultAmount);
+        }
+      }
+      sppDiscount = Math.min(sppDiscount, sppComp.defaultAmount);
+      const sppFinal = sppComp.defaultAmount - sppDiscount;
+
+      let totalGross = sppComp.defaultAmount + duComp.defaultAmount;
+      let isMaba = semVal === 1;
+      if (isMaba) totalGross += pendComp.defaultAmount;
+      const totalNet = totalGross - sppDiscount;
+
+      const breakdownEl = body.querySelector('#reg-live-fee-breakdown');
+      if (breakdownEl) {
+        breakdownEl.innerHTML = `
+          <div style="display: flex; justify-content: space-between;">
+            <span>SPP / UKT Pokok Semester:</span>
+            <span>${formatRupiah(sppComp.defaultAmount)}</span>
+          </div>
+          ${sppDiscount > 0 ? `
+            <div style="display: flex; justify-content: space-between; color: #15803d; font-weight: 700;">
+              <span>Potongan ${scholarship.name}:</span>
+              <span>- ${formatRupiah(sppDiscount)}</span>
+            </div>
+          ` : ''}
+          <div style="display: flex; justify-content: space-between;">
+            <span>Daftar Ulang & Administrasi Akademik:</span>
+            <span>${formatRupiah(duComp.defaultAmount)}</span>
+          </div>
+          ${isMaba ? `
+            <div style="display: flex; justify-content: space-between;">
+              <span>Paket Orientasi & Jas Almamater Maba:</span>
+              <span>${formatRupiah(pendComp.defaultAmount)}</span>
+            </div>
+          ` : ''}
+          <div style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 6px; display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 900; color: var(--primary-950);">
+            <span>Total Tagihan Perdana:</span>
+            <span style="color: #1e40af; font-family: var(--font-mono);">${formatRupiah(totalNet)}</span>
+          </div>
+        `;
+      }
+    }
+
+    // Attach change listeners for live breakdown
+    body.querySelector('#reg-student-prodi').addEventListener('change', (e) => {
+      const nimInput = body.querySelector('#reg-student-nim');
+      const angkatan = body.querySelector('#reg-student-angkatan').value;
+      if (nimInput && nimInput.value.startsWith(angkatan)) {
+        nimInput.value = generateRecommendedNim(e.target.value, angkatan);
+        const userInput = body.querySelector('#reg-student-username');
+        if (userInput && userInput.value === nimInput.defaultValue) {
+          userInput.value = nimInput.value;
+        }
+      }
+      updateLiveFeeBreakdown();
+    });
+
+    body.querySelector('#reg-student-semester').addEventListener('change', updateLiveFeeBreakdown);
+    body.querySelector('#reg-student-scholarship').addEventListener('change', updateLiveFeeBreakdown);
+
+    // Generate NIM button
+    const btnGenNim = body.querySelector('#btn-generate-nim');
+    if (btnGenNim) {
+      btnGenNim.addEventListener('click', () => {
+        const prodi = body.querySelector('#reg-student-prodi').value;
+        const angkatan = body.querySelector('#reg-student-angkatan').value;
+        const newNim = generateRecommendedNim(prodi, angkatan);
+        body.querySelector('#reg-student-nim').value = newNim;
+        body.querySelector('#reg-student-username').value = newNim;
+        window.simpelToast.show('NIM Digenerate', `NIM format resmi: ${newNim}`, 'info');
+      });
+    }
+
+    // Toggle Password Visibility
+    const btnTogglePwd = body.querySelector('#btn-toggle-reg-pwd');
+    const pwdInput = body.querySelector('#reg-student-password');
+    if (btnTogglePwd && pwdInput) {
+      btnTogglePwd.addEventListener('click', () => {
+        const isPwd = pwdInput.type === 'password';
+        pwdInput.type = isPwd ? 'text' : 'password';
+        btnTogglePwd.textContent = isPwd ? '🙈' : '👁️';
+      });
+    }
+
+    // Sync NIM to Username if user hasn't modified it
+    const nimInput = body.querySelector('#reg-student-nim');
+    const usernameInput = body.querySelector('#reg-student-username');
+    if (nimInput && usernameInput) {
+      nimInput.addEventListener('input', (e) => {
+        if (!usernameInput.getAttribute('data-customized')) {
+          usernameInput.value = e.target.value.trim();
+        }
+      });
+      usernameInput.addEventListener('input', () => {
+        usernameInput.setAttribute('data-customized', 'true');
+      });
+    }
+
+    // Initial breakdown render
+    updateLiveFeeBreakdown();
+
+    // Submit handler
+    const btnSubmit = footer.querySelector('#btn-submit-register');
+    if (btnSubmit) {
+      btnSubmit.addEventListener('click', () => {
+        const name = body.querySelector('#reg-student-name').value.trim();
+        const gender = body.querySelector('#reg-student-gender').value;
+        const prodi = body.querySelector('#reg-student-prodi').value;
+        const angkatan = body.querySelector('#reg-student-angkatan').value;
+        const semester = body.querySelector('#reg-student-semester').value;
+        const scholarshipId = body.querySelector('#reg-student-scholarship').value;
+        const nim = body.querySelector('#reg-student-nim').value.trim();
+        const username = body.querySelector('#reg-student-username').value.trim();
+        const phone = body.querySelector('#reg-student-phone').value.trim();
+        const email = body.querySelector('#reg-student-email').value.trim();
+        const password = body.querySelector('#reg-student-password').value;
+        const pwdConfirm = body.querySelector('#reg-student-pwd-confirm').value;
+
+        if (!name) {
+          window.simpelToast.show('Validasi Gagal', 'Nama lengkap mahasiswa wajib diisi.', 'warning');
+          return;
+        }
+        if (!nim) {
+          window.simpelToast.show('Validasi Gagal', 'NIM wajib diisi.', 'warning');
+          return;
+        }
+        if (!username) {
+          window.simpelToast.show('Validasi Gagal', 'Username akun wajib diisi.', 'warning');
+          return;
+        }
+        if (!password || password.length < 4) {
+          window.simpelToast.show('Validasi Gagal', 'Password minimal 4 karakter.', 'warning');
+          return;
+        }
+        if (password !== pwdConfirm) {
+          window.simpelToast.show('Validasi Gagal', 'Konfirmasi password tidak cocok dengan password baru.', 'danger');
+          return;
+        }
+
+        const res = appState.registerStudent({
+          name,
+          gender,
+          prodi,
+          angkatan,
+          semester,
+          scholarshipId,
+          nim,
+          username,
+          phone,
+          email,
+          password
+        });
+
+        if (res.success) {
+          window.simpelModals.closeModal();
+          
+          // Switch active role immediately to the new student and navigate to student portal
+          appState.setRole('MAHASISWA', res.student.nim);
+          if (window.simpelRouter) window.simpelRouter.navigateTo('view-mahasiswa');
+          
+          window.simpelToast.show('Pendaftaran Berhasil! 🎉', `Selamat datang, ${res.student.name}! Anda telah masuk ke portal mahasiswa SIMPEL-IF.`, 'success', 6000);
+        } else {
+          window.simpelToast.show('Pendaftaran Gagal', res.message, 'danger');
+        }
+      });
+    }
+
+    overlay.classList.add('active');
   }
 }

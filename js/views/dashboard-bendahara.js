@@ -101,11 +101,14 @@ export function renderDashboardBendahara(container) {
         <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">Pusat komando tata kelola finansial, analisis neraca prodi BKPI & PIAUD, serapan beasiswa, dan operasional tagihan mahasiswa STIT Ihsanul Fikri.</p>
       </div>
       <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <button class="btn btn-outline" id="btn-admin-manage-users" style="font-weight: 800; color: #1e40af; border-color: #93c5fd; background: #eff6ff;">
+          👥 Kelola Admin (${(state.adminUsers || []).length})
+        </button>
         <button class="btn btn-outline" id="btn-admin-open-profile" style="font-weight: 700;">
           👤 Profil Saya
         </button>
         <button class="btn btn-outline" id="btn-goto-akademik" style="font-weight: 700;">
-          👥 Data Mahasiswa (${students.length})
+          🎓 Data Mahasiswa (${students.length})
         </button>
         <button class="btn btn-outline" id="btn-goto-kalender" style="font-weight: 700;">
           📅 Kalender Akademik
@@ -135,6 +138,7 @@ export function renderDashboardBendahara(container) {
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <h3 style="font-size: 1.08rem; font-weight: 900; margin: 0; color: #ffffff;">${admin.name}</h3>
             <span class="badge" style="background: #3b82f6; color: #ffffff; font-weight: 800; font-size: 0.7rem; padding: 2px 8px;">${admin.nip ? `NIP: ${admin.nip}` : 'Bendahara'}</span>
+            ${admin.isSuperAdmin ? '<span class="badge" style="background: #f59e0b; color: #ffffff; font-weight: 800; font-size: 0.7rem; padding: 2px 8px;">Super Admin</span>' : ''}
           </div>
           <div style="font-size: 0.78rem; opacity: 0.92; margin-top: 3px;">
             ${admin.title} &bull; <span style="opacity: 0.85;">${admin.department}</span>
@@ -144,9 +148,14 @@ export function renderDashboardBendahara(container) {
           </div>
         </div>
       </div>
-      <button class="btn btn-sm" id="btn-banner-edit-admin-profile" style="background: rgba(255,255,255,0.2); color: #ffffff; border: 1px solid rgba(255,255,255,0.4); font-weight: 800; font-size: 0.78rem; padding: 8px 16px; border-radius: var(--radius-md); backdrop-filter: blur(4px); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
-        ✏️ Edit Profil Saya
-      </button>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="btn btn-sm" id="btn-banner-manage-admins" style="background: rgba(255,255,255,0.92); color: #1e40af; font-weight: 800; font-size: 0.78rem; padding: 8px 16px; border-radius: var(--radius-md); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; border: none; box-shadow: var(--shadow-sm);">
+          👥 Kelola Admin & Pengelola
+        </button>
+        <button class="btn btn-sm" id="btn-banner-edit-admin-profile" style="background: rgba(255,255,255,0.2); color: #ffffff; border: 1px solid rgba(255,255,255,0.4); font-weight: 800; font-size: 0.78rem; padding: 8px 16px; border-radius: var(--radius-md); backdrop-filter: blur(4px); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+          ✏️ Edit Profil Saya
+        </button>
+      </div>
     </div>
 
     <!-- Alert for Pending Verifications (if any) -->
@@ -430,6 +439,20 @@ export function renderDashboardBendahara(container) {
   if (btnGotoVerif) {
     btnGotoVerif.addEventListener('click', () => {
       if (window.simpelRouter) window.simpelRouter.navigateTo('view-verifikasi');
+    });
+  }
+
+  const btnManageAdmins = container.querySelector('#btn-admin-manage-users');
+  if (btnManageAdmins) {
+    btnManageAdmins.addEventListener('click', () => {
+      window.simpelModals.openAdminManagementModal();
+    });
+  }
+
+  const btnBannerManageAdmins = container.querySelector('#btn-banner-manage-admins');
+  if (btnBannerManageAdmins) {
+    btnBannerManageAdmins.addEventListener('click', () => {
+      window.simpelModals.openAdminManagementModal();
     });
   }
 

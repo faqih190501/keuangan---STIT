@@ -70,11 +70,38 @@ class Router {
     // Bind sidebar navigation links
     document.querySelectorAll('.nav-item').forEach(item => {
       item.addEventListener('click', (e) => {
-        e.preventDefault();
         const targetView = item.getAttribute('data-view');
-        if (targetView) this.navigateTo(targetView);
+        if (targetView) {
+          e.preventDefault();
+          this.navigateTo(targetView);
+        }
       });
     });
+
+    // Admin management trigger from sidebar
+    const navKelolaAdmin = document.getElementById('nav-kelola-admin');
+    if (navKelolaAdmin) {
+      navKelolaAdmin.addEventListener('click', (e) => {
+        e.preventDefault();
+        ModalManager.openAdminManagementModal();
+      });
+    }
+
+    // Student registration triggers from sidebar & topbar banner
+    const navDaftar = document.getElementById('nav-daftar-mahasiswa');
+    if (navDaftar) {
+      navDaftar.addEventListener('click', (e) => {
+        e.preventDefault();
+        ModalManager.openStudentRegistrationModal();
+      });
+    }
+
+    const btnTopRegister = document.getElementById('btn-topbar-register');
+    if (btnTopRegister) {
+      btnTopRegister.addEventListener('click', () => {
+        ModalManager.openStudentRegistrationModal();
+      });
+    }
 
     // Mobile sidebar toggle
     const mobileBtn = document.getElementById('mobile-menu-btn');

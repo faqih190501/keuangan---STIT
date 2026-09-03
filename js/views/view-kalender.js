@@ -1,11 +1,12 @@
 /**
  * SIMPEL-IF Kalender Akademik & Jadwal Finansial
  * STIT Ihsanul Fikri
- * Mendukung Tampilan Kalender Bulanan Interaktif & Linimasa Agenda untuk Mahasiswa dan Admin
+ * Mendukung Tampilan Kalender Bulanan Interaktif, Gesture Geser (Swipe/Drag), & Linimasa Agenda
  */
 
 import { appState } from '../state.js';
 import { formatDate } from '../utils/formatters.js';
+import { DragScrollHelper } from '../utils/drag-scroll.js';
 
 export function renderKalenderView(container) {
   const state = appState.getState();
@@ -14,7 +15,7 @@ export function renderKalenderView(container) {
   const events = state.academicCalendar || [];
 
   // Local View State
-  let currentViewMode = 'timeline'; // 'timeline' or 'calendar'
+  let currentViewMode = 'calendar'; // Default to calendar view so swipe is immediately prominent
   let selectedCategory = 'ALL';
   let selectedSemester = 'ALL';
   let searchQuery = '';
@@ -22,6 +23,24 @@ export function renderKalenderView(container) {
   // Date state for interactive monthly calendar view
   let calendarYear = 2026;
   let calendarMonth = 8; // September (0-indexed: 8 = September)
+  let slideDirection = 'none'; // 'left', 'right', or 'none' for swipe animation
+
+  // List of all months in Academic Year 2026/2027
+  const ACADEMIC_MONTHS = [
+    { year: 2026, month: 7, name: 'Agustus', short: "Agu '26", sem: '2026/2027 Ganjil' },
+    { year: 2026, month: 8, name: 'September', short: "Sep '26", sem: '2026/2027 Ganjil' },
+    { year: 2026, month: 9, name: 'Oktober', short: "Okt '26", sem: '2026/2027 Ganjil' },
+    { year: 2026, month: 10, name: 'November', short: "Nov '26", sem: '2026/2027 Ganjil' },
+    { year: 2026, month: 11, name: 'Desember', short: "Des '26", sem: '2026/2027 Ganjil' },
+    { year: 2027, month: 0, name: 'Januari', short: "Jan '27", sem: '2026/2027 Ganjil' },
+    { year: 2027, month: 1, name: 'Februari', short: "Feb '27", sem: '2026/2027 Genap' },
+    { year: 2027, month: 2, name: 'Maret', short: "Mar '27", sem: '2026/2027 Genap' },
+    { year: 2027, month: 3, name: 'April', short: "Apr '27", sem: '2026/2027 Genap' },
+    { year: 2027, month: 4, name: 'Mei', short: "Mei '27", sem: '2026/2027 Genap' },
+    { year: 2027, month: 5, name: 'Juni', short: "Jun '27", sem: '2026/2027 Genap' },
+    { year: 2027, month: 6, name: 'Juli', short: "Jul '27", sem: '2026/2027 Genap' },
+    { year: 2027, month: 7, name: 'Agustus', short: "Agu '27", sem: '2026/2027 Genap' }
+  ];
 
   // Category Configuration
   const CATEGORY_CONFIG = {
@@ -134,7 +153,7 @@ export function renderKalenderView(container) {
       <div style="max-width: 1200px; margin: 0 auto; animation: fadeIn 0.25s ease;">
         
         <!-- Header Banner & Action Buttons -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 14px;">
           <div>
             <div style="display: flex; align-items: center; gap: 10px;">
               <h2 style="font-size: 1.45rem; font-weight: 900; color: var(--primary-950); letter-spacing: -0.3px; margin: 0;">
@@ -145,7 +164,7 @@ export function renderKalenderView(container) {
               </span>
             </div>
             <p style="font-size: 0.84rem; color: var(--text-muted); margin: 4px 0 0;">
-              Jadwal resmi perkuliahan, pengisian KRS, her-registrasi SPP, ujian semester, dan agenda wisuda STIT Ihsanul Fikri
+              Pedoman resmi perkuliahan, pengisian KRS, pembayaran SPP/Heregistrasi, ujian semester, dan kegiatan akademik STIT Ihsanul Fikri
             </p>
           </div>
 
@@ -165,6 +184,36 @@ export function renderKalenderView(container) {
             <button class="btn btn-outline btn-sm" id="btn-print-calendar" title="Cetak Kalender Akademik" style="font-weight: 700;">
               🖨️ Cetak
             </button>
+          </div>
+        </div>
+
+        <!-- Official SK Decree Banner -->
+        <div style="background: #ffffff; border: 1px solid var(--border-color); border-left: 5px solid var(--primary-800); border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #1e3a8a, #0284c7); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2);">
+              📜
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <span style="font-size: 0.72rem; font-weight: 800; background: #eff6ff; color: #1e40af; padding: 2px 8px; border-radius: 4px; border: 1px solid #bfdbfe;">
+                  SURAT KEPUTUSAN RESMI
+                </span>
+                <span style="font-size: 0.78rem; font-weight: 800; color: var(--primary-900);">
+                  Nomor: SK.01/051/STIT-IF/VIII/2026
+                </span>
+              </div>
+              <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark); margin-top: 3px;">
+                Penetapan Kalender Akademik STIT Ihsanul Fikri Tahun Akademik 2026/2027
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+                Ditetapkan di Magelang pada <strong>21 Agustus 2026</strong> oleh Ketua STIT-IF: <strong>Dr. Akhmad Kasban, Lc., M.S.I.</strong> (NIDN. 2103117902)
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge" style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; font-weight: 800; font-size: 0.74rem; padding: 6px 12px;">
+              ✓ Status: Berlaku & Sah
+            </span>
           </div>
         </div>
 
@@ -237,17 +286,63 @@ export function renderKalenderView(container) {
 
         </div>
 
-        <!-- 2. Controls & Interactive Filter Toolbar -->
+        <!-- 2. Interactive Draggable Month Slider Ribbon (Slider Bulan yang Dapat Digeser) -->
+        <div class="card" style="padding: 14px 16px; margin-bottom: 20px; background: #ffffff; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1rem;">🗓️</span>
+              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-dark);">Pilih / Geser Bulan (T.A. 2026/2027)</span>
+              <span class="badge" style="font-size: 0.68rem; background: #f1f5f9; color: var(--text-muted); padding: 2px 8px; border-radius: 999px;">
+                🖱️ Drag Mouse / 📱 Swipe Layar
+              </span>
+            </div>
+            <div style="font-size: 0.74rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px;">
+              <button type="button" id="btn-quick-prev-m" class="btn btn-outline btn-sm" style="padding: 2px 8px; font-size: 0.72rem; border-radius: var(--radius-sm);" title="Bulan Sebelumnya">◀</button>
+              <span style="font-weight: 800; color: var(--primary-900);">Bulan Terpilih: ${ACADEMIC_MONTHS.find(m => m.year === calendarYear && m.month === calendarMonth)?.name || ''} ${calendarYear}</span>
+              <button type="button" id="btn-quick-next-m" class="btn btn-outline btn-sm" style="padding: 2px 8px; font-size: 0.72rem; border-radius: var(--radius-sm);" title="Bulan Selanjutnya">▶</button>
+            </div>
+          </div>
+
+          <!-- Draggable Month Pills Track -->
+          <div class="horizontal-scroll month-slider-track" id="month-slider-track" data-scroll-x style="display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; cursor: grab; user-select: none; scrollbar-width: thin;">
+            ${ACADEMIC_MONTHS.map(m => {
+              const isSelected = m.year === calendarYear && m.month === calendarMonth;
+              
+              // Count events in this month
+              const monthEventsCount = events.filter(e => {
+                const start = new Date(e.startDate);
+                const end = new Date(e.endDate || e.startDate);
+                const mStart = new Date(m.year, m.month, 1);
+                const mEnd = new Date(m.year, m.month + 1, 0, 23, 59, 59);
+                return start <= mEnd && end >= mStart;
+              }).length;
+
+              return `
+                <button type="button" class="btn-month-pill" data-year="${m.year}" data-month="${m.month}" style="flex: 0 0 auto; min-width: 100px; padding: 8px 12px; border-radius: var(--radius-lg); text-align: center; border: 1px solid ${isSelected ? 'var(--primary-700)' : 'var(--border-light)'}; background: ${isSelected ? 'linear-gradient(135deg, #1e40af, #0284c7)' : '#f8fafc'}; color: ${isSelected ? '#ffffff' : 'var(--text-dark)'}; cursor: pointer; transition: all 0.2s ease; box-shadow: ${isSelected ? '0 4px 12px rgba(30, 64, 175, 0.25)' : 'none'};">
+                  <div style="font-size: 0.82rem; font-weight: 800; line-height: 1.2;">
+                    ${m.short}
+                  </div>
+                  <div style="font-size: 0.65rem; margin-top: 3px; font-weight: 700; color: ${isSelected ? '#e0f2fe' : 'var(--text-muted)'}; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                    <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: ${isSelected ? '#38bdf8' : (monthEventsCount > 0 ? '#10b981' : '#cbd5e1')};"></span>
+                    ${monthEventsCount} Agenda
+                  </div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- 3. Controls & Interactive Filter Toolbar -->
         <div class="card" style="padding: 18px; margin-bottom: 22px;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
             
             <!-- View Mode Switcher (Timeline vs Monthly Calendar) -->
             <div style="display: inline-flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-md); gap: 4px;">
-              <button type="button" id="btn-mode-timeline" class="btn btn-sm" style="border-radius: var(--radius-sm); font-weight: 800; font-size: 0.78rem; padding: 6px 14px; ${currentViewMode === 'timeline' ? 'background: #ffffff; color: var(--primary-800); box-shadow: var(--shadow-sm);' : 'background: transparent; color: var(--text-muted);'} border: none; cursor: pointer;">
-                📋 Linimasa Agenda
-              </button>
               <button type="button" id="btn-mode-calendar" class="btn btn-sm" style="border-radius: var(--radius-sm); font-weight: 800; font-size: 0.78rem; padding: 6px 14px; ${currentViewMode === 'calendar' ? 'background: #ffffff; color: var(--primary-800); box-shadow: var(--shadow-sm);' : 'background: transparent; color: var(--text-muted);'} border: none; cursor: pointer;">
                 📅 Kalender Bulanan
+              </button>
+              <button type="button" id="btn-mode-timeline" class="btn btn-sm" style="border-radius: var(--radius-sm); font-weight: 800; font-size: 0.78rem; padding: 6px 14px; ${currentViewMode === 'timeline' ? 'background: #ffffff; color: var(--primary-800); box-shadow: var(--shadow-sm);' : 'background: transparent; color: var(--text-muted);'} border: none; cursor: pointer;">
+                📋 Linimasa Agenda
               </button>
             </div>
 
@@ -267,29 +362,29 @@ export function renderKalenderView(container) {
 
           </div>
 
-          <!-- Category Quick Filter Pills -->
-          <div style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">
-            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="ALL" style="border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'ALL' ? 'background: var(--primary-800); color: #ffffff;' : 'background: #f8fafc; color: var(--text-muted); border: 1px solid var(--border-light);'}">
+          <!-- Category Quick Filter Pills (Draggable on mobile) -->
+          <div class="horizontal-scroll cat-filter-track" data-scroll-x style="display: flex; gap: 8px; margin-top: 14px; overflow-x: auto; padding-bottom: 4px;">
+            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="ALL" style="flex: 0 0 auto; border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'ALL' ? 'background: var(--primary-800); color: #ffffff;' : 'background: #f8fafc; color: var(--text-muted); border: 1px solid var(--border-light);'}">
               Semua Kategori (${events.length})
             </button>
-            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="KEUANGAN" style="border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'KEUANGAN' ? 'background: #059669; color: #ffffff;' : 'background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;'}">
+            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="KEUANGAN" style="flex: 0 0 auto; border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'KEUANGAN' ? 'background: #059669; color: #ffffff;' : 'background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;'}">
               💰 Keuangan & SPP (${keuanganCount})
             </button>
-            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="AKADEMIK" style="border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'AKADEMIK' ? 'background: #2563eb; color: #ffffff;' : 'background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;'}">
+            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="AKADEMIK" style="flex: 0 0 auto; border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'AKADEMIK' ? 'background: #2563eb; color: #ffffff;' : 'background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;'}">
               📚 Perkuliahan & Ujian (${akademikCount})
             </button>
-            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="KEGIATAN" style="border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'KEGIATAN' ? 'background: #d97706; color: #ffffff;' : 'background: #fffbeb; color: #92400e; border: 1px solid #fde68a;'}">
+            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="KEGIATAN" style="flex: 0 0 auto; border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'KEGIATAN' ? 'background: #d97706; color: #ffffff;' : 'background: #fffbeb; color: #92400e; border: 1px solid #fde68a;'}">
               🎉 Kegiatan & Wisuda (${kegiatanCount})
             </button>
-            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="LIBUR" style="border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'LIBUR' ? 'background: #e11d48; color: #ffffff;' : 'background: #fff1f2; color: #9f1239; border: 1px solid #fecdd3;'}">
+            <button type="button" class="btn btn-sm cat-filter-btn" data-cat="LIBUR" style="flex: 0 0 auto; border-radius: 999px; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; ${selectedCategory === 'LIBUR' ? 'background: #e11d48; color: #ffffff;' : 'background: #fff1f2; color: #9f1239; border: 1px solid #fecdd3;'}">
               🌴 Hari Libur (${events.filter(e=>e.category==='LIBUR').length})
             </button>
           </div>
         </div>
 
-        <!-- 3. Dynamic Content Rendering: Timeline vs Calendar Grid -->
+        <!-- 4. Dynamic Content Rendering: Calendar Grid vs Timeline -->
         <div id="calendar-content-container">
-          ${currentViewMode === 'timeline' ? renderTimelineView(filteredEvents) : renderMonthlyCalendarView(filteredEvents)}
+          ${currentViewMode === 'calendar' ? renderMonthlyCalendarView(filteredEvents) : renderTimelineView(filteredEvents)}
         </div>
 
       </div>
@@ -403,7 +498,7 @@ export function renderKalenderView(container) {
     `;
   }
 
-  // --- SUB-RENDERER: 2. Interactive Monthly Calendar Grid ---
+  // --- SUB-RENDERER: 2. Interactive Monthly Calendar Grid with Swipe Support ---
   function renderMonthlyCalendarView(eventList) {
     const monthNames = [
       'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -417,6 +512,13 @@ export function renderKalenderView(container) {
     const today = new Date();
     const isCurrentActualMonth = today.getFullYear() === calendarYear && today.getMonth() === calendarMonth;
     const currentActualDate = today.getDate();
+
+    // Animation class based on swipe direction
+    const animStyle = slideDirection === 'left' 
+      ? 'animation: slideInRight 0.25s ease;' 
+      : slideDirection === 'right' 
+      ? 'animation: slideInLeft 0.25s ease;' 
+      : 'animation: fadeIn 0.25s ease;';
 
     // Generate Calendar Day Cells
     let daysHtml = '';
@@ -471,43 +573,59 @@ export function renderKalenderView(container) {
     }
 
     return `
-      <div class="card" style="padding: 22px;">
+      <div class="card" id="calendar-swipe-zone" style="padding: 22px; ${animStyle} touch-action: pan-y;">
         
-        <!-- Month Navigation Bar -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+        <!-- Month Navigation Bar with Gesture Guidance -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
           <div style="display: flex; align-items: center; gap: 10px;">
-            <button type="button" class="btn btn-outline btn-sm" id="btn-prev-month" style="font-weight: 800; padding: 4px 10px;">
-              ◀ Bulan Lalu
+            <button type="button" class="btn btn-outline btn-sm" id="btn-prev-month" style="font-weight: 800; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px;">
+              <span>◀</span> <span>Bulan Lalu</span>
             </button>
-            <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--primary-950); margin: 0;">
+            <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--primary-950); margin: 0; min-width: 170px;">
               ${monthNames[calendarMonth]} ${calendarYear}
             </h3>
-            <button type="button" class="btn btn-outline btn-sm" id="btn-next-month" style="font-weight: 800; padding: 4px 10px;">
-              Bulan Depan ▶
+            <button type="button" class="btn btn-outline btn-sm" id="btn-next-month" style="font-weight: 800; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px;">
+              <span>Bulan Depan</span> <span>▶</span>
             </button>
           </div>
 
           <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge" style="background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; font-size: 0.72rem; font-weight: 800; padding: 4px 10px;">
+              🖐️ Geser / Swipe Kalender
+            </span>
             <button type="button" class="btn btn-outline btn-sm" id="btn-today-month" style="font-size: 0.74rem; font-weight: 800;">
               Hari Ini
             </button>
           </div>
         </div>
 
-        <!-- Days of Week Header (Sun to Sat) -->
-        <div style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; font-size: 0.76rem; color: var(--text-muted); background: #f8fafc; border: 1px solid var(--border-light); border-bottom: none; border-radius: var(--radius-md) var(--radius-md) 0 0; padding: 8px 0;">
-          <div style="color: #dc2626;">Ahad</div>
-          <div>Senin</div>
-          <div>Selasa</div>
-          <div>Rabu</div>
-          <div>Kamis</div>
-          <div>Jumat</div>
-          <div style="color: #0284c7;">Sabtu</div>
+        <!-- Swipe Guidance Hint -->
+        <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 6px 14px; margin-bottom: 14px; font-size: 0.74rem; color: var(--text-muted);">
+          <span>👈 <strong>Geser / Drag ke Kiri</strong> untuk Bulan Depan</span>
+          <span>👉 <strong>Geser / Drag ke Kanan</strong> untuk Bulan Lalu</span>
         </div>
 
-        <!-- Calendar Matrix Grid -->
-        <div style="display: grid; grid-template-columns: repeat(7, 1fr); border-radius: 0 0 var(--radius-md) var(--radius-md); overflow: hidden;">
-          ${daysHtml}
+        <!-- Horizontal Scrollable Matrix Container (Mobile Responsive Drag-Scroll) -->
+        <div class="horizontal-scroll calendar-matrix-wrapper" data-scroll-x style="overflow-x: auto; -webkit-overflow-scrolling: touch; cursor: grab; padding-bottom: 4px;">
+          <div style="min-width: 680px;">
+            
+            <!-- Days of Week Header (Sun to Sat) -->
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; font-size: 0.76rem; color: var(--text-muted); background: #f8fafc; border: 1px solid var(--border-light); border-bottom: none; border-radius: var(--radius-md) var(--radius-md) 0 0; padding: 8px 0;">
+              <div style="color: #dc2626;">Ahad</div>
+              <div>Senin</div>
+              <div>Selasa</div>
+              <div>Rabu</div>
+              <div>Kamis</div>
+              <div>Jumat</div>
+              <div style="color: #0284c7;">Sabtu</div>
+            </div>
+
+            <!-- Calendar Matrix Grid -->
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); border-radius: 0 0 var(--radius-md) var(--radius-md); overflow: hidden;">
+              ${daysHtml}
+            </div>
+
+          </div>
         </div>
 
         <!-- Legend Footer -->
@@ -534,8 +652,133 @@ export function renderKalenderView(container) {
     `;
   }
 
+  // --- INTERACTIVE SWIPE / DRAG GESTURE CONTROLLER ---
+  function changeMonth(direction) {
+    if (direction === 'next') {
+      slideDirection = 'left';
+      if (calendarMonth === 11) {
+        calendarMonth = 0;
+        calendarYear++;
+      } else {
+        calendarMonth++;
+      }
+    } else if (direction === 'prev') {
+      slideDirection = 'right';
+      if (calendarMonth === 0) {
+        calendarMonth = 11;
+        calendarYear--;
+      } else {
+        calendarMonth--;
+      }
+    }
+    renderView();
+    // Scroll active month pill into view on slider
+    setTimeout(() => {
+      const activePill = container.querySelector(`.btn-month-pill[data-year="${calendarYear}"][data-month="${calendarMonth}"]`);
+      if (activePill) {
+        activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }, 50);
+  }
+
+  function bindSwipeGestures(element) {
+    if (!element || element._hasSwipeGestures) return;
+    element._hasSwipeGestures = true;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let mouseStartX = 0;
+    let mouseStartY = 0;
+    let isMouseDown = false;
+
+    // 1. Touch Events (Mobile / Tablet)
+    element.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    element.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const diffX = touchEndX - touchStartX;
+      const diffY = touchEndY - touchStartY;
+
+      // Only trigger if horizontal swipe is greater than vertical and exceeds threshold
+      if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+        if (diffX < 0) {
+          changeMonth('next');
+        } else {
+          changeMonth('prev');
+        }
+      }
+    }, { passive: true });
+
+    // 2. Mouse Drag Events (Desktop)
+    element.addEventListener('mousedown', (e) => {
+      if (['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
+      isMouseDown = true;
+      mouseStartX = e.clientX;
+      mouseStartY = e.clientY;
+    });
+
+    element.addEventListener('mouseup', (e) => {
+      if (!isMouseDown) return;
+      isMouseDown = false;
+      const diffX = e.clientX - mouseStartX;
+      const diffY = e.clientY - mouseStartY;
+
+      if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+        if (diffX < 0) {
+          changeMonth('next');
+        } else {
+          changeMonth('prev');
+        }
+      }
+    });
+
+    element.addEventListener('mouseleave', () => {
+      isMouseDown = false;
+    });
+  }
+
   // --- EVENT LISTENERS & MODALS ---
   function bindEventListeners() {
+    // Universal DragScroll on horizontal elements
+    DragScrollHelper.init(container);
+
+    const monthSlider = container.querySelector('#month-slider-track');
+    if (monthSlider) {
+      DragScrollHelper.attach(monthSlider);
+    }
+
+    // Attach Swipe / Drag Gestures on Calendar View Card
+    const swipeZone = container.querySelector('#calendar-swipe-zone');
+    if (swipeZone) {
+      bindSwipeGestures(swipeZone);
+    }
+
+    // Month Slider Pills Click Handlers
+    container.querySelectorAll('.btn-month-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const y = parseInt(btn.getAttribute('data-year'), 10);
+        const m = parseInt(btn.getAttribute('data-month'), 10);
+        slideDirection = (y > calendarYear || (y === calendarYear && m > calendarMonth)) ? 'left' : 'right';
+        calendarYear = y;
+        calendarMonth = m;
+        renderView();
+      });
+    });
+
+    // Quick Month Prev/Next in Month Slider Header
+    const btnQuickPrev = container.querySelector('#btn-quick-prev-m');
+    const btnQuickNext = container.querySelector('#btn-quick-next-m');
+    if (btnQuickPrev) {
+      btnQuickPrev.addEventListener('click', () => changeMonth('prev'));
+    }
+    if (btnQuickNext) {
+      btnQuickNext.addEventListener('click', () => changeMonth('next'));
+    }
+
     // Mode Switchers
     const btnTimeline = container.querySelector('#btn-mode-timeline');
     const btnCalendar = container.querySelector('#btn-mode-calendar');
@@ -583,6 +826,8 @@ export function renderKalenderView(container) {
             ? renderTimelineView(filtered) 
             : renderMonthlyCalendarView(filtered);
           bindItemListeners();
+          const newSwipeZone = container.querySelector('#calendar-swipe-zone');
+          if (newSwipeZone) bindSwipeGestures(newSwipeZone);
         }
       });
     }
@@ -604,32 +849,17 @@ export function renderKalenderView(container) {
     const btnTodayMonth = container.querySelector('#btn-today-month');
 
     if (btnPrevMonth) {
-      btnPrevMonth.addEventListener('click', () => {
-        if (calendarMonth === 0) {
-          calendarMonth = 11;
-          calendarYear--;
-        } else {
-          calendarMonth--;
-        }
-        renderView();
-      });
+      btnPrevMonth.addEventListener('click', () => changeMonth('prev'));
     }
 
     if (btnNextMonth) {
-      btnNextMonth.addEventListener('click', () => {
-        if (calendarMonth === 11) {
-          calendarMonth = 0;
-          calendarYear++;
-        } else {
-          calendarMonth++;
-        }
-        renderView();
-      });
+      btnNextMonth.addEventListener('click', () => changeMonth('next'));
     }
 
     if (btnTodayMonth) {
       btnTodayMonth.addEventListener('click', () => {
         const now = new Date();
+        slideDirection = (now.getFullYear() > calendarYear || (now.getFullYear() === calendarYear && now.getMonth() > calendarMonth)) ? 'left' : 'right';
         calendarYear = now.getFullYear();
         calendarMonth = now.getMonth();
         renderView();

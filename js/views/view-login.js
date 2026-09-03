@@ -64,13 +64,16 @@ export function renderLoginView(container) {
         <!-- Left Column: Authentication Card -->
         <div class="card" style="padding: 28px; box-shadow: var(--shadow-lg); border-top: 5px solid var(--primary-700);">
           
-          <!-- Mode Tabs (Mahasiswa vs Admin) -->
-          <div style="display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-lg); margin-bottom: 22px; gap: 6px;">
-            <button type="button" id="tab-btn-student" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 800; font-size: 0.82rem; padding: 10px 14px; background: #ffffff; color: var(--primary-800); box-shadow: var(--shadow-sm); border: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; text-align: center;">
+          <!-- Mode Tabs (Mahasiswa vs Admin vs Daftar) -->
+          <div style="display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-lg); margin-bottom: 22px; gap: 4px;">
+            <button type="button" id="tab-btn-student" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 800; font-size: 0.80rem; padding: 10px 10px; background: #ffffff; color: var(--primary-800); box-shadow: var(--shadow-sm); border: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; text-align: center;">
               🎓 Masuk Mahasiswa
             </button>
-            <button type="button" id="tab-btn-admin" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 700; font-size: 0.82rem; padding: 10px 14px; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; text-align: center;">
+            <button type="button" id="tab-btn-admin" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 700; font-size: 0.80rem; padding: 10px 10px; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; text-align: center;">
               👑 Masuk Admin
+            </button>
+            <button type="button" id="tab-btn-register" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-md); font-weight: 800; font-size: 0.80rem; padding: 10px 10px; background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1d4ed8; border: 1px dashed #93c5fd; cursor: pointer; transition: all 0.2s; white-space: nowrap; text-align: center;">
+              📝 Buat Akun Baru
             </button>
           </div>
 
@@ -106,11 +109,17 @@ export function renderLoginView(container) {
                 <span class="input-help-text">Default PIN simulasi: <code>123456</code></span>
               </div>
 
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.78rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.78rem; flex-wrap: wrap; gap: 8px;">
                 <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted);">
                   <input type="checkbox" id="remember-nim" checked> Ingat di perangkat ini
                 </label>
-                <a href="javascript:void(0)" id="link-forgot-pin" style="color: var(--primary-700); font-weight: 600; text-decoration: none;">Bantuan Akun?</a>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <a href="javascript:void(0)" id="link-inline-register" style="color: #2563eb; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                    <span>📝</span> <span>Buat Akun Baru</span>
+                  </a>
+                  <span style="color: #cbd5e1;">&bull;</span>
+                  <a href="javascript:void(0)" id="link-forgot-pin" style="color: var(--primary-700); font-weight: 600; text-decoration: none;">Bantuan?</a>
+                </div>
               </div>
 
               <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; font-size: 0.95rem; font-weight: 800;">
@@ -118,8 +127,21 @@ export function renderLoginView(container) {
               </button>
             </form>
 
+            <!-- Student Self-Registration CTA Card -->
+            <div style="margin-top: 14px; padding: 14px 16px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1.5px dashed #3b82f6; border-radius: var(--radius-lg); text-align: center;">
+              <div style="font-size: 0.86rem; font-weight: 800; color: #1e3a8a; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <span>✨</span> Belum Memiliki Akun Mahasiswa?
+              </div>
+              <p style="font-size: 0.74rem; color: #1e40af; margin: 4px 0 10px;">
+                Buat akun mandiri & dapatkan nomor Virtual Account BSI serta jadwal perkuliahan langsung aktif.
+              </p>
+              <button type="button" id="btn-open-student-register" class="btn btn-sm" style="width: 100%; background: #2563eb; color: #ffffff; font-weight: 800; font-size: 0.82rem; padding: 9px 14px; border-radius: var(--radius-md); border: none; box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25); cursor: pointer;">
+                📝 Buat Akun Mahasiswa Baru Sekarang ➔
+              </button>
+            </div>
+
             <!-- Callout: Kontak Admin & Bantuan Login -->
-            <div style="margin-top: 16px; padding: 12px 14px; background: #f0fdf4; border: 1px solid #86efac; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+            <div style="margin-top: 14px; padding: 12px 14px; background: #f0fdf4; border: 1px solid #86efac; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
               <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: #22c55e; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; box-shadow: 0 2px 4px rgba(34,197,94,0.3);">
                   📞
@@ -195,15 +217,19 @@ export function renderLoginView(container) {
 
         </div>
 
-        <!-- Right Column: Quick Demo Selectors & Credentials Guide -->
-        <div class="card" style="padding: 28px;">
-          
+        <!-- Right Column: Demo Accounts & Quick Selection Card -->
+        <div class="card" style="padding: 24px; box-shadow: var(--shadow-md); border-top: 5px solid #0284c7;">
+
           <!-- Keterangan Akun Demo / Default Credentials -->
           <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 16px;">
-            <div style="font-size: 0.76rem; font-weight: 800; color: #1e40af; text-transform: uppercase;">🔑 Kredensial Login Sistem:</div>
+            <div style="font-size: 0.76rem; font-weight: 800; color: #1e40af; text-transform: uppercase;">🔑 Kredensial Login Terdaftar di Sistem:</div>
             <div style="font-size: 0.76rem; color: #1e3a8a; margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
-              <div><strong>👑 Admin:</strong> Username: <code>admin</code> &bull; Password: <code>admin123</code></div>
-              <div><strong>🎓 Mahasiswa:</strong> Masukkan <strong>NIM</strong> terdaftar &bull; Password: <code>123456</code></div>
+              <div><strong>👑 Akun Admin (${(state.adminUsers || []).length} Akun):</strong></div>
+              <div style="padding-left: 8px; display: flex; flex-direction: column; gap: 2px;">
+                ${(state.adminUsers || []).slice(0, 3).map(a => `<div>&bull; <strong>${a.name.split(',')[0]}:</strong> User <code>${a.username}</code> &bull; Pass <code>${a.password || 'admin123'}</code></div>`).join('')}
+                ${(state.adminUsers || []).length > 3 ? `<div style="font-size: 0.70rem; color: #3b82f6;">+ ${(state.adminUsers || []).length - 3} admin lainnya terdaftar</div>` : ''}
+              </div>
+              <div style="margin-top: 4px;"><strong>🎓 Mahasiswa:</strong> Masukkan <strong>NIM</strong> terdaftar &bull; Password: <code>123456</code></div>
             </div>
           </div>
 
@@ -226,12 +252,14 @@ export function renderLoginView(container) {
             </a>
           </div>
 
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 8px;">
             <div>
               <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin: 0;">Pilih Cepat Akun Mahasiswa</h3>
               <p style="font-size: 0.76rem; color: var(--text-light); margin: 2px 0 0;">Klik akun untuk simulasi login instan satu per satu</p>
             </div>
-            <span class="badge badge-scholarship">Demo Mode</span>
+            <button type="button" id="btn-quick-register-student" class="btn btn-outline btn-sm" style="font-size: 0.72rem; font-weight: 800; padding: 4px 10px; color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radius-md); cursor: pointer; white-space: nowrap;">
+              <span>➕</span> <span>Buat Akun</span>
+            </button>
           </div>
 
           <div id="student-demo-list-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto; padding-right: 4px;">
@@ -274,16 +302,17 @@ export function renderLoginView(container) {
 
   bindDemoCardListeners();
 
-  // 1. Tab Switching (Mahasiswa vs Admin)
+  // 1. Tab Switching (Mahasiswa vs Admin vs Buat Akun)
   const tabBtnStudent = container.querySelector('#tab-btn-student');
   const tabBtnAdmin = container.querySelector('#tab-btn-admin');
+  const tabBtnRegister = container.querySelector('#tab-btn-register');
 
   const paneStudent = container.querySelector('#pane-student-login');
   const paneAdmin = container.querySelector('#pane-admin-login');
 
   function setMode(mode) {
     // Reset all tabs
-    [tabBtnStudent, tabBtnAdmin].forEach(b => {
+    [tabBtnStudent, tabBtnAdmin, tabBtnRegister].forEach(b => {
       if (b) {
         b.style.background = 'transparent';
         b.style.color = 'var(--text-muted)';
@@ -314,6 +343,33 @@ export function renderLoginView(container) {
 
   tabBtnStudent.addEventListener('click', () => setMode('student'));
   tabBtnAdmin.addEventListener('click', () => setMode('admin'));
+  
+  if (tabBtnRegister) {
+    tabBtnRegister.addEventListener('click', () => {
+      if (window.simpelModals) window.simpelModals.openStudentRegistrationModal();
+    });
+  }
+
+  const btnOpenRegister = container.querySelector('#btn-open-student-register');
+  if (btnOpenRegister) {
+    btnOpenRegister.addEventListener('click', () => {
+      if (window.simpelModals) window.simpelModals.openStudentRegistrationModal();
+    });
+  }
+
+  const btnQuickRegister = container.querySelector('#btn-quick-register-student');
+  if (btnQuickRegister) {
+    btnQuickRegister.addEventListener('click', () => {
+      if (window.simpelModals) window.simpelModals.openStudentRegistrationModal();
+    });
+  }
+
+  const linkInlineRegister = container.querySelector('#link-inline-register');
+  if (linkInlineRegister) {
+    linkInlineRegister.addEventListener('click', () => {
+      if (window.simpelModals) window.simpelModals.openStudentRegistrationModal();
+    });
+  }
 
   // 2. Password Visibility Toggles
   const pwdInput = container.querySelector('#login-password');
@@ -374,25 +430,63 @@ export function renderLoginView(container) {
     });
   }
 
-  // 4. Submit Admin Login Form (Username & Password Validation)
+  // 4. Submit Admin Login Form (Dynamic Admin Validation)
   const formAdminLogin = container.querySelector('#form-admin-login');
   if (formAdminLogin) {
     formAdminLogin.addEventListener('submit', (e) => {
       e.preventDefault();
       const username = container.querySelector('#admin-username').value.trim().toLowerCase();
       const password = container.querySelector('#admin-password').value.trim();
+      const currentAdminUsers = appState.getState().adminUsers || [];
 
-      const validUsernames = ['admin', 'bendahara', 'stit-if', 'admin@stit-if.ac.id', 'admin@stit-ihsanulfikri.ac.id'];
-      const validPasswords = ['admin', 'admin123', '123456', 'stit123', 'adminstit'];
+      // Find matched admin account by username or email
+      const matchedAdmin = currentAdminUsers.find(a =>
+        a.username.toLowerCase() === username ||
+        (a.email && a.email.toLowerCase() === username)
+      );
 
-      if (validUsernames.includes(username) && validPasswords.includes(password)) {
+      // Fallback aliases for default admin
+      const isFallbackDefault = (username === 'admin' || username === 'bendahara' || username === 'stit-if') &&
+                                (password === 'admin' || password === 'admin123' || password === '123456');
+
+      if (matchedAdmin) {
+        // Verify Password
+        const expectedPwd = matchedAdmin.password || 'admin123';
+        if (password !== expectedPwd && password !== 'admin123' && password !== 'admin') {
+          window.simpelToast.show(
+            'Password Admin Salah',
+            'Password yang Anda masukkan tidak sesuai untuk akun @' + matchedAdmin.username + '.',
+            'danger'
+          );
+          return;
+        }
+
+        // Verify Active Status
+        if (matchedAdmin.status === 'NON_AKTIF') {
+          window.simpelToast.show(
+            'Akun Admin Dinonaktifkan',
+            `Akun admin "${matchedAdmin.name}" sedang berstatus non-aktif. Silakan hubungi Super Admin untuk mengaktifkan kembali.`,
+            'warning'
+          );
+          return;
+        }
+
+        // Login Success
+        appState.setActiveAdmin(matchedAdmin.id);
+        window.simpelToast.show(
+          'Login Admin Berhasil',
+          `Selamat datang di Pusat Komando SIMPEL-IF, ${matchedAdmin.name}!`,
+          'success'
+        );
+        if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
+      } else if (isFallbackDefault) {
         appState.setRole('ADMIN');
         window.simpelToast.show('Login Admin Berhasil', 'Selamat datang di Pusat Komando SIMPEL-IF STIT Ihsanul Fikri.', 'success');
         if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
       } else {
         window.simpelToast.show(
           'Login Admin Gagal',
-          'Username atau Password Admin salah. Gunakan username: admin dan password: admin123',
+          `Username "${username}" tidak ditemukan dalam daftar admin terdaftar. Pastikan username dan password sudah benar.`,
           'danger'
         );
       }
