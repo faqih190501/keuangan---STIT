@@ -83,7 +83,7 @@ export class ModalManager {
               <div class="kop-yayasan">YAYASAN PENDIDIKAN DAN DAKWAH IHSANUL FIKRI</div>
               <div class="kop-institution">SEKOLAH TINGGI ILMU TARBIYAH (STIT) IHSANUL FIKRI</div>
               <div class="kop-prodi-info">Program Studi: Bimbingan Konseling Pendidikan Islam (BKPI) &bull; Pendidikan Islam Anak Usia Dini (PIAUD)</div>
-              <div class="kop-address">Kampus Terpadu: Jl. Pendidikan No. 01, Ihsanul Fikri &bull; Telp: (0737) 71234 &bull; Email: stit.ihsanulfikri@ac.id &bull; Web: www.stit-ihsanulfikri.ac.id</div>
+              <div class="kop-address">Kampus: Pabelan 1, Pabelan, Kec. Mungkid, Kabupaten Magelang, Jawa Tengah 56512 &bull; WA: 082342307414 &bull; Email: stit.ihsanulfikri@ac.id</div>
             </div>
           </div>
 
@@ -1527,7 +1527,7 @@ export class ModalManager {
 
         <div class="form-group" style="margin-top: 10px;">
           <label class="form-label">Alamat Domisili / Tempat Tinggal</label>
-          <textarea class="form-control" id="self-std-address" rows="2" placeholder="Alamat lengkap RT/RW, Desa, Kecamatan, Kabupaten/Kota">${student.address || 'Pagentan, Magelang, Jawa Tengah'}</textarea>
+          <textarea class="form-control" id="self-std-address" rows="2" placeholder="Alamat lengkap RT/RW, Desa, Kecamatan, Kabupaten/Kota">${student.address || 'Pabelan, Kec. Mungkid, Kab. Magelang, Jawa Tengah 56512'}</textarea>
         </div>
 
         <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 10px 14px; margin-top: 14px; font-size: 0.76rem; color: #166534; line-height: 1.4;">
@@ -1619,7 +1619,7 @@ export class ModalManager {
           </div>
           <div style="text-align: right;">
             <span class="badge" style="background: #3b82f6; color: #ffffff; font-weight: 800; font-size: 0.74rem;">STIT Ihsanul Fikri</span>
-            <div style="font-size: 0.72rem; opacity: 0.85; margin-top: 3px;">Pagentan, Magelang</div>
+            <div style="font-size: 0.72rem; opacity: 0.85; margin-top: 3px;">Pabelan, Kec. Mungkid, Magelang</div>
           </div>
         </div>
 

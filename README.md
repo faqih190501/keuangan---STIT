@@ -1,7 +1,7 @@
 <div align="center">
   <img src="./assets/images/logo.png" alt="Logo STIT Ihsanul Fikri" width="100" height="100" style="border-radius: 16px;">
   <h1>SIMPEL-IF (Sistem Informasi Manajemen Pembayaran Elektronik Ihsanul Fikri)</h1>
-  <p><strong>Sekolah Tinggi Ilmu Tarbiyah (STIT) Ihsanul Fikri Pagentan Magelang</strong></p>
+  <p><strong>Sekolah Tinggi Ilmu Tarbiyah (STIT) Ihsanul Fikri Pabelan Magelang</strong></p>
 
   <p>
     <a href="https://faqih190501.github.io/keuangan---STIT/"><img src="https://img.shields.io/badge/Live_Demo-GitHub_Pages-blue?style=for-the-badge&logo=github" alt="Live Demo"></a>
@@ -183,11 +183,11 @@ SIMPEL-IF/
 ## 📞 Kontak & Dukungan Institusi
 
 **Sekolah Tinggi Ilmu Tarbiyah (STIT) Ihsanul Fikri**  
-📍 Jl. Pagentan, Pagentan, Kec. Tempuran, Kabupaten Magelang, Jawa Tengah 56161  
+📍 Pabelan 1, Pabelan, Kec. Mungkid, Kabupaten Magelang, Jawa Tengah 56512  
 📱 **WhatsApp / Hotline Admin Keuangan:** `082342307414`  
 🏦 **Rekening Resmi:** Bank BSI `1056405743` a.n. STIT IHSANUL FIKRI  
 🌐 **Website:** [https://stit-ihsanulfikri.ac.id](https://stit-ihsanulfikri.ac.id)
 
 ---
 
-&copy; 2026 STIT Ihsanul Fikri Pagentan Magelang. All rights reserved.
+&copy; 2026 STIT Ihsanul Fikri Pabelan Magelang. All rights reserved.
