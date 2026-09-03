@@ -2311,19 +2311,24 @@ export class ModalManager {
     const defaultProdi = prefillData.prodi || 'BKPI';
     const defaultNim = prefillData.nim || generateRecommendedNim(defaultProdi, '2026');
 
-    title.innerHTML = '🎓 Registrasi Akun Mahasiswa Baru SIMPEL-IF';
+    title.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 1.3rem;">🎓</span>
+        <span class="gradient-text-primary" style="font-weight: 900;">Registrasi Akun Mahasiswa Baru SIMPEL-IF</span>
+      </div>
+    `;
 
     body.innerHTML = `
-      <div style="max-height: 70vh; overflow-y: auto; padding-right: 4px;">
+      <div style="max-height: 72vh; overflow-y: auto; padding-right: 4px;">
         
-        <!-- Welcome Banner -->
-        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-left: 5px solid #2563eb; border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 42px; height: 42px; border-radius: 12px; background: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25);">
+        <!-- Welcome VIP Header Card -->
+        <div class="vip-register-card" style="padding: 16px 20px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);">
               ✨
             </div>
             <div>
-              <div style="font-size: 0.88rem; font-weight: 800; color: #1e3a8a;">
+              <div style="font-size: 0.92rem; font-weight: 900; color: #1e3a8a;">
                 Formulir Pendaftaran Akun Mahasiswa Mandiri
               </div>
               <div style="font-size: 0.76rem; color: #1e40af; margin-top: 2px;">
@@ -2331,36 +2336,40 @@ export class ModalManager {
               </div>
             </div>
           </div>
-          <span class="badge" style="background: #ffffff; color: #1e40af; border: 1px solid #bfdbfe; font-size: 0.72rem; font-weight: 800; padding: 4px 10px;">
-            ✓ Akun Langsung Aktif
-          </span>
+          <div style="display: flex; align-items: center; gap: 6px; background: #ffffff; border: 1px solid #bfdbfe; border-radius: 999px; padding: 4px 12px; font-size: 0.72rem; font-weight: 800; color: #1e40af; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+            <span class="pulsing-dot pulsing-dot-green"></span>
+            <span>Akun Langsung Aktif</span>
+          </div>
         </div>
 
         <form id="form-register-student">
           
-          <!-- Section 1: Data Identitas Mahasiswa -->
-          <div style="font-size: 0.82rem; font-weight: 800; color: var(--primary-900); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-            <span>👤</span> 1. Biodata & Program Studi
+          <!-- Stepper 1: Data Identitas Mahasiswa -->
+          <div style="background: #f8fafc; padding: 8px 14px; border-radius: var(--radius-lg); border-left: 4px solid #2563eb; font-size: 0.82rem; font-weight: 800; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span>👤</span> <span>Langkah 1: Biodata & Program Studi</span>
+            </div>
+            <span style="font-size: 0.70rem; color: #64748b; font-weight: 700; text-transform: none;">Tahap 1 dari 3</span>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-student-name">Nama Lengkap Mahasiswa <span class="required">*</span></label>
-            <input type="text" class="form-control" id="reg-student-name" required placeholder="Contoh: Muhammad Hanif Pratama" value="${prefillData.name || ''}" style="font-size: 0.95rem;">
+            <label class="form-label" for="reg-student-name" style="font-weight: 700;">Nama Lengkap Mahasiswa <span class="required">*</span></label>
+            <input type="text" class="form-control" id="reg-student-name" required placeholder="Contoh: Muhammad Hanif Pratama" value="${prefillData.name || ''}" style="font-size: 0.95rem; border-radius: var(--radius-md);">
             <span class="input-help-text">Nama lengkap sesuai ijazah terakhir / identitas KTP</span>
           </div>
 
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label" for="reg-student-gender">Jenis Kelamin <span class="required">*</span></label>
-              <select class="form-control" id="reg-student-gender" required>
+              <label class="form-label" for="reg-student-gender" style="font-weight: 700;">Jenis Kelamin <span class="required">*</span></label>
+              <select class="form-control" id="reg-student-gender" required style="border-radius: var(--radius-md);">
                 <option value="L" ${prefillData.gender === 'L' ? 'selected' : ''}>Laki-laki (Ikhwan)</option>
                 <option value="P" ${prefillData.gender === 'P' ? 'selected' : ''}>Perempuan (Akhwat)</option>
               </select>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="reg-student-prodi">Program Studi (Prodi) <span class="required">*</span></label>
-              <select class="form-control" id="reg-student-prodi" required>
+              <label class="form-label" for="reg-student-prodi" style="font-weight: 700;">Program Studi (Prodi) <span class="required">*</span></label>
+              <select class="form-control" id="reg-student-prodi" required style="border-radius: var(--radius-md); font-weight: 700;">
                 <option value="BKPI" ${defaultProdi === 'BKPI' ? 'selected' : ''}>S1 - Bimbingan & Konseling Pend. Islam (BKPI)</option>
                 <option value="PIAUD" ${defaultProdi === 'PIAUD' ? 'selected' : ''}>S1 - Pend. Islam Anak Usia Dini (PIAUD)</option>
               </select>
@@ -2369,8 +2378,8 @@ export class ModalManager {
 
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label" for="reg-student-angkatan">Tahun Angkatan <span class="required">*</span></label>
-              <select class="form-control" id="reg-student-angkatan" required>
+              <label class="form-label" for="reg-student-angkatan" style="font-weight: 700;">Tahun Angkatan <span class="required">*</span></label>
+              <select class="form-control" id="reg-student-angkatan" required style="border-radius: var(--radius-md);">
                 <option value="2026" selected>2026 (Mahasiswa Baru)</option>
                 <option value="2025">2025</option>
                 <option value="2024">2024</option>
@@ -2379,8 +2388,8 @@ export class ModalManager {
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="reg-student-semester">Semester Masuk <span class="required">*</span></label>
-              <select class="form-control" id="reg-student-semester" required>
+              <label class="form-label" for="reg-student-semester" style="font-weight: 700;">Semester Masuk <span class="required">*</span></label>
+              <select class="form-control" id="reg-student-semester" required style="border-radius: var(--radius-md);">
                 <option value="1" selected>Semester 1 (Maba Gasal)</option>
                 <option value="2">Semester 2</option>
                 <option value="3">Semester 3</option>
@@ -2393,86 +2402,92 @@ export class ModalManager {
             </div>
           </div>
 
-          <!-- Section 2: Skema Beasiswa & Tempat Tinggal -->
-          <div style="font-size: 0.82rem; font-weight: 800; color: var(--primary-900); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px; display: flex; align-items: center; gap: 6px;">
-            <span>🏅</span> 2. Jalur Beasiswa & Status Tempat Tinggal
+          <!-- Stepper 2: Skema Beasiswa & Jalur Masuk -->
+          <div style="background: #f8fafc; padding: 8px 14px; border-radius: var(--radius-lg); border-left: 4px solid #059669; font-size: 0.82rem; font-weight: 800; color: #065f46; text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 12px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span>🏅</span> <span>Langkah 2: Jalur Beasiswa & Afirmasi</span>
+            </div>
+            <span style="font-size: 0.70rem; color: #64748b; font-weight: 700; text-transform: none;">Tahap 2 dari 3</span>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-student-scholarship">Pilihan Jalur Masuk / Skema Biaya <span class="required">*</span></label>
-            <select class="form-control" id="reg-student-scholarship" required style="font-weight: 700;">
+            <label class="form-label" for="reg-student-scholarship" style="font-weight: 700;">Pilihan Jalur Masuk / Skema Biaya <span class="required">*</span></label>
+            <select class="form-control" id="reg-student-scholarship" required style="font-weight: 700; border-radius: var(--radius-md);">
               ${scholarshipSchemes.map(sch => `
                 <option value="${sch.id}" ${sch.id === 'REGULER' ? 'selected' : ''}>
                   ${sch.name} ${sch.discountValue > 0 ? `(Diskon SPP ${sch.discountValue}${sch.discountType === 'PERCENT' ? '%' : ' Rupiah'})` : '(Biaya Normal Tanpa Beasiswa)'}
                 </option>
               `).join('')}
             </select>
-            <span class="input-help-text">Pilih jalur afirmasi beasiswa jika Anda santri asrama tahfidz, mitra lembaga, atau penerima beasiswa khusus.</span>
+            <span class="input-help-text">Pilih skema beasiswa jika Anda santri asrama tahfidz, mitra lembaga, atau penerima beasiswa khusus.</span>
           </div>
 
-          <!-- Section 3: Kredensial Login & Kontak -->
-          <div style="font-size: 0.82rem; font-weight: 800; color: var(--primary-900); text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px; display: flex; align-items: center; gap: 6px;">
-            <span>🔐</span> 3. Nomor Induk (NIM) & Kredensial Akun
+          <!-- Stepper 3: Kredensial Login & Kontak -->
+          <div style="background: #f8fafc; padding: 8px 14px; border-radius: var(--radius-lg); border-left: 4px solid #7c3aed; font-size: 0.82rem; font-weight: 800; color: #5b21b6; text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 12px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span>🔐</span> <span>Langkah 3: NIM & Kredensial Login</span>
+            </div>
+            <span style="font-size: 0.70rem; color: #64748b; font-weight: 700; text-transform: none;">Tahap 3 dari 3</span>
           </div>
 
           <div class="form-group">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <label class="form-label" for="reg-student-nim" style="margin: 0;">Nomor Induk Mahasiswa (NIM) <span class="required">*</span></label>
-              <button type="button" id="btn-generate-nim" class="btn btn-outline btn-sm" style="padding: 2px 8px; font-size: 0.72rem; font-weight: 700;">
+              <label class="form-label" for="reg-student-nim" style="margin: 0; font-weight: 700;">Nomor Induk Mahasiswa (NIM) <span class="required">*</span></label>
+              <button type="button" id="btn-generate-nim" class="btn btn-outline btn-sm btn-shimmer" style="padding: 3px 10px; font-size: 0.72rem; font-weight: 800; color: #2563eb; border-color: #93c5fd; background: #eff6ff; border-radius: var(--radius-md);">
                 🎲 Generate NIM Otomatis
               </button>
             </div>
-            <input type="text" class="form-control" id="reg-student-nim" required placeholder="Contoh: 202686208013" value="${defaultNim}" style="font-family: var(--font-mono); font-size: 0.95rem;">
+            <input type="text" class="form-control" id="reg-student-nim" required placeholder="Contoh: 202686208013" value="${defaultNim}" style="font-family: var(--font-mono); font-size: 0.95rem; border-radius: var(--radius-md);">
             <span class="input-help-text">Gunakan NIM resmi STIT-IF atau klik tombol generate di atas.</span>
           </div>
 
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label" for="reg-student-username">Username Login <span class="required">*</span></label>
-              <input type="text" class="form-control" id="reg-student-username" required placeholder="Username akun..." value="${defaultNim}" style="font-family: var(--font-mono);">
+              <label class="form-label" for="reg-student-username" style="font-weight: 700;">Username Login <span class="required">*</span></label>
+              <input type="text" class="form-control" id="reg-student-username" required placeholder="Username akun..." value="${defaultNim}" style="font-family: var(--font-mono); border-radius: var(--radius-md);">
               <span class="input-help-text">Dapat menggunakan NIM atau nama panggilan unik</span>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="reg-student-phone">No. WhatsApp / HP</label>
-              <input type="text" class="form-control" id="reg-student-phone" placeholder="Contoh: 082342307414" value="${prefillData.phone || ''}">
+              <label class="form-label" for="reg-student-phone" style="font-weight: 700;">No. WhatsApp / HP</label>
+              <input type="text" class="form-control" id="reg-student-phone" placeholder="Contoh: 082342307414" value="${prefillData.phone || ''}" style="border-radius: var(--radius-md);">
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="reg-student-email">Alamat Email</label>
-            <input type="email" class="form-control" id="reg-student-email" placeholder="Contoh: nama@mahasiswa.stit-ihsanulfikri.ac.id" value="${prefillData.email || ''}">
+            <label class="form-label" for="reg-student-email" style="font-weight: 700;">Alamat Email</label>
+            <input type="email" class="form-control" id="reg-student-email" placeholder="Contoh: nama@mahasiswa.stit-ihsanulfikri.ac.id" value="${prefillData.email || ''}" style="border-radius: var(--radius-md);">
           </div>
 
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label" for="reg-student-password">PIN / Password Baru <span class="required">*</span></label>
+              <label class="form-label" for="reg-student-password" style="font-weight: 700;">PIN / Password Baru <span class="required">*</span></label>
               <div style="position: relative;">
-                <input type="password" class="form-control" id="reg-student-password" required placeholder="Minimal 6 karakter" value="123456" style="padding-right: 40px;">
-                <button type="button" id="btn-toggle-reg-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--text-light);">
+                <input type="password" class="form-control" id="reg-student-password" required placeholder="Minimal 6 karakter" value="123456" style="padding-right: 40px; border-radius: var(--radius-md);">
+                <button type="button" id="btn-toggle-reg-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--text-light); padding: 4px;">
                   👁️
                 </button>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="reg-student-pwd-confirm">Konfirmasi Password <span class="required">*</span></label>
-              <input type="password" class="form-control" id="reg-student-pwd-confirm" required placeholder="Ulangi password" value="123456">
+              <label class="form-label" for="reg-student-pwd-confirm" style="font-weight: 700;">Konfirmasi Password <span class="required">*</span></label>
+              <input type="password" class="form-control" id="reg-student-pwd-confirm" required placeholder="Ulangi password" value="123456" style="border-radius: var(--radius-md);">
             </div>
           </div>
 
           <!-- Section 4: Live Breakdown Estimasi Tagihan Perdana -->
-          <div style="background: #f8fafc; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 16px; margin-top: 18px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <span style="font-size: 0.82rem; font-weight: 800; color: var(--text-dark);">
-                🧾 Rincian Estimasi Tagihan Semester Perdana
+          <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1.5px solid #cbd5e1; border-radius: var(--radius-xl); padding: 18px; margin-top: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <span style="font-size: 0.86rem; font-weight: 800; color: #1e293b; display: flex; align-items: center; gap: 6px;">
+                <span>🧾</span> <span>Kalkulator Estimasi Biaya Kuliah Perdana</span>
               </span>
-              <span class="badge" style="background: #ecfdf5; color: #065f46; font-size: 0.70rem; font-weight: 800; padding: 2px 8px; border: 1px solid #a7f3d0;">
+              <span class="badge" style="background: #ecfdf5; color: #065f46; font-size: 0.70rem; font-weight: 800; padding: 3px 10px; border: 1px solid #a7f3d0; border-radius: 999px;">
                 BSI VA: 1056405743
               </span>
             </div>
 
-            <div id="reg-live-fee-breakdown" style="font-size: 0.78rem; display: flex; flex-direction: column; gap: 6px; color: var(--text-muted);">
+            <div id="reg-live-fee-breakdown" style="font-size: 0.80rem; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted);">
               <!-- Will be updated dynamically via JS -->
             </div>
           </div>
@@ -2483,8 +2498,8 @@ export class ModalManager {
     `;
 
     footer.innerHTML = `
-      <button class="btn btn-secondary" onclick="window.simpelModals.closeModal()">Batal</button>
-      <button class="btn btn-primary" id="btn-submit-register" style="font-weight: 800; background: linear-gradient(135deg, #1e40af, #0284c7); border: none; display: inline-flex; align-items: center; gap: 6px;">
+      <button class="btn btn-secondary" onclick="window.simpelModals.closeModal()" style="font-weight: 700;">Batal</button>
+      <button class="btn btn-primary btn-shimmer" id="btn-submit-register" style="font-weight: 900; background: linear-gradient(135deg, #1e40af, #2563eb); border: none; display: inline-flex; align-items: center; gap: 6px; padding: 10px 22px; border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(37,99,235,0.35);">
         <span>🚀</span> <span>Daftar & Masuk Sekarang</span>
       </button>
     `;

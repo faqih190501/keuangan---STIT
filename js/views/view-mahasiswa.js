@@ -60,18 +60,24 @@ export function renderMahasiswaPortal(container) {
 
   container.innerHTML = `
     <!-- Top Bar: Account Switcher & Quick Actions -->
-    <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: var(--shadow-sm);">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <span style="font-size: 1.3rem;">👨‍🎓</span>
+    <div class="glass-panel" style="border-radius: var(--radius-xl); padding: 14px 22px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; box-shadow: 0 4px 20px rgba(15,23,42,0.06); border: 1px solid rgba(255,255,255,0.8);">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 42px; height: 42px; border-radius: var(--radius-full); background: linear-gradient(135deg, #1e40af, #0284c7); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(37,99,235,0.35);">
+          👨‍🎓
+        </div>
         <div>
-          <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-light); text-transform: uppercase;">Akun Mahasiswa Aktif:</span>
-          <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark);">${currentStudent.name} &bull; <span style="font-family: var(--font-mono); color: var(--primary-700);">${currentStudent.nim}</span></div>
+          <div style="font-size: 0.72rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;">
+            <span class="pulsing-dot pulsing-dot-green"></span> <span>Akun Mahasiswa Aktif:</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 900; color: var(--text-dark); margin-top: 1px;">
+            ${currentStudent.name} &bull; <span style="font-family: var(--font-mono); color: var(--primary-700); font-weight: 800;">${currentStudent.nim}</span>
+          </div>
         </div>
       </div>
       <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="font-size: 0.76rem; color: var(--text-muted);">Ganti Mahasiswa:</span>
-          <select class="filter-select" id="select-active-student" style="padding: 6px 12px; font-size: 0.8rem; border-radius: var(--radius-md);">
+        <div style="display: flex; align-items: center; gap: 6px; background: #ffffff; padding: 4px 8px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); box-shadow: var(--shadow-xs);">
+          <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">Ganti Mahasiswa:</span>
+          <select class="filter-select" id="select-active-student" style="padding: 6px 12px; font-size: 0.8rem; border-radius: var(--radius-md); border-color: #cbd5e1; font-weight: 700;">
             ${state.students.map(s => {
               const sch = state.scholarshipSchemes.find(sc => sc.id === s.scholarshipId);
               return `<option value="${s.nim}" ${s.nim === currentStudent.nim ? 'selected' : ''}>
@@ -79,62 +85,72 @@ export function renderMahasiswaPortal(container) {
               </option>`;
             }).join('')}
           </select>
-          <button class="btn btn-primary btn-sm" id="btn-quick-add-student-top" style="font-size: 0.76rem; font-weight: 800; padding: 6px 12px; background: #2563eb; border: none; border-radius: var(--radius-md); display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 3px rgba(37,99,235,0.25); white-space: nowrap; cursor: pointer;" title="Tambah / Buat Akun Mahasiswa Baru">
+          <button class="btn btn-primary btn-sm btn-shimmer" id="btn-quick-add-student-top" style="font-size: 0.76rem; font-weight: 800; padding: 6px 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; border-radius: var(--radius-md); display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(37,99,235,0.3); white-space: nowrap; cursor: pointer;" title="Tambah / Buat Akun Mahasiswa Baru">
             <span>➕</span> <span>Buat Akun</span>
           </button>
         </div>
-        <button class="btn btn-outline btn-sm" id="btn-self-edit-profile-top" style="color: #1e40af; border-color: #93c5fd; background: #eff6ff; font-weight: 800; display: flex; align-items: center; gap: 4px;">
+        <button class="btn btn-outline btn-sm" id="btn-self-edit-profile-top" style="color: #1e40af; border-color: #93c5fd; background: #eff6ff; font-weight: 800; display: flex; align-items: center; gap: 4px; padding: 7px 12px;">
           👤 Edit Profil Saya
         </button>
-        <button class="btn btn-outline btn-sm" id="btn-topbar-register-student" style="color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;" title="Buat / Registrasi Akun Mahasiswa Baru">
-          📝 Buat Akun Baru
+        <button class="btn btn-outline btn-sm btn-shimmer" id="btn-topbar-register-student" style="color: #1d4ed8; border-color: #93c5fd; background: linear-gradient(135deg, #eff6ff, #dbeafe); font-weight: 800; display: inline-flex; align-items: center; gap: 4px; padding: 7px 12px; box-shadow: 0 1px 3px rgba(37,99,235,0.12);" title="Buat / Registrasi Akun Mahasiswa Baru">
+          ✨ Buat Akun Baru
         </button>
-        <button class="btn btn-outline btn-sm" id="btn-goto-login-view" style="color: var(--primary-700); font-weight: 700;">
+        <button class="btn btn-outline btn-sm" id="btn-goto-login-view" style="color: var(--primary-700); font-weight: 700; padding: 7px 12px;">
           🔑 Halaman Login
         </button>
-        <button class="btn btn-outline btn-sm" id="btn-student-logout" style="border-color: #fca5a5; color: #b91c1c; background: #fff1f2; font-weight: 700;">
+        <button class="btn btn-outline btn-sm" id="btn-student-logout" style="border-color: #fca5a5; color: #b91c1c; background: #fff1f2; font-weight: 700; padding: 7px 12px;">
           🚪 Keluar / Logout
         </button>
       </div>
     </div>
 
-    <!-- PMB / New Student Self-Registration Alert Banner -->
-    <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1.5px dashed #3b82f6; border-radius: var(--radius-xl); padding: 14px 20px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; box-shadow: var(--shadow-sm);">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="width: 40px; height: 40px; border-radius: 50%; background: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(37,99,235,0.3);">
-          📝
+    <!-- PMB / New Student Self-Registration VIP Banner -->
+    <div class="vip-register-card" style="padding: 16px 22px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div style="width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,99,235,0.35);">
+          ✨
         </div>
         <div>
-          <div style="font-size: 0.90rem; font-weight: 800; color: #1e3a8a;">Pendaftaran / Registrasi Akun Mahasiswa Baru (PMB Mandiri)</div>
-          <div style="font-size: 0.76rem; color: #1e40af; margin-top: 2px;">Ingin membuat akun mahasiswa baru atau mendaftarkan calon mahasiswa lain di SIMPEL-IF?</div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span style="font-size: 0.95rem; font-weight: 900; color: #1e3a8a;">Pendaftaran / Registrasi Akun Mahasiswa Baru (PMB)</span>
+            <span class="badge" style="background: #2563eb; color: #ffffff; font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 999px;">T.A. 2026/2027</span>
+          </div>
+          <div style="font-size: 0.76rem; color: #1e40af; margin-top: 2px;">
+            Daftar akun mandiri dalam 1 menit: dapatkan <strong>Nomor Virtual Account BSI</strong>, klaim beasiswa santri/mitra, dan akses KRS otomatis.
+          </div>
         </div>
       </div>
-      <button type="button" class="btn btn-primary btn-sm" id="btn-banner-register-student" style="font-weight: 800; font-size: 0.80rem; padding: 8px 18px; background: #2563eb; border: none; border-radius: var(--radius-md); box-shadow: 0 2px 5px rgba(37,99,235,0.3); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;">
-        <span>✨</span> <span>Buat Akun Mahasiswa Baru ➔</span>
+      <button type="button" class="btn btn-primary btn-sm btn-shimmer" id="btn-banner-register-student" style="font-weight: 900; font-size: 0.84rem; padding: 10px 20px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(37,99,235,0.35); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;">
+        <span>📝</span> <span>Buat Akun Mahasiswa Baru Sekarang ➔</span>
       </button>
     </div>
 
     <!-- 1. Warm Islamic Welcome Hero Banner -->
-    <div class="student-welcome-hero">
+    <div class="student-welcome-hero" style="background: linear-gradient(135deg, #092540 0%, #0f3d63 40%, #064e3b 100%); border-radius: var(--radius-2xl); padding: 26px 30px; margin-bottom: 24px; box-shadow: 0 15px 35px -5px rgba(9, 37, 64, 0.4); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.15);">
+      
+      <!-- Subtle Decorative Halo Glow -->
+      <div style="position: absolute; right: -50px; top: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%); filter: blur(30px); pointer-events: none;"></div>
+
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; position: relative; z-index: 1;">
         <div style="display: flex; align-items: center; gap: 20px;">
-          <div style="width: 68px; height: 68px; border-radius: var(--radius-full); background: rgba(255, 255, 255, 0.18); border: 2.5px solid rgba(255, 255, 255, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.7rem; font-weight: 900; box-shadow: var(--shadow-sm); flex-shrink: 0; position: relative;">
+          <div style="width: 72px; height: 72px; border-radius: var(--radius-full); background: rgba(255, 255, 255, 0.2); border: 3px solid rgba(255, 255, 255, 0.5); display: flex; align-items: center; justify-content: center; font-size: 1.85rem; font-weight: 900; box-shadow: 0 8px 20px rgba(0,0,0,0.25); flex-shrink: 0; position: relative;">
             ${currentStudent.name.split(' ').map(n=>n[0]).slice(0,2).join('')}
+            <span class="pulsing-dot pulsing-dot-green" style="position: absolute; bottom: 2px; right: 2px; border: 2px solid #092540;" title="Mahasiswa Aktif"></span>
           </div>
           <div>
-            <div style="font-size: 0.76rem; color: #93c5fd; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 2px;">
+            <div style="font-size: 0.76rem; color: #a7f3d0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px;">
               Assalamu'alaikum Warahmatullahi Wabarakatuh
             </div>
-            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-              <h2 style="font-size: 1.45rem; font-weight: 900; margin: 0; color: #ffffff; letter-spacing: -0.3px;">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <h2 style="font-size: 1.55rem; font-weight: 900; margin: 0; color: #ffffff; letter-spacing: -0.3px;">
                 ${currentStudent.name}
               </h2>
-              <button class="btn btn-sm" id="btn-hero-edit-profile" style="background: rgba(255, 255, 255, 0.22); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.45); font-size: 0.75rem; font-weight: 800; padding: 3px 10px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; backdrop-filter: blur(4px);" title="Sunting Biodata Profil">
+              <button class="btn btn-sm" id="btn-hero-edit-profile" style="background: rgba(255, 255, 255, 0.22); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.45); font-size: 0.75rem; font-weight: 800; padding: 4px 12px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; backdrop-filter: blur(6px); transition: all 0.2s;" title="Sunting Biodata Profil">
                 ✏️ Edit Biodata
               </button>
             </div>
             <div style="display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: #e2e8f0; margin-top: 6px; flex-wrap: wrap;">
-              <span style="background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 4px; font-family: var(--font-mono);">NIM: ${currentStudent.nim}</span>
+              <span style="background: rgba(255,255,255,0.18); padding: 3px 10px; border-radius: 6px; font-family: var(--font-mono); font-weight: 700; border: 1px solid rgba(255,255,255,0.2);">NIM: ${currentStudent.nim}</span>
               <span>&bull;</span>
               <span>Prodi: <strong>${currentStudent.prodi === 'BKPI' ? 'Bimbingan Konseling Pendidikan Islam (BKPI)' : 'Pendidikan Islam Anak Usia Dini (PIAUD)'}</strong></span>
               <span>&bull;</span>
@@ -143,12 +159,12 @@ export function renderMahasiswaPortal(container) {
           </div>
         </div>
 
-        <div style="text-align: right; background: rgba(255, 255, 255, 0.12); padding: 14px 20px; border-radius: var(--radius-xl); border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px);">
-          <div style="font-size: 0.72rem; color: #93c5fd; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Skema Pembiayaan Mahasiswa</div>
-          <div style="font-size: 1.05rem; font-weight: 900; color: #ffffff; margin-top: 3px;">
+        <div style="text-align: right; background: rgba(255, 255, 255, 0.14); padding: 16px 22px; border-radius: var(--radius-xl); border: 1px solid rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+          <div style="font-size: 0.72rem; color: #a7f3d0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px;">Skema Pembiayaan Mahasiswa</div>
+          <div style="font-size: 1.12rem; font-weight: 900; color: #ffffff; margin-top: 3px;">
             ${scholarship.name}
           </div>
-          <div style="font-size: 0.76rem; color: #cbd5e1; margin-top: 3px;">
+          <div style="font-size: 0.76rem; color: #cbd5e1; margin-top: 3px; font-weight: 600;">
             ${scholarship.id === 'REGULER' ? 'Pembayaran Penuh Mandiri' : `Mendapat Subsidi: ${scholarship.discountType === 'PERCENT' ? scholarship.discountValue + '% Biaya SPP' : formatRupiah(scholarship.discountValue)}`}
           </div>
         </div>
@@ -157,51 +173,51 @@ export function renderMahasiswaPortal(container) {
 
     <!-- 2. Quick Summary Stat Cards -->
     <div class="student-summary-grid">
-      <div class="student-stat-card">
-        <div class="student-stat-icon" style="background: ${isLunas ? '#dcfce7' : isPending ? '#fef3c7' : isCicil ? '#e0f2fe' : '#fee2e2'}; color: ${isLunas ? '#15803d' : isPending ? '#b45309' : isCicil ? '#0369a1' : '#b91c1c'};">
+      <div class="student-stat-card interactive-hover-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.04); border-radius: var(--radius-xl);">
+        <div class="student-stat-icon" style="background: ${isLunas ? '#dcfce7' : isPending ? '#fef3c7' : isCicil ? '#e0f2fe' : '#fee2e2'}; color: ${isLunas ? '#15803d' : isPending ? '#b45309' : isCicil ? '#0369a1' : '#b91c1c'}; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
           ${isLunas ? '✅' : isPending ? '⏳' : isCicil ? '🔄' : '💳'}
         </div>
         <div>
-          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">Status Semester ${state.activeSemester}</div>
+          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px;">Status Semester ${state.activeSemester}</div>
           <div style="font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin-top: 2px;">
             ${currentInvoice ? getStatusBadge(currentInvoice.status) : '<span class="badge" style="background:#e0f2fe; color:#0369a1; font-weight:800;">Bebas Mandiri</span>'}
           </div>
         </div>
       </div>
 
-      <div class="student-stat-card">
-        <div class="student-stat-icon" style="background: #eff6ff; color: #1d4ed8;">
+      <div class="student-stat-card interactive-hover-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.04); border-radius: var(--radius-xl);">
+        <div class="student-stat-icon" style="background: #eff6ff; color: #1d4ed8; box-shadow: 0 2px 6px rgba(37,99,235,0.15);">
           💰
         </div>
         <div>
-          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">
+          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px;">
             ${isCicil ? 'Sisa Tagihan Berjalan' : 'Kewajiban Tagihan'}
           </div>
-          <div style="font-size: 1.15rem; font-weight: 900; color: ${isLunas ? '#15803d' : '#1e3a8a'}; font-family: var(--font-mono); margin-top: 2px;">
+          <div style="font-size: 1.2rem; font-weight: 900; color: ${isLunas ? '#15803d' : '#1e3a8a'}; font-family: var(--font-mono); margin-top: 2px;">
             ${currentInvoice ? formatRupiah(isLunas ? currentInvoice.netAmount : remainingAmount) : 'Rp 0'}
           </div>
           ${isCicil ? `<div style="font-size:0.68rem; color:#0369a1; font-weight:700;">Telah dibayar: ${formatRupiah(totalPaidAmount)}</div>` : ''}
         </div>
       </div>
 
-      <div class="student-stat-card">
-        <div class="student-stat-icon" style="background: #f0fdf4; color: #059669;">
+      <div class="student-stat-card interactive-hover-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.04); border-radius: var(--radius-xl);">
+        <div class="student-stat-icon" style="background: #f0fdf4; color: #059669; box-shadow: 0 2px 6px rgba(16,185,129,0.15);">
           🎁
         </div>
         <div>
-          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">Subsidi Beasiswa Hemat</div>
-          <div style="font-size: 1.15rem; font-weight: 900; color: #059669; font-family: var(--font-mono); margin-top: 2px;">
+          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px;">Subsidi Beasiswa Hemat</div>
+          <div style="font-size: 1.2rem; font-weight: 900; color: #059669; font-family: var(--font-mono); margin-top: 2px;">
             ${currentInvoice && currentInvoice.totalDiscount > 0 ? `-${formatRupiah(currentInvoice.totalDiscount)}` : formatRupiah(0)}
           </div>
         </div>
       </div>
 
-      <div class="student-stat-card">
-        <div class="student-stat-icon" style="background: #fdf4ff; color: #a21caf;">
+      <div class="student-stat-card interactive-hover-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.04); border-radius: var(--radius-xl);">
+        <div class="student-stat-icon" style="background: #fdf4ff; color: #a21caf; box-shadow: 0 2px 6px rgba(168,85,247,0.15);">
           🧾
         </div>
         <div>
-          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 700; text-transform: uppercase;">Kwitansi Sah Digital</div>
+          <div style="font-size: 0.72rem; color: var(--text-light); font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px;">Kwitansi Sah Digital</div>
           <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark); margin-top: 2px;">
             ${isLunas || (isCicil && currentInvoice.receiptNumber) ? `<span style="color:#059669; font-weight:800; font-family:var(--font-mono);">${currentInvoice.receiptNumber}</span>` : '<span style="color:var(--text-light); font-size:0.78rem;">Tersedia Saat Bayar</span>'}
           </div>
@@ -210,7 +226,7 @@ export function renderMahasiswaPortal(container) {
     </div>
 
     <!-- Kalender Akademik & Jadwal Penting Banner -->
-    <div style="margin-bottom: 22px; padding: 14px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1px solid #86efac; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: var(--shadow-sm); flex-wrap: wrap;">
+    <div style="margin-bottom: 22px; padding: 14px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1px solid #86efac; border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: var(--shadow-sm); flex-wrap: wrap;">
       <div style="display: flex; align-items: center; gap: 12px;">
         <div style="width: 38px; height: 38px; border-radius: var(--radius-full); background: #059669; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(5,150,105,0.3);">
           📅
