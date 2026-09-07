@@ -372,19 +372,28 @@ export function renderDashboardBendahara(container) {
           <h3 class="card-title">📑 Rekapitulasi Tagihan & Tata Kelola Pembayaran Mahasiswa</h3>
           <p class="card-subtitle">Daftar transaksi per mahasiswa, penerbitan kwitansi sah QR Code, dan verifikasi</p>
         </div>
-        <div class="filter-group">
-          <select class="filter-select" id="filter-prodi-select">
-            <option value="ALL">Semua Program Studi</option>
-            <option value="BKPI">Bimbingan Konseling (BKPI)</option>
-            <option value="PIAUD">PAUD Islam (PIAUD)</option>
-          </select>
-          <select class="filter-select" id="filter-status-select">
-            <option value="ALL">Semua Status Bayar</option>
-            <option value="LUNAS">Lunas</option>
-            <option value="MENUNGGU_VERIFIKASI">Menunggu Verifikasi</option>
-            <option value="BELUM_BAYAR">Belum Bayar</option>
-            <option value="DICICIL">Dicicil / Dispensasi</option>
-          </select>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <div style="position: relative; min-width: 240px;">
+            <input type="text" class="form-control form-control-sm" id="dashboard-invoice-search" placeholder="🔍 Cari nama, NIM, atau No. Tagihan..." style="padding-right: 28px; border-radius: var(--radius-md);">
+            <button id="btn-clear-dash-search" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 0.85rem; color: #94a3b8; cursor: pointer; display: none;">✕</button>
+          </div>
+          <div class="filter-group">
+            <select class="filter-select" id="filter-prodi-select">
+              <option value="ALL">Semua Program Studi</option>
+              <option value="BKPI">Bimbingan Konseling (BKPI)</option>
+              <option value="PIAUD">PAUD Islam (PIAUD)</option>
+            </select>
+            <select class="filter-select" id="filter-status-select">
+              <option value="ALL">Semua Status Bayar</option>
+              <option value="LUNAS">Lunas</option>
+              <option value="MENUNGGU_VERIFIKASI">Menunggu Verifikasi</option>
+              <option value="BELUM_BAYAR">Belum Bayar</option>
+              <option value="DICICIL">Dicicil / Dispensasi</option>
+            </select>
+          </div>
+          <span id="dash-invoice-count-badge" class="badge" style="background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; font-weight: 800; font-size: 0.74rem;">
+            ${invoices.length} Tagihan
+          </span>
         </div>
       </div>
 
@@ -549,29 +558,57 @@ export function renderDashboardBendahara(container) {
     });
   }
 
-  // Filter Listeners
+  // Filter & Live Search Listeners
+  const searchInput = container.querySelector('#dashboard-invoice-search');
+  const btnClearSearch = container.querySelector('#btn-clear-dash-search');
   const filterProdi = container.querySelector('#filter-prodi-select');
   const filterStatus = container.querySelector('#filter-status-select');
+  const countBadge = container.querySelector('#dash-invoice-count-badge');
   const tbody = container.querySelector('#invoices-data-table tbody');
 
   function applyFilters() {
+    const q = (searchInput?.value || '').toLowerCase().trim();
     const selectedProdi = filterProdi.value;
     const selectedStatus = filterStatus.value;
+
+    if (btnClearSearch) {
+      btnClearSearch.style.display = q ? 'block' : 'none';
+    }
 
     const filtered = invoices.filter(inv => {
       const student = students.find(s => s.nim === inv.studentNim);
       if (!student) return false;
 
+      const matchQuery = !q || 
+        student.name.toLowerCase().includes(q) ||
+        student.nim.toLowerCase().includes(q) ||
+        inv.id.toLowerCase().includes(q) ||
+        (inv.receiptNumber && inv.receiptNumber.toLowerCase().includes(q));
+
       const matchProdi = selectedProdi === 'ALL' || student.prodi === selectedProdi;
       const matchStatus = selectedStatus === 'ALL' || inv.status === selectedStatus;
 
-      return matchProdi && matchStatus;
+      return matchQuery && matchProdi && matchStatus;
     });
+
+    if (countBadge) {
+      countBadge.textContent = `${filtered.length} dari ${invoices.length} Tagihan`;
+    }
 
     tbody.innerHTML = renderInvoicesTableRows(filtered, state);
     attachTableActionListeners(tbody, state);
   }
 
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilters);
+  }
+  if (btnClearSearch) {
+    btnClearSearch.addEventListener('click', () => {
+      searchInput.value = '';
+      applyFilters();
+      searchInput.focus();
+    });
+  }
   if (filterProdi) filterProdi.addEventListener('change', applyFilters);
   if (filterStatus) filterStatus.addEventListener('change', applyFilters);
 

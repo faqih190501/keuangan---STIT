@@ -207,8 +207,25 @@ export class ModalManager {
       </div>
     `;
 
+    const waText = encodeURIComponent(
+      `*KWITANSI PEMBAYARAN ELEKTRONIK RESMI*\n` +
+      `*STIT IHSANUL FIKRI MAGELANG*\n\n` +
+      `📄 *No. Kwitansi:* ${invoice.receiptNumber || invoice.id}\n` +
+      `👤 *Nama Mahasiswa:* ${student.name}\n` +
+      `🎓 *NIM:* ${student.nim}\n` +
+      `📚 *Program Studi:* ${student.prodi}\n` +
+      `💰 *Nominal Dibayar:* ${formatRupiah(invoice.paidAmount || invoice.netAmount)}\n` +
+      `✅ *Status:* ${invoice.status === 'LUNAS' ? 'LUNAS (SAH)' : 'DICICIL'}\n` +
+      `📅 *Tanggal:* ${formatDate(invoice.paidDate || new Date().toISOString())}\n\n` +
+      `🛡️ *Cek Keaslian Dokumen & QR Code:* https://faqih190501.github.io/keuangan---STIT/#view-qr-validator\n\n` +
+      `_Kwitansi ini diterbitkan secara sah oleh Bagian Keuangan STIT Ihsanul Fikri._`
+    );
+
     footer.innerHTML = `
       <button class="btn btn-outline" id="btn-close-receipt-modal">Tutup</button>
+      <a href="https://api.whatsapp.com/send?text=${waText}" target="_blank" rel="noopener" class="btn btn-outline" style="background: #f0fdf4; color: #166534; border-color: #86efac; font-weight: 800; text-decoration: none;" id="btn-share-receipt-wa">
+        📲 Bagikan via WhatsApp
+      </a>
       <button class="btn btn-primary" id="btn-print-receipt-modal">
         🖨️ Cetak / Simpan Kwitansi PDF
       </button>

@@ -7,6 +7,7 @@ import { appState } from './state.js';
 import { AuthManager, ROLE_PERMISSIONS } from './auth.js';
 import { ModalManager } from './modals.js';
 import { DragScrollHelper } from './utils/drag-scroll.js';
+import { UserExperienceHelper } from './utils/user-experience.js';
 
 import { renderDashboardBendahara } from './views/dashboard-bendahara.js';
 import { renderSkemaTarifView } from './views/view-skema-tarif.js';
@@ -66,6 +67,7 @@ class Router {
     window.simpelToast = new ToastManager();
     ModalManager.init();
     AuthManager.init();
+    UserExperienceHelper.init();
 
     // Bind sidebar navigation links
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -339,6 +341,7 @@ class Router {
     // Initialize drag and swipe horizontal scroll for all tables, cards, and toolbars
     setTimeout(() => {
       DragScrollHelper.init(document);
+      UserExperienceHelper.bindCopyButtons(this.container);
     }, 50);
 
     if (scrollToTop) {

@@ -139,4 +139,44 @@
   .modal-card {
     max-width: 95%;
   }
+
+  /* Mobile Bottom Navigation Activation */
+  .mobile-bottom-navbar {
+    display: flex;
+  }
+
+  .content-area {
+    padding-bottom: 84px;
+  }
+
+  .floating-help-widget {
+    bottom: 74px;
+    right: 16px;
+  }
+
+  .floating-help-main-btn {
+    padding: 7px 12px;
+    font-size: 0.76rem;
+  }
+
+  .topbar-search-trigger {
+    padding: 6px 10px;
+  }
+
+  .topbar-search-trigger .search-placeholder {
+    display: none;
+  }
+
+  .topbar-search-trigger .search-kbd {
+    display: none;
+  }
+
+  .spotlight-overlay {
+    padding: 24px 12px;
+  }
+
+  .spotlight-card {
+    max-height: 88vh;
+  }
 }
+

@@ -294,7 +294,7 @@ export function renderLoginView(container) {
             </div>
           </div>
 
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 8px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;">
             <div>
               <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin: 0;">Pilih Cepat Akun Mahasiswa</h3>
               <p style="font-size: 0.76rem; color: var(--text-light); margin: 2px 0 0;">Klik akun untuk simulasi login instan satu per satu</p>
@@ -302,6 +302,12 @@ export function renderLoginView(container) {
             <button type="button" id="btn-quick-register-student" class="btn btn-outline btn-sm btn-shimmer" style="font-size: 0.74rem; font-weight: 800; padding: 5px 12px; color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radius-md); cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px rgba(37,99,235,0.1);">
               <span>➕</span> <span>Buat Akun</span>
             </button>
+          </div>
+
+          <!-- Quick Filter Input for Demo Students -->
+          <div style="position: relative; margin-bottom: 12px;">
+            <input type="text" id="input-filter-demo-students" class="form-control form-control-sm" placeholder="🔍 Cari nama mhs atau NIM..." style="padding-left: 32px; border-radius: var(--radius-md); font-size: 0.8rem;">
+            <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: #94a3b8;">🔍</span>
           </div>
 
           <div id="student-demo-list-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto; padding-right: 4px;">
@@ -343,6 +349,32 @@ export function renderLoginView(container) {
   }
 
   bindDemoCardListeners();
+
+  // Search filter for student demo cards
+  const filterDemoInput = container.querySelector('#input-filter-demo-students');
+  const demoListContainer = container.querySelector('#student-demo-list-container');
+  if (filterDemoInput && demoListContainer) {
+    filterDemoInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const currentStudents = appState.getState().students;
+      const filtered = currentStudents.filter(s => 
+        s.name.toLowerCase().includes(q) || 
+        s.nim.includes(q) || 
+        s.prodi.toLowerCase().includes(q)
+      );
+
+      if (filtered.length === 0) {
+        demoListContainer.innerHTML = `
+          <div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.8rem;">
+            <div>🔍 Mahasiswa tidak ditemukan</div>
+          </div>
+        `;
+      } else {
+        demoListContainer.innerHTML = renderStudentDemoCards(filtered, state);
+        bindDemoCardListeners();
+      }
+    });
+  }
 
   // 1. Tab Switching (Mahasiswa vs Admin vs Buat Akun)
   const tabBtnStudent = container.querySelector('#tab-btn-student');

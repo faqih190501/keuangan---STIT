@@ -128,13 +128,17 @@ export function renderAkademikView(container) {
       </div>
 
       <!-- Filters Toolbar -->
-      <div class="filter-toolbar" style="padding: 16px 20px; background: #f8fafc; border-bottom: 1px solid var(--border-light);">
-        <div class="search-box-wrapper" style="flex: 1; min-width: 260px;">
+      <div class="filter-toolbar" style="padding: 16px 20px; background: #f8fafc; border-bottom: 1px solid var(--border-light); gap: 12px; flex-wrap: wrap;">
+        <div class="search-box-wrapper" style="flex: 1; min-width: 260px; position: relative;">
           <span class="search-icon">🔍</span>
           <input type="text" class="search-input" id="search-student-input" placeholder="Cari nama, NIM, email, atau no. HP...">
+          <button id="btn-clear-student-search" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 0.85rem; color: #94a3b8; cursor: pointer; display: none;">✕</button>
         </div>
 
         <div class="filter-group" style="flex-wrap: wrap;">
+          <span id="student-count-indicator" class="badge" style="background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; font-weight: 800; font-size: 0.74rem;">
+            ${students.length} Mahasiswa
+          </span>
           <select class="filter-select" id="filter-student-prodi">
             <option value="ALL">Semua Prodi</option>
             <option value="BKPI">BKPI (Bimbingan Konseling)</option>
@@ -208,6 +212,8 @@ export function renderAkademikView(container) {
 
   // Filter Listeners
   const searchInput = container.querySelector('#search-student-input');
+  const btnClearSearch = container.querySelector('#btn-clear-student-search');
+  const countIndicator = container.querySelector('#student-count-indicator');
   const filterProdi = container.querySelector('#filter-student-prodi');
   const filterSem = container.querySelector('#filter-student-semester');
   const filterSch = container.querySelector('#filter-student-scholarship');
@@ -220,6 +226,10 @@ export function renderAkademikView(container) {
     const sem = filterSem.value;
     const sch = filterSch.value;
     const st = filterStatus.value;
+
+    if (btnClearSearch) {
+      btnClearSearch.style.display = q ? 'block' : 'none';
+    }
 
     currentFiltered = state.students.filter(s => {
       const summary = getStudentInvoiceSummary(s.nim);
@@ -243,14 +253,26 @@ export function renderAkademikView(container) {
       return matchQ && matchP && matchSem && matchSch && matchSt && matchCat;
     });
 
+    if (countIndicator) {
+      countIndicator.textContent = `${currentFiltered.length} dari ${state.students.length} Mahasiswa`;
+    }
+
     const tbody = container.querySelector('#students-master-table tbody');
     if (tbody) {
       tbody.innerHTML = renderStudentsTableRows(currentFiltered, state, getStudentInvoiceSummary);
       attachStudentRowActions(container);
+      if (window.simpelUX) window.simpelUX.bindCopyButtons(tbody);
     }
   }
 
   if (searchInput) searchInput.addEventListener('input', filterStudents);
+  if (btnClearSearch) {
+    btnClearSearch.addEventListener('click', () => {
+      searchInput.value = '';
+      filterStudents();
+      searchInput.focus();
+    });
+  }
   if (filterProdi) filterProdi.addEventListener('change', filterStudents);
   if (filterSem) filterSem.addEventListener('change', filterStudents);
   if (filterSch) filterSch.addEventListener('change', filterStudents);
@@ -325,8 +347,8 @@ function renderStudentsTableRows(students, state, getStudentInvoiceSummary) {
 
     return `
       <tr>
-        <td style="font-family: var(--font-mono); font-weight: 800; color: var(--primary-700); font-size: 0.82rem;">
-          ${s.nim}
+        <td style="font-family: var(--font-mono); font-weight: 800; color: var(--primary-700); font-size: 0.82rem; cursor: pointer;" data-copy="${s.nim}" data-copy-label="NIM Mahasiswa" title="Klik untuk menyalin NIM">
+          ${s.nim} <span style="font-size: 0.72rem; color: #94a3b8;">📋</span>
         </td>
         <td>
           <div style="display: flex; align-items: center; gap: 10px;">
