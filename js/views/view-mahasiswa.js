@@ -75,54 +75,16 @@ export function renderMahasiswaPortal(container) {
         </div>
       </div>
       <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 6px; background: #ffffff; padding: 4px 8px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); box-shadow: var(--shadow-xs);">
-          <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">Ganti Mahasiswa:</span>
-          <select class="filter-select" id="select-active-student" style="padding: 6px 12px; font-size: 0.8rem; border-radius: var(--radius-md); border-color: #cbd5e1; font-weight: 700;">
-            ${state.students.map(s => {
-              const sch = state.scholarshipSchemes.find(sc => sc.id === s.scholarshipId);
-              return `<option value="${s.nim}" ${s.nim === currentStudent.nim ? 'selected' : ''}>
-                ${s.name} (${s.prodi} - Sem ${s.semester} | ${sch ? sch.name.split('(')[0] : 'Reguler'})
-              </option>`;
-            }).join('')}
-          </select>
-          <button class="btn btn-primary btn-sm btn-shimmer" id="btn-quick-add-student-top" style="font-size: 0.76rem; font-weight: 800; padding: 6px 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; border-radius: var(--radius-md); display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(37,99,235,0.3); white-space: nowrap; cursor: pointer;" title="Tambah / Buat Akun Mahasiswa Baru">
-            <span>➕</span> <span>Buat Akun</span>
-          </button>
-        </div>
-        <button class="btn btn-outline btn-sm" id="btn-self-edit-profile-top" style="color: #1e40af; border-color: #93c5fd; background: #eff6ff; font-weight: 800; display: flex; align-items: center; gap: 4px; padding: 7px 12px;">
+        <button class="btn btn-outline btn-sm" id="btn-self-edit-profile-top" style="color: #1e40af; border-color: #93c5fd; background: #eff6ff; font-weight: 800; display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-md);" title="Edit Biodata & Kontak Mahasiswa">
           👤 Edit Profil Saya
         </button>
-        <button class="btn btn-outline btn-sm btn-shimmer" id="btn-topbar-register-student" style="color: #1d4ed8; border-color: #93c5fd; background: linear-gradient(135deg, #eff6ff, #dbeafe); font-weight: 800; display: inline-flex; align-items: center; gap: 4px; padding: 7px 12px; box-shadow: 0 1px 3px rgba(37,99,235,0.12);" title="Buat / Registrasi Akun Mahasiswa Baru">
-          ✨ Buat Akun Baru
+        <button class="btn btn-outline btn-sm" id="btn-goto-login-view" style="color: var(--primary-700); font-weight: 700; padding: 7px 12px; border-radius: var(--radius-md);" title="Beralih ke Portal Login">
+          🔑 Ganti Akun
         </button>
-        <button class="btn btn-outline btn-sm" id="btn-goto-login-view" style="color: var(--primary-700); font-weight: 700; padding: 7px 12px;">
-          🔑 Halaman Login
-        </button>
-        <button class="btn btn-outline btn-sm" id="btn-student-logout" style="border-color: #fca5a5; color: #b91c1c; background: #fff1f2; font-weight: 700; padding: 7px 12px;">
-          🚪 Keluar / Logout
+        <button class="btn btn-outline btn-sm" id="btn-student-logout" style="border-color: #fca5a5; color: #b91c1c; background: #fff1f2; font-weight: 700; padding: 7px 12px; border-radius: var(--radius-md);" title="Keluar dari Sesi Mahasiswa">
+          🚪 Keluar
         </button>
       </div>
-    </div>
-
-    <!-- PMB / New Student Self-Registration VIP Banner -->
-    <div class="vip-register-card" style="padding: 16px 22px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
-      <div style="display: flex; align-items: center; gap: 14px;">
-        <div style="width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.35rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,99,235,0.35);">
-          ✨
-        </div>
-        <div>
-          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <span style="font-size: 0.95rem; font-weight: 900; color: #1e3a8a;">Pendaftaran / Registrasi Akun Mahasiswa Baru (PMB)</span>
-            <span class="badge" style="background: #2563eb; color: #ffffff; font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 999px;">T.A. 2026/2027</span>
-          </div>
-          <div style="font-size: 0.76rem; color: #1e40af; margin-top: 2px;">
-            Daftar akun mandiri dalam 1 menit: dapatkan <strong>Nomor Virtual Account BSI</strong>, klaim beasiswa santri/mitra, dan akses KRS otomatis.
-          </div>
-        </div>
-      </div>
-      <button type="button" class="btn btn-primary btn-sm btn-shimmer" id="btn-banner-register-student" style="font-weight: 900; font-size: 0.84rem; padding: 10px 20px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: var(--radius-lg); box-shadow: 0 4px 12px rgba(37,99,235,0.35); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;">
-        <span>📝</span> <span>Buat Akun Mahasiswa Baru Sekarang ➔</span>
-      </button>
     </div>
 
     <!-- 1. Warm Islamic Welcome Hero Banner -->
@@ -970,33 +932,6 @@ export function renderMahasiswaPortal(container) {
   if (btnGotoLogin) {
     btnGotoLogin.addEventListener('click', () => {
       if (window.simpelRouter) window.simpelRouter.navigateTo('view-login');
-    });
-  }
-
-  const btnTopbarRegister = container.querySelector('#btn-topbar-register-student');
-  if (btnTopbarRegister) {
-    btnTopbarRegister.addEventListener('click', () => {
-      if (window.simpelModals && window.simpelModals.openStudentRegistrationModal) {
-        window.simpelModals.openStudentRegistrationModal();
-      }
-    });
-  }
-
-  const btnQuickAddTop = container.querySelector('#btn-quick-add-student-top');
-  if (btnQuickAddTop) {
-    btnQuickAddTop.addEventListener('click', () => {
-      if (window.simpelModals && window.simpelModals.openStudentRegistrationModal) {
-        window.simpelModals.openStudentRegistrationModal();
-      }
-    });
-  }
-
-  const btnBannerRegister = container.querySelector('#btn-banner-register-student');
-  if (btnBannerRegister) {
-    btnBannerRegister.addEventListener('click', () => {
-      if (window.simpelModals && window.simpelModals.openStudentRegistrationModal) {
-        window.simpelModals.openStudentRegistrationModal();
-      }
     });
   }
 

@@ -230,6 +230,14 @@ class Router {
       }
     });
 
+    // Hide or show registration links based on current role
+    const isStudent = currentRole === 'MAHASISWA';
+    const navDaftar = document.getElementById('nav-daftar-mahasiswa');
+    if (navDaftar) navDaftar.style.display = isStudent ? 'none' : 'flex';
+
+    const btnTopRegister = document.getElementById('btn-topbar-register');
+    if (btnTopRegister) btnTopRegister.style.display = isStudent ? 'none' : 'inline-flex';
+
     // Hide or show sidebar section headers based on visible items
     document.querySelectorAll('.nav-section-label').forEach(lbl => {
       let sibling = lbl.nextElementSibling;

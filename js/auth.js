@@ -89,6 +89,12 @@ export class AuthManager {
     if (userAvatarEl) userAvatarEl.textContent = currentUser.avatarText || roleObj.avatarText;
     if (topbarProfNameEl) topbarProfNameEl.textContent = currentRole === 'ADMIN' ? 'Profil Admin' : 'Profil Mahasiswa';
 
+    // Hide/show topbar register button for Mahasiswa
+    const btnTopRegister = document.getElementById('btn-topbar-register');
+    if (btnTopRegister) {
+      btnTopRegister.style.display = currentRole === 'MAHASISWA' ? 'none' : 'inline-flex';
+    }
+
     this.updateSidebarNav();
   }
 
@@ -107,7 +113,7 @@ export class AuthManager {
     const navKelolaAdmin = document.getElementById('nav-kelola-admin');
     const navDaftarMahasiswa = document.getElementById('nav-daftar-mahasiswa');
 
-    if (navDaftarMahasiswa) navDaftarMahasiswa.style.display = 'flex';
+    if (navDaftarMahasiswa) navDaftarMahasiswa.style.display = isStudent ? 'none' : 'flex';
 
     if (isStudent) {
       if (navDashboard) navDashboard.style.display = 'none';

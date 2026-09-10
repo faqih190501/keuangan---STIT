@@ -236,9 +236,9 @@ export class UserExperienceHelper {
     ];
 
     // Quick actions catalog
-    const actions = [
-      { title: 'Buat Akun Mahasiswa Baru (PMB)', desc: 'Buka formulir pendaftaran mahasiswa baru langsung', icon: '✨', action: () => ModalManager.openStudentRegistrationModal(), type: 'ACTION' },
-      { title: 'Kelola Akun Admin & Bendahara', desc: 'Tambah atau ubah data login pengelola keuangan', icon: '👥', action: () => ModalManager.openAdminManagementModal(), type: 'ACTION' },
+    const allActions = [
+      { title: 'Buat Akun Mahasiswa Baru (PMB)', desc: 'Buka formulir pendaftaran mahasiswa baru langsung', icon: '✨', role: 'ADMIN', action: () => ModalManager.openStudentRegistrationModal(), type: 'ACTION' },
+      { title: 'Kelola Akun Admin & Bendahara', desc: 'Tambah atau ubah data login pengelola keuangan', icon: '👥', role: 'ADMIN', action: () => ModalManager.openAdminManagementModal(), type: 'ACTION' },
       { title: 'Profil Saya / Ganti Password', desc: 'Edit data profil akun aktif dan ubah password/PIN', icon: '👤', action: () => {
         if (state.currentRole === 'MAHASISWA') {
           ModalManager.openStudentSelfProfileModal(state.currentUser?.nim);
@@ -258,6 +258,8 @@ export class UserExperienceHelper {
       { title: 'Bantuan WhatsApp Admin', desc: 'Hubungi hotline admin STIT-IF di 082342307414', icon: '💬', action: () => window.open('https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20SIMPEL-IF', '_blank'), type: 'HELP' },
       { title: 'Panduan Penggunaan Interaktif', desc: 'Buka panduan langkah demi langkah penggunaan SIMPEL-IF', icon: '📖', action: () => this.openHelpCenterModal('PANDUAN'), type: 'HELP' }
     ];
+
+    const actions = allActions.filter(a => !a.role || a.role === currentRole);
 
     let items = [];
 

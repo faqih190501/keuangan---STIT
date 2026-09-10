@@ -15,7 +15,7 @@ $checks = @(
     @{ Name = "Register tab in view-login.js"; Condition = $loginJs.Contains("tab-btn-register") },
     @{ Name = "Quick register button in view-login.js"; Condition = $loginJs.Contains("btn-quick-register-student") },
     @{ Name = "Inline register link in view-login.js form"; Condition = $loginJs.Contains("link-inline-register") },
-    @{ Name = "Register button in view-mahasiswa.js topbar"; Condition = $mahasiswaJs.Contains("btn-topbar-register-student") }
+    @{ Name = "Register button properly removed from logged-in view-mahasiswa.js"; Condition = -not $mahasiswaJs.Contains("btn-topbar-register-student") }
 )
 
 $allPassed = $true
