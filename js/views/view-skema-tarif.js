@@ -12,6 +12,8 @@ export function renderSkemaTarifView(container) {
   const feeComponents = state.feeComponents;
   const scholarshipSchemes = state.scholarshipSchemes;
   const individualOverrides = state.individualOverrides || [];
+  const sppComp = feeComponents.find(c => c.id === 'SPP');
+  const sppAmount = sppComp ? sppComp.defaultAmount : 2400000;
 
   container.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
@@ -43,11 +45,16 @@ export function renderSkemaTarifView(container) {
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
         ${scholarshipSchemes.map(scheme => {
-          const discountDisplay = scheme.id === 'REGULER' 
-            ? 'Tanpa Potongan (0%)' 
-            : scheme.discountType === 'PERCENT'
-              ? `${scheme.discountValue}% (${formatRupiah((2500000 * scheme.discountValue) / 100)} / sem)`
-              : `${formatRupiah(scheme.discountValue)} (Subsidi Tetap)`;
+          let discountDisplay = '';
+          if (scheme.id === 'REGULER' || scheme.discountValue === 0) {
+            discountDisplay = 'Tanpa Potongan (0%)';
+          } else if (scheme.discountValue === 100) {
+            discountDisplay = `Gratis SPP 100% (${formatRupiah(sppAmount)} / sem)`;
+          } else if (scheme.discountType === 'PERCENT') {
+            discountDisplay = `${scheme.discountValue}% (${formatRupiah((sppAmount * scheme.discountValue) / 100)} / sem)`;
+          } else {
+            discountDisplay = `${formatRupiah(scheme.discountValue)} (Subsidi Tetap)`;
+          }
 
           const studentCount = state.students.filter(s => s.scholarshipId === scheme.id).length;
           const prodiBadges = scheme.eligibleProdi && scheme.eligibleProdi.length > 0

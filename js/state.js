@@ -5,7 +5,7 @@
 
 import { PRODI, STATUS_AKADEMIK, STATUS_TAGIHAN, SCHOLARSHIP_TYPES, USER_ROLES } from './models.js';
 
-const STORAGE_KEY = 'SIMPEL_IF_STATE_V3';
+const STORAGE_KEY = 'SIMPEL_IF_STATE_V4';
 
 const INITIAL_SEED_DATA = {
   activeSemester: '2026/2027 Ganjil',
@@ -96,7 +96,7 @@ const INITIAL_SEED_DATA = {
       id: 'SPP',
       name: 'SPP / UKT Pokok Semester',
       category: 'SEMESTER',
-      defaultAmount: 2500000,
+      defaultAmount: 2400000,
       description: 'Biaya penyelenggaraan pendidikan reguler per semester',
       applicableProdi: ['BKPI', 'PIAUD'],
       allowScholarshipDiscount: true
@@ -135,7 +135,7 @@ const INITIAL_SEED_DATA = {
     {
       id: 'REGULER',
       name: 'Reguler (Tarif Penuh)',
-      description: 'Skema reguler penuh tanpa potongan subsidi beasiswa.',
+      description: 'Skema reguler penuh tanpa potongan subsidi beasiswa (SPP Rp 2.400.000).',
       discountType: 'PERCENT',
       discountValue: 0,
       targetComponents: ['SPP'],
@@ -145,7 +145,7 @@ const INITIAL_SEED_DATA = {
     {
       id: 'ASRAMA',
       name: 'Beasiswa Asrama Pesantren',
-      description: 'Potongan biaya SPP sesuai regulasi mukim santri asrama pesantren Ihsanul Fikri.',
+      description: 'Potongan biaya SPP sesuai regulasi mukim santri asrama pesantren Ihsanul Fikri (Diskon 40% SPP).',
       discountType: 'PERCENT',
       discountValue: 40, // 40% discount on SPP
       targetComponents: ['SPP'],
@@ -155,19 +155,19 @@ const INITIAL_SEED_DATA = {
     {
       id: 'MITRA',
       name: 'Beasiswa Kerjasama Mitra & Yayasan',
-      description: 'Penyesuaian tarif berbasis subsidi MoU instansi mitra dan ormas pembina.',
-      discountType: 'FIXED',
-      discountValue: 1200000, // Rp 1.200.000 flat subsidy
+      description: 'Penyesuaian tarif berbasis subsidi MoU instansi mitra dan yayasan (Potongan SPP 50% / Menjadi Rp 1.200.000).',
+      discountType: 'PERCENT',
+      discountValue: 50, // 50% discount (Rp 1.200.000)
       targetComponents: ['SPP'],
       eligibleProdi: ['BKPI', 'PIAUD'],
       activeStudentsCount: 3
     },
     {
       id: 'PAUD_LAKI',
-      name: 'Beasiswa PAUD Laki-laki (Afirmasi Khusus)',
-      description: 'Skema afirmasi khusus putra prodi PIAUD untuk percepatan kader pendidik PAUD pria unggul.',
+      name: 'Beasiswa PAUD Laki-laki (Gratis SPP)',
+      description: 'Skema afirmasi khusus putra prodi PIAUD untuk kader pendidik PAUD pria (Gratis SPP 100% / Biaya SPP Rp 0).',
       discountType: 'PERCENT',
-      discountValue: 60, // 60% discount on SPP
+      discountValue: 100, // 100% discount on SPP (Gratis SPP)
       targetComponents: ['SPP'],
       eligibleProdi: ['PIAUD'],
       activeStudentsCount: 3
@@ -378,38 +378,38 @@ const INITIAL_SEED_DATA = {
   invoices: [
     {
       id: 'INV-2026-001',
-      studentNim: '202486209012', // Ahmad Fauzi (PIAUD - PAUD Laki-laki)
+      studentNim: '202486209012', // Ahmad Fauzi (PIAUD - PAUD Laki-laki Gratis SPP)
       semester: '2026/2027 Ganjil',
       createdDate: '2026-08-01',
       dueDate: '2026-09-10',
       items: [
-        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2500000, discount: 1500000, finalAmount: 1000000 },
+        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2400000, discount: 2400000, finalAmount: 0 },
         { componentId: 'DAFTAR_ULANG', name: 'Daftar Ulang / Heregistrasi', baseAmount: 300000, discount: 0, finalAmount: 300000 }
       ],
-      grossAmount: 2800000,
-      totalDiscount: 1500000,
-      netAmount: 1300000,
-      paidAmount: 1300000,
+      grossAmount: 2700000,
+      totalDiscount: 2400000,
+      netAmount: 300000,
+      paidAmount: 300000,
       status: 'LUNAS',
       paymentMethod: 'VA_BSI',
       receiptNumber: 'KW-IF/2026/08/0012',
       paymentDate: '2026-08-15 10:24:00',
       virtualAccount: '1056405743',
-      notes: 'Lunas via Virtual Account Bank Syariah Indonesia (Auto-Reconciled)'
+      notes: 'Lunas via Virtual Account Bank Syariah Indonesia (Beasiswa PAUD Laki-laki Gratis SPP)'
     },
     {
       id: 'INV-2026-002',
-      studentNim: '202386208005', // Siti Nurhaliza (BKPI - ASRAMA)
+      studentNim: '202386208005', // Siti Nurhaliza (BKPI - ASRAMA 40%)
       semester: '2026/2027 Ganjil',
       createdDate: '2026-08-01',
       dueDate: '2026-09-10',
       items: [
-        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2500000, discount: 1000000, finalAmount: 1500000 },
+        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2400000, discount: 960000, finalAmount: 1440000 },
         { componentId: 'DAFTAR_ULANG', name: 'Daftar Ulang / Heregistrasi', baseAmount: 300000, discount: 0, finalAmount: 300000 }
       ],
-      grossAmount: 2800000,
-      totalDiscount: 1000000,
-      netAmount: 1800000,
+      grossAmount: 2700000,
+      totalDiscount: 960000,
+      netAmount: 1740000,
       paidAmount: 0,
       status: 'MENUNGGU_VERIFIKASI',
       paymentMethod: 'TRANSFER_MANUAL',
@@ -425,63 +425,63 @@ const INITIAL_SEED_DATA = {
       createdDate: '2026-08-01',
       dueDate: '2026-09-10',
       items: [
-        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2500000, discount: 0, finalAmount: 2500000 },
+        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2400000, discount: 0, finalAmount: 2400000 },
         { componentId: 'DAFTAR_ULANG', name: 'Daftar Ulang / Heregistrasi', baseAmount: 300000, discount: 0, finalAmount: 300000 },
         { componentId: 'PENDAFTARAN', name: 'Biaya Formulir & Orientasi Maba', baseAmount: 350000, discount: 0, finalAmount: 350000 }
       ],
-      grossAmount: 3150000,
+      grossAmount: 3050000,
       totalDiscount: 0,
-      netAmount: 3150000,
+      netAmount: 3050000,
       paidAmount: 0,
       status: 'BELUM_BAYAR',
       paymentMethod: null,
       receiptNumber: null,
       paymentDate: null,
       virtualAccount: '1056405743',
-      notes: 'Tagihan semester awal diterbitkan'
+      notes: 'Tagihan semester awal diterbitkan (SPP Reguler Rp 2.400.000)'
     },
     {
       id: 'INV-2026-004',
-      studentNim: '202686209002', // Rahmat Hidayatullah (PIAUD Maba - PAUD Laki-laki)
+      studentNim: '202686209002', // Rahmat Hidayatullah (PIAUD Maba - PAUD Laki-laki Gratis SPP)
       semester: '2026/2027 Ganjil',
       createdDate: '2026-08-01',
       dueDate: '2026-09-10',
       items: [
-        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2500000, discount: 1500000, finalAmount: 1000000 },
+        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2400000, discount: 2400000, finalAmount: 0 },
         { componentId: 'DAFTAR_ULANG', name: 'Daftar Ulang / Heregistrasi', baseAmount: 300000, discount: 0, finalAmount: 300000 },
         { componentId: 'PENDAFTARAN', name: 'Biaya Formulir & Orientasi Maba', baseAmount: 350000, discount: 0, finalAmount: 350000 }
       ],
-      grossAmount: 3150000,
-      totalDiscount: 1500000,
-      netAmount: 1650000,
-      paidAmount: 1650000,
+      grossAmount: 3050000,
+      totalDiscount: 2400000,
+      netAmount: 650000,
+      paidAmount: 650000,
       status: 'LUNAS',
       paymentMethod: 'VA_BSI',
       receiptNumber: 'KW-IF/2026/08/0014',
       paymentDate: '2026-08-20 09:15:00',
       virtualAccount: '1056405743',
-      notes: 'Lunas via Virtual Account Bank Syariah Indonesia'
+      notes: 'Lunas via Virtual Account Bank Syariah Indonesia (Beasiswa PAUD Laki-laki Gratis SPP)'
     },
     {
       id: 'INV-2026-005',
-      studentNim: '202486209008', // Fatimah Az-Zahra (PIAUD - MITRA)
+      studentNim: '202486209008', // Fatimah Az-Zahra (PIAUD - MITRA 50%)
       semester: '2026/2027 Ganjil',
       createdDate: '2026-08-01',
       dueDate: '2026-09-10',
       items: [
-        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2500000, discount: 1200000, finalAmount: 1300000 },
+        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2400000, discount: 1200000, finalAmount: 1200000 },
         { componentId: 'DAFTAR_ULANG', name: 'Daftar Ulang / Heregistrasi', baseAmount: 300000, discount: 0, finalAmount: 300000 }
       ],
-      grossAmount: 2800000,
+      grossAmount: 2700000,
       totalDiscount: 1200000,
-      netAmount: 1600000,
-      paidAmount: 1600000,
+      netAmount: 1500000,
+      paidAmount: 1500000,
       status: 'LUNAS',
       paymentMethod: 'VA_BSI',
       receiptNumber: 'KW-IF/2026/08/0015',
       paymentDate: '2026-08-18 16:30:00',
       virtualAccount: '1056405743',
-      notes: 'Lunas via BSI Virtual Account'
+      notes: 'Lunas via BSI Virtual Account (Kerjasama Mitra Diskon 50%)'
     },
     {
       id: 'INV-2026-006',
@@ -490,12 +490,12 @@ const INITIAL_SEED_DATA = {
       createdDate: '2026-08-01',
       dueDate: '2026-09-10',
       items: [
-        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2500000, discount: 0, finalAmount: 2500000 },
+        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2400000, discount: 0, finalAmount: 2400000 },
         { componentId: 'DAFTAR_ULANG', name: 'Daftar Ulang / Heregistrasi', baseAmount: 300000, discount: 0, finalAmount: 300000 }
       ],
-      grossAmount: 2800000,
+      grossAmount: 2700000,
       totalDiscount: 0,
-      netAmount: 2800000,
+      netAmount: 2700000,
       paidAmount: 0,
       status: 'BELUM_BAYAR',
       paymentMethod: null,
@@ -511,14 +511,14 @@ const INITIAL_SEED_DATA = {
       createdDate: '2026-08-01',
       dueDate: '2026-09-10',
       items: [
-        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2500000, discount: 1500000, finalAmount: 1000000 }, // 1.000.000 (Asrama) + 500.000 (Override)
+        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2400000, discount: 1460000, finalAmount: 940000 }, // 960.000 (Asrama 40%) + 500.000 (Override Tahfidz)
         { componentId: 'DAFTAR_ULANG', name: 'Daftar Ulang / Heregistrasi', baseAmount: 300000, discount: 0, finalAmount: 300000 },
         { componentId: 'WISUDA', name: 'Biaya Munaqosyah & Wisuda', baseAmount: 2000000, discount: 0, finalAmount: 2000000 }
       ],
-      grossAmount: 4800000,
-      totalDiscount: 1500000,
-      netAmount: 3300000,
-      paidAmount: 3300000,
+      grossAmount: 4700000,
+      totalDiscount: 1460000,
+      netAmount: 3240000,
+      paidAmount: 3240000,
       status: 'LUNAS',
       paymentMethod: 'VA_BSI',
       receiptNumber: 'KW-IF/2026/08/0017',
@@ -533,19 +533,19 @@ const INITIAL_SEED_DATA = {
       createdDate: '2026-08-01',
       dueDate: '2026-09-10',
       items: [
-        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2500000, discount: 1200000, finalAmount: 1300000 },
+        { componentId: 'SPP', name: 'SPP / UKT Pokok Semester', baseAmount: 2400000, discount: 1200000, finalAmount: 1200000 },
         { componentId: 'DAFTAR_ULANG', name: 'Daftar Ulang / Heregistrasi', baseAmount: 300000, discount: 0, finalAmount: 300000 }
       ],
-      grossAmount: 2800000,
+      grossAmount: 2700000,
       totalDiscount: 1200000,
-      netAmount: 1600000,
-      paidAmount: 800000,
+      netAmount: 1500000,
+      paidAmount: 750000,
       status: 'DICICIL',
       paymentMethod: 'TRANSFER_MANUAL',
       receiptNumber: 'KW-IF/2026/08/0018-T1',
       paymentDate: '2026-08-22 13:45:00',
       virtualAccount: '1056405743',
-      notes: 'Telah membayar cicilan Termin 1 (Rp 800.000). Sisa Termin 2 (Rp 800.000) jatuh tempo 15 Nov 2026.'
+      notes: 'Telah membayar cicilan Termin 1 (Rp 750.000). Sisa Termin 2 (Rp 750.000) jatuh tempo 15 Nov 2026.'
     }
   ],
 
@@ -559,12 +559,12 @@ const INITIAL_SEED_DATA = {
       prodi: 'BKPI',
       semester: 5,
       scholarshipName: 'Beasiswa Asrama Pesantren',
-      amount: 1800000,
+      amount: 1740000,
       transferDate: '2026-08-28 13:40',
       senderBank: 'Bank BSI (Bank Syariah Indonesia)',
       senderAccountName: 'SITI NURHALIZA',
       senderAccountNumber: '7198293812',
-      destinationBank: 'Bank BSI - STIT Ihsanul Fikri (No. Rek 1009827361)',
+      destinationBank: 'Bank BSI - STIT Ihsanul Fikri (No. Rek 1056405743)',
       proofImage: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80',
       status: 'PENDING',
       notes: 'Pembayaran SPP + Daftar Ulang Semester 5 (Potongan Asrama 40%)',
@@ -578,15 +578,15 @@ const INITIAL_SEED_DATA = {
       prodi: 'BKPI',
       semester: 5,
       scholarshipName: 'Beasiswa Kerjasama Mitra',
-      amount: 800000,
+      amount: 750000,
       transferDate: '2026-08-22 12:30',
       senderBank: 'Bank Mandiri',
       senderAccountName: 'BILAL AL HABASYI',
       senderAccountNumber: '1420019283741',
-      destinationBank: 'Bank Mandiri - STIT Ihsanul Fikri (No. Rek 1370018273645)',
+      destinationBank: 'Bank BSI - STIT Ihsanul Fikri (No. Rek 1056405743)',
       proofImage: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&w=600&q=80',
       status: 'APPROVED',
-      notes: 'Pembayaran Termin 1 Dispensasi Cicilan disetujui.',
+      notes: 'Pembayaran Termin 1 Dispensasi Cicilan disetujui (Rp 750.000).',
       submittedAt: '2026-08-22 13:00:00',
       processedAt: '2026-08-22 13:45:00',
       processedBy: 'Ustadzah Siti Fatimah, S.E.'
@@ -602,7 +602,7 @@ const INITIAL_SEED_DATA = {
       role: 'AKADEMIK',
       action: 'GENERATE_TAGIHAN_MASSAL',
       entity: 'Tagihan Semester 2026/2027 Ganjil',
-      details: 'Penerbitan otomatis tagihan semester baru untuk 12 mahasiswa aktif (BKPI & PIAUD).'
+      details: 'Penerbitan otomatis tagihan semester baru untuk 12 mahasiswa aktif (BKPI & PIAUD) dengan tarif SPP dasar Rp 2.400.000.'
     },
     {
       id: 'LOG-002',
@@ -611,7 +611,7 @@ const INITIAL_SEED_DATA = {
       role: 'BENDAHARA',
       action: 'UPDATE_SKEMA_BEASISWA',
       entity: 'Beasiswa PAUD Laki-laki',
-      details: 'Penyesuaian persentase diskon SPP afirmasi khusus putra prodi PIAUD menjadi 60%.'
+      details: 'Penyesuaian persentase diskon SPP afirmasi khusus putra prodi PIAUD menjadi Gratis SPP 100% (SPP Rp 0).'
     },
     {
       id: 'LOG-003',
@@ -620,7 +620,7 @@ const INITIAL_SEED_DATA = {
       role: 'SYSTEM',
       action: 'PAYMENT_VA_SUCCESS',
       entity: 'INV-2026-001 (Ahmad Fauzi)',
-      details: 'Pelunasan tagihan Rp 1.300.000 via BSI Virtual Account #988886209012001. Kwitansi KW-IF/2026/08/0012 diterbitkan.'
+      details: 'Pelunasan tagihan Rp 300.000 via BSI Virtual Account #1056405743. Kwitansi KW-IF/2026/08/0012 diterbitkan.'
     },
     {
       id: 'LOG-004',
@@ -638,7 +638,7 @@ const INITIAL_SEED_DATA = {
       role: 'BENDAHARA',
       action: 'VERIFY_TRANSFER_APPROVE',
       entity: 'VERIF-002 (Bilal Al-Habasyi)',
-      details: 'Persetujuan bukti bayar manual transfer Termin 1 cicilan sebesar Rp 800.000.'
+      details: 'Persetujuan bukti bayar manual transfer Termin 1 cicilan sebesar Rp 750.000.'
     }
   ],
 

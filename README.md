@@ -51,8 +51,12 @@ Aplikasi dapat langsung diakses secara publik melalui tautan GitHub Pages beriku
 
 ### 3. ⚙️ Tata Kelola Skema Tarif & Beasiswa
 * **Konfigurasi Fleksibel**: Dukungan subsidi berbasis persentase (`%`) maupun nominal tetap (`Rp`).
-* **Auto-Recalculate**: Otomatisasi kalkulasi ulang seluruh tagihan semester aktif saat nominal atau persentase beasiswa diperbarui.
-* **Auto-Tagging Mahasiswa Baru**: Calon mahasiswa laki-laki di prodi PIAUD secara otomatis mendapatkan afirmasi *Beasiswa PAUD Laki-laki* (Diskon SPP 60%).
+* **Auto-Tagging Mahasiswa Baru**: Calon mahasiswa laki-laki di prodi PIAUD secara otomatis mendapatkan afirmasi *Beasiswa PAUD Laki-laki* (Gratis SPP 100%).
+* **Skema Tarif Pokok & Beasiswa Terpadu**:
+  * 🎓 **SPP Reguler**: Rp 2.400.000 / semester.
+  * 🤝 **Kerjasama Mitra**: Rp 1.200.000 / semester (Diskon 50%).
+  * 👦 **PAUD Laki-laki**: Gratis SPP / Rp 0 (Diskon 100%).
+  * 🕌 **Asrama Pesantren**: Diskon 40% SPP (Menjadi Rp 1.440.000).
 
 ### 4. 📅 Kalender Akademik & Jadwal Finansial Terpadu
 * **Dual View Mode (Linimasa & Kalender Bulanan)**: Pilihan tampilan antara daftar linimasa kronologis (*Timeline Cards*) dan matriks kalender bulanan interaktif (*Interactive Monthly Grid*).

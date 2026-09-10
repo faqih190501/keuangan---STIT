@@ -257,6 +257,9 @@ export class ModalManager {
     const studentCount = state.students.filter(s => s.scholarshipId === scheme.id).length;
     const isReguler = scheme.id === 'REGULER';
 
+    const sppComp = state.feeComponents.find(c => c.id === 'SPP');
+    const sppAmount = sppComp ? sppComp.defaultAmount : 2400000;
+
     body.innerHTML = `
       <form id="form-edit-scheme">
         <div class="form-grid">
@@ -309,7 +312,7 @@ export class ModalManager {
         <!-- Live Calculation Preview -->
         <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: var(--radius-lg); padding: 14px 18px; margin-top: 10px;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 0.74rem; color: #0369a1; font-weight: 700; text-transform: uppercase;">Simulasi Tarif SPP Pokok (Rp 2.500.000):</span>
+            <span style="font-size: 0.74rem; color: #0369a1; font-weight: 700; text-transform: uppercase;">Simulasi Tarif SPP Pokok (${formatRupiah(sppAmount)}):</span>
             <span style="font-size: 0.72rem; color: #0284c7; font-weight: 700;">Mahasiswa Aktif: ${studentCount} Orang</span>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
@@ -318,7 +321,7 @@ export class ModalManager {
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; padding-top: 6px; border-top: 1px dashed #bae6fd;">
             <span style="font-size: 0.88rem; font-weight: 700; color: var(--text-dark);">Sisa SPP Wajib Bayar Mahasiswa:</span>
-            <strong style="color: #1e40af; font-size: 1.15rem;" id="preview-final-val">Rp 2.500.000</strong>
+            <strong style="color: #1e40af; font-size: 1.15rem;" id="preview-final-val">${formatRupiah(sppAmount)}</strong>
           </div>
         </div>
       </form>
@@ -356,11 +359,11 @@ export class ModalManager {
       const val = Number(valInput.value) || 0;
       let disc = 0;
       if (isPercent) {
-        disc = (2500000 * val) / 100;
+        disc = (sppAmount * val) / 100;
       } else {
-        disc = Math.min(val, 2500000);
+        disc = Math.min(val, sppAmount);
       }
-      const finalVal = 2500000 - disc;
+      const finalVal = sppAmount - disc;
       previewDisc.textContent = `- ${formatRupiah(disc)}`;
       previewFinal.textContent = formatRupiah(finalVal);
     }
@@ -419,6 +422,10 @@ export class ModalManager {
    * 2b. Add New Scholarship Scheme Modal
    */
   static openAddSchemeModal() {
+    const state = appState.getState();
+    const sppComp = state.feeComponents.find(c => c.id === 'SPP');
+    const sppAmount = sppComp ? sppComp.defaultAmount : 2400000;
+
     const { overlay, card, title, body, footer } = this.getModalElements();
     card.classList.remove('modal-xl');
     card.classList.add('modal-lg');
@@ -476,14 +483,14 @@ export class ModalManager {
 
         <!-- Live Calculation Preview -->
         <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: var(--radius-lg); padding: 14px 18px; margin-top: 10px;">
-          <div style="font-size: 0.74rem; color: #0369a1; font-weight: 700; text-transform: uppercase;">Simulasi Tarif SPP Pokok (Rp 2.500.000):</div>
+          <div style="font-size: 0.74rem; color: #0369a1; font-weight: 700; text-transform: uppercase;">Simulasi Tarif SPP Pokok (${formatRupiah(sppAmount)}):</div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
             <span style="font-size: 0.84rem; color: var(--text-dark);">Subsidi Dihemat Mahasiswa:</span>
-            <strong style="color: #0284c7; font-size: 0.95rem;" id="new-preview-discount-val">- Rp 1.250.000</strong>
+            <strong style="color: #0284c7; font-size: 0.95rem;" id="new-preview-discount-val">- ${formatRupiah(sppAmount / 2)}</strong>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; padding-top: 6px; border-top: 1px dashed #bae6fd;">
             <span style="font-size: 0.88rem; font-weight: 700; color: var(--text-dark);">Sisa SPP Wajib Bayar Mahasiswa:</span>
-            <strong style="color: #1e40af; font-size: 1.15rem;" id="new-preview-final-val">Rp 1.250.000</strong>
+            <strong style="color: #1e40af; font-size: 1.15rem;" id="new-preview-final-val">${formatRupiah(sppAmount / 2)}</strong>
           </div>
         </div>
       </form>
@@ -510,11 +517,11 @@ export class ModalManager {
       const val = Number(valInput.value) || 0;
       let disc = 0;
       if (isPercent) {
-        disc = (2500000 * val) / 100;
+        disc = (sppAmount * val) / 100;
       } else {
-        disc = Math.min(val, 2500000);
+        disc = Math.min(val, sppAmount);
       }
-      const finalVal = 2500000 - disc;
+      const finalVal = sppAmount - disc;
       previewDisc.textContent = `- ${formatRupiah(disc)}`;
       previewFinal.textContent = formatRupiah(finalVal);
     }
@@ -2528,8 +2535,8 @@ export class ModalManager {
       const schId = body.querySelector('#reg-student-scholarship').value;
       const scholarship = scholarshipSchemes.find(s => s.id === schId) || scholarshipSchemes[0];
 
-      const sppComp = feeComponents.find(c => c.id === 'SPP') || { defaultAmount: 1800000 };
-      const duComp = feeComponents.find(c => c.id === 'DAFTAR_ULANG') || { defaultAmount: 150000 };
+      const sppComp = feeComponents.find(c => c.id === 'SPP') || { defaultAmount: 2400000 };
+      const duComp = feeComponents.find(c => c.id === 'DAFTAR_ULANG') || { defaultAmount: 300000 };
       const pendComp = feeComponents.find(c => c.id === 'PENDAFTARAN') || { defaultAmount: 350000 };
 
       let sppDiscount = 0;
@@ -2579,6 +2586,24 @@ export class ModalManager {
       }
     }
 
+    // Auto-select PAUD_LAKI when gender L and prodi PIAUD
+    function checkAutoScholarshipTag() {
+      const gender = body.querySelector('#reg-student-gender').value;
+      const prodi = body.querySelector('#reg-student-prodi').value;
+      const schSel = body.querySelector('#reg-student-scholarship');
+      if (gender === 'L' && prodi === 'PIAUD') {
+        const paudLaki = scholarshipSchemes.find(s => s.id === 'PAUD_LAKI');
+        if (paudLaki && schSel) {
+          schSel.value = 'PAUD_LAKI';
+        }
+      }
+    }
+
+    body.querySelector('#reg-student-gender').addEventListener('change', () => {
+      checkAutoScholarshipTag();
+      updateLiveFeeBreakdown();
+    });
+
     // Attach change listeners for live breakdown
     body.querySelector('#reg-student-prodi').addEventListener('change', (e) => {
       const nimInput = body.querySelector('#reg-student-nim');
@@ -2590,6 +2615,7 @@ export class ModalManager {
           userInput.value = nimInput.value;
         }
       }
+      checkAutoScholarshipTag();
       updateLiveFeeBreakdown();
     });
 

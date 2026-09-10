@@ -691,8 +691,8 @@ export function renderMahasiswaPortal(container) {
             <button type="button" class="btn btn-outline btn-sm btn-mandiri-preset" data-amount="250000" style="font-family: var(--font-mono); font-weight: 700;">Rp 250.000</button>
             <button type="button" class="btn btn-outline btn-sm btn-mandiri-preset active" data-amount="500000" style="font-family: var(--font-mono); font-weight: 800; background: #e0f2fe; border-color: #0284c7; color: #0369a1;">Rp 500.000</button>
             <button type="button" class="btn btn-outline btn-sm btn-mandiri-preset" data-amount="1000000" style="font-family: var(--font-mono); font-weight: 700;">Rp 1.000.000</button>
-            <button type="button" class="btn btn-outline btn-sm btn-mandiri-preset" data-amount="1500000" style="font-family: var(--font-mono); font-weight: 700;">Rp 1.500.000</button>
-            <button type="button" class="btn btn-outline btn-sm btn-mandiri-preset" data-amount="2500000" style="font-family: var(--font-mono); font-weight: 700;">Rp 2.500.000</button>
+            <button type="button" class="btn btn-outline btn-sm btn-mandiri-preset" data-amount="1200000" style="font-family: var(--font-mono); font-weight: 700;" title="SPP Kerjasama Mitra (Diskon 50%)">Rp 1.200.000</button>
+            <button type="button" class="btn btn-outline btn-sm btn-mandiri-preset" data-amount="2400000" style="font-family: var(--font-mono); font-weight: 700;" title="SPP Reguler Penuh">Rp 2.400.000</button>
           </div>
 
           <div class="form-group" style="max-width: 400px;">
