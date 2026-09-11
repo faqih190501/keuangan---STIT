@@ -109,19 +109,19 @@ export function getScholarshipBadge(scholarshipId) {
   }
   const s = SCHOLARSHIP_TYPES[scholarshipId];
   if (s) {
-    return `<span class="badge badge-scholarship"><span class="badge-dot"></span>${s.name}</span>`;
+    return `<span class="badge badge-scholarship"><span class="badge-dot"></span>${s.shortName || s.name}</span>`;
   }
   try {
     const state = appState.getState();
     if (state && state.scholarshipSchemes) {
       const dynamicScheme = state.scholarshipSchemes.find(sc => sc.id === scholarshipId);
       if (dynamicScheme) {
-        const shortName = dynamicScheme.name.split('(')[0].trim();
+        const shortName = (dynamicScheme.shortName || dynamicScheme.name.split('(')[0]).trim();
         return `<span class="badge badge-scholarship"><span class="badge-dot"></span>${shortName}</span>`;
       }
     }
   } catch (e) {
-    // state fallback
+    // Fallback
   }
-  return `<span class="badge badge-scholarship"><span class="badge-dot"></span>${scholarshipId}</span>`;
+  return `<span class="badge badge-scholarship">${scholarshipId}</span>`;
 }

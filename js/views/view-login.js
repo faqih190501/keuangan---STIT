@@ -115,7 +115,7 @@ export function renderLoginView(container) {
               <div class="form-group">
                 <label class="form-label" for="login-nim" style="font-weight: 700;">NIM atau Username Mahasiswa <span class="required">*</span></label>
                 <div style="position: relative;">
-                  <input type="text" class="form-control" id="login-nim" placeholder="Masukkan NIM atau Username..." required style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md); border-color: #cbd5e1;" value="202486209012">
+                  <input type="text" class="form-control" id="login-nim" placeholder="Masukkan NIM atau Username..." required style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md); border-color: #cbd5e1;" value="2601001">
                   <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #64748b;">👤</span>
                 </div>
                 <span class="input-help-text">Gunakan NIM resmi atau Username akun mahasiswa STIT-IF</span>

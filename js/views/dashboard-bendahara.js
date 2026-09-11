@@ -101,6 +101,9 @@ export function renderDashboardBendahara(container) {
         <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">Pusat komando tata kelola finansial, analisis neraca prodi BKPI & PIAUD, serapan beasiswa, dan operasional tagihan mahasiswa STIT Ihsanul Fikri.</p>
       </div>
       <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <button class="btn btn-outline" id="btn-goto-matriks-rekap" style="font-weight: 800; color: #0284c7; border-color: #7dd3fc; background: #f0f9ff;">
+          📊 Matriks Rekap (Sheets)
+        </button>
         <button class="btn btn-outline" id="btn-admin-manage-users" style="font-weight: 800; color: #1e40af; border-color: #93c5fd; background: #eff6ff;">
           👥 Kelola Admin (${(state.adminUsers || []).length})
         </button>
@@ -476,6 +479,13 @@ export function renderDashboardBendahara(container) {
   if (btnBannerAdminProfile) {
     btnBannerAdminProfile.addEventListener('click', () => {
       window.simpelModals.openAdminSelfProfileModal();
+    });
+  }
+
+  const btnGotoMatriks = container.querySelector('#btn-goto-matriks-rekap');
+  if (btnGotoMatriks) {
+    btnGotoMatriks.addEventListener('click', () => {
+      if (window.simpelRouter) window.simpelRouter.navigateTo('view-matriks-rekap');
     });
   }
 

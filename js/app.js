@@ -10,6 +10,7 @@ import { DragScrollHelper } from './utils/drag-scroll.js';
 import { UserExperienceHelper } from './utils/user-experience.js';
 
 import { renderDashboardBendahara } from './views/dashboard-bendahara.js';
+import { renderMatriksRekapView } from './views/view-matriks-rekap.js';
 import { renderSkemaTarifView } from './views/view-skema-tarif.js';
 import { renderVerifikasiView } from './views/view-verifikasi.js';
 import { renderMahasiswaPortal } from './views/view-mahasiswa.js';
@@ -299,6 +300,11 @@ class Router {
       case 'view-pimpinan':
         this.setPageHeaders('Dashboard Utama Admin', 'SIMPEL-IF / Dashboard Admin');
         renderDashboardBendahara(this.container);
+        break;
+
+      case 'view-matriks-rekap':
+        this.setPageHeaders('Matriks Rekapitulasi Google Sheets (PMB 2026 & Multi-Angkatan)', 'SIMPEL-IF / Administrasi / Matriks Sheets');
+        renderMatriksRekapView(this.container);
         break;
 
       case 'view-skema-tarif':

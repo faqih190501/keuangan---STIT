@@ -39,36 +39,94 @@ export const STATUS_TAGIHAN = {
 export const SCHOLARSHIP_TYPES = {
   REGULER: {
     id: 'REGULER',
-    name: 'Reguler',
+    name: 'Reguler (Tarif Standar)',
+    shortName: 'Reguler',
     description: 'Tarif standar penuh tanpa potongan subsidi beasiswa (SPP Rp 2.400.000).',
     badgeClass: 'badge-unpaid',
     discountType: 'PERCENT',
     discountValue: 0
   },
-  ASRAMA: {
-    id: 'ASRAMA',
-    name: 'Beasiswa Asrama Pesantren',
-    description: 'Potongan biaya SPP sesuai regulasi mukim asrama pesantren (Diskon 40% SPP).',
-    badgeClass: 'badge-scholarship',
-    discountType: 'PERCENT',
-    discountValue: 40 // 40% discount
-  },
   MITRA: {
     id: 'MITRA',
     name: 'Beasiswa Kerjasama Mitra',
+    shortName: 'Kerjasama Mitra',
     description: 'Penyesuaian tarif berbasis subsidi MoU instansi mitra dan yayasan (Potongan SPP 50% / Menjadi Rp 1.200.000).',
     badgeClass: 'badge-scholarship',
     discountType: 'PERCENT',
     discountValue: 50 // 50% discount (Rp 1.200.000)
   },
+  ASRAMA: {
+    id: 'ASRAMA',
+    name: 'Beasiswa Asrama Pesantren',
+    shortName: 'Beasiswa Asrama',
+    description: 'Potongan biaya SPP sesuai regulasi mukim asrama pesantren (Diskon 40% SPP / Menjadi Rp 1.440.000).',
+    badgeClass: 'badge-scholarship',
+    discountType: 'PERCENT',
+    discountValue: 40 // 40% discount
+  },
   PAUD_LAKI: {
     id: 'PAUD_LAKI',
     name: 'Beasiswa PAUD Laki-laki',
-    description: 'Skema afirmasi khusus mahasiswa putra prodi PIAUD (Gratis SPP 100% / Biaya SPP Rp 0).',
+    shortName: 'PAUD Laki-laki',
+    description: 'Skema afirmasi khusus mahasiswa putra prodi PIAUD untuk kader pendidik PAUD pria (Gratis SPP 100% / Biaya Rp 0).',
     badgeClass: 'badge-scholarship',
     discountType: 'PERCENT',
     discountValue: 100 // 100% discount (Gratis SPP)
+  },
+  GURU_TPA: {
+    id: 'GURU_TPA',
+    name: 'Afirmasi Guru TPA / Musrif Lembaga',
+    shortName: 'Guru TPA / Musrif',
+    description: 'Afirmasi pengabdian pendidik TPA dan musrif lembaga mitra (Potongan SPP 50% / Rp 1.200.000).',
+    badgeClass: 'badge-scholarship',
+    discountType: 'PERCENT',
+    discountValue: 50
+  },
+  ALUMNI_PONPES: {
+    id: 'ALUMNI_PONPES',
+    name: 'Afirmasi Alumni Pondok Pesantren',
+    shortName: 'Alumni Ponpes',
+    description: 'Afirmasi beasiswa untuk santri lulusan pondok pesantren (Potongan SPP 50% / Rp 1.200.000).',
+    badgeClass: 'badge-scholarship',
+    discountType: 'PERCENT',
+    discountValue: 50
+  },
+  BEASISWA_50: {
+    id: 'BEASISWA_50',
+    name: 'Beasiswa Subsidi 50%',
+    shortName: 'Beasiswa 50%',
+    description: 'Skema subsidi pendidikan 50% (Potongan SPP 50% / Rp 1.200.000).',
+    badgeClass: 'badge-scholarship',
+    discountType: 'PERCENT',
+    discountValue: 50
+  },
+  PRESTASI: {
+    id: 'PRESTASI',
+    name: 'Beasiswa Siswa Berprestasi',
+    shortName: 'Siswa Berprestasi',
+    description: 'Apresiasi akademik & non-akademik siswa berprestasi (Potongan SPP 50% / Rp 1.200.000).',
+    badgeClass: 'badge-scholarship',
+    discountType: 'PERCENT',
+    discountValue: 50
+  },
+  MITRA_GRATIS: {
+    id: 'MITRA_GRATIS',
+    name: 'Beasiswa Mitra Pabelan Gratis 100%',
+    shortName: 'Mitra Pabelan Gratis',
+    description: 'Skema beasiswa penuh program kemitraan Pabelan (Gratis SPP 100% / Biaya Rp 0).',
+    badgeClass: 'badge-scholarship',
+    discountType: 'PERCENT',
+    discountValue: 100
   }
+};
+
+export const SCHOLARSHIP_SCHEMES = Object.values(SCHOLARSHIP_TYPES);
+
+export const STANDARD_FEES = {
+  PENDAFTARAN: 200000,
+  DAFTAR_ULANG: 450000,
+  SPP_STANDARD: 2400000,
+  WISUDA: 1500000
 };
 
 export const USER_ROLES = {
@@ -84,8 +142,8 @@ export const USER_ROLES = {
     id: 'MAHASISWA',
     name: 'Mahasiswa',
     shortTitle: 'Portal Mahasiswa',
-    defaultUser: 'Ahmad Fauzi (NIM: 202486209012)',
-    avatarText: 'AF',
+    defaultUser: 'Miftahul Jannah (NIM: 2601001)',
+    avatarText: 'MJ',
     icon: '🎓'
   }
 };

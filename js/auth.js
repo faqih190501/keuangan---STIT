@@ -11,6 +11,7 @@ export const ROLE_PERMISSIONS = {
   ADMIN: {
     allowedViews: [
       'dashboard-bendahara',
+      'view-matriks-rekap',
       'view-skema-tarif',
       'view-verifikasi',
       'view-akademik',

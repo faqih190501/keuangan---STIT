@@ -29,7 +29,8 @@ $urls = @(
     'http://127.0.0.1:8080/js/views/view-pimpinan.js',
     'http://127.0.0.1:8080/js/views/view-qr-validator.js',
     'http://127.0.0.1:8080/js/views/view-skema-tarif.js',
-    'http://127.0.0.1:8080/js/views/view-verifikasi.js'
+    'http://127.0.0.1:8080/js/views/view-verifikasi.js',
+    'http://127.0.0.1:8080/js/views/view-matriks-rekap.js'
 )
 
 $passed = 0
