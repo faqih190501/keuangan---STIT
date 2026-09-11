@@ -17,8 +17,8 @@ import { generateQRCodeSVG } from '../utils/qr-engine.js';
 
 export function renderMahasiswaPortal(container) {
   const state = appState.getState();
-  const currentNim = state.currentUser.nim || '202486209012'; // Default Ahmad Fauzi
-  const currentStudent = (state.students && state.students.find(s => s.nim === currentNim)) || (state.students && state.students[0]) || { nim: '2601001', name: 'Miftahul Jannah', prodi: 'BKPI', semester: 1, scholarshipId: 'ALUMNI_PONPES' };
+  const currentNim = (state.currentUser && state.currentUser.nim) || (state.students && state.students[0] && state.students[0].nim) || '202602001';
+  const currentStudent = (state.students && state.students.find(s => s.nim === currentNim)) || (state.students && state.students[0]) || { nim: '202602001', name: 'Za\'am Tsafiq Al Azmi', prodi: 'BKPI', semester: 1, scholarshipId: 'REGULER' };
   const scholarship = ((state.scholarshipSchemes || []).find(sc => sc.id === currentStudent.scholarshipId)) || (state.scholarshipSchemes && state.scholarshipSchemes[0]) || { name: 'Reguler', discountValue: 0 };
   
   // Find current semester invoice

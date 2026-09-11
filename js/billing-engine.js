@@ -504,7 +504,7 @@ export class BillingEngine {
     appState.addAuditLog(
       'UPDATE_SKEMA_BEASISWA',
       scheme.name,
-      `Perubahan subsidi skema dari [${oldDesc}] menjadi [${newDesc}] oleh ${state.currentUser.name}.`
+      `Perubahan subsidi skema dari [${oldDesc}] menjadi [${newDesc}] oleh ${state.currentUser?.name || 'Admin Bendahara'}.`
     );
 
     appState.notify();
@@ -538,7 +538,7 @@ export class BillingEngine {
     appState.addAuditLog(
       'CREATE_SKEMA_BEASISWA',
       newScheme.name,
-      `Penambahan skema beasiswa baru [${newScheme.name}] dengan potongan ${newScheme.discountType === 'PERCENT' ? newScheme.discountValue + '%' : 'Rp ' + newScheme.discountValue.toLocaleString('id-ID')} oleh ${state.currentUser.name}.`
+      `Penambahan skema beasiswa baru [${newScheme.name}] dengan potongan ${newScheme.discountType === 'PERCENT' ? newScheme.discountValue + '%' : 'Rp ' + newScheme.discountValue.toLocaleString('id-ID')} oleh ${state.currentUser?.name || 'Admin Bendahara'}.`
     );
 
     appState.notify();
@@ -609,7 +609,7 @@ export class BillingEngine {
       discountAmount: Number(overrideData.discountAmount) || 0,
       reason: overrideData.reason,
       status: 'ACTIVE',
-      approvedBy: state.currentUser.name
+      approvedBy: state.currentUser?.name || 'Admin Bendahara'
     };
 
     if (!state.individualOverrides) state.individualOverrides = [];

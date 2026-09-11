@@ -731,7 +731,7 @@ function attachTableActionListeners(tbody, state) {
           invoiceId: inv.id,
           amount: sisaBayar,
           method: 'KASIR_TUNAI',
-          verifiedBy: state.currentUser.name || 'Admin Bendahara',
+          verifiedBy: state.currentUser?.name || 'Admin Bendahara',
           notes: 'Pelunasan langsung kasir kampus STIT Ihsanul Fikri'
         });
 

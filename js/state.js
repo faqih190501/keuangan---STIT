@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SIMPEL-IF Reactive State Manager & Master Data Store
  * STIT Ihsanul Fikri Pabelan Magelang
  * Sinkronisasi Resmi Google Spreadsheet: "REKAP ADMINISTRASI STITIF"
@@ -7,7 +7,7 @@
 
 import { PRODI, STATUS_AKADEMIK, STATUS_TAGIHAN, SCHOLARSHIP_TYPES, USER_ROLES, STANDARD_FEES } from './models.js';
 
-const STORAGE_KEY = 'SIMPEL_IF_STATE_V6_PROD';
+const STORAGE_KEY = 'SIMPEL_IF_STATE_V7_SHEETS_PROD';
 
 const INITIAL_SEED_DATA = {
   activeSemester: '2026/2027 Ganjil',
@@ -8892,8 +8892,8 @@ class StateManager {
 
   loadInitialState() {
     try {
-      // Clear legacy storage keys
-      ['simpel_if_state', 'SIMPEL_IF_STATE_V1', 'SIMPEL_IF_STATE_V2', 'SIMPEL_IF_STATE_V3', 'SIMPEL_IF_STATE_V4', 'SIMPEL_IF_STATE_V5'].forEach(k => {
+      // Clear legacy storage keys to prevent stale or corrupted data
+      ['simpel_if_state', 'SIMPEL_IF_STATE_V1', 'SIMPEL_IF_STATE_V2', 'SIMPEL_IF_STATE_V3', 'SIMPEL_IF_STATE_V4', 'SIMPEL_IF_STATE_V5', 'SIMPEL_IF_STATE_V6_PROD'].forEach(k => {
         try { localStorage.removeItem(k); } catch (e) {}
       });
 
@@ -8968,15 +8968,15 @@ class StateManager {
     this.state.currentRole = targetRole;
 
     if (targetRole === 'MAHASISWA') {
-      const targetNim = customStudentNim || '2601001'; // Default Miftahul Jannah
+      const targetNim = customStudentNim || (this.state.students && this.state.students[0] ? this.state.students[0].nim : '202602001');
       const student = (this.state.students && this.state.students.find(s => s.nim === targetNim)) || (this.state.students && this.state.students[0]);
       if (student) {
         this.state.currentUser = {
-          id: MHS-,
+          id: `MHS-${student.nim}`,
           name: student.name,
           role: 'MAHASISWA',
           email: student.email,
-          avatarText: student.name.split(' ').map(n => n[0]).slice(0, 2).join(''),
+          avatarText: student.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase(),
           prodi: student.prodi,
           nim: student.nim,
           scholarshipId: student.scholarshipId,
@@ -9004,9 +9004,9 @@ class StateManager {
     this.state.adminProfile = { ...admin };
     this.state.currentUser = { ...admin, role: 'ADMIN' };
 
-    this.addAuditLog('SWITCH_ADMIN', admin.name, Beralih sesi aktif ke Admin: .);
+    this.addAuditLog('SWITCH_ADMIN', admin.name, `Beralih sesi aktif ke Admin: ${admin.name}.`);
     this.notify();
-    return { success: true, message: Beralih ke akun ., admin };
+    return { success: true, message: `Beralih ke akun ${admin.name}.`, admin };
   }
 
   addAdminUser(adminData) {
@@ -9017,16 +9017,16 @@ class StateManager {
 
     if (!name || !username || !password) return { success: false, message: 'Nama, username, dan password wajib diisi.' };
     if (this.state.adminUsers.some(a => a.username.toLowerCase() === username)) {
-      return { success: false, message: Username "" sudah digunakan. };
+      return { success: false, message: `Username "${username}" sudah digunakan.` };
     }
 
     const newAdmin = {
-      id: ADM-,
+      id: `ADM-${String(this.state.adminUsers.length + 1).padStart(3, '0')}`,
       username,
       password,
       name,
       role: 'ADMIN',
-      email: adminData.email || ${username}@stit-if.ac.id,
+      email: adminData.email || `${username}@stit-if.ac.id`,
       phone: adminData.phone || '082342307414',
       title: adminData.title || 'Staf Administrasi & Keuangan',
       department: adminData.department || 'Biro Keuangan & Administrasi Umum (BAU)',
@@ -9038,9 +9038,9 @@ class StateManager {
     };
 
     this.state.adminUsers.push(newAdmin);
-    this.addAuditLog('ADD_ADMIN', newAdmin.name, Penambahan admin baru:  (@).);
+    this.addAuditLog('ADD_ADMIN', newAdmin.name, `Penambahan admin baru: ${newAdmin.name} (@${newAdmin.username}).`);
     this.notify();
-    return { success: true, message: Admin "" berhasil ditambahkan!, admin: newAdmin };
+    return { success: true, message: `Admin "${newAdmin.name}" berhasil ditambahkan!`, admin: newAdmin };
   }
 
   updateAdminUser(adminId, updatedFields) {
@@ -9065,7 +9065,7 @@ class StateManager {
       this.setActiveAdmin(this.state.adminUsers[0].id);
     }
     this.notify();
-    return { success: true, message: Admin  berhasil dihapus. };
+    return { success: true, message: `Admin ${target.name} berhasil dihapus.` };
   }
 
   registerStudent(studentData) {
@@ -9074,13 +9074,13 @@ class StateManager {
     }
     const existingNim = studentData.nim && this.state.students.find(s => s.nim === studentData.nim);
     if (existingNim) {
-      return { success: false, message: NIM  sudah terdaftar di sistem. };
+      return { success: false, message: `NIM ${studentData.nim} sudah terdaftar di sistem.` };
     }
 
-    const prodiCode = studentData.prodi === 'PIAUD' ? '02' : '01';
-    const prodiStudents = (this.state.students || []).filter(s => s.prodi === (studentData.prodi || 'BKPI') && s.nim && s.nim.startsWith('26'));
+    const prodiCode = studentData.prodi === 'PIAUD' ? '01' : '02';
+    const prodiStudents = (this.state.students || []).filter(s => s.prodi === (studentData.prodi || 'BKPI') && s.nim && String(s.nim).startsWith('2026'));
     const nextSeq = String(prodiStudents.length + 1).padStart(3, '0');
-    const nim = studentData.nim || 26;
+    const nim = studentData.nim || `2026${prodiCode}${nextSeq}`;
 
     const newStudent = {
       nim: nim,
@@ -9093,14 +9093,14 @@ class StateManager {
       scholarshipId: studentData.scholarshipId || 'REGULER',
       jalurOriginal: studentData.jalurOriginal || studentData.scholarshipId || 'Reguler',
       phone: studentData.phone || '-',
-      email: studentData.email || ${nim}@mahasiswa.stit-ihsanulfikri.ac.id,
+      email: studentData.email || `${nim}@mahasiswa.stit-ihsanulfikri.ac.id`,
       username: nim,
       password: studentData.password || '123456'
     };
 
     this.state.students.unshift(newStudent);
 
-    const invId = INV-2026-;
+    const invId = `INV-2026-${newStudent.prodi}-${String(newStudent.nim).slice(-4)}`;
     const isMitra = ['MITRA', 'GURU_TPA', 'ALUMNI_PONPES', 'BEASISWA_50', 'PRESTASI'].includes(newStudent.scholarshipId);
     const isFree = ['PAUD_LAKI', 'MITRA_GRATIS'].includes(newStudent.scholarshipId);
     const isAsrama = newStudent.scholarshipId === 'ASRAMA';
@@ -9126,19 +9126,19 @@ class StateManager {
       receiptNumber: null,
       paymentDate: null,
       virtualAccount: '1056405743',
-      notes: Tagihan Registrasi Mahasiswa Baru ()
+      notes: `Tagihan Registrasi Mahasiswa Baru (${newStudent.prodi})`
     };
     this.state.invoices.unshift(newInv);
 
-    this.addAuditLog('REGISTER_STUDENT_SELF', ${newStudent.name} (), Registrasi mandiri mahasiswa baru prodi .);
+    this.addAuditLog('REGISTER_STUDENT_SELF', `${newStudent.name} (${newStudent.nim})`, `Registrasi mandiri mahasiswa baru prodi ${newStudent.prodi}.`);
     this.notify();
-    return { success: true, message: Pendaftaran berhasil! NIM Anda: , student: newStudent, invoice: newInv };
+    return { success: true, message: `Pendaftaran berhasil! NIM Anda: ${newStudent.nim}`, student: newStudent, invoice: newInv };
   }
 
   addStudent(student) {
     if (!student.nim || !student.name) return { success: false, message: 'NIM dan Nama lengkap wajib diisi.' };
     if (this.state.students.some(s => s.nim === student.nim)) {
-      return { success: false, message: Mahasiswa dengan NIM  sudah terdaftar. };
+      return { success: false, message: `Mahasiswa dengan NIM ${student.nim} sudah terdaftar.` };
     }
     if (!student.username) student.username = student.nim;
     if (!student.password) student.password = '123456';
@@ -9147,9 +9147,9 @@ class StateManager {
     this.state.students.unshift(student);
 
     // Auto create invoice
-    const invId = INV-2026-;
-    const isMitra = student.scholarshipId === 'MITRA' || student.scholarshipId === 'GURU_TPA' || student.scholarshipId === 'ALUMNI_PONPES' || student.scholarshipId === 'BEASISWA_50' || student.scholarshipId === 'PRESTASI';
-    const isFree = student.scholarshipId === 'PAUD_LAKI' || student.scholarshipId === 'MITRA_GRATIS';
+    const invId = `INV-2026-${student.prodi || 'BKPI'}-${String(student.nim).slice(-4)}`;
+    const isMitra = ['MITRA', 'GURU_TPA', 'ALUMNI_PONPES', 'BEASISWA_50', 'PRESTASI'].includes(student.scholarshipId);
+    const isFree = ['PAUD_LAKI', 'MITRA_GRATIS'].includes(student.scholarshipId);
     const isAsrama = student.scholarshipId === 'ASRAMA';
 
     const sppDisc = isFree ? 2400000 : (isMitra ? 1200000 : (isAsrama ? 960000 : 0));
@@ -9173,13 +9173,13 @@ class StateManager {
       receiptNumber: null,
       paymentDate: null,
       virtualAccount: '1056405743',
-      notes: Tagihan Mahasiswa Baru ()
+      notes: `Tagihan Mahasiswa Baru (${student.prodi || 'STIT-IF'})`
     };
     this.state.invoices.unshift(newInv);
 
-    this.addAuditLog('ADD_STUDENT', ${student.name} (), Penambahan mahasiswa baru prodi .);
+    this.addAuditLog('ADD_STUDENT', `${student.name} (${student.nim})`, `Penambahan mahasiswa baru prodi ${student.prodi || 'BKPI'}.`);
     this.notify();
-    return { success: true, message: Mahasiswa  berhasil ditambahkan. };
+    return { success: true, message: `Mahasiswa ${student.name} berhasil ditambahkan.` };
   }
 
   updateStudent(nim, updatedFields) {
@@ -9197,7 +9197,7 @@ class StateManager {
     this.state.invoices = this.state.invoices.filter(i => i.studentNim !== nim);
     this.state.paymentVerifications = this.state.paymentVerifications.filter(v => v.studentNim !== nim);
     this.notify();
-    return { success: true, message: Mahasiswa  berhasil dihapus. };
+    return { success: true, message: `Mahasiswa ${stu.name} berhasil dihapus.` };
   }
 
   updateStudentCredentials(oldNim, fields) {
@@ -9205,7 +9205,7 @@ class StateManager {
     if (!student) return { success: false, message: 'Mahasiswa tidak ditemukan.' };
     const newNim = fields.nim ? fields.nim.trim() : oldNim;
     if (newNim !== oldNim && this.state.students.some(s => s.nim === newNim)) {
-      return { success: false, message: NIM  sudah digunakan. };
+      return { success: false, message: `NIM ${newNim} sudah digunakan.` };
     }
     student.nim = newNim;
     student.username = fields.username ? fields.username.trim() : (student.username || newNim);
@@ -9224,7 +9224,7 @@ class StateManager {
       }
     }
     this.notify();
-    return { success: true, message: Kredensial  berhasil diperbarui. };
+    return { success: true, message: `Kredensial ${student.name} berhasil diperbarui.` };
   }
 
   // Payment Actions
@@ -9236,7 +9236,7 @@ class StateManager {
     verif.verifiedAt = new Date().toISOString().replace('T', ' ').slice(0, 19);
     verif.verifiedBy = this.state.currentUser?.name || 'Ustadzah Siti Fatimah, S.E.';
     if (!verif.receiptNumber) {
-      verif.receiptNumber = KW-IF/2026/09/;
+      verif.receiptNumber = `KW-IF/2026/09/${String(verif.studentNim).slice(-4)}`;
     }
 
     const inv = this.state.invoices.find(i => i.id === verif.invoiceId || i.studentNim === verif.studentNim);
@@ -9251,9 +9251,9 @@ class StateManager {
       inv.paymentDate = verif.verifiedAt;
     }
 
-    this.addAuditLog('VERIFY_PAYMENT', Rp  (), Persetujuan bukti bayar & penerbitan kwitansi sah.);
+    this.addAuditLog('VERIFY_PAYMENT', `Rp ${verif.amount} (${verif.studentNim})`, 'Persetujuan bukti bayar & penerbitan kwitansi sah.');
     this.notify();
-    return { success: true, message: Pembayaran sebesar Rp  disetujui. };
+    return { success: true, message: `Pembayaran sebesar Rp ${verif.amount} disetujui.` };
   }
 
   rejectPayment(verificationId, reason = 'Bukti pembayaran tidak terbaca atau mutasi bank tidak ditemukan.') {
@@ -9265,13 +9265,13 @@ class StateManager {
     verif.verifiedAt = new Date().toISOString().replace('T', ' ').slice(0, 19);
     verif.verifiedBy = this.state.currentUser?.name || 'Ustadzah Siti Fatimah, S.E.';
 
-    this.addAuditLog('REJECT_PAYMENT', Rp  (), Penolakan bukti bayar: );
+    this.addAuditLog('REJECT_PAYMENT', `Rp ${verif.amount} (${verif.studentNim})`, `Penolakan bukti bayar: ${reason}`);
     this.notify();
     return { success: true, message: 'Pembayaran ditolak.' };
   }
 
   createCustomPayment(paymentData) {
-    const verifId = VER-;
+    const verifId = `VER-MANDIRI-${Date.now()}`;
     const student = this.state.students.find(s => s.nim === paymentData.studentNim);
     const studentName = student ? student.name : (paymentData.studentName || 'Mahasiswa');
     const studentProdi = student ? student.prodi : (paymentData.prodi || 'BKPI');
@@ -9296,7 +9296,7 @@ class StateManager {
     };
 
     this.state.paymentVerifications.unshift(newVerif);
-    this.addAuditLog('UPLOAD_PAYMENT', Rp  (), Unggah bukti bayar transfer baru.);
+    this.addAuditLog('UPLOAD_PAYMENT', `Rp ${newVerif.amount} (${newVerif.studentNim})`, 'Unggah bukti bayar transfer baru.');
     this.notify();
     return { success: true, message: 'Bukti pembayaran berhasil dikirim untuk verifikasi.', verification: newVerif };
   }
@@ -9304,7 +9304,7 @@ class StateManager {
   addAuditLog(action, target, details) {
     if (!this.state.auditLogs) this.state.auditLogs = [];
     this.state.auditLogs.unshift({
-      id: LOG-,
+      id: `LOG-${Date.now()}`,
       action,
       target,
       details,
@@ -9315,7 +9315,7 @@ class StateManager {
   }
 
   addAcademicEvent(eventData) {
-    const id = eventData.id || EVT-;
+    const id = eventData.id || `EVT-${Date.now()}`;
     const newEvent = {
       id,
       title: eventData.title || 'Agenda Baru',
