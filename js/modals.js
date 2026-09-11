@@ -2732,3 +2732,12 @@ export class ModalManager {
     overlay.classList.add('active');
   }
 }
+
+export const openReceiptModal = (invoiceId) => ModalManager.openReceiptModal(invoiceId);
+export const openStudentDetailModal = (nim) => ModalManager.openStudentDetailModal(nim);
+export const openCustomPaymentModal = (data) => ModalManager.openCustomPaymentModal(data);
+export const openStudentRegistrationModal = () => ModalManager.openStudentRegistrationModal();
+export const openAdminManagementModal = () => ModalManager.openAdminManagementModal();
+export const openStudentSelfProfileModal = (nim) => ModalManager.openStudentSelfProfileModal(nim);
+export const openAdminSelfProfileModal = () => ModalManager.openAdminSelfProfileModal();
+export const openNewInvoiceModal = (nim) => ModalManager.openNewInvoiceModal(nim);

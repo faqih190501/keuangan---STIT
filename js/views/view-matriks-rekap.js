@@ -7,7 +7,7 @@
 import { appState } from '../state.js';
 import { formatRupiah, formatDate, getProdiBadge, getScholarshipBadge, getStatusBadge } from '../utils/formatters.js';
 import { exportToCSV } from '../utils/export-engine.js';
-import { openStudentDetailModal, openCustomPaymentModal, openReceiptModal } from '../modals.js';
+import { ModalManager } from '../modals.js';
 
 export function renderMatriksRekapView(container) {
   const state = appState.getState();
@@ -601,7 +601,7 @@ export function renderMatriksRekapView(container) {
         const nim = btn.getAttribute('data-nim');
         const student = (state.students || []).find(s => s.nim === nim);
         const studentInv = (state.invoices || []).find(i => i.studentNim === nim);
-        openCustomPaymentModal({
+        ModalManager.openCustomPaymentModal({
           nim: nim,
           name: student ? student.name : '',
           prodi: student ? student.prodi : 'BKPI',

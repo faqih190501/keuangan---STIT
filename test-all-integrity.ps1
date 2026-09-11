@@ -60,7 +60,7 @@ foreach ($f in $coreFiles) {
 
 # 2. Check State Content & Schema
 $stateRaw = Get-Content "d:\SIMPEL-IF\js\state.js" -Raw
-Check-Condition "State version updated to SIMPEL_IF_STATE_V5" ($stateRaw.Contains("SIMPEL_IF_STATE_V5"))
+Check-Condition "State version updated to SIMPEL_IF_STATE_V6_PROD" ($stateRaw.Contains("SIMPEL_IF_STATE_V6_PROD"))
 Check-Condition "BKPI 2026 students included" ($stateRaw.Contains("Miftahul Jannah") -and $stateRaw.Contains("2601001"))
 Check-Condition "PIAUD 2026 students included" ($stateRaw.Contains("Erlisa Rita Novika") -and $stateRaw.Contains("2602001"))
 Check-Condition "Senior cohort students included" ($stateRaw.Contains("Abdullah Azam Robbani") -and $stateRaw.Contains("2001001"))

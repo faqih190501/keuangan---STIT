@@ -302,7 +302,7 @@ export function renderAkademikView(container) {
     btnExport.addEventListener('click', () => {
       const headers = ['NIM', 'Nama Mahasiswa', 'Jenis Kelamin', 'Program Studi', 'Semester', 'Angkatan', 'Status Akademik', 'Skema Beasiswa', 'No WhatsApp', 'Email', 'Status Tagihan'];
       const rows = currentFiltered.map(s => {
-        const sch = state.scholarshipSchemes.find(sc => sc.id === s.scholarshipId);
+        const sch = (state.scholarshipSchemes || []).find(sc => sc.id === s.scholarshipId);
         const summary = getStudentInvoiceSummary(s.nim);
         return [
           s.nim,

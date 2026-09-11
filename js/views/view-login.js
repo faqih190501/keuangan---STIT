@@ -9,11 +9,12 @@ import { AuthManager } from '../auth.js';
 
 export function renderLoginView(container) {
   const state = appState.getState();
-  const students = state.students;
+  const students = state.students || [];
 
-  function renderStudentDemoCards(studentList, st) {
-    return studentList.map(s => {
-      const sch = st.scholarshipSchemes.find(sc => sc.id === s.scholarshipId);
+  function renderStudentDemoCards(studentList = [], st = {}) {
+    const schemes = (st && st.scholarshipSchemes) || [];
+    return (studentList || []).map(s => {
+      const sch = schemes.find(sc => sc.id === s.scholarshipId);
       return `
         <div class="student-demo-card interactive-hover-card" data-nim="${s.nim}" style="padding: 12px 14px; border: 1px solid var(--border-light); border-radius: var(--radius-lg); background: #ffffff; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
           <div style="display: flex; align-items: center; gap: 12px;">

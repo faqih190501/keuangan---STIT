@@ -157,7 +157,7 @@ export function renderLaporanView(container) {
       
       const rows = currentFiltered.map((inv, idx) => {
         const student = state.students.find(s => s.nim === inv.studentNim) || { name: '-', nim: inv.studentNim, prodi: '-', semester: '-', scholarshipId: 'REGULER' };
-        const sch = state.scholarshipSchemes.find(sc => sc.id === student.scholarshipId);
+        const sch = (state.scholarshipSchemes || []).find(sc => sc.id === student.scholarshipId);
         const sisa = inv.netAmount - inv.paidAmount;
 
         return [
