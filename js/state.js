@@ -1,7 +1,8 @@
-/**
+﻿/**
  * SIMPEL-IF Reactive State Manager & Master Data Store
  * STIT Ihsanul Fikri Pabelan Magelang
  * Sinkronisasi Resmi Google Spreadsheet: "REKAP ADMINISTRASI STITIF"
+ * BKPI 2026 (gid: 814809663) & PIAUD 2026 (gid: 1770791775)
  */
 
 import { PRODI, STATUS_AKADEMIK, STATUS_TAGIHAN, SCHOLARSHIP_TYPES, USER_ROLES, STANDARD_FEES } from './models.js';
@@ -91,7 +92,6 @@ const INITIAL_SEED_DATA = {
     isSuperAdmin: true
   },
 
-  // Komponen Biaya Pokok Standar (Berdasarkan Google Spreadsheet & Regulasi Institusi)
   feeComponents: [
     {
       id: 'PENDAFTARAN',
@@ -131,7 +131,6 @@ const INITIAL_SEED_DATA = {
     }
   ],
 
-  // 9 Skema Beasiswa & Jalur Pendaftaran Terpadu STIT Ihsanul Fikri
   scholarshipSchemes: [
     {
       id: 'REGULER',
@@ -237,7 +236,7 @@ const INITIAL_SEED_DATA = {
   individualOverrides: [
     {
       id: 'OVR-001',
-      studentNim: '2601003', // Hamzah Habiburrohman
+      studentNim: '2601003',
       semester: '2026/2027 Ganjil',
       overrideType: 'ADDITIONAL_DISCOUNT',
       discountAmount: 240000,
@@ -247,10 +246,9 @@ const INITIAL_SEED_DATA = {
     }
   ],
 
-  // Data Mentah Google Sheets Matrix untuk Tampilan Khusus & Live Sync
   googleSheetsMatrix: {
     spreadsheetUrl: 'https://docs.google.com/spreadsheets/d/1nqh4jksle3r95PlupTIKve11iUxmg3hSdYOB3NTKp3U/edit?pli=1&gid=814809663#gid=814809663',
-    lastSyncTime: '2026-09-11 09:00:00',
+    lastSyncTime: '2026-09-11 09:50:00',
     institution: 'STIT Ihsanul Fikri Pabelan Magelang',
     bankInfo: {
       bankName: 'Bank Syariah Indonesia (BSI)',
@@ -713,7 +711,7 @@ const INITIAL_SEED_DATA = {
         "daftarUlangTgl":  "03/09/26",
         "spp":  "-",
         "sppTgl":  "-",
-        "status":  "BELUM_BAYAR"
+        "status":  "DAFTAR_ULANG_LUNAS"
     },
     {
         "nama":  "Fina Margaria",
@@ -799,8 +797,7 @@ const INITIAL_SEED_DATA = {
         "sppTgl":  "-",
         "status":  "BELUM_BAYAR"
     }
-]
-,
+],
     piaud2026: [
     {
         "nama":  "Erlisa Rita Novika",
@@ -966,18 +963,6 @@ const INITIAL_SEED_DATA = {
         "pendaftaranTgl":  "16/07/26",
         "daftarUlang":  "450.000",
         "daftarUlangTgl":  "31/08/26",
-        "spp":  "-",
-        "sppTgl":  "-",
-        "status":  "DAFTAR_ULANG_LUNAS"
-    },
-    {
-        "nama":  "Garwita Felda Nabiha",
-        "nim":  "2602015",
-        "jalur":  "Beasiswa Asrama",
-        "pendaftaran":  "200.000",
-        "pendaftaranTgl":  "28/07/26",
-        "daftarUlang":  "450.000",
-        "daftarUlangTgl":  "29/09/26",
         "spp":  "-",
         "sppTgl":  "-",
         "status":  "DAFTAR_ULANG_LUNAS"
@@ -1367,6 +1352,18 @@ const INITIAL_SEED_DATA = {
         "status":  "BELUM_BAYAR"
     },
     {
+        "nama":  "Garwita Felda Nabiha",
+        "nim":  "2602015",
+        "jalur":  "Beasiswa Asrama",
+        "pendaftaran":  "200.000",
+        "pendaftaranTgl":  "28/07/26",
+        "daftarUlang":  "450.000",
+        "daftarUlangTgl":  "29/09/26",
+        "spp":  "-",
+        "sppTgl":  "-",
+        "status":  "DAFTAR_ULANG_LUNAS"
+    },
+    {
         "nama":  "Dewi Tri Ambodo",
         "nim":  "2602048",
         "jalur":  "Kerjasama mitra",
@@ -1558,414 +1555,251 @@ const INITIAL_SEED_DATA = {
         "sppTgl":  "-",
         "status":  "BELUM_BAYAR"
     }
-]
-,
+],
     seniorRekap: [
     {
-        "nama":  "Abdullah Azam Robbani",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "Reguler",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001001",
-        "prodi":  "BKPI",
-        "jalur":  "Reguler",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Abdullah Azam Robbani",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Ahmad Razif Ilham Baihaqi",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "Reguler",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001002",
-        "prodi":  "BKPI",
-        "jalur":  "Reguler",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Ahmad Razif Ilham Baihaqi",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Fajar Setiyawan",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "Reguler",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001014",
-        "prodi":  "BKPI",
-        "jalur":  "Reguler",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Fajar Setiyawan",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Fazri Fadillah Iskandar",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "MITRA",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001015",
-        "prodi":  "BKPI",
-        "jalur":  "MITRA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Fazri Fadillah Iskandar",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Muhammad Faqih Rabbani",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "Reguler",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001018",
-        "prodi":  "BKPI",
-        "jalur":  "Reguler",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Muhammad Faqih Rabbani",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Muhammad Ibadurrahman",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "Reguler",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001019",
-        "prodi":  "BKPI",
-        "jalur":  "Reguler",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Muhammad Ibadurrahman",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Nadya Arifa",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "MITRA",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001020",
-        "prodi":  "BKPI",
-        "jalur":  "MITRA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Nadya Arifa",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Shibaa Mawaddah Shiddiiqoh",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "MITRA",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001024",
-        "prodi":  "BKPI",
-        "jalur":  "MITRA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Shibaa Mawaddah Shiddiiqoh",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Aisyah Shidiqoh",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "MITRA",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001030",
-        "prodi":  "BKPI",
-        "jalur":  "MITRA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Aisyah Shidiqoh",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Fauzan Azhima Ramadhan",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "Reguler",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001033",
-        "prodi":  "BKPI",
-        "jalur":  "Reguler",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Fauzan Azhima Ramadhan",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Eko Purwanto",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "Reguler",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001032",
-        "prodi":  "BKPI",
-        "jalur":  "Reguler",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Eko Purwanto",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Dhiaus Suroya",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "MITRA",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001043",
-        "prodi":  "BKPI",
-        "jalur":  "MITRA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Dhiaus Suroya",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Dwi Anisa Lestari",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "1.500.000",
+        "jalur":  "MITRA",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "2001029",
-        "prodi":  "BKPI",
-        "jalur":  "MITRA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "1.500.000",
-        "status":  "LUNAS_WISUDA"
+        "nama":  "Dwi Anisa Lestari",
+        "status":  "LUNAS_WISUDA",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Ahmad Fauzi",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "PIAUD",
+        "wisuda":  "-",
+        "jalur":  "PAUD_LAKI",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "202486209012",
-        "prodi":  "PIAUD",
-        "jalur":  "PAUD_LAKI",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
+        "nama":  "Ahmad Fauzi",
+        "status":  "AKTIF_BERJALAN",
+        "semester3":  "1.200.000"
     },
     {
-        "nama":  "Siti Nurhaliza",
+        "semester5":  "1.200.000",
+        "semester2":  "1.200.000",
+        "semester8":  "1.200.000",
+        "semester4":  "1.200.000",
+        "prodi":  "BKPI",
+        "wisuda":  "-",
+        "jalur":  "ASRAMA",
+        "semester7":  "1.200.000",
+        "semester1":  "1.200.000",
         "nim":  "202386208005",
-        "prodi":  "BKPI",
-        "jalur":  "ASRAMA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
         "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Muhammad Ihsan Pratama",
-        "nim":  "202686208001",
-        "prodi":  "BKPI",
-        "jalur":  "REGULER",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Rahmat Hidayatullah",
-        "nim":  "202686209002",
-        "prodi":  "PIAUD",
-        "jalur":  "PAUD_LAKI",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Fatimah Az-Zahra",
-        "nim":  "202486209008",
-        "prodi":  "PIAUD",
-        "jalur":  "MITRA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Aisyah Putri Rahmadani",
-        "nim":  "202586208014",
-        "prodi":  "BKPI",
-        "jalur":  "REGULER",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Zaid Al-Faruq",
-        "nim":  "202386208007",
-        "prodi":  "BKPI",
-        "jalur":  "ASRAMA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Nurul Hidayati",
-        "nim":  "202386209003",
-        "prodi":  "PIAUD",
-        "jalur":  "ASRAMA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Muhammad Yusuf Al-Khattab",
-        "nim":  "202486209015",
-        "prodi":  "PIAUD",
-        "jalur":  "PAUD_LAKI",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Khadijah Humaira",
-        "nim":  "202686208003",
-        "prodi":  "BKPI",
-        "jalur":  "MITRA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Bilal Al-Habasyi",
-        "nim":  "202486208011",
-        "prodi":  "BKPI",
-        "jalur":  "MITRA",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
-    },
-    {
-        "nama":  "Maryam Qonita",
-        "nim":  "202686209004",
-        "prodi":  "PIAUD",
-        "jalur":  "REGULER",
-        "semester1":  "1.200.000",
-        "semester2":  "1.200.000",
-        "semester3":  "1.200.000",
-        "semester4":  "1.200.000",
-        "semester5":  "1.200.000",
-        "semester6":  "1.200.000",
-        "semester7":  "1.200.000",
-        "semester8":  "1.200.000",
-        "wisuda":  "-",
-        "status":  "AKTIF_BERJALAN"
+        "nama":  "Siti Nurhaliza",
+        "status":  "AKTIF_BERJALAN",
+        "semester3":  "1.200.000"
     }
 ]
-
   },
 
-  // Master Data Mahasiswa STIT Ihsanul Fikri (Riil dari Google Sheets)
   students: [
     {
         "nim":  "2601001",
@@ -1977,7 +1811,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ALUMNI_PONPES",
         "jalurOriginal":  "Alumni ponpes",
-        "phone":  "0823-4540-8916",
+        "phone":  "0823-4540-1032",
         "email":  "miftahul.jannah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -1990,7 +1824,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "GURU_TPA",
         "jalurOriginal":  "Guru TPA",
-        "phone":  "0823-2704-9479",
+        "phone":  "0823-4540-4071",
         "email":  "aifah.ruslan@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2003,7 +1837,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ASRAMA",
         "jalurOriginal":  "Beasiswa Asrama",
-        "phone":  "0823-5518-9829",
+        "phone":  "0823-4540-9437",
         "email":  "hamzah.habiburrohman@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2016,7 +1850,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "GURU_TPA",
         "jalurOriginal":  "Guru TPA",
-        "phone":  "0823-4000-2569",
+        "phone":  "0823-4540-5147",
         "email":  "faza.ainaya.abqariyah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2029,7 +1863,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "GURU_TPA",
         "jalurOriginal":  "Guru TPA",
-        "phone":  "0823-1349-2095",
+        "phone":  "0823-4540-2783",
         "email":  "aisyi.saadah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2042,7 +1876,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ALUMNI_PONPES",
         "jalurOriginal":  "Alumni ponpes",
-        "phone":  "0823-5922-7636",
+        "phone":  "0823-4540-9136",
         "email":  "kuncahyani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2055,7 +1889,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ASRAMA",
         "jalurOriginal":  "Beasiswa Asrama",
-        "phone":  "0823-8083-8879",
+        "phone":  "0823-4540-4730",
         "email":  "aldi.baitur.rahman@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2068,7 +1902,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ASRAMA",
         "jalurOriginal":  "Beasiswa Asrama",
-        "phone":  "0823-8426-4468",
+        "phone":  "0823-4540-8978",
         "email":  "abira.husniyah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2081,7 +1915,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ASRAMA",
         "jalurOriginal":  "Beasiswa Asrama",
-        "phone":  "0823-9832-3060",
+        "phone":  "0823-4540-5015",
         "email":  "lidya.meilani.putri@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2094,7 +1928,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjama Mitra",
-        "phone":  "0823-4047-1817",
+        "phone":  "0823-4540-7437",
         "email":  "naila.azkiya@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2107,7 +1941,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjama Mitra",
-        "phone":  "0823-9583-4805",
+        "phone":  "0823-4540-5391",
         "email":  "darwati@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2120,7 +1954,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjama Mitra",
-        "phone":  "0823-1875-4629",
+        "phone":  "0823-4540-6676",
         "email":  "solahudin.akhmad@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2133,7 +1967,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-3467-2634",
+        "phone":  "0823-4540-5022",
         "email":  "yusron.rumongga@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2146,7 +1980,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-2635-2811",
+        "phone":  "0823-4540-3224",
         "email":  "zulfa.choirunnisa@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2159,7 +1993,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjama Mitra",
-        "phone":  "0823-6626-5821",
+        "phone":  "0823-4540-4492",
         "email":  "yuly.hermawan.susilo@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2172,7 +2006,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjama Mitra",
-        "phone":  "0823-8886-6312",
+        "phone":  "0823-4540-4051",
         "email":  "ngarifatun.thoyibah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2185,7 +2019,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "BEASISWA_50",
         "jalurOriginal":  "Beasiswa 50%",
-        "phone":  "0823-2736-6893",
+        "phone":  "0823-4540-4793",
         "email":  "eva.fitriyaningsih@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2198,7 +2032,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "BEASISWA_50",
         "jalurOriginal":  "Beasiswa 50%",
-        "phone":  "0823-8940-7467",
+        "phone":  "0823-4540-6322",
         "email":  "mutsanna.abdussalam.al.hawari@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2211,7 +2045,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "GURU_TPA",
         "jalurOriginal":  "Guru TPA",
-        "phone":  "0823-9053-2885",
+        "phone":  "0823-4540-6914",
         "email":  "pramundari@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2224,8 +2058,8 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ASRAMA",
         "jalurOriginal":  "Beasiswa Asrama",
-        "phone":  "0823-9873-9738",
-        "email":  "amalia.nur.sa.adah@mahasiswa.stit-ihsanulfikri.ac.id"
+        "phone":  "0823-4540-5165",
+        "email":  "amalia.nur.saadah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2601021",
@@ -2237,7 +2071,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-3359-1265",
+        "phone":  "0823-4540-1929",
         "email":  "hartanti.handayani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2250,7 +2084,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9489-2215",
+        "phone":  "0823-4540-5040",
         "email":  "haning.pramesti@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2263,7 +2097,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-2694-6820",
+        "phone":  "0823-4540-1299",
         "email":  "titik.umaiyah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2276,7 +2110,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6850-7679",
+        "phone":  "0823-4540-9825",
         "email":  "niken.wahyu.ningsih@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2289,7 +2123,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6975-6866",
+        "phone":  "0823-4540-2518",
         "email":  "hamidah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2302,7 +2136,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjamasama Mitra",
-        "phone":  "0823-4145-2092",
+        "phone":  "0823-4540-8888",
         "email":  "samsul.sutopo.slamet@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2315,7 +2149,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-5407-1171",
+        "phone":  "0823-4540-6038",
         "email":  "rohmah.indarti@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2328,7 +2162,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-5557-6049",
+        "phone":  "0823-4540-9876",
         "email":  "arif.wibowo@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2341,7 +2175,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6257-1915",
+        "phone":  "0823-4540-3522",
         "email":  "nensy.anggriani.ningsih@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2354,7 +2188,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-7917-5244",
+        "phone":  "0823-4540-2070",
         "email":  "khusnul.khotimah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2367,7 +2201,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "kerjasama Mitra",
-        "phone":  "0823-4842-6872",
+        "phone":  "0823-4540-3533",
         "email":  "ainur.rofik.fajri@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2380,7 +2214,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-2416-1037",
+        "phone":  "0823-4540-5558",
         "email":  "safira.faddah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2393,7 +2227,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-8978-7110",
+        "phone":  "0823-4540-6169",
         "email":  "khoiru.zidan@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2406,7 +2240,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "BEASISWA_50",
         "jalurOriginal":  "Beasiswa 50%",
-        "phone":  "0823-4534-5193",
+        "phone":  "0823-4540-5456",
         "email":  "aida.lestari@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2419,7 +2253,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-7105-6367",
+        "phone":  "0823-4540-1185",
         "email":  "m.arifudin.yusuf@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2432,7 +2266,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-4944-9906",
+        "phone":  "0823-4540-1654",
         "email":  "habibah.rasyidah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2445,7 +2279,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9472-5766",
+        "phone":  "0823-4540-8988",
         "email":  "sri.yani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2458,7 +2292,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6242-2980",
+        "phone":  "0823-4540-9322",
         "email":  "ayu.rosmaidah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2471,7 +2305,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9941-8535",
+        "phone":  "0823-4540-1134",
         "email":  "fina.margaria@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2484,7 +2318,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ASRAMA",
         "jalurOriginal":  "Beasiswa Asrama",
-        "phone":  "0823-7928-6274",
+        "phone":  "0823-4540-6516",
         "email":  "siti.mutoharoh@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2497,7 +2331,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6683-9247",
+        "phone":  "0823-4540-9773",
         "email":  "ahmad.fajri@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2510,7 +2344,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9938-8364",
+        "phone":  "0823-4540-9576",
         "email":  "muhammad.ihsan@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2523,7 +2357,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "BEASISWA_50",
         "jalurOriginal":  "Beasiswa 50%",
-        "phone":  "0823-9056-4301",
+        "phone":  "0823-4540-5652",
         "email":  "pipi.yuliana@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2536,7 +2370,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "BEASISWA_50",
         "jalurOriginal":  "Beasiswa 50%",
-        "phone":  "0823-3441-9713",
+        "phone":  "0823-4540-9594",
         "email":  "umi.fadlilah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2549,8 +2383,8 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "PRESTASI",
         "jalurOriginal":  "Siswa Berprestasi",
-        "phone":  "0823-7272-4731",
-        "email":  "za.am.tsafiq.al.azmi@mahasiswa.stit-ihsanulfikri.ac.id"
+        "phone":  "0823-4540-3201",
+        "email":  "zaam.tsafiq.al.azmi@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2602001",
@@ -2562,7 +2396,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-4778-3611",
+        "phone":  "0823-4540-2481",
         "email":  "erlisa.rita.novika@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2575,7 +2409,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-1176-8495",
+        "phone":  "0823-4540-7393",
         "email":  "choiriyah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2588,7 +2422,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9432-5247",
+        "phone":  "0823-4540-3893",
         "email":  "dian.kartika.sari@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2601,7 +2435,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ALUMNI_PONPES",
         "jalurOriginal":  "Alumni Ponpes",
-        "phone":  "0823-4534-5599",
+        "phone":  "0823-4540-2395",
         "email":  "rana.fauziyyah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2614,8 +2448,8 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "GURU_TPA",
         "jalurOriginal":  "musrif lembaga/ guru tpa",
-        "phone":  "0823-1382-5978",
-        "email":  "ruqoyyah.salsabila.daeng.ke.nang@mahasiswa.stit-ihsanulfikri.ac.id"
+        "phone":  "0823-4540-6428",
+        "email":  "ruqoyyah.salsabila.daeng.kenang@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2602006",
@@ -2627,7 +2461,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "kerjasama Mitra",
-        "phone":  "0823-1552-4143",
+        "phone":  "0823-4540-3145",
         "email":  "fatimah.nur.islamiah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2640,7 +2474,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-7036-8124",
+        "phone":  "0823-4540-3360",
         "email":  "mustofiah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2653,7 +2487,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "GURU_TPA",
         "jalurOriginal":  "Guru TPA",
-        "phone":  "0823-1596-5797",
+        "phone":  "0823-4540-1199",
         "email":  "iriani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2666,7 +2500,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "GURU_TPA",
         "jalurOriginal":  "Guru TPA",
-        "phone":  "0823-5288-8784",
+        "phone":  "0823-4540-2764",
         "email":  "suyani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2679,7 +2513,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "ALUMNI_PONPES",
         "jalurOriginal":  "Alumni Ponpes",
-        "phone":  "0823-1796-4126",
+        "phone":  "0823-4540-7713",
         "email":  "aulia.awwal.syafiiqoh@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2692,7 +2526,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "GURU_TPA",
         "jalurOriginal":  "guru TPA",
-        "phone":  "0823-4216-2756",
+        "phone":  "0823-4540-3936",
         "email":  "izazah.zulaikha@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2705,7 +2539,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-3040-1359",
+        "phone":  "0823-4540-5715",
         "email":  "siti.anifah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2718,7 +2552,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-4829-2726",
+        "phone":  "0823-4540-8682",
         "email":  "tria.annisa.nurjanah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2731,21 +2565,8 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6293-4249",
+        "phone":  "0823-4540-6652",
         "email":  "ade.vina.hanituzzulva@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "2602015",
-        "name":  "Garwita Felda Nabiha",
-        "gender":  "P",
-        "prodi":  "PIAUD",
-        "semester":  1,
-        "classYear":  "2026",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "ASRAMA",
-        "jalurOriginal":  "Beasiswa Asrama",
-        "phone":  "0823-4281-9350",
-        "email":  "garwita.felda.nabiha@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2602016",
@@ -2757,7 +2578,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-2094-9082",
+        "phone":  "0823-4540-3376",
         "email":  "mei.lestiyana@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2770,7 +2591,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-4095-8424",
+        "phone":  "0823-4540-9282",
         "email":  "nabila.nurlia.sari@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2783,7 +2604,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6222-4276",
+        "phone":  "0823-4540-2524",
         "email":  "inda.laila.sari@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2796,7 +2617,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9087-5000",
+        "phone":  "0823-4540-3561",
         "email":  "ani.ariastuti@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2809,7 +2630,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-2791-1670",
+        "phone":  "0823-4540-5862",
         "email":  "yuliantun@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2822,7 +2643,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9536-9962",
+        "phone":  "0823-4540-9016",
         "email":  "siti.puniah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2835,7 +2656,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9953-7537",
+        "phone":  "0823-4540-3453",
         "email":  "atika.mardiyanti.putri@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2848,7 +2669,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-2534-1195",
+        "phone":  "0823-4540-4965",
         "email":  "nginayatul.khabibah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2861,7 +2682,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9501-8251",
+        "phone":  "0823-4540-9805",
         "email":  "umi.mintarti.amilatun@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2874,7 +2695,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9986-8406",
+        "phone":  "0823-4540-3842",
         "email":  "septiana.anggraeni@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2887,7 +2708,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-3224-2476",
+        "phone":  "0823-4540-4765",
         "email":  "risma.pradesta.suradiyanto@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2900,7 +2721,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-7009-4513",
+        "phone":  "0823-4540-7352",
         "email":  "siti.rokhaniyah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2913,7 +2734,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-5833-3386",
+        "phone":  "0823-4540-9979",
         "email":  "umi.farida@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2926,7 +2747,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6014-2706",
+        "phone":  "0823-4540-1383",
         "email":  "salafiyah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2939,7 +2760,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-3788-3963",
+        "phone":  "0823-4540-9370",
         "email":  "alvia.musayyida@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2952,7 +2773,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9152-5497",
+        "phone":  "0823-4540-8846",
         "email":  "yasmina.syahriza@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2965,7 +2786,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-8885-1056",
+        "phone":  "0823-4540-2963",
         "email":  "jeklynda.may.sarah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2978,7 +2799,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-2836-9313",
+        "phone":  "0823-4540-9774",
         "email":  "nuryanti@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -2991,7 +2812,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-7433-7885",
+        "phone":  "0823-4540-3711",
         "email":  "slamet.kholifah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3004,34 +2825,8 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9222-5359",
+        "phone":  "0823-4540-5310",
         "email":  "pompi.hartiwi@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "2602036",
-        "name":  "Siti Musarofah",
-        "gender":  "P",
-        "prodi":  "PIAUD",
-        "semester":  1,
-        "classYear":  "2026",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "MITRA",
-        "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6532-2767",
-        "email":  "siti.musarofah@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "2602037",
-        "name":  "Meisita Rosalina",
-        "gender":  "P",
-        "prodi":  "PIAUD",
-        "semester":  1,
-        "classYear":  "2026",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "MITRA",
-        "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-4189-7234",
-        "email":  "meisita.rosalina@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2602038",
@@ -3043,7 +2838,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-4934-1111",
+        "phone":  "0823-4540-9017",
         "email":  "rahma.lestari@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3056,20 +2851,20 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-5792-4133",
+        "phone":  "0823-4540-1120",
         "email":  "ulya.dwi.kurniawati@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2602040",
         "name":  "Arif Fradina",
-        "gender":  "L",
+        "gender":  "P",
         "prodi":  "PIAUD",
         "semester":  1,
         "classYear":  "2026",
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-5325-6689",
+        "phone":  "0823-4540-1787",
         "email":  "arif.fradina@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3082,7 +2877,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-1585-1145",
+        "phone":  "0823-4540-1636",
         "email":  "warsidah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3095,7 +2890,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-8764-6415",
+        "phone":  "0823-4540-8566",
         "email":  "winda.apriliani.putri@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3108,7 +2903,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-6762-2348",
+        "phone":  "0823-4540-5551",
         "email":  "hikmatul.fitroh@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3121,7 +2916,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-1472-5160",
+        "phone":  "0823-4540-7093",
         "email":  "herlina.intan.kurniasih@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3134,7 +2929,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "PAUD_LAKI",
         "jalurOriginal":  "Paud Laki-laki",
-        "phone":  "0823-3654-7685",
+        "phone":  "0823-4540-8694",
         "email":  "fajar.rochmat@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3147,7 +2942,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-2521-3958",
+        "phone":  "0823-4540-9714",
         "email":  "nur.azizah.desi.novita@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3160,8 +2955,21 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-4828-9600",
+        "phone":  "0823-4540-6138",
         "email":  "fatimah.rahmawati@mahasiswa.stit-ihsanulfikri.ac.id"
+    },
+    {
+        "nim":  "2602015",
+        "name":  "Garwita Felda Nabiha",
+        "gender":  "P",
+        "prodi":  "PIAUD",
+        "semester":  1,
+        "classYear":  "2026",
+        "statusAkademik":  "Aktif",
+        "scholarshipId":  "ASRAMA",
+        "jalurOriginal":  "Beasiswa Asrama",
+        "phone":  "0823-4540-8425",
+        "email":  "garwita.felda.nabiha@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2602048",
@@ -3173,7 +2981,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama mitra",
-        "phone":  "0823-9132-4558",
+        "phone":  "0823-4540-5966",
         "email":  "dewi.tri.ambodo@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3186,7 +2994,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama mitra",
-        "phone":  "0823-3532-7885",
+        "phone":  "0823-4540-5029",
         "email":  "nur.kirana.anggista.safitri@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3199,8 +3007,8 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama mitra",
-        "phone":  "0823-2898-8108",
-        "email":  "rizqi.machfirotun.ni.mah@mahasiswa.stit-ihsanulfikri.ac.id"
+        "phone":  "0823-4540-2551",
+        "email":  "rizqi.machfirotun.nimah@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2602051",
@@ -3212,7 +3020,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA_GRATIS",
         "jalurOriginal":  "Kerjasama mitra  (Pabelan) Gratis",
-        "phone":  "0823-3674-8782",
+        "phone":  "0823-4540-8799",
         "email":  "hanifah.rahmawati@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3225,7 +3033,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama mitra",
-        "phone":  "0823-4494-4367",
+        "phone":  "0823-4540-7797",
         "email":  "nani.suryani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3238,7 +3046,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama mitra",
-        "phone":  "0823-4914-9679",
+        "phone":  "0823-4540-1011",
         "email":  "endang.elyana@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3251,7 +3059,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "PAUD_LAKI",
         "jalurOriginal":  "Paud Laki-laki",
-        "phone":  "0823-6184-4234",
+        "phone":  "0823-4540-6139",
         "email":  "muhammad.nanang.nasikin@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3264,7 +3072,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-1709-7375",
+        "phone":  "0823-4540-5052",
         "email":  "prapti.budi.sulastri@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3277,7 +3085,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-5759-8849",
+        "phone":  "0823-4540-2730",
         "email":  "navisatul.ula.ulya@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3290,7 +3098,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-4962-2765",
+        "phone":  "0823-4540-6507",
         "email":  "vera.andriani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3303,7 +3111,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-9441-3398",
+        "phone":  "0823-4540-4900",
         "email":  "nuraeni@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3316,7 +3124,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-8831-7981",
+        "phone":  "0823-4540-2362",
         "email":  "wahyu.kurnia.sari@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3329,7 +3137,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-3816-3306",
+        "phone":  "0823-4540-4030",
         "email":  "nisa.nindya.hasna.kamilia@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3342,7 +3150,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-8617-1958",
+        "phone":  "0823-4540-7227",
         "email":  "sekar.purba.kinasih@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3355,7 +3163,7 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "Kerjasama Mitra",
-        "phone":  "0823-3023-2934",
+        "phone":  "0823-4540-9718",
         "email":  "nailia.asma@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3368,20 +3176,20 @@ const INITIAL_SEED_DATA = {
         "statusAkademik":  "Aktif",
         "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-9855-3199",
+        "phone":  "0823-4540-5952",
         "email":  "gita.gustiani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2001001",
         "name":  "Abdullah Azam Robbani",
-        "gender":  "P",
+        "gender":  "L",
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
-        "scholarshipId":  "Reguler",
+        "statusAkademik":  "Aktif",
+        "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-1747-1426",
+        "phone":  "0812-3456-2802",
         "email":  "abdullah.azam.robbani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3391,10 +3199,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
-        "scholarshipId":  "Reguler",
+        "statusAkademik":  "Aktif",
+        "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-7758-4151",
+        "phone":  "0812-3456-8473",
         "email":  "ahmad.razif.ilham.baihaqi@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3404,10 +3212,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
-        "scholarshipId":  "Reguler",
+        "statusAkademik":  "Aktif",
+        "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-6745-8494",
+        "phone":  "0812-3456-1600",
         "email":  "fajar.setiyawan@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3417,10 +3225,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
+        "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "MITRA",
-        "phone":  "0823-8970-2753",
+        "phone":  "0812-3456-8775",
         "email":  "fazri.fadillah.iskandar@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3430,10 +3238,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
-        "scholarshipId":  "Reguler",
+        "statusAkademik":  "Aktif",
+        "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-4200-5028",
+        "phone":  "0812-3456-8274",
         "email":  "muhammad.faqih.rabbani@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3443,23 +3251,23 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
-        "scholarshipId":  "Reguler",
+        "statusAkademik":  "Aktif",
+        "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-7303-4609",
+        "phone":  "0812-3456-6072",
         "email":  "muhammad.ibadurrahman@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
         "nim":  "2001020",
         "name":  "Nadya Arifa",
-        "gender":  "L",
+        "gender":  "P",
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
+        "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "MITRA",
-        "phone":  "0823-1295-4236",
+        "phone":  "0812-3456-1371",
         "email":  "nadya.arifa@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3469,10 +3277,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
+        "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "MITRA",
-        "phone":  "0823-3055-3864",
+        "phone":  "0812-3456-7536",
         "email":  "shibaa.mawaddah.shiddiiqoh@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3482,10 +3290,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
+        "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "MITRA",
-        "phone":  "0823-8877-1748",
+        "phone":  "0812-3456-5432",
         "email":  "aisyah.shidiqoh@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3495,10 +3303,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
-        "scholarshipId":  "Reguler",
+        "statusAkademik":  "Aktif",
+        "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-8532-4066",
+        "phone":  "0812-3456-7504",
         "email":  "fauzan.azhima.ramadhan@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3508,10 +3316,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
-        "scholarshipId":  "Reguler",
+        "statusAkademik":  "Aktif",
+        "scholarshipId":  "REGULER",
         "jalurOriginal":  "Reguler",
-        "phone":  "0823-4329-9142",
+        "phone":  "0812-3456-7084",
         "email":  "eko.purwanto@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3521,10 +3329,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
+        "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "MITRA",
-        "phone":  "0823-7038-2899",
+        "phone":  "0812-3456-4302",
         "email":  "dhiaus.suroya@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3534,10 +3342,10 @@ const INITIAL_SEED_DATA = {
         "prodi":  "BKPI",
         "semester":  8,
         "classYear":  "2020",
-        "statusAkademik":  "Lulus",
+        "statusAkademik":  "Aktif",
         "scholarshipId":  "MITRA",
         "jalurOriginal":  "MITRA",
-        "phone":  "0823-9816-4605",
+        "phone":  "0812-3456-9719",
         "email":  "dwi.anisa.lestari@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3545,12 +3353,12 @@ const INITIAL_SEED_DATA = {
         "name":  "Ahmad Fauzi",
         "gender":  "L",
         "prodi":  "PIAUD",
-        "semester":  5,
+        "semester":  8,
         "classYear":  "2020",
         "statusAkademik":  "Aktif",
-        "scholarshipId":  "PAUD_LAKI",
+        "scholarshipId":  "REGULER",
         "jalurOriginal":  "PAUD_LAKI",
-        "phone":  "0823-9822-8279",
+        "phone":  "0812-3456-8602",
         "email":  "ahmad.fauzi@mahasiswa.stit-ihsanulfikri.ac.id"
     },
     {
@@ -3558,167 +3366,34 @@ const INITIAL_SEED_DATA = {
         "name":  "Siti Nurhaliza",
         "gender":  "P",
         "prodi":  "BKPI",
-        "semester":  5,
+        "semester":  8,
         "classYear":  "2020",
         "statusAkademik":  "Aktif",
-        "scholarshipId":  "ASRAMA",
+        "scholarshipId":  "REGULER",
         "jalurOriginal":  "ASRAMA",
-        "phone":  "0823-8634-3110",
+        "phone":  "0812-3456-3411",
         "email":  "siti.nurhaliza@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202686208001",
-        "name":  "Muhammad Ihsan Pratama",
-        "gender":  "L",
-        "prodi":  "BKPI",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "REGULER",
-        "jalurOriginal":  "REGULER",
-        "phone":  "0823-5190-6576",
-        "email":  "muhammad.ihsan.pratama@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202686209002",
-        "name":  "Rahmat Hidayatullah",
-        "gender":  "L",
-        "prodi":  "PIAUD",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "PAUD_LAKI",
-        "jalurOriginal":  "PAUD_LAKI",
-        "phone":  "0823-5922-4703",
-        "email":  "rahmat.hidayatullah@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202486209008",
-        "name":  "Fatimah Az-Zahra",
-        "gender":  "P",
-        "prodi":  "PIAUD",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "MITRA",
-        "jalurOriginal":  "MITRA",
-        "phone":  "0823-2408-3039",
-        "email":  "fatimah.az.zahra@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202586208014",
-        "name":  "Aisyah Putri Rahmadani",
-        "gender":  "L",
-        "prodi":  "BKPI",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "REGULER",
-        "jalurOriginal":  "REGULER",
-        "phone":  "0823-8876-8601",
-        "email":  "aisyah.putri.rahmadani@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202386208007",
-        "name":  "Zaid Al-Faruq",
-        "gender":  "P",
-        "prodi":  "BKPI",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "ASRAMA",
-        "jalurOriginal":  "ASRAMA",
-        "phone":  "0823-8216-7918",
-        "email":  "zaid.al.faruq@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202386209003",
-        "name":  "Nurul Hidayati",
-        "gender":  "P",
-        "prodi":  "PIAUD",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "ASRAMA",
-        "jalurOriginal":  "ASRAMA",
-        "phone":  "0823-9169-6292",
-        "email":  "nurul.hidayati@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202486209015",
-        "name":  "Muhammad Yusuf Al-Khattab",
-        "gender":  "L",
-        "prodi":  "PIAUD",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "PAUD_LAKI",
-        "jalurOriginal":  "PAUD_LAKI",
-        "phone":  "0823-5722-6230",
-        "email":  "muhammad.yusuf.al.khattab@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202686208003",
-        "name":  "Khadijah Humaira",
-        "gender":  "P",
-        "prodi":  "BKPI",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "MITRA",
-        "jalurOriginal":  "MITRA",
-        "phone":  "0823-6780-1503",
-        "email":  "khadijah.humaira@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202486208011",
-        "name":  "Bilal Al-Habasyi",
-        "gender":  "P",
-        "prodi":  "BKPI",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "MITRA",
-        "jalurOriginal":  "MITRA",
-        "phone":  "0823-5348-6441",
-        "email":  "bilal.al.habasyi@mahasiswa.stit-ihsanulfikri.ac.id"
-    },
-    {
-        "nim":  "202686209004",
-        "name":  "Maryam Qonita",
-        "gender":  "P",
-        "prodi":  "PIAUD",
-        "semester":  5,
-        "classYear":  "2020",
-        "statusAkademik":  "Aktif",
-        "scholarshipId":  "REGULER",
-        "jalurOriginal":  "REGULER",
-        "phone":  "0823-4045-6156",
-        "email":  "maryam.qonita@mahasiswa.stit-ihsanulfikri.ac.id"
     }
-]
-,
-
-  // Tagihan Mahasiswa Aktif
+],
   invoices: [
     {
-        "id":  "INV-2026-100",
+        "id":  "INV-2026-BKPI-1001",
         "studentNim":  "2601001",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -3735,30 +3410,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1001",
-        "paymentDate":  "2026-02-02 10:00:00",
+        "paymentDate":  "02/02/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Alumni ponpes)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Alumni ponpes)"
     },
     {
-        "id":  "INV-2026-101",
+        "id":  "INV-2026-BKPI-1002",
         "studentNim":  "2601002",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -3775,30 +3450,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1002",
-        "paymentDate":  "2026-03-31 10:00:00",
+        "paymentDate":  "31/03/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Guru TPA)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Guru TPA)"
     },
     {
-        "id":  "INV-2026-102",
+        "id":  "INV-2026-BKPI-1003",
         "studentNim":  "2601003",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -3815,30 +3490,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  2090000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1003",
-        "paymentDate":  "2026-08-17 10:00:00",
+        "paymentDate":  "17/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa Asrama)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa Asrama)"
     },
     {
-        "id":  "INV-2026-103",
+        "id":  "INV-2026-BKPI-1004",
         "studentNim":  "2601004",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -3855,30 +3530,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1004",
-        "paymentDate":  "2026-07-18 10:00:00",
+        "paymentDate":  "18/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Guru TPA)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Guru TPA)"
     },
     {
-        "id":  "INV-2026-104",
+        "id":  "INV-2026-BKPI-1005",
         "studentNim":  "2601005",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -3895,30 +3570,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1005",
-        "paymentDate":  "2026-07-19 10:00:00",
+        "paymentDate":  "19/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Guru TPA)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Guru TPA)"
     },
     {
-        "id":  "INV-2026-105",
+        "id":  "INV-2026-BKPI-1006",
         "studentNim":  "2601006",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -3939,26 +3614,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Alumni ponpes)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Alumni ponpes)"
     },
     {
-        "id":  "INV-2026-106",
+        "id":  "INV-2026-BKPI-1007",
         "studentNim":  "2601007",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -3975,30 +3650,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  2090000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1007",
-        "paymentDate":  "2026-02-25 10:00:00",
+        "paymentDate":  "25/02/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa Asrama)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa Asrama)"
     },
     {
-        "id":  "INV-2026-107",
+        "id":  "INV-2026-BKPI-1008",
         "studentNim":  "2601008",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4019,26 +3694,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa Asrama)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa Asrama)"
     },
     {
-        "id":  "INV-2026-108",
+        "id":  "INV-2026-BKPI-1009",
         "studentNim":  "2601009",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4059,26 +3734,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa Asrama)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa Asrama)"
     },
     {
-        "id":  "INV-2026-109",
+        "id":  "INV-2026-BKPI-1010",
         "studentNim":  "2601010",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4095,30 +3770,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1010",
-        "paymentDate":  "2026-07-27 10:00:00",
+        "paymentDate":  "27/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjama Mitra)"
     },
     {
-        "id":  "INV-2026-110",
+        "id":  "INV-2026-BKPI-1011",
         "studentNim":  "2601011",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4135,30 +3810,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1011",
-        "paymentDate":  "2026-07-24 10:00:00",
+        "paymentDate":  "24/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjama Mitra)"
     },
     {
-        "id":  "INV-2026-111",
+        "id":  "INV-2026-BKPI-1012",
         "studentNim":  "2601012",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4179,26 +3854,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjama Mitra)"
     },
     {
-        "id":  "INV-2026-112",
+        "id":  "INV-2026-BKPI-1013",
         "studentNim":  "2601013",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4219,26 +3894,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Reguler)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Reguler)"
     },
     {
-        "id":  "INV-2026-113",
+        "id":  "INV-2026-BKPI-1014",
         "studentNim":  "2601014",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4259,26 +3934,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-114",
+        "id":  "INV-2026-BKPI-1015",
         "studentNim":  "2601015",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4295,30 +3970,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1015",
-        "paymentDate":  "2026-09-01 10:00:00",
+        "paymentDate":  "01/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjama Mitra)"
     },
     {
-        "id":  "INV-2026-115",
+        "id":  "INV-2026-BKPI-1016",
         "studentNim":  "2601016",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4335,30 +4010,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1016",
-        "paymentDate":  "2026-07-29 10:00:00",
+        "paymentDate":  "29/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjama Mitra)"
     },
     {
-        "id":  "INV-2026-116",
+        "id":  "INV-2026-BKPI-1017",
         "studentNim":  "2601017",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4375,30 +4050,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1017",
-        "paymentDate":  "2026-09-01 10:00:00",
+        "paymentDate":  "01/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa 50%)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa 50%)"
     },
     {
-        "id":  "INV-2026-117",
+        "id":  "INV-2026-BKPI-1018",
         "studentNim":  "2601018",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4419,26 +4094,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa 50%)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa 50%)"
     },
     {
-        "id":  "INV-2026-118",
+        "id":  "INV-2026-BKPI-1019",
         "studentNim":  "2601019",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4455,30 +4130,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1019",
-        "paymentDate":  "2026-08-06 10:00:00",
+        "paymentDate":  "06/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Guru TPA)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Guru TPA)"
     },
     {
-        "id":  "INV-2026-119",
+        "id":  "INV-2026-BKPI-1020",
         "studentNim":  "2601020",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4495,30 +4170,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  2090000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1020",
-        "paymentDate":  "2026-08-23 10:00:00",
+        "paymentDate":  "23/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa Asrama)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa Asrama)"
     },
     {
-        "id":  "INV-2026-120",
+        "id":  "INV-2026-BKPI-1021",
         "studentNim":  "2601021",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4539,26 +4214,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-121",
+        "id":  "INV-2026-BKPI-1022",
         "studentNim":  "2601022",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4575,30 +4250,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1022",
-        "paymentDate":  "2026-08-13 10:00:00",
+        "paymentDate":  "13/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-122",
+        "id":  "INV-2026-BKPI-1023",
         "studentNim":  "2601023",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4619,26 +4294,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-123",
+        "id":  "INV-2026-BKPI-1024",
         "studentNim":  "2601024",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4655,30 +4330,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1024",
-        "paymentDate":  "2026-07-30 10:00:00",
+        "paymentDate":  "30/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-124",
+        "id":  "INV-2026-BKPI-1025",
         "studentNim":  "2601025",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4695,30 +4370,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1025",
-        "paymentDate":  "2026-08-08 10:00:00",
+        "paymentDate":  "08/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-125",
+        "id":  "INV-2026-BKPI-1026",
         "studentNim":  "2601026",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4735,30 +4410,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1026",
-        "paymentDate":  "2026-08-08 10:00:00",
+        "paymentDate":  "08/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjamasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjamasama Mitra)"
     },
     {
-        "id":  "INV-2026-126",
+        "id":  "INV-2026-BKPI-1027",
         "studentNim":  "2601027",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4779,26 +4454,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-127",
+        "id":  "INV-2026-BKPI-1028",
         "studentNim":  "2601028",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4815,30 +4490,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1028",
-        "paymentDate":  "2026-08-27 10:00:00",
+        "paymentDate":  "27/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-128",
+        "id":  "INV-2026-BKPI-1029",
         "studentNim":  "2601029",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4855,30 +4530,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1029",
-        "paymentDate":  "2026-08-30 10:00:00",
+        "paymentDate":  "30/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-129",
+        "id":  "INV-2026-BKPI-1030",
         "studentNim":  "2601030",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4895,30 +4570,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1030",
-        "paymentDate":  "2026-09-03 10:00:00",
+        "paymentDate":  "03/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-130",
+        "id":  "INV-2026-BKPI-1031",
         "studentNim":  "2601031",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4939,26 +4614,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-131",
+        "id":  "INV-2026-BKPI-1032",
         "studentNim":  "2601032",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -4979,26 +4654,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Reguler)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Reguler)"
     },
     {
-        "id":  "INV-2026-132",
+        "id":  "INV-2026-BKPI-1033",
         "studentNim":  "2601033",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5015,30 +4690,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  3050000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1033",
-        "paymentDate":  "2026-09-08 10:00:00",
+        "paymentDate":  "08/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Reguler)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Reguler)"
     },
     {
-        "id":  "INV-2026-133",
+        "id":  "INV-2026-BKPI-1034",
         "studentNim":  "2601034",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5059,26 +4734,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa 50%)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa 50%)"
     },
     {
-        "id":  "INV-2026-134",
+        "id":  "INV-2026-BKPI-1035",
         "studentNim":  "2601035",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5099,26 +4774,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-135",
+        "id":  "INV-2026-BKPI-1038",
         "studentNim":  "2601038",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5135,30 +4810,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1038",
-        "paymentDate":  "2026-08-27 10:00:00",
+        "paymentDate":  "27/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-136",
+        "id":  "INV-2026-BKPI-1039",
         "studentNim":  "2601039",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5175,30 +4850,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1039",
-        "paymentDate":  "2026-08-28 10:00:00",
+        "paymentDate":  "28/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-137",
+        "id":  "INV-2026-BKPI-1040",
         "studentNim":  "2601040",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5215,30 +4890,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  450000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/1040",
-        "paymentDate":  "2026-09-03 10:00:00",
+        "paymentDate":  "03/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-138",
+        "id":  "INV-2026-BKPI-2036",
         "studentNim":  "2602036",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5255,30 +4930,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  1850000,
         "status":  "LUNAS",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2036",
-        "paymentDate":  "2026-07-18 10:00:00",
+        "paymentDate":  "18/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-139",
+        "id":  "INV-2026-BKPI-2037",
         "studentNim":  "2602037",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5299,26 +4974,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa Asrama)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa Asrama)"
     },
     {
-        "id":  "INV-2026-140",
+        "id":  "INV-2026-BKPI-1041",
         "studentNim":  "2601041",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5339,26 +5014,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-141",
+        "id":  "INV-2026-BKPI-1042",
         "studentNim":  "2601042",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5379,26 +5054,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-142",
+        "id":  "INV-2026-BKPI-1043",
         "studentNim":  "2601043",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5419,26 +5094,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa 50%)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa 50%)"
     },
     {
-        "id":  "INV-2026-143",
+        "id":  "INV-2026-BKPI-1044",
         "studentNim":  "2601044",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5459,26 +5134,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa 50%)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Beasiswa 50%)"
     },
     {
-        "id":  "INV-2026-144",
+        "id":  "INV-2026-BKPI-1045",
         "studentNim":  "2601045",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5499,26 +5174,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Siswa Berprestasi)"
+        "notes":  "Pendaftaran PMB 2026 BKPI (Siswa Berprestasi)"
     },
     {
-        "id":  "INV-2026-145",
+        "id":  "INV-2026-PIAUD-2001",
         "studentNim":  "2602001",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5535,30 +5210,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2001",
-        "paymentDate":  "2026-08-27 10:00:00",
+        "paymentDate":  "27/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-146",
+        "id":  "INV-2026-PIAUD-2002",
         "studentNim":  "2602002",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5575,30 +5250,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2002",
-        "paymentDate":  "2026-03-30 10:00:00",
+        "paymentDate":  "30/03/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-147",
+        "id":  "INV-2026-PIAUD-2003",
         "studentNim":  "2602003",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5615,30 +5290,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2003",
-        "paymentDate":  "2026-07-21 10:00:00",
+        "paymentDate":  "21/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-148",
+        "id":  "INV-2026-PIAUD-2004",
         "studentNim":  "2602004",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5655,30 +5330,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2004",
-        "paymentDate":  "2026-07-27 10:00:00",
+        "paymentDate":  "27/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Alumni Ponpes)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Alumni Ponpes)"
     },
     {
-        "id":  "INV-2026-149",
+        "id":  "INV-2026-PIAUD-2005",
         "studentNim":  "2602005",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5695,30 +5370,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2005",
-        "paymentDate":  "2026-07-29 10:00:00",
+        "paymentDate":  "29/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (musrif lembaga/ guru tpa)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (musrif lembaga/ guru tpa)"
     },
     {
-        "id":  "INV-2026-150",
+        "id":  "INV-2026-PIAUD-2006",
         "studentNim":  "2602006",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5735,30 +5410,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2006",
-        "paymentDate":  "2026-07-17 10:00:00",
+        "paymentDate":  "17/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-151",
+        "id":  "INV-2026-PIAUD-2007",
         "studentNim":  "2602007",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5775,30 +5450,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2007",
-        "paymentDate":  "2026-09-07 10:00:00",
+        "paymentDate":  "07/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-152",
+        "id":  "INV-2026-PIAUD-2008",
         "studentNim":  "2602008",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5815,30 +5490,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2008",
-        "paymentDate":  "2026-08-27 10:00:00",
+        "paymentDate":  "27/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Guru TPA)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Guru TPA)"
     },
     {
-        "id":  "INV-2026-153",
+        "id":  "INV-2026-PIAUD-2009",
         "studentNim":  "2602009",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5855,30 +5530,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2009",
-        "paymentDate":  "2026-07-08 10:00:00",
+        "paymentDate":  "08/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Guru TPA)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Guru TPA)"
     },
     {
-        "id":  "INV-2026-154",
+        "id":  "INV-2026-PIAUD-2010",
         "studentNim":  "2602010",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5899,26 +5574,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Alumni Ponpes)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Alumni Ponpes)"
     },
     {
-        "id":  "INV-2026-155",
+        "id":  "INV-2026-PIAUD-2011",
         "studentNim":  "2602011",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5935,30 +5610,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2011",
-        "paymentDate":  "2026-07-20 10:00:00",
+        "paymentDate":  "20/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (guru TPA)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (guru TPA)"
     },
     {
-        "id":  "INV-2026-156",
+        "id":  "INV-2026-PIAUD-2012",
         "studentNim":  "2602012",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -5975,30 +5650,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2012",
-        "paymentDate":  "2026-08-31 10:00:00",
+        "paymentDate":  "31/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-157",
+        "id":  "INV-2026-PIAUD-2013",
         "studentNim":  "2602013",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -6015,30 +5690,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2013",
-        "paymentDate":  "2026-07-31 10:00:00",
+        "paymentDate":  "31/07/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-158",
+        "id":  "INV-2026-PIAUD-2014",
         "studentNim":  "2602014",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -6055,30 +5730,1230 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2014",
-        "paymentDate":  "2026-08-31 10:00:00",
+        "paymentDate":  "31/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-159",
-        "studentNim":  "2602015",
+        "id":  "INV-2026-PIAUD-2016",
+        "studentNim":  "2602016",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2016",
+        "paymentDate":  "02/09/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2017",
+        "studentNim":  "2602017",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  650000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2017",
+        "paymentDate":  "27/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2018",
+        "studentNim":  "2602018",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  650000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2018",
+        "paymentDate":  "27/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2019",
+        "studentNim":  "2602019",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  0,
+        "status":  "BELUM_BAYAR",
+        "paymentMethod":  null,
+        "receiptNumber":  null,
+        "paymentDate":  null,
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2020",
+        "studentNim":  "2602020",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2020",
+        "paymentDate":  "09/09/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2021",
+        "studentNim":  "2602021",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2021",
+        "paymentDate":  "21/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2022",
+        "studentNim":  "2602022",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2022",
+        "paymentDate":  "01/09/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2023",
+        "studentNim":  "2602023",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2023",
+        "paymentDate":  "20/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2024",
+        "studentNim":  "2602024",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  650000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2024",
+        "paymentDate":  "21/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2025",
+        "studentNim":  "2602025",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  0,
+        "status":  "BELUM_BAYAR",
+        "paymentMethod":  null,
+        "receiptNumber":  null,
+        "paymentDate":  null,
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2026",
+        "studentNim":  "2602026",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2026",
+        "paymentDate":  "13/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2027",
+        "studentNim":  "2602027",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2027",
+        "paymentDate":  "17/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2028",
+        "studentNim":  "2602028",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  650000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2028",
+        "paymentDate":  "07/09/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2029",
+        "studentNim":  "2602029",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  650000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2029",
+        "paymentDate":  "27/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2030",
+        "studentNim":  "2602030",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  650000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2030",
+        "paymentDate":  "27/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2031",
+        "studentNim":  "2602031",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2031",
+        "paymentDate":  "27/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2032",
+        "studentNim":  "2602032",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2032",
+        "paymentDate":  "25/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2033",
+        "studentNim":  "2602033",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2033",
+        "paymentDate":  "24/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2034",
+        "studentNim":  "2602034",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2034",
+        "paymentDate":  "22/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2035",
+        "studentNim":  "2602035",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2035",
+        "paymentDate":  "22/8/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2038",
+        "studentNim":  "2602038",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  2400000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  0,
+        "netAmount":  3050000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2038",
+        "paymentDate":  "15/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Reguler)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2039",
+        "studentNim":  "2602039",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  0,
+        "status":  "BELUM_BAYAR",
+        "paymentMethod":  null,
+        "receiptNumber":  null,
+        "paymentDate":  null,
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2040",
+        "studentNim":  "2602040",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  650000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2040",
+        "paymentDate":  "29/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2041",
+        "studentNim":  "2602041",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2041",
+        "paymentDate":  "24/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2042",
+        "studentNim":  "2602042",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  200000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2042",
+        "paymentDate":  "29/08/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2043",
+        "studentNim":  "2602043",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  650000,
+        "status":  "DICICIL",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "receiptNumber":  "KW-IF/2026/08/2043",
+        "paymentDate":  "01/09/26",
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2044",
+        "studentNim":  "2602044",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  0,
+        "status":  "BELUM_BAYAR",
+        "paymentMethod":  null,
+        "receiptNumber":  null,
+        "paymentDate":  null,
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2045",
+        "studentNim":  "2602045",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  2400000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  0,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  2400000,
+        "netAmount":  650000,
+        "paidAmount":  0,
+        "status":  "BELUM_BAYAR",
+        "paymentMethod":  null,
+        "receiptNumber":  null,
+        "paymentDate":  null,
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Paud Laki-laki)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2046",
+        "studentNim":  "2602046",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  0,
+        "status":  "BELUM_BAYAR",
+        "paymentMethod":  null,
+        "receiptNumber":  null,
+        "paymentDate":  null,
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2047",
+        "studentNim":  "2602047",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
+                          "finalAmount":  450000,
+                          "componentId":  "DAFTAR_ULANG"
+                      },
+                      {
+                          "discount":  1200000,
+                          "baseAmount":  2400000,
+                          "name":  "SPP / UKT Pokok Semester 1",
+                          "finalAmount":  1200000,
+                          "componentId":  "SPP"
+                      }
+                  ],
+        "grossAmount":  3050000,
+        "totalDiscount":  1200000,
+        "netAmount":  1850000,
+        "paidAmount":  0,
+        "status":  "BELUM_BAYAR",
+        "paymentMethod":  null,
+        "receiptNumber":  null,
+        "paymentDate":  null,
+        "virtualAccount":  "1056405743",
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
+    },
+    {
+        "id":  "INV-2026-PIAUD-2015",
+        "studentNim":  "2602015",
+        "semester":  "2026/2027 Ganjil",
+        "createdDate":  "2026-08-01",
+        "dueDate":  "2026-09-30",
+        "items":  [
+                      {
+                          "discount":  0,
+                          "baseAmount":  200000,
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
+                          "finalAmount":  200000,
+                          "componentId":  "PENDAFTARAN"
+                      },
+                      {
+                          "discount":  0,
+                          "baseAmount":  450000,
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -6095,1310 +6970,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  2090000,
         "paidAmount":  650000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2015",
-        "paymentDate":  "2026-09-29 10:00:00",
+        "paymentDate":  "29/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Beasiswa Asrama)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Beasiswa Asrama)"
     },
     {
-        "id":  "INV-2026-160",
-        "studentNim":  "2602016",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2016",
-        "paymentDate":  "2026-09-02 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-161",
-        "studentNim":  "2602017",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  650000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2017",
-        "paymentDate":  "2026-08-27 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-162",
-        "studentNim":  "2602018",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  650000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2018",
-        "paymentDate":  "2026-08-27 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-163",
-        "studentNim":  "2602019",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  0,
-        "status":  "BELUM_BAYAR",
-        "paymentMethod":  null,
-        "receiptNumber":  null,
-        "paymentDate":  null,
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-164",
-        "studentNim":  "2602020",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2020",
-        "paymentDate":  "2026-09-09 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-165",
-        "studentNim":  "2602021",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2021",
-        "paymentDate":  "2026-08-21 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-166",
-        "studentNim":  "2602022",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2022",
-        "paymentDate":  "2026-09-01 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-167",
-        "studentNim":  "2602023",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2023",
-        "paymentDate":  "2026-08-20 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-168",
-        "studentNim":  "2602024",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  650000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2024",
-        "paymentDate":  "2026-08-21 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-169",
-        "studentNim":  "2602025",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  0,
-        "status":  "BELUM_BAYAR",
-        "paymentMethod":  null,
-        "receiptNumber":  null,
-        "paymentDate":  null,
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-170",
-        "studentNim":  "2602026",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2026",
-        "paymentDate":  "2026-08-13 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-171",
-        "studentNim":  "2602027",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2027",
-        "paymentDate":  "2026-08-17 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-172",
-        "studentNim":  "2602028",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  650000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2028",
-        "paymentDate":  "2026-09-07 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-173",
-        "studentNim":  "2602029",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  650000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2029",
-        "paymentDate":  "2026-08-27 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-174",
-        "studentNim":  "2602030",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  650000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2030",
-        "paymentDate":  "2026-08-27 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-175",
-        "studentNim":  "2602031",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2031",
-        "paymentDate":  "2026-08-27 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-176",
-        "studentNim":  "2602032",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2032",
-        "paymentDate":  "2026-08-25 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-177",
-        "studentNim":  "2602033",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2033",
-        "paymentDate":  "2026-08-24 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-178",
-        "studentNim":  "2602034",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2034",
-        "paymentDate":  "2026-08-22 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-179",
-        "studentNim":  "2602035",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2035",
-        "paymentDate":  "2026-08-22 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-180",
-        "studentNim":  "2602036",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  0,
-        "status":  "BELUM_BAYAR",
-        "paymentMethod":  null,
-        "receiptNumber":  null,
-        "paymentDate":  null,
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-181",
-        "studentNim":  "2602037",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2037",
-        "paymentDate":  "2026-09-09 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-182",
-        "studentNim":  "2602038",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  2400000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  0,
-        "netAmount":  3050000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2038",
-        "paymentDate":  "2026-08-15 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Reguler)"
-    },
-    {
-        "id":  "INV-2026-183",
-        "studentNim":  "2602039",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  0,
-        "status":  "BELUM_BAYAR",
-        "paymentMethod":  null,
-        "receiptNumber":  null,
-        "paymentDate":  null,
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-184",
-        "studentNim":  "2602040",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  650000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2040",
-        "paymentDate":  "2026-08-29 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-185",
-        "studentNim":  "2602041",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2041",
-        "paymentDate":  "2026-08-24 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-186",
-        "studentNim":  "2602042",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  200000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2042",
-        "paymentDate":  "2026-08-29 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-187",
-        "studentNim":  "2602043",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  650000,
-        "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
-        "receiptNumber":  "KW-IF/2026/08/2043",
-        "paymentDate":  "2026-09-01 10:00:00",
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-188",
-        "studentNim":  "2602044",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  0,
-        "status":  "BELUM_BAYAR",
-        "paymentMethod":  null,
-        "receiptNumber":  null,
-        "paymentDate":  null,
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-189",
-        "studentNim":  "2602045",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  2400000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  0,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  2400000,
-        "netAmount":  650000,
-        "paidAmount":  0,
-        "status":  "BELUM_BAYAR",
-        "paymentMethod":  null,
-        "receiptNumber":  null,
-        "paymentDate":  null,
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Paud Laki-laki)"
-    },
-    {
-        "id":  "INV-2026-190",
-        "studentNim":  "2602046",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  0,
-        "status":  "BELUM_BAYAR",
-        "paymentMethod":  null,
-        "receiptNumber":  null,
-        "paymentDate":  null,
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-191",
-        "studentNim":  "2602047",
-        "semester":  "2026/2027 Ganjil",
-        "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
-        "items":  [
-                      {
-                          "discount":  0,
-                          "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
-                          "finalAmount":  200000,
-                          "componentId":  "PENDAFTARAN"
-                      },
-                      {
-                          "discount":  0,
-                          "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
-                          "finalAmount":  450000,
-                          "componentId":  "DAFTAR_ULANG"
-                      },
-                      {
-                          "discount":  1200000,
-                          "baseAmount":  2400000,
-                          "name":  "SPP / UKT Pokok Semester 1",
-                          "finalAmount":  1200000,
-                          "componentId":  "SPP"
-                      }
-                  ],
-        "grossAmount":  3050000,
-        "totalDiscount":  1200000,
-        "netAmount":  1850000,
-        "paidAmount":  0,
-        "status":  "BELUM_BAYAR",
-        "paymentMethod":  null,
-        "receiptNumber":  null,
-        "paymentDate":  null,
-        "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
-    },
-    {
-        "id":  "INV-2026-192",
+        "id":  "INV-2026-PIAUD-2048",
         "studentNim":  "2602048",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7419,26 +7014,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama mitra)"
     },
     {
-        "id":  "INV-2026-193",
+        "id":  "INV-2026-PIAUD-2049",
         "studentNim":  "2602049",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7459,26 +7054,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama mitra)"
     },
     {
-        "id":  "INV-2026-194",
+        "id":  "INV-2026-PIAUD-2050",
         "studentNim":  "2602050",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7499,26 +7094,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama mitra)"
     },
     {
-        "id":  "INV-2026-195",
+        "id":  "INV-2026-PIAUD-2051",
         "studentNim":  "2602051",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7535,30 +7130,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  650000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2051",
-        "paymentDate":  "2026-09-01 10:00:00",
+        "paymentDate":  "01/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama mitra  (Pabelan) Gratis)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama mitra  (Pabelan) Gratis)"
     },
     {
-        "id":  "INV-2026-196",
+        "id":  "INV-2026-PIAUD-2052",
         "studentNim":  "2602052",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7579,26 +7174,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama mitra)"
     },
     {
-        "id":  "INV-2026-197",
+        "id":  "INV-2026-PIAUD-2053",
         "studentNim":  "2602053",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7615,30 +7210,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2053",
-        "paymentDate":  "2026-09-02 10:00:00",
+        "paymentDate":  "02/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama mitra)"
     },
     {
-        "id":  "INV-2026-198",
+        "id":  "INV-2026-PIAUD-2054",
         "studentNim":  "2602054",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7655,30 +7250,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  650000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2054",
-        "paymentDate":  "2026-08-31 10:00:00",
+        "paymentDate":  "31/08/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Paud Laki-laki)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Paud Laki-laki)"
     },
     {
-        "id":  "INV-2026-199",
+        "id":  "INV-2026-PIAUD-2055",
         "studentNim":  "2602055",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7695,30 +7290,30 @@ const INITIAL_SEED_DATA = {
         "netAmount":  1850000,
         "paidAmount":  200000,
         "status":  "DICICIL",
-        "paymentMethod":  "VA_BSI",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
         "receiptNumber":  "KW-IF/2026/08/2055",
-        "paymentDate":  "2026-09-02 10:00:00",
+        "paymentDate":  "02/09/26",
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-200",
+        "id":  "INV-2026-PIAUD-2056",
         "studentNim":  "2602056",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7739,26 +7334,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-201",
+        "id":  "INV-2026-PIAUD-2057",
         "studentNim":  "2602057",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7779,26 +7374,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-202",
+        "id":  "INV-2026-PIAUD-2058",
         "studentNim":  "2602058",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7819,26 +7414,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-203",
+        "id":  "INV-2026-PIAUD-2059",
         "studentNim":  "2602059",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7859,26 +7454,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-204",
+        "id":  "INV-2026-PIAUD-2060",
         "studentNim":  "2602060",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7899,26 +7494,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-205",
+        "id":  "INV-2026-PIAUD-2061",
         "studentNim":  "2602061",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7939,26 +7534,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-206",
+        "id":  "INV-2026-PIAUD-2062",
         "studentNim":  "2602062",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -7979,26 +7574,26 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Kerjasama Mitra)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Kerjasama Mitra)"
     },
     {
-        "id":  "INV-2026-207",
+        "id":  "INV-2026-PIAUD-2063",
         "studentNim":  "2602063",
         "semester":  "2026/2027 Ganjil",
         "createdDate":  "2026-08-01",
-        "dueDate":  "2026-09-15",
+        "dueDate":  "2026-09-30",
         "items":  [
                       {
                           "discount":  0,
                           "baseAmount":  200000,
-                          "name":  "Biaya Pendaftaran PMB 2026",
+                          "name":  "Biaya Pendaftaran \u0026 Formulir PMB 2026",
                           "finalAmount":  200000,
                           "componentId":  "PENDAFTARAN"
                       },
                       {
                           "discount":  0,
                           "baseAmount":  450000,
-                          "name":  "Biaya Daftar Ulang / Heregistrasi",
+                          "name":  "Biaya Daftar Ulang / Heregistrasi PMB",
                           "finalAmount":  450000,
                           "componentId":  "DAFTAR_ULANG"
                       },
@@ -8019,16 +7614,13 @@ const INITIAL_SEED_DATA = {
         "receiptNumber":  null,
         "paymentDate":  null,
         "virtualAccount":  "1056405743",
-        "notes":  "Tagihan PMB \u0026 Semester 1 Tahun Akademik 2026/2027 (Reguler)"
+        "notes":  "Pendaftaran PMB 2026 PIAUD (Reguler)"
     }
-]
-,
-
-  // Antrean Verifikasi & Transaksi Pembayaran Sah
+],
   paymentVerifications: [
     {
-        "id":  "VER-100",
-        "invoiceId":  "INV-2026-100",
+        "id":  "VER-BKPI-2601001",
+        "invoiceId":  "INV-2026-BKPI-1001",
         "studentNim":  "2601001",
         "studentName":  "Miftahul Jannah",
         "prodi":  "BKPI",
@@ -8036,16 +7628,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-02-02 08:30:00",
-        "verifiedAt":  "2026-02-02 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601001",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1001",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-101",
-        "invoiceId":  "INV-2026-101",
+        "id":  "VER-BKPI-2601002",
+        "invoiceId":  "INV-2026-BKPI-1002",
         "studentNim":  "2601002",
         "studentName":  "Aifah Ruslan",
         "prodi":  "BKPI",
@@ -8053,84 +7646,53 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-03-31 08:30:00",
-        "verifiedAt":  "2026-03-31 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601002",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1002",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-102",
-        "invoiceId":  "INV-2026-102",
+        "id":  "VER-BKPI-2601003",
+        "invoiceId":  "INV-2026-BKPI-1003",
         "studentNim":  "2601003",
         "studentName":  "Hamzah Habiburrohman",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-06-21 08:30:00",
-        "verifiedAt":  "2026-06-21 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601003",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-103",
-        "invoiceId":  "INV-2026-102",
-        "studentNim":  "2601003",
-        "studentName":  "Hamzah Habiburrohman",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-17 08:30:00",
-        "verifiedAt":  "2026-08-17 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601003",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1003",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-104",
-        "invoiceId":  "INV-2026-103",
+        "id":  "VER-BKPI-2601004",
+        "invoiceId":  "INV-2026-BKPI-1004",
         "studentNim":  "2601004",
         "studentName":  "Faza Ainaya Abqariyah",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-06-17 08:30:00",
-        "verifiedAt":  "2026-06-17 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601004",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-105",
-        "invoiceId":  "INV-2026-103",
-        "studentNim":  "2601004",
-        "studentName":  "Faza Ainaya Abqariyah",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-18 08:30:00",
-        "verifiedAt":  "2026-07-18 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601004",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1004",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-106",
-        "invoiceId":  "INV-2026-104",
+        "id":  "VER-BKPI-2601005",
+        "invoiceId":  "INV-2026-BKPI-1005",
         "studentNim":  "2601005",
         "studentName":  "Aisyi Saadah",
         "prodi":  "BKPI",
@@ -8138,50 +7700,35 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-19 08:30:00",
-        "verifiedAt":  "2026-07-19 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601005",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1005",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-107",
-        "invoiceId":  "INV-2026-106",
+        "id":  "VER-BKPI-2601007",
+        "invoiceId":  "INV-2026-BKPI-1007",
         "studentNim":  "2601007",
         "studentName":  "Aldi Baitur Rahman",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-02-25 08:30:00",
-        "verifiedAt":  "2026-02-25 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601007",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-108",
-        "invoiceId":  "INV-2026-106",
-        "studentNim":  "2601007",
-        "studentName":  "Aldi Baitur Rahman",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-02-25 08:30:00",
-        "verifiedAt":  "2026-02-25 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601007",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1007",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-109",
-        "invoiceId":  "INV-2026-109",
+        "id":  "VER-BKPI-2601010",
+        "invoiceId":  "INV-2026-BKPI-1010",
         "studentNim":  "2601010",
         "studentName":  "Naila Azkiya",
         "prodi":  "BKPI",
@@ -8189,16 +7736,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-27 08:30:00",
-        "verifiedAt":  "2026-07-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601010",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1010",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-110",
-        "invoiceId":  "INV-2026-110",
+        "id":  "VER-BKPI-2601011",
+        "invoiceId":  "INV-2026-BKPI-1011",
         "studentNim":  "2601011",
         "studentName":  "Darwati",
         "prodi":  "BKPI",
@@ -8206,50 +7754,35 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-24 08:30:00",
-        "verifiedAt":  "2026-07-24 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601011",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1011",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-111",
-        "invoiceId":  "INV-2026-114",
+        "id":  "VER-BKPI-2601015",
+        "invoiceId":  "INV-2026-BKPI-1015",
         "studentNim":  "2601015",
         "studentName":  "Yuly Hermawan Susilo",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-28 08:30:00",
-        "verifiedAt":  "2026-07-28 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601015",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-112",
-        "invoiceId":  "INV-2026-114",
-        "studentNim":  "2601015",
-        "studentName":  "Yuly Hermawan Susilo",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-01 08:30:00",
-        "verifiedAt":  "2026-09-01 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601015",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1015",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-113",
-        "invoiceId":  "INV-2026-115",
+        "id":  "VER-BKPI-2601016",
+        "invoiceId":  "INV-2026-BKPI-1016",
         "studentNim":  "2601016",
         "studentName":  "Ngarifatun Thoyibah",
         "prodi":  "BKPI",
@@ -8257,50 +7790,35 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-29 08:30:00",
-        "verifiedAt":  "2026-07-29 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601016",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1016",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-114",
-        "invoiceId":  "INV-2026-116",
+        "id":  "VER-BKPI-2601017",
+        "invoiceId":  "INV-2026-BKPI-1017",
         "studentNim":  "2601017",
         "studentName":  "Eva Fitriyaningsih",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-12 08:30:00",
-        "verifiedAt":  "2026-08-12 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601017",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-115",
-        "invoiceId":  "INV-2026-116",
-        "studentNim":  "2601017",
-        "studentName":  "Eva Fitriyaningsih",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-01 08:30:00",
-        "verifiedAt":  "2026-09-01 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601017",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1017",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-116",
-        "invoiceId":  "INV-2026-118",
+        "id":  "VER-BKPI-2601019",
+        "invoiceId":  "INV-2026-BKPI-1019",
         "studentNim":  "2601019",
         "studentName":  "Pramundari",
         "prodi":  "BKPI",
@@ -8308,16 +7826,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-06 08:30:00",
-        "verifiedAt":  "2026-08-06 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601019",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1019",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-117",
-        "invoiceId":  "INV-2026-119",
+        "id":  "VER-BKPI-2601020",
+        "invoiceId":  "INV-2026-BKPI-1020",
         "studentNim":  "2601020",
         "studentName":  "Amalia Nur Sa\u0027adah",
         "prodi":  "BKPI",
@@ -8325,50 +7844,35 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-23 08:30:00",
-        "verifiedAt":  "2026-08-23 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601020",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1020",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-118",
-        "invoiceId":  "INV-2026-121",
+        "id":  "VER-BKPI-2601022",
+        "invoiceId":  "INV-2026-BKPI-1022",
         "studentNim":  "2601022",
         "studentName":  "Haning Pramesti",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-01 08:30:00",
-        "verifiedAt":  "2026-08-01 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601022",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-119",
-        "invoiceId":  "INV-2026-121",
-        "studentNim":  "2601022",
-        "studentName":  "Haning Pramesti",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-13 08:30:00",
-        "verifiedAt":  "2026-08-13 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601022",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1022",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-120",
-        "invoiceId":  "INV-2026-123",
+        "id":  "VER-BKPI-2601024",
+        "invoiceId":  "INV-2026-BKPI-1024",
         "studentNim":  "2601024",
         "studentName":  "Niken Wahyu Ningsih",
         "prodi":  "BKPI",
@@ -8376,16 +7880,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-30 08:30:00",
-        "verifiedAt":  "2026-07-30 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601024",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1024",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-121",
-        "invoiceId":  "INV-2026-124",
+        "id":  "VER-BKPI-2601025",
+        "invoiceId":  "INV-2026-BKPI-1025",
         "studentNim":  "2601025",
         "studentName":  "Hamidah",
         "prodi":  "BKPI",
@@ -8393,16 +7898,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-08 08:30:00",
-        "verifiedAt":  "2026-08-08 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601025",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1025",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-122",
-        "invoiceId":  "INV-2026-125",
+        "id":  "VER-BKPI-2601026",
+        "invoiceId":  "INV-2026-BKPI-1026",
         "studentNim":  "2601026",
         "studentName":  "Samsul Sutopo Slamet",
         "prodi":  "BKPI",
@@ -8410,16 +7916,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-08 08:30:00",
-        "verifiedAt":  "2026-08-08 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601026",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1026",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-123",
-        "invoiceId":  "INV-2026-127",
+        "id":  "VER-BKPI-2601028",
+        "invoiceId":  "INV-2026-BKPI-1028",
         "studentNim":  "2601028",
         "studentName":  "Arif Wibowo",
         "prodi":  "BKPI",
@@ -8427,16 +7934,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601028",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1028",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-124",
-        "invoiceId":  "INV-2026-128",
+        "id":  "VER-BKPI-2601029",
+        "invoiceId":  "INV-2026-BKPI-1029",
         "studentNim":  "2601029",
         "studentName":  "Nensy Anggriani Ningsih",
         "prodi":  "BKPI",
@@ -8444,118 +7952,71 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-30 08:30:00",
-        "verifiedAt":  "2026-08-30 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601029",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1029",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-125",
-        "invoiceId":  "INV-2026-129",
+        "id":  "VER-BKPI-2601030",
+        "invoiceId":  "INV-2026-BKPI-1030",
         "studentNim":  "2601030",
         "studentName":  "Khusnul Khotimah",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-03 08:30:00",
-        "verifiedAt":  "2026-09-03 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601030",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-126",
-        "invoiceId":  "INV-2026-129",
-        "studentNim":  "2601030",
-        "studentName":  "Khusnul Khotimah",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-03 08:30:00",
-        "verifiedAt":  "2026-09-03 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601030",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1030",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-127",
-        "invoiceId":  "INV-2026-132",
+        "id":  "VER-BKPI-2601033",
+        "invoiceId":  "INV-2026-BKPI-1033",
         "studentNim":  "2601033",
         "studentName":  "Khoiru Zidan",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-08 08:30:00",
-        "verifiedAt":  "2026-09-08 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601033",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-128",
-        "invoiceId":  "INV-2026-132",
-        "studentNim":  "2601033",
-        "studentName":  "Khoiru Zidan",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-08 08:30:00",
-        "verifiedAt":  "2026-09-08 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601033",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1033",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-129",
-        "invoiceId":  "INV-2026-135",
+        "id":  "VER-BKPI-2601038",
+        "invoiceId":  "INV-2026-BKPI-1038",
         "studentNim":  "2601038",
         "studentName":  "Habibah Rasyidah",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601038",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-130",
-        "invoiceId":  "INV-2026-135",
-        "studentNim":  "2601038",
-        "studentName":  "Habibah Rasyidah",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601038",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1038",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-131",
-        "invoiceId":  "INV-2026-136",
+        "id":  "VER-BKPI-2601039",
+        "invoiceId":  "INV-2026-BKPI-1039",
         "studentNim":  "2601039",
         "studentName":  "Sri Yani",
         "prodi":  "BKPI",
@@ -8563,16 +8024,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-28 08:30:00",
-        "verifiedAt":  "2026-08-28 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2601039",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1039",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-132",
-        "invoiceId":  "INV-2026-137",
+        "id":  "VER-BKPI-2601040",
+        "invoiceId":  "INV-2026-BKPI-1040",
         "studentNim":  "2601040",
         "studentName":  "Ayu Rosmaidah",
         "prodi":  "BKPI",
@@ -8580,84 +8042,53 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-03 08:30:00",
-        "verifiedAt":  "2026-09-03 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2601040",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/1040",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-133",
-        "invoiceId":  "INV-2026-138",
+        "id":  "VER-BKPI-2602036",
+        "invoiceId":  "INV-2026-BKPI-2036",
         "studentNim":  "2602036",
         "studentName":  "Fina Margaria",
         "prodi":  "BKPI",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-18 08:30:00",
-        "verifiedAt":  "2026-07-18 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602036",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-134",
-        "invoiceId":  "INV-2026-138",
-        "studentNim":  "2602036",
-        "studentName":  "Fina Margaria",
-        "prodi":  "BKPI",
-        "amount":  450000,
+        "amount":  1850000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-18 08:30:00",
-        "verifiedAt":  "2026-07-18 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602036",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2036",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-135",
-        "invoiceId":  "INV-2026-145",
+        "id":  "VER-PIAUD-2602001",
+        "invoiceId":  "INV-2026-PIAUD-2001",
         "studentNim":  "2602001",
         "studentName":  "Erlisa Rita Novika",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-02-23 08:30:00",
-        "verifiedAt":  "2026-02-23 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602001",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-136",
-        "invoiceId":  "INV-2026-145",
-        "studentNim":  "2602001",
-        "studentName":  "Erlisa Rita Novika",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602001",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2001",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-137",
-        "invoiceId":  "INV-2026-146",
+        "id":  "VER-PIAUD-2602002",
+        "invoiceId":  "INV-2026-PIAUD-2002",
         "studentNim":  "2602002",
         "studentName":  "Choiriyah",
         "prodi":  "PIAUD",
@@ -8665,220 +8096,125 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-03-30 08:30:00",
-        "verifiedAt":  "2026-03-30 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602002",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2002",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-138",
-        "invoiceId":  "INV-2026-147",
+        "id":  "VER-PIAUD-2602003",
+        "invoiceId":  "INV-2026-PIAUD-2003",
         "studentNim":  "2602003",
         "studentName":  "Dian Kartika Sari",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-04-15 08:30:00",
-        "verifiedAt":  "2026-04-15 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602003",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-139",
-        "invoiceId":  "INV-2026-147",
-        "studentNim":  "2602003",
-        "studentName":  "Dian Kartika Sari",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-21 08:30:00",
-        "verifiedAt":  "2026-07-21 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602003",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2003",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-140",
-        "invoiceId":  "INV-2026-148",
+        "id":  "VER-PIAUD-2602004",
+        "invoiceId":  "INV-2026-PIAUD-2004",
         "studentNim":  "2602004",
         "studentName":  "Rana Fauziyyah",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-06-29 08:30:00",
-        "verifiedAt":  "2026-06-29 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602004",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-141",
-        "invoiceId":  "INV-2026-148",
-        "studentNim":  "2602004",
-        "studentName":  "Rana Fauziyyah",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-27 08:30:00",
-        "verifiedAt":  "2026-07-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602004",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2004",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-142",
-        "invoiceId":  "INV-2026-149",
+        "id":  "VER-PIAUD-2602005",
+        "invoiceId":  "INV-2026-PIAUD-2005",
         "studentNim":  "2602005",
         "studentName":  "Ruqoyyah Salsabila Daeng Ke\u0027nang",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-09 08:30:00",
-        "verifiedAt":  "2026-07-09 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602005",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-143",
-        "invoiceId":  "INV-2026-149",
-        "studentNim":  "2602005",
-        "studentName":  "Ruqoyyah Salsabila Daeng Ke\u0027nang",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-29 08:30:00",
-        "verifiedAt":  "2026-07-29 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602005",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2005",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-144",
-        "invoiceId":  "INV-2026-150",
+        "id":  "VER-PIAUD-2602006",
+        "invoiceId":  "INV-2026-PIAUD-2006",
         "studentNim":  "2602006",
         "studentName":  "Fatimah Nur Islamiah",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-04-15 08:30:00",
-        "verifiedAt":  "2026-04-15 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602006",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-145",
-        "invoiceId":  "INV-2026-150",
-        "studentNim":  "2602006",
-        "studentName":  "Fatimah Nur Islamiah",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-17 08:30:00",
-        "verifiedAt":  "2026-07-17 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602006",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2006",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-146",
-        "invoiceId":  "INV-2026-151",
+        "id":  "VER-PIAUD-2602007",
+        "invoiceId":  "INV-2026-PIAUD-2007",
         "studentNim":  "2602007",
         "studentName":  "Mustofiah",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-02-14 08:30:00",
-        "verifiedAt":  "2026-02-14 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602007",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-147",
-        "invoiceId":  "INV-2026-151",
-        "studentNim":  "2602007",
-        "studentName":  "Mustofiah",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-07 08:30:00",
-        "verifiedAt":  "2026-09-07 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602007",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2007",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-148",
-        "invoiceId":  "INV-2026-152",
+        "id":  "VER-PIAUD-2602008",
+        "invoiceId":  "INV-2026-PIAUD-2008",
         "studentNim":  "2602008",
         "studentName":  "Iriani",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-18 08:30:00",
-        "verifiedAt":  "2026-07-18 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602008",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-149",
-        "invoiceId":  "INV-2026-152",
-        "studentNim":  "2602008",
-        "studentName":  "Iriani",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602008",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2008",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-150",
-        "invoiceId":  "INV-2026-153",
+        "id":  "VER-PIAUD-2602009",
+        "invoiceId":  "INV-2026-PIAUD-2009",
         "studentNim":  "2602009",
         "studentName":  "Suyani",
         "prodi":  "PIAUD",
@@ -8886,16 +8222,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-08 08:30:00",
-        "verifiedAt":  "2026-07-08 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602009",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2009",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-151",
-        "invoiceId":  "INV-2026-155",
+        "id":  "VER-PIAUD-2602011",
+        "invoiceId":  "INV-2026-PIAUD-2011",
         "studentNim":  "2602011",
         "studentName":  "Izazah Zulaikha",
         "prodi":  "PIAUD",
@@ -8903,16 +8240,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-20 08:30:00",
-        "verifiedAt":  "2026-07-20 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602011",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2011",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-152",
-        "invoiceId":  "INV-2026-156",
+        "id":  "VER-PIAUD-2602012",
+        "invoiceId":  "INV-2026-PIAUD-2012",
         "studentNim":  "2602012",
         "studentName":  "Siti Anifah",
         "prodi":  "PIAUD",
@@ -8920,118 +8258,53 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-31 08:30:00",
-        "verifiedAt":  "2026-08-31 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602012",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2012",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-153",
-        "invoiceId":  "INV-2026-157",
+        "id":  "VER-PIAUD-2602013",
+        "invoiceId":  "INV-2026-PIAUD-2013",
         "studentNim":  "2602013",
         "studentName":  "Tria Annisa Nurjanah",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-31 08:30:00",
-        "verifiedAt":  "2026-07-31 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602013",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-154",
-        "invoiceId":  "INV-2026-157",
-        "studentNim":  "2602013",
-        "studentName":  "Tria Annisa Nurjanah",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-31 08:30:00",
-        "verifiedAt":  "2026-07-31 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602013",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2013",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-155",
-        "invoiceId":  "INV-2026-158",
+        "id":  "VER-PIAUD-2602014",
+        "invoiceId":  "INV-2026-PIAUD-2014",
         "studentNim":  "2602014",
         "studentName":  "Ade Vina Hanituzzulva",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-16 08:30:00",
-        "verifiedAt":  "2026-07-16 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602014",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-156",
-        "invoiceId":  "INV-2026-158",
-        "studentNim":  "2602014",
-        "studentName":  "Ade Vina Hanituzzulva",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-31 08:30:00",
-        "verifiedAt":  "2026-08-31 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602014",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2014",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-157",
-        "invoiceId":  "INV-2026-159",
-        "studentNim":  "2602015",
-        "studentName":  "Garwita Felda Nabiha",
-        "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-07-28 08:30:00",
-        "verifiedAt":  "2026-07-28 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602015",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-158",
-        "invoiceId":  "INV-2026-159",
-        "studentNim":  "2602015",
-        "studentName":  "Garwita Felda Nabiha",
-        "prodi":  "PIAUD",
-        "amount":  450000,
-        "paymentType":  "DAFTAR_ULANG",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-29 08:30:00",
-        "verifiedAt":  "2026-09-29 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602015",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-159",
-        "invoiceId":  "INV-2026-160",
+        "id":  "VER-PIAUD-2602016",
+        "invoiceId":  "INV-2026-PIAUD-2016",
         "studentNim":  "2602016",
         "studentName":  "Mei Lestiyana",
         "prodi":  "PIAUD",
@@ -9039,84 +8312,53 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-02 08:30:00",
-        "verifiedAt":  "2026-09-02 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602016",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2016",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-160",
-        "invoiceId":  "INV-2026-161",
+        "id":  "VER-PIAUD-2602017",
+        "invoiceId":  "INV-2026-PIAUD-2017",
         "studentNim":  "2602017",
         "studentName":  "Nabila Nurlia Sari",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-21 08:30:00",
-        "verifiedAt":  "2026-08-21 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602017",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-161",
-        "invoiceId":  "INV-2026-161",
-        "studentNim":  "2602017",
-        "studentName":  "Nabila Nurlia Sari",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602017",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2017",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-162",
-        "invoiceId":  "INV-2026-162",
+        "id":  "VER-PIAUD-2602018",
+        "invoiceId":  "INV-2026-PIAUD-2018",
         "studentNim":  "2602018",
         "studentName":  "Inda Laila Sari",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-21 08:30:00",
-        "verifiedAt":  "2026-08-21 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602018",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-163",
-        "invoiceId":  "INV-2026-162",
-        "studentNim":  "2602018",
-        "studentName":  "Inda Laila Sari",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602018",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2018",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-164",
-        "invoiceId":  "INV-2026-164",
+        "id":  "VER-PIAUD-2602020",
+        "invoiceId":  "INV-2026-PIAUD-2020",
         "studentNim":  "2602020",
         "studentName":  "Yuliantun",
         "prodi":  "PIAUD",
@@ -9124,16 +8366,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-09 08:30:00",
-        "verifiedAt":  "2026-09-09 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602020",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2020",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-165",
-        "invoiceId":  "INV-2026-165",
+        "id":  "VER-PIAUD-2602021",
+        "invoiceId":  "INV-2026-PIAUD-2021",
         "studentNim":  "2602021",
         "studentName":  "Siti Puniah",
         "prodi":  "PIAUD",
@@ -9141,16 +8384,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-21 08:30:00",
-        "verifiedAt":  "2026-08-21 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602021",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2021",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-166",
-        "invoiceId":  "INV-2026-166",
+        "id":  "VER-PIAUD-2602022",
+        "invoiceId":  "INV-2026-PIAUD-2022",
         "studentNim":  "2602022",
         "studentName":  "Atika Mardiyanti Putri",
         "prodi":  "PIAUD",
@@ -9158,16 +8402,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-01 08:30:00",
-        "verifiedAt":  "2026-09-01 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602022",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2022",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-167",
-        "invoiceId":  "INV-2026-167",
+        "id":  "VER-PIAUD-2602023",
+        "invoiceId":  "INV-2026-PIAUD-2023",
         "studentNim":  "2602023",
         "studentName":  "Nginayatul Khabibah",
         "prodi":  "PIAUD",
@@ -9175,50 +8420,35 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-20 08:30:00",
-        "verifiedAt":  "2026-08-20 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602023",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2023",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-168",
-        "invoiceId":  "INV-2026-168",
+        "id":  "VER-PIAUD-2602024",
+        "invoiceId":  "INV-2026-PIAUD-2024",
         "studentNim":  "2602024",
         "studentName":  "Umi Mintarti Amilatun",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-21 08:30:00",
-        "verifiedAt":  "2026-08-21 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602024",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-169",
-        "invoiceId":  "INV-2026-168",
-        "studentNim":  "2602024",
-        "studentName":  "Umi Mintarti Amilatun",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-21 08:30:00",
-        "verifiedAt":  "2026-08-21 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602024",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2024",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-170",
-        "invoiceId":  "INV-2026-170",
+        "id":  "VER-PIAUD-2602026",
+        "invoiceId":  "INV-2026-PIAUD-2026",
         "studentNim":  "2602026",
         "studentName":  "Risma Pradesta Suradiyanto",
         "prodi":  "PIAUD",
@@ -9226,16 +8456,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-13 08:30:00",
-        "verifiedAt":  "2026-08-13 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602026",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2026",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-171",
-        "invoiceId":  "INV-2026-171",
+        "id":  "VER-PIAUD-2602027",
+        "invoiceId":  "INV-2026-PIAUD-2027",
         "studentNim":  "2602027",
         "studentName":  "Siti Rokhaniyah",
         "prodi":  "PIAUD",
@@ -9243,118 +8474,71 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-17 08:30:00",
-        "verifiedAt":  "2026-08-17 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602027",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2027",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-172",
-        "invoiceId":  "INV-2026-172",
+        "id":  "VER-PIAUD-2602028",
+        "invoiceId":  "INV-2026-PIAUD-2028",
         "studentNim":  "2602028",
         "studentName":  "Umi Farida",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-21 08:30:00",
-        "verifiedAt":  "2026-08-21 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602028",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-173",
-        "invoiceId":  "INV-2026-172",
-        "studentNim":  "2602028",
-        "studentName":  "Umi Farida",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-07 08:30:00",
-        "verifiedAt":  "2026-09-07 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602028",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2028",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-174",
-        "invoiceId":  "INV-2026-173",
+        "id":  "VER-PIAUD-2602029",
+        "invoiceId":  "INV-2026-PIAUD-2029",
         "studentNim":  "2602029",
         "studentName":  "Salafiyah",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602029",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-175",
-        "invoiceId":  "INV-2026-173",
-        "studentNim":  "2602029",
-        "studentName":  "Salafiyah",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602029",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2029",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-176",
-        "invoiceId":  "INV-2026-174",
+        "id":  "VER-PIAUD-2602030",
+        "invoiceId":  "INV-2026-PIAUD-2030",
         "studentNim":  "2602030",
         "studentName":  "Alvia Musayyida",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602030",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-177",
-        "invoiceId":  "INV-2026-174",
-        "studentNim":  "2602030",
-        "studentName":  "Alvia Musayyida",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602030",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2030",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-178",
-        "invoiceId":  "INV-2026-175",
+        "id":  "VER-PIAUD-2602031",
+        "invoiceId":  "INV-2026-PIAUD-2031",
         "studentNim":  "2602031",
         "studentName":  "Yasmina Syahriza",
         "prodi":  "PIAUD",
@@ -9362,16 +8546,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-27 08:30:00",
-        "verifiedAt":  "2026-08-27 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602031",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2031",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-179",
-        "invoiceId":  "INV-2026-176",
+        "id":  "VER-PIAUD-2602032",
+        "invoiceId":  "INV-2026-PIAUD-2032",
         "studentNim":  "2602032",
         "studentName":  "Jeklynda May Sarah",
         "prodi":  "PIAUD",
@@ -9379,16 +8564,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-25 08:30:00",
-        "verifiedAt":  "2026-08-25 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602032",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2032",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-180",
-        "invoiceId":  "INV-2026-177",
+        "id":  "VER-PIAUD-2602033",
+        "invoiceId":  "INV-2026-PIAUD-2033",
         "studentNim":  "2602033",
         "studentName":  "Nuryanti",
         "prodi":  "PIAUD",
@@ -9396,16 +8582,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-24 08:30:00",
-        "verifiedAt":  "2026-08-24 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602033",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2033",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-181",
-        "invoiceId":  "INV-2026-178",
+        "id":  "VER-PIAUD-2602034",
+        "invoiceId":  "INV-2026-PIAUD-2034",
         "studentNim":  "2602034",
         "studentName":  "Slamet Kholifah",
         "prodi":  "PIAUD",
@@ -9413,16 +8600,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-22 08:30:00",
-        "verifiedAt":  "2026-08-22 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602034",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2034",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-182",
-        "invoiceId":  "INV-2026-179",
+        "id":  "VER-PIAUD-2602035",
+        "invoiceId":  "INV-2026-PIAUD-2035",
         "studentNim":  "2602035",
         "studentName":  "Pompi Hartiwi",
         "prodi":  "PIAUD",
@@ -9430,33 +8618,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-22 08:30:00",
-        "verifiedAt":  "2026-08-22 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602035",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2035",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-183",
-        "invoiceId":  "INV-2026-181",
-        "studentNim":  "2602037",
-        "studentName":  "Meisita Rosalina",
-        "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-09 08:30:00",
-        "verifiedAt":  "2026-09-09 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602037",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-184",
-        "invoiceId":  "INV-2026-182",
+        "id":  "VER-PIAUD-2602038",
+        "invoiceId":  "INV-2026-PIAUD-2038",
         "studentNim":  "2602038",
         "studentName":  "Rahma Lestari",
         "prodi":  "PIAUD",
@@ -9464,50 +8636,35 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-15 08:30:00",
-        "verifiedAt":  "2026-08-15 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602038",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2038",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-185",
-        "invoiceId":  "INV-2026-184",
+        "id":  "VER-PIAUD-2602040",
+        "invoiceId":  "INV-2026-PIAUD-2040",
         "studentNim":  "2602040",
         "studentName":  "Arif Fradina",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-21 08:30:00",
-        "verifiedAt":  "2026-08-21 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602040",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-186",
-        "invoiceId":  "INV-2026-184",
-        "studentNim":  "2602040",
-        "studentName":  "Arif Fradina",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-29 08:30:00",
-        "verifiedAt":  "2026-08-29 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602040",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2040",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-187",
-        "invoiceId":  "INV-2026-185",
+        "id":  "VER-PIAUD-2602041",
+        "invoiceId":  "INV-2026-PIAUD-2041",
         "studentNim":  "2602041",
         "studentName":  "Warsidah",
         "prodi":  "PIAUD",
@@ -9515,16 +8672,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-24 08:30:00",
-        "verifiedAt":  "2026-08-24 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602041",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2041",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-188",
-        "invoiceId":  "INV-2026-186",
+        "id":  "VER-PIAUD-2602042",
+        "invoiceId":  "INV-2026-PIAUD-2042",
         "studentNim":  "2602042",
         "studentName":  "Winda Apriliani Putri",
         "prodi":  "PIAUD",
@@ -9532,50 +8690,53 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-29 08:30:00",
-        "verifiedAt":  "2026-08-29 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602042",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2042",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-189",
-        "invoiceId":  "INV-2026-187",
+        "id":  "VER-PIAUD-2602043",
+        "invoiceId":  "INV-2026-PIAUD-2043",
         "studentNim":  "2602043",
         "studentName":  "Hikmatul Fitroh",
         "prodi":  "PIAUD",
-        "amount":  200000,
-        "paymentType":  "PENDAFTARAN",
-        "paymentMethod":  "TRANSFER_BANK_BSI",
-        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-01 08:30:00",
-        "verifiedAt":  "2026-09-01 09:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602043",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
-    },
-    {
-        "id":  "VER-190",
-        "invoiceId":  "INV-2026-187",
-        "studentNim":  "2602043",
-        "studentName":  "Hikmatul Fitroh",
-        "prodi":  "PIAUD",
-        "amount":  450000,
+        "amount":  650000,
         "paymentType":  "DAFTAR_ULANG",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-01 08:30:00",
-        "verifiedAt":  "2026-09-01 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-DAFTARULANG/2026/2602043",
-        "notes":  "Heregistrasi \u0026 Daftar Ulang Mahasiswa Baru 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2043",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-191",
-        "invoiceId":  "INV-2026-195",
+        "id":  "VER-PIAUD-2602015",
+        "invoiceId":  "INV-2026-PIAUD-2015",
+        "studentNim":  "2602015",
+        "studentName":  "Garwita Felda Nabiha",
+        "prodi":  "PIAUD",
+        "amount":  650000,
+        "paymentType":  "DAFTAR_ULANG",
+        "paymentMethod":  "TRANSFER_BANK_BSI",
+        "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
+        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
+        "status":  "APPROVED",
+        "receiptNumber":  "KW-IF/2026/08/2015",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
+    },
+    {
+        "id":  "VER-PIAUD-2602051",
+        "invoiceId":  "INV-2026-PIAUD-2051",
         "studentNim":  "2602051",
         "studentName":  "Hanifah Rahmawati",
         "prodi":  "PIAUD",
@@ -9583,16 +8744,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-01 08:30:00",
-        "verifiedAt":  "2026-09-01 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602051",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2051",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-192",
-        "invoiceId":  "INV-2026-197",
+        "id":  "VER-PIAUD-2602053",
+        "invoiceId":  "INV-2026-PIAUD-2053",
         "studentNim":  "2602053",
         "studentName":  "Endang Elyana",
         "prodi":  "PIAUD",
@@ -9600,16 +8762,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-02 08:30:00",
-        "verifiedAt":  "2026-09-02 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602053",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2053",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-193",
-        "invoiceId":  "INV-2026-198",
+        "id":  "VER-PIAUD-2602054",
+        "invoiceId":  "INV-2026-PIAUD-2054",
         "studentNim":  "2602054",
         "studentName":  "Muhammad Nanang Nasikin",
         "prodi":  "PIAUD",
@@ -9617,16 +8780,17 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-08-31 08:30:00",
-        "verifiedAt":  "2026-08-31 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602054",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2054",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     },
     {
-        "id":  "VER-194",
-        "invoiceId":  "INV-2026-199",
+        "id":  "VER-PIAUD-2602055",
+        "invoiceId":  "INV-2026-PIAUD-2055",
         "studentNim":  "2602055",
         "studentName":  "Prapti Budi Sulastri",
         "prodi":  "PIAUD",
@@ -9634,87 +8798,64 @@ const INITIAL_SEED_DATA = {
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
-        "submittedAt":  "2026-09-02 08:30:00",
-        "verifiedAt":  "2026-09-02 09:00:00",
+        "proofImageUrl":  null,
+        "submittedAt":  "2026-08-25 10:00:00",
+        "verifiedAt":  "2026-08-25 14:00:00",
         "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
         "status":  "APPROVED",
-        "receiptNumber":  "KW-PENDAFTARAN/2026/2602055",
-        "notes":  "Pembayaran formulir pendaftaran PMB 2026 sah terverifikasi"
+        "receiptNumber":  "KW-IF/2026/08/2055",
+        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
     }
-]
-,
+],
 
-  // Audit Logs
-  auditLogs: [
-    {
-      id: 'LOG-001',
-      action: 'SYSTEM_SYNC',
-      target: 'Google Spreadsheet STIT-IF',
-      details: 'Sinkronisasi master data mahasiswa baru PMB 2026 (BKPI & PIAUD) dan rekapitulasi semester dari Google Sheets resmi.',
-      timestamp: '2026-09-11 08:30:00',
-      user: 'Ustadzah Siti Fatimah, S.E.',
-      ip: '127.0.0.1'
-    },
-    {
-      id: 'LOG-002',
-      action: 'INIT_SEMESTER',
-      target: 'Semester 2026/2027 Ganjil',
-      details: 'Penerbitan tagihan serentak PMB 2026 dan semester ganjil berjalan.',
-      timestamp: '2026-08-01 08:00:00',
-      user: 'Ustadzah Siti Fatimah, S.E.',
-      ip: '127.0.0.1'
-    }
-  ],
-
-  // Kalender Akademik Resmi
   academicCalendar: [
     {
       id: 'EVT-001',
-      title: 'Pendaftaran & Seleksi Mahasiswa Baru (PMB) Gelombang II',
-      category: 'KEUANGAN',
+      title: 'Penerimaan Mahasiswa Baru (PMB) Gelombang Utama',
+      category: 'PMB',
       startDate: '2026-06-01',
       endDate: '2026-08-31',
       semester: '2026/2027 Ganjil',
-      location: 'Portal PMB & Biro BAU Kampus STIT-IF',
-      description: 'Pendaftaran online/offline maba dan pembayaran formulir pendaftaran Rp 200.000 ke BSI 1056405743.',
+      location: 'Kampus STIT-IF & Online Portal',
+      description: 'Pendaftaran mahasiswa baru prodi BKPI dan PIAUD serta verifikasi berkas beasiswa.',
       isMandatory: true,
       targetRoles: ['ALL']
     },
     {
       id: 'EVT-002',
-      title: 'Heregistrasi & Daftar Ulang Mahasiswa Baru 2026',
-      category: 'KEUANGAN',
-      startDate: '2026-07-15',
-      endDate: '2026-09-10',
+      title: 'Batas Akhir Heregistrasi & Daftar Ulang (Rp 450.000)',
+      category: 'FINANSIAL',
+      startDate: '2026-09-01',
+      endDate: '2026-09-15',
       semester: '2026/2027 Ganjil',
-      location: 'Biro BAU & Bank BSI',
-      description: 'Pelunasan biaya daftar ulang Rp 450.000 dan verifikasi berkas PMB.',
+      location: 'Bank BSI 1056405743 / Bendahara',
+      description: 'Pelunasan biaya heregistrasi mahasiswa baru dan pengisian KRS.',
       isMandatory: true,
-      targetRoles: ['ALL']
+      targetRoles: ['MAHASISWA', 'ADMIN']
     },
     {
       id: 'EVT-003',
-      title: 'Batas Akhir Pembayaran SPP Semester Ganjil 2026/2027',
-      category: 'KEUANGAN',
-      startDate: '2026-08-01',
-      endDate: '2026-09-15',
+      title: 'Kuliah Perdana & Taaruf Kampus (OSPEK)',
+      category: 'AKADEMIK',
+      startDate: '2026-09-21',
+      endDate: '2026-09-23',
       semester: '2026/2027 Ganjil',
-      location: 'Virtual Account Bank BSI: 1056405743',
-      description: 'Batas akhir pembayaran SPP/UKT untuk validasi KRS aktif perkuliahan.',
+      location: 'Auditorium Kampus STIT Ihsanul Fikri',
+      description: 'Pembukaan tahun akademik baru 2026/2027 dan stadium generale.',
       isMandatory: true,
-      targetRoles: ['ALL']
+      targetRoles: ['MAHASISWA']
     },
     {
       id: 'EVT-004',
-      title: 'Kuliah Perdana & Taruf Mahasiswa Baru (Orientasi)',
-      category: 'AKADEMIK',
-      startDate: '2026-09-14',
-      endDate: '2026-09-16',
+      title: 'Batas Pelunasan SPP Tahap 1 (50%)',
+      category: 'FINANSIAL',
+      startDate: '2026-10-15',
+      endDate: '2026-10-15',
       semester: '2026/2027 Ganjil',
-      location: 'Auditorium Utama STIT Ihsanul Fikri',
-      description: 'Orientasi akademik dan pengenalan kampus untuk seluruh mahasiswa baru angkatan 2026.',
+      location: 'Sistem Pembayaran SIMPEL-IF',
+      description: 'Batas akhir pembayaran SPP tahap pertama sebelum UTS.',
       isMandatory: true,
-      targetRoles: ['ALL']
+      targetRoles: ['MAHASISWA', 'ADMIN']
     },
     {
       id: 'EVT-005',
@@ -9752,7 +8893,7 @@ class StateManager {
   loadInitialState() {
     try {
       // Clear legacy storage keys
-      ['simpel_if_state', 'SIMPEL_IF_STATE_V1', 'SIMPEL_IF_STATE_V2', 'SIMPEL_IF_STATE_V3', 'SIMPEL_IF_STATE_V4'].forEach(k => {
+      ['simpel_if_state', 'SIMPEL_IF_STATE_V1', 'SIMPEL_IF_STATE_V2', 'SIMPEL_IF_STATE_V3', 'SIMPEL_IF_STATE_V4', 'SIMPEL_IF_STATE_V5'].forEach(k => {
         try { localStorage.removeItem(k); } catch (e) {}
       });
 
@@ -9760,7 +8901,7 @@ class StateManager {
       if (saved) {
         this.state = JSON.parse(saved);
         // Ensure student records and sheets matrix are complete
-        if (!this.state.students || this.state.students.length < 100 || !this.state.googleSheetsMatrix || !this.state.googleSheetsMatrix.bkpi2026) {
+        if (!this.state.students || this.state.students.length < 100 || !this.state.googleSheetsMatrix || !this.state.googleSheetsMatrix.bkpi2026 || !this.state.scholarshipSchemes) {
           this.state = JSON.parse(JSON.stringify(INITIAL_SEED_DATA));
           this.saveState();
         } else {
@@ -9828,18 +8969,20 @@ class StateManager {
 
     if (targetRole === 'MAHASISWA') {
       const targetNim = customStudentNim || '2601001'; // Default Miftahul Jannah
-      const student = this.state.students.find(s => s.nim === targetNim) || this.state.students[0];
-      this.state.currentUser = {
-        id: `MHS-${student.nim}`,
-        name: student.name,
-        role: 'MAHASISWA',
-        email: student.email,
-        avatarText: student.name.split(' ').map(n => n[0]).slice(0, 2).join(''),
-        prodi: student.prodi,
-        nim: student.nim,
-        scholarshipId: student.scholarshipId,
-        semester: student.semester
-      };
+      const student = (this.state.students && this.state.students.find(s => s.nim === targetNim)) || (this.state.students && this.state.students[0]);
+      if (student) {
+        this.state.currentUser = {
+          id: MHS-,
+          name: student.name,
+          role: 'MAHASISWA',
+          email: student.email,
+          avatarText: student.name.split(' ').map(n => n[0]).slice(0, 2).join(''),
+          prodi: student.prodi,
+          nim: student.nim,
+          scholarshipId: student.scholarshipId,
+          semester: student.semester
+        };
+      }
     } else {
       const activeAdmin = (this.state.adminUsers && this.state.adminUsers.find(a => a.status === 'AKTIF')) ||
                           this.state.adminProfile ||
@@ -9861,9 +9004,9 @@ class StateManager {
     this.state.adminProfile = { ...admin };
     this.state.currentUser = { ...admin, role: 'ADMIN' };
 
-    this.addAuditLog('SWITCH_ADMIN', admin.name, `Beralih sesi aktif ke Admin: ${admin.name}.`);
+    this.addAuditLog('SWITCH_ADMIN', admin.name, Beralih sesi aktif ke Admin: .);
     this.notify();
-    return { success: true, message: `Beralih ke akun ${admin.name}.`, admin };
+    return { success: true, message: Beralih ke akun ., admin };
   }
 
   addAdminUser(adminData) {
@@ -9874,16 +9017,16 @@ class StateManager {
 
     if (!name || !username || !password) return { success: false, message: 'Nama, username, dan password wajib diisi.' };
     if (this.state.adminUsers.some(a => a.username.toLowerCase() === username)) {
-      return { success: false, message: `Username "${username}" sudah digunakan.` };
+      return { success: false, message: Username "" sudah digunakan. };
     }
 
     const newAdmin = {
-      id: `ADM-${Date.now()}`,
+      id: ADM-,
       username,
       password,
       name,
       role: 'ADMIN',
-      email: adminData.email || `${username}@stit-if.ac.id`,
+      email: adminData.email || ${username}@stit-if.ac.id,
       phone: adminData.phone || '082342307414',
       title: adminData.title || 'Staf Administrasi & Keuangan',
       department: adminData.department || 'Biro Keuangan & Administrasi Umum (BAU)',
@@ -9895,9 +9038,9 @@ class StateManager {
     };
 
     this.state.adminUsers.push(newAdmin);
-    this.addAuditLog('ADD_ADMIN', newAdmin.name, `Penambahan admin baru: ${newAdmin.name} (@${newAdmin.username}).`);
+    this.addAuditLog('ADD_ADMIN', newAdmin.name, Penambahan admin baru:  (@).);
     this.notify();
-    return { success: true, message: `Admin "${name}" berhasil ditambahkan!`, admin: newAdmin };
+    return { success: true, message: Admin "" berhasil ditambahkan!, admin: newAdmin };
   }
 
   updateAdminUser(adminId, updatedFields) {
@@ -9922,7 +9065,7 @@ class StateManager {
       this.setActiveAdmin(this.state.adminUsers[0].id);
     }
     this.notify();
-    return { success: true, message: `Admin ${target.name} berhasil dihapus.` };
+    return { success: true, message: Admin  berhasil dihapus. };
   }
 
   registerStudent(studentData) {
@@ -9931,13 +9074,13 @@ class StateManager {
     }
     const existingNim = studentData.nim && this.state.students.find(s => s.nim === studentData.nim);
     if (existingNim) {
-      return { success: false, message: `NIM ${studentData.nim} sudah terdaftar di sistem.` };
+      return { success: false, message: NIM  sudah terdaftar di sistem. };
     }
 
     const prodiCode = studentData.prodi === 'PIAUD' ? '02' : '01';
-    const prodiStudents = this.state.students.filter(s => s.prodi === (studentData.prodi || 'BKPI') && s.nim && s.nim.startsWith('26'));
+    const prodiStudents = (this.state.students || []).filter(s => s.prodi === (studentData.prodi || 'BKPI') && s.nim && s.nim.startsWith('26'));
     const nextSeq = String(prodiStudents.length + 1).padStart(3, '0');
-    const nim = studentData.nim || `26${prodiCode}${nextSeq}`;
+    const nim = studentData.nim || 26;
 
     const newStudent = {
       nim: nim,
@@ -9950,14 +9093,14 @@ class StateManager {
       scholarshipId: studentData.scholarshipId || 'REGULER',
       jalurOriginal: studentData.jalurOriginal || studentData.scholarshipId || 'Reguler',
       phone: studentData.phone || '-',
-      email: studentData.email || `${nim}@mahasiswa.stit-ihsanulfikri.ac.id`,
+      email: studentData.email || ${nim}@mahasiswa.stit-ihsanulfikri.ac.id,
       username: nim,
       password: studentData.password || '123456'
     };
 
     this.state.students.unshift(newStudent);
 
-    const invId = `INV-2026-${Date.now().toString().slice(-6)}`;
+    const invId = INV-2026-;
     const isMitra = ['MITRA', 'GURU_TPA', 'ALUMNI_PONPES', 'BEASISWA_50', 'PRESTASI'].includes(newStudent.scholarshipId);
     const isFree = ['PAUD_LAKI', 'MITRA_GRATIS'].includes(newStudent.scholarshipId);
     const isAsrama = newStudent.scholarshipId === 'ASRAMA';
@@ -9983,19 +9126,19 @@ class StateManager {
       receiptNumber: null,
       paymentDate: null,
       virtualAccount: '1056405743',
-      notes: `Tagihan Registrasi Mahasiswa Baru (${newStudent.prodi})`
+      notes: Tagihan Registrasi Mahasiswa Baru ()
     };
     this.state.invoices.unshift(newInv);
 
-    this.addAuditLog('REGISTER_STUDENT_SELF', `${newStudent.name} (${newStudent.nim})`, `Registrasi mandiri mahasiswa baru prodi ${newStudent.prodi}.`);
+    this.addAuditLog('REGISTER_STUDENT_SELF', ${newStudent.name} (), Registrasi mandiri mahasiswa baru prodi .);
     this.notify();
-    return { success: true, message: `Pendaftaran berhasil! NIM Anda: ${newStudent.nim}`, student: newStudent, invoice: newInv };
+    return { success: true, message: Pendaftaran berhasil! NIM Anda: , student: newStudent, invoice: newInv };
   }
 
   addStudent(student) {
     if (!student.nim || !student.name) return { success: false, message: 'NIM dan Nama lengkap wajib diisi.' };
     if (this.state.students.some(s => s.nim === student.nim)) {
-      return { success: false, message: `Mahasiswa dengan NIM ${student.nim} sudah terdaftar.` };
+      return { success: false, message: Mahasiswa dengan NIM  sudah terdaftar. };
     }
     if (!student.username) student.username = student.nim;
     if (!student.password) student.password = '123456';
@@ -10004,7 +9147,7 @@ class StateManager {
     this.state.students.unshift(student);
 
     // Auto create invoice
-    const invId = `INV-2026-${Date.now().toString().slice(-6)}`;
+    const invId = INV-2026-;
     const isMitra = student.scholarshipId === 'MITRA' || student.scholarshipId === 'GURU_TPA' || student.scholarshipId === 'ALUMNI_PONPES' || student.scholarshipId === 'BEASISWA_50' || student.scholarshipId === 'PRESTASI';
     const isFree = student.scholarshipId === 'PAUD_LAKI' || student.scholarshipId === 'MITRA_GRATIS';
     const isAsrama = student.scholarshipId === 'ASRAMA';
@@ -10030,13 +9173,13 @@ class StateManager {
       receiptNumber: null,
       paymentDate: null,
       virtualAccount: '1056405743',
-      notes: `Tagihan Mahasiswa Baru (${student.prodi})`
+      notes: Tagihan Mahasiswa Baru ()
     };
     this.state.invoices.unshift(newInv);
 
-    this.addAuditLog('ADD_STUDENT', `${student.name} (${student.nim})`, `Penambahan mahasiswa baru prodi ${student.prodi}.`);
+    this.addAuditLog('ADD_STUDENT', ${student.name} (), Penambahan mahasiswa baru prodi .);
     this.notify();
-    return { success: true, message: `Mahasiswa ${student.name} berhasil ditambahkan.` };
+    return { success: true, message: Mahasiswa  berhasil ditambahkan. };
   }
 
   updateStudent(nim, updatedFields) {
@@ -10054,7 +9197,7 @@ class StateManager {
     this.state.invoices = this.state.invoices.filter(i => i.studentNim !== nim);
     this.state.paymentVerifications = this.state.paymentVerifications.filter(v => v.studentNim !== nim);
     this.notify();
-    return { success: true, message: `Mahasiswa ${stu.name} berhasil dihapus.` };
+    return { success: true, message: Mahasiswa  berhasil dihapus. };
   }
 
   updateStudentCredentials(oldNim, fields) {
@@ -10062,7 +9205,7 @@ class StateManager {
     if (!student) return { success: false, message: 'Mahasiswa tidak ditemukan.' };
     const newNim = fields.nim ? fields.nim.trim() : oldNim;
     if (newNim !== oldNim && this.state.students.some(s => s.nim === newNim)) {
-      return { success: false, message: `NIM ${newNim} sudah digunakan.` };
+      return { success: false, message: NIM  sudah digunakan. };
     }
     student.nim = newNim;
     student.username = fields.username ? fields.username.trim() : (student.username || newNim);
@@ -10081,7 +9224,7 @@ class StateManager {
       }
     }
     this.notify();
-    return { success: true, message: `Kredensial ${student.name} berhasil diperbarui.` };
+    return { success: true, message: Kredensial  berhasil diperbarui. };
   }
 
   // Payment Actions
@@ -10093,7 +9236,7 @@ class StateManager {
     verif.verifiedAt = new Date().toISOString().replace('T', ' ').slice(0, 19);
     verif.verifiedBy = this.state.currentUser?.name || 'Ustadzah Siti Fatimah, S.E.';
     if (!verif.receiptNumber) {
-      verif.receiptNumber = `KW-IF/2026/09/${Date.now().toString().slice(-4)}`;
+      verif.receiptNumber = KW-IF/2026/09/;
     }
 
     const inv = this.state.invoices.find(i => i.id === verif.invoiceId || i.studentNim === verif.studentNim);
@@ -10108,9 +9251,9 @@ class StateManager {
       inv.paymentDate = verif.verifiedAt;
     }
 
-    this.addAuditLog('VERIFY_PAYMENT', `Rp ${verif.amount} (${verif.studentNim})`, `Persetujuan bukti bayar & penerbitan kwitansi sah.`);
+    this.addAuditLog('VERIFY_PAYMENT', Rp  (), Persetujuan bukti bayar & penerbitan kwitansi sah.);
     this.notify();
-    return { success: true, message: `Pembayaran sebesar Rp ${verif.amount.toLocaleString('id-ID')} disetujui.` };
+    return { success: true, message: Pembayaran sebesar Rp  disetujui. };
   }
 
   rejectPayment(verificationId, reason = 'Bukti pembayaran tidak terbaca atau mutasi bank tidak ditemukan.') {
@@ -10122,13 +9265,13 @@ class StateManager {
     verif.verifiedAt = new Date().toISOString().replace('T', ' ').slice(0, 19);
     verif.verifiedBy = this.state.currentUser?.name || 'Ustadzah Siti Fatimah, S.E.';
 
-    this.addAuditLog('REJECT_PAYMENT', `Rp ${verif.amount} (${verif.studentNim})`, `Penolakan bukti bayar: ${reason}`);
+    this.addAuditLog('REJECT_PAYMENT', Rp  (), Penolakan bukti bayar: );
     this.notify();
     return { success: true, message: 'Pembayaran ditolak.' };
   }
 
   createCustomPayment(paymentData) {
-    const verifId = `VER-${Date.now().toString().slice(-6)}`;
+    const verifId = VER-;
     const student = this.state.students.find(s => s.nim === paymentData.studentNim);
     const studentName = student ? student.name : (paymentData.studentName || 'Mahasiswa');
     const studentProdi = student ? student.prodi : (paymentData.prodi || 'BKPI');
@@ -10153,7 +9296,7 @@ class StateManager {
     };
 
     this.state.paymentVerifications.unshift(newVerif);
-    this.addAuditLog('UPLOAD_PAYMENT', `Rp ${newVerif.amount} (${newVerif.studentNim})`, `Unggah bukti bayar transfer baru.`);
+    this.addAuditLog('UPLOAD_PAYMENT', Rp  (), Unggah bukti bayar transfer baru.);
     this.notify();
     return { success: true, message: 'Bukti pembayaran berhasil dikirim untuk verifikasi.', verification: newVerif };
   }
@@ -10161,7 +9304,7 @@ class StateManager {
   addAuditLog(action, target, details) {
     if (!this.state.auditLogs) this.state.auditLogs = [];
     this.state.auditLogs.unshift({
-      id: `LOG-${Date.now()}`,
+      id: LOG-,
       action,
       target,
       details,
@@ -10171,9 +9314,8 @@ class StateManager {
     });
   }
 
-  // Academic Calendar Mutations
   addAcademicEvent(eventData) {
-    const id = eventData.id || `EVT-${Date.now()}`;
+    const id = eventData.id || EVT-;
     const newEvent = {
       id,
       title: eventData.title || 'Agenda Baru',
