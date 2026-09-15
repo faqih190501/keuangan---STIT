@@ -58,14 +58,16 @@
   </div>
 
   <script>
-    // GitHub Pages SPA route recovery
-    const segmentCount = 1;
-    const l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/index.html' +
-      (l.search ? l.search : '') + (l.hash ? l.hash : '')
-    );
+    // GitHub Pages & Local SPA route recovery
+    (function() {
+      const path = window.location.pathname;
+      let base = './index.html';
+      if (path.indexOf('/keuangan---STIT') !== -1) {
+        base = '/keuangan---STIT/index.html';
+      }
+      const dest = base + (window.location.search || '') + (window.location.hash || '');
+      window.location.replace(dest);
+    })();
   </script>
 </body>
 </html>
