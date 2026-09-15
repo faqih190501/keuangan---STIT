@@ -27,29 +27,29 @@
   --accent-50:  #f0f9ff;
 
   /* Neutral Backgrounds & Surfaces */
-  /* Neutral Backgrounds & Surfaces (Soothing Blue Dominated Theme) */
-  --bg-app: #f0f5fc;       /* Clean, soft ice-blue canvas */
-  --bg-surface: #ffffff;
+  /* Neutral Backgrounds & Surfaces (Ergonomic Blue & Slate UI/UX) */
+  --bg-app: #f4f7fb;       /* Soothing slate-blue canvas, very gentle on the eyes */
+  --bg-surface: #ffffff;   /* Pure crisp white cards for optimal reading */
   --bg-surface-elevated: #ffffff;
-  --bg-surface-subtle: #f4f8fe; /* Soft ice-blue tinted surface */
+  --bg-surface-subtle: #f8fafc; /* Crisp, clean subtle container */
   --bg-sidebar: #0f2347;   /* Rich, noble sapphire-navy */
   --bg-sidebar-hover: #17366b;
   --bg-sidebar-active: #2563eb;
 
-  /* Text Colors */
-  --text-dark: #0f2142;    /* Deep Navy Slate */
-  --text-main: #1e293b;
-  --text-muted: #475569;
-  --text-light: #64748b;
+  /* Text Colors (High-Contrast WCAG AAA Hierarchy) */
+  --text-dark: #0f2142;    /* Deep Navy Slate (Headings) */
+  --text-main: #1e293b;    /* Slate-800 (Body Text, readable for hours) */
+  --text-muted: #475569;   /* Slate-600 (Meta & Descriptions) */
+  --text-light: #64748b;   /* Slate-500 (Captions & Breadcrumbs) */
   --text-lighter: #94a3b8;
   --text-white: #ffffff;
   --text-sidebar: #cbdcf8;
   --text-sidebar-bright: #ffffff;
 
-  /* Borders & Dividers */
-  --border-color: #cbdcf8; /* Soft sky-tinted border */
-  --border-light: #e0edfd; /* Very gentle light blue border */
-  --border-subtle: #edf4fe;
+  /* Borders & Dividers (Clean & Crisp) */
+  --border-color: #cbd5e1; /* Clear crisp boundary */
+  --border-light: #e2e8f0; /* Gentle divider */
+  --border-subtle: #f1f5f9;
   --border-focus: #2563eb;
 
   /* Status Colors & Badges */
