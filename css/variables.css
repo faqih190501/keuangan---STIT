@@ -4,35 +4,36 @@
    ========================================================================== */
 
 :root {
-  /* Primary Palettes (Corporate Navy & Royal Blue) */
-  --primary-950: #0a1329;
-  --primary-900: #0f2042;
-  --primary-850: #142c5b;
-  --primary-800: #1e3a8a;
-  --primary-700: #1e40af; /* Main Header & Primary CTA */
-  --primary-600: #2563eb;
-  --primary-500: #3b82f6;
-  --primary-400: #60a5fa;
+  /* Primary Palettes (Modern Refreshing Blue - Soothing & Gentle on the Eyes) */
+  --primary-950: #0f2347; /* Gentle midnight slate, not harsh pitch black */
+  --primary-900: #163261; /* Soft executive navy */
+  --primary-850: #1a3c75;
+  --primary-800: #1d4ed8; /* Deep rich sapphire */
+  --primary-700: #2563eb; /* Main vibrant & friendly blue (not dark heavy navy) */
+  --primary-600: #3b82f6; /* Gentle bright blue */
+  --primary-500: #60a5fa;
+  --primary-400: #93c5fd;
+  --primary-200: #bfdbfe;
   --primary-100: #dbeafe;
   --primary-50:  #eff6ff;
 
-  /* Accent Palettes (Sky Blue & Cyan) */
-  --accent-700: #0369a1;
-  --accent-600: #0284c7; /* Secondary Accent & Highlights */
-  --accent-500: #0ea5e9;
-  --accent-400: #38bdf8;
-  --accent-300: #7dd3fc;
+  /* Accent Palettes (Sky Blue & Soft Cyan) */
+  --accent-700: #0284c7;
+  --accent-600: #0ea5e9; /* Light, cheerful highlight accent */
+  --accent-500: #38bdf8;
+  --accent-400: #7dd3fc;
+  --accent-300: #bae6fd;
   --accent-100: #e0f2fe;
   --accent-50:  #f0f9ff;
 
   /* Neutral Backgrounds & Surfaces */
-  --bg-app: #f0f4f8;       /* Slate Ice Blue canvas */
+  --bg-app: #f4f7fb;       /* Soothing light slate-blue canvas, gentle on eyes */
   --bg-surface: #ffffff;
   --bg-surface-elevated: #ffffff;
   --bg-surface-subtle: #f8fafc;
-  --bg-sidebar: #0f1e3c;
-  --bg-sidebar-hover: #1a2f58;
-  --bg-sidebar-active: #1e40af;
+  --bg-sidebar: #13233d;   /* Refined modern deep slate-sapphire, not heavy/murky */
+  --bg-sidebar-hover: #1c3358;
+  --bg-sidebar-active: #2563eb;
 
   /* Text Colors */
   --text-dark: #0f172a;    /* Slate Dark */

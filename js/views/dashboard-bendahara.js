@@ -132,10 +132,10 @@ export function renderDashboardBendahara(container) {
     </div>
 
     <!-- Admin Profile Identity Banner -->
-    <div class="card-academic-trim" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: #ffffff; border-radius: var(--radius-xl); padding: 18px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(30,58,138,0.25); position: relative; overflow: hidden;">
+    <div class="card-academic-trim" style="background: linear-gradient(135deg, #163261 0%, #2563eb 100%); color: #ffffff; border-radius: var(--radius-xl); padding: 18px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(37,99,235,0.25); position: relative; overflow: hidden;">
       <div class="ornament-corner-star" style="opacity: 0.08; width: 130px; height: 130px; top: -15px; right: -15px;"></div>
       <div style="display: flex; align-items: center; gap: 16px; position: relative; z-index: 1;">
-        <div style="width: 52px; height: 52px; border-radius: 50%; background: #ffffff; color: #1e40af; font-weight: 900; font-size: 1.35rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.18); flex-shrink: 0;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #ffffff; color: #2563eb; font-weight: 900; font-size: 1.35rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.18); flex-shrink: 0;">
           ${admin.avatarText || 'SF'}
         </div>
         <div>

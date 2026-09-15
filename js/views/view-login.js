@@ -93,7 +93,7 @@ export function renderLoginView(container) {
 
           <!-- Instant Direct Access Buttons to Showcase Data -->
           <div style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-            <button type="button" id="btn-quick-enter-admin" class="btn btn-sm btn-shimmer" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: #ffffff; font-weight: 800; font-size: 0.80rem; padding: 8px 18px; border-radius: var(--radius-lg); border: 1px solid #3b82f6; cursor: pointer; box-shadow: 0 4px 12px rgba(30,58,138,0.25); display: inline-flex; align-items: center; gap: 6px;">
+            <button type="button" id="btn-quick-enter-admin" class="btn btn-sm btn-shimmer" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: #ffffff; font-weight: 800; font-size: 0.80rem; padding: 8px 18px; border-radius: var(--radius-lg); border: 1px solid #60a5fa; cursor: pointer; box-shadow: 0 4px 12px rgba(37,99,235,0.25); display: inline-flex; align-items: center; gap: 6px;">
               <span>👑</span> <span>Buka Dashboard Bendahara & Semua Data ➔</span>
             </button>
             <button type="button" id="btn-quick-enter-sheets" class="btn btn-sm btn-shimmer" style="background: #ffffff; color: #15803d; font-weight: 800; font-size: 0.80rem; padding: 8px 16px; border-radius: var(--radius-lg); border: 1px solid #86efac; cursor: pointer; box-shadow: 0 2px 8px rgba(34,197,94,0.15); display: inline-flex; align-items: center; gap: 6px;">
@@ -173,7 +173,7 @@ export function renderLoginView(container) {
                   </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border: none; box-shadow: 0 4px 12px rgba(37,99,235,0.35);">
+                <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
                   🚀 Masuk ke Portal Mahasiswa
                 </button>
               </form>
@@ -260,7 +260,7 @@ export function renderLoginView(container) {
                   <span style="color: #0284c7; font-weight: 700;">Hak Akses: Pengelola Penuh</span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); border: none; box-shadow: 0 4px 12px rgba(15,23,42,0.3);">
+                <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #163261 0%, #2563eb 100%); border: none; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
                   👑 Masuk ke Dashboard Admin
                 </button>
               </form>

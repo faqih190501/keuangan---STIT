@@ -88,7 +88,7 @@ export function renderMahasiswaPortal(container) {
     </div>
 
     <!-- 1. Warm Islamic Welcome Hero Banner -->
-    <div class="student-welcome-hero card-academic-trim" style="background: linear-gradient(135deg, #092540 0%, #0f3d63 40%, #064e3b 100%); border-radius: var(--radius-2xl); padding: 26px 30px; margin-bottom: 24px; box-shadow: 0 15px 35px -5px rgba(9, 37, 64, 0.4); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.15);">
+    <div class="student-welcome-hero card-academic-trim" style="background: linear-gradient(135deg, #163261 0%, #1d4ed8 50%, #0284c7 100%); border-radius: var(--radius-2xl); padding: 26px 30px; margin-bottom: 24px; box-shadow: 0 15px 35px -5px rgba(22, 50, 97, 0.3); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.15);">
       
       <!-- Subtle Decorative Halo Glow & Corner Star -->
       <div style="position: absolute; right: -50px; top: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%); filter: blur(30px); pointer-events: none;"></div>
@@ -98,7 +98,7 @@ export function renderMahasiswaPortal(container) {
         <div style="display: flex; align-items: center; gap: 20px;">
           <div style="width: 72px; height: 72px; border-radius: var(--radius-full); background: rgba(255, 255, 255, 0.2); border: 3px solid rgba(255, 255, 255, 0.5); display: flex; align-items: center; justify-content: center; font-size: 1.85rem; font-weight: 900; box-shadow: 0 8px 20px rgba(0,0,0,0.25); flex-shrink: 0; position: relative;">
             ${currentStudent.name.split(' ').map(n=>n[0]).slice(0,2).join('')}
-            <span class="pulsing-dot pulsing-dot-green" style="position: absolute; bottom: 2px; right: 2px; border: 2px solid #092540;" title="Mahasiswa Aktif"></span>
+            <span class="pulsing-dot pulsing-dot-green" style="position: absolute; bottom: 2px; right: 2px; border: 2px solid #163261;" title="Mahasiswa Aktif"></span>
           </div>
           <div>
             <div style="font-size: 0.76rem; color: #a7f3d0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px;">
