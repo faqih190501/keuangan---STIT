@@ -71,9 +71,27 @@
   transition: all var(--transition-normal);
 }
 
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: -25px;
+  right: -25px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--stat-glow-color, rgba(30, 64, 175, 0.08)) 0%, transparent 70%);
+  pointer-events: none;
+  transition: transform var(--transition-normal);
+}
+
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
+  border-color: rgba(203, 213, 225, 0.9);
+}
+
+.stat-card:hover::before {
+  transform: scale(1.3);
 }
 
 .stat-card::after {
@@ -87,10 +105,19 @@
 }
 
 .stat-card.stat-blue::after { background: #1e40af; }
+.stat-card.stat-blue::before { --stat-glow-color: rgba(30, 64, 175, 0.14); }
+
 .stat-card.stat-sky::after { background: #0284c7; }
+.stat-card.stat-sky::before { --stat-glow-color: rgba(2, 132, 199, 0.14); }
+
 .stat-card.stat-green::after { background: #10b981; }
+.stat-card.stat-green::before { --stat-glow-color: rgba(16, 185, 129, 0.14); }
+
 .stat-card.stat-amber::after { background: #f59e0b; }
+.stat-card.stat-amber::before { --stat-glow-color: rgba(245, 158, 11, 0.14); }
+
 .stat-card.stat-purple::after { background: #8b5cf6; }
+.stat-card.stat-purple::before { --stat-glow-color: rgba(139, 92, 246, 0.14); }
 
 .stat-content {
   display: flex;
@@ -1230,6 +1257,84 @@ textarea.form-control {
 .interactive-hover-card:hover {
   transform: translateY(-3px) scale(1.01);
   box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
+}
+
+/* ==========================================================================
+   Aesthetic Ornaments & Embellishments
+   ========================================================================== */
+.card-academic-trim {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-academic-trim::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1e40af 0%, #0284c7 35%, #d97706 70%, #1e40af 100%);
+}
+
+.ornament-corner-star {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 90px;
+  height: 90px;
+  opacity: 0.045;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,0 61,35 98,35 68,57 79,91 50,70 21,91 32,57 2,35 39,35' fill='%231e40af'/%3E%3Cpolygon points='50,15 58,38 82,38 63,52 70,75 50,61 30,75 37,52 18,38 42,38' fill='none' stroke='%23d97706' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='14' fill='none' stroke='%230284c7' stroke-width='2'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover .ornament-corner-star {
+  opacity: 0.08;
+  transform: rotate(15deg) scale(1.05);
+}
+
+.ornament-pinstripe {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(30, 64, 175, 0.2) 20%, rgba(217, 119, 6, 0.35) 50%, rgba(14, 165, 233, 0.2) 80%, transparent);
+  margin: 18px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ornament-pinstripe::after {
+  content: '✦';
+  position: absolute;
+  background: var(--bg-surface);
+  padding: 0 8px;
+  font-size: 0.72rem;
+  color: #d97706;
+}
+
+.ornament-feature-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(203, 213, 225, 0.7);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+
+.ornament-feature-chip:hover {
+  transform: translateY(-1px);
+  border-color: #93c5fd;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
 }
 
 /* ==========================================================================

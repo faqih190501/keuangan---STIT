@@ -42,11 +42,15 @@ export function renderLoginView(container) {
   container.innerHTML = `
     <div style="max-width: 1060px; margin: 12px auto 40px; animation: fadeInScale 0.35s ease; position: relative;">
       
+      <!-- Decorative Corner Ambient Glow Orbs -->
+      <div style="position: absolute; top: -50px; left: -60px; width: 320px; height: 320px; background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%); filter: blur(50px); pointer-events: none; z-index: 0;"></div>
+      <div style="position: absolute; top: 120px; right: -60px; width: 340px; height: 340px; background: radial-gradient(circle, rgba(217,119,6,0.07) 0%, transparent 70%); filter: blur(60px); pointer-events: none; z-index: 0;"></div>
+
       <!-- Top Branding Hero -->
       <div style="text-align: center; margin-bottom: 26px; position: relative; z-index: 1;">
         
         <!-- Glowing Ambient Halo -->
-        <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 280px; height: 120px; background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, rgba(14,165,233,0.05) 50%, transparent 80%); filter: blur(20px); pointer-events: none; z-index: 0;"></div>
+        <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 320px; height: 130px; background: radial-gradient(circle, rgba(37,99,235,0.18) 0%, rgba(14,165,233,0.06) 50%, transparent 80%); filter: blur(24px); pointer-events: none; z-index: 0;"></div>
 
         <div style="position: relative; z-index: 1;">
           <div style="display: inline-block; position: relative; margin-bottom: 12px;">
@@ -63,6 +67,14 @@ export function renderLoginView(container) {
           <p style="font-size: 0.84rem; color: var(--text-muted); max-width: 600px; margin: 5px auto 0; line-height: 1.5;">
             Sistem Informasi Manajemen Pembayaran Elektronik, Tata Kelola Beasiswa & Portal Akademik Kampus
           </p>
+
+          <!-- Decorative Feature Chips -->
+          <div style="margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">
+            <span class="ornament-feature-chip">🏛️ STIT Ihsanul Fikri Magelang</span>
+            <span class="ornament-feature-chip">💳 BSI Virtual Account & QRIS</span>
+            <span class="ornament-feature-chip">🎓 9 Skema Subsidi Beasiswa</span>
+            <span class="ornament-feature-chip">📊 Integrasi Matriks Google Sheets</span>
+          </div>
           
           <!-- Admin Hotline & Online Status Badge -->
           <div style="margin-top: 12px; display: inline-flex; align-items: center; gap: 10px; background: rgba(240, 253, 244, 0.95); backdrop-filter: blur(8px); border: 1px solid #86efac; border-radius: 999px; padding: 5px 16px; font-size: 0.76rem; color: #166534; box-shadow: 0 2px 6px rgba(34,197,94,0.12); flex-wrap: wrap; justify-content: center;">
@@ -88,6 +100,8 @@ export function renderLoginView(container) {
               <span>📊</span> <span>Matriks Google Sheets PMB 2026 ↗</span>
             </button>
           </div>
+
+          <div class="ornament-pinstripe" style="max-width: 480px; margin: 18px auto 0;"></div>
         </div>
       </div>
 
@@ -95,7 +109,8 @@ export function renderLoginView(container) {
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); gap: 28px; align-items: start; position: relative; z-index: 1;">
         
         <!-- Left Column: Authentication & Registration Card -->
-        <div class="card" style="padding: 30px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(37,99,235,0.1); border-top: 5px solid var(--primary-700); border-radius: var(--radius-2xl); position: relative; background: #ffffff;">
+        <div class="card card-academic-trim" style="padding: 30px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(37,99,235,0.1); border-radius: var(--radius-2xl); position: relative; background: #ffffff;">
+          <div class="ornament-corner-star"></div>
           
           <div style="position: relative; z-index: 1;">
             <!-- Segmented Navigation Tabs -->
@@ -268,7 +283,8 @@ export function renderLoginView(container) {
         </div>
 
         <!-- Right Column: Demo Accounts & Quick Selection Card -->
-        <div class="card" style="padding: 26px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08); border-top: 5px solid #0284c7; border-radius: var(--radius-2xl); position: relative; background: #ffffff;">
+        <div class="card card-academic-trim" style="padding: 26px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08); border-radius: var(--radius-2xl); position: relative; background: #ffffff;">
+          <div class="ornament-corner-star"></div>
           
           <div style="position: relative; z-index: 1;">
             <!-- Keterangan Akun Demo / Default Credentials -->
@@ -330,6 +346,24 @@ export function renderLoginView(container) {
           </div>
         </div>
 
+      </div>
+
+      <!-- Decorative Institutional Footer Ornament -->
+      <div style="margin-top: 36px; text-align: center; position: relative; z-index: 1;">
+        <div class="ornament-pinstripe" style="max-width: 600px; margin: 0 auto 16px;"></div>
+        <div style="font-size: 0.88rem; font-weight: 800; color: #1e3a8a; letter-spacing: 0.5px; font-style: italic;">
+          "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ"
+        </div>
+        <div style="font-size: 0.76rem; color: var(--text-muted); margin-top: 4px;">
+          "Barangsiapa menempuh jalan untuk mencari ilmu, maka Allah akan memudahkan baginya jalan menuju surga." (HR. Muslim)
+        </div>
+        <div style="margin-top: 10px; font-size: 0.72rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;">
+          <span>📍 Salaman, Magelang, Jawa Tengah</span>
+          <span>&bull;</span>
+          <span>🏛️ Prodi: BKPI & PIAUD</span>
+          <span>&bull;</span>
+          <span>🔒 Keuangan Terintegrasi & QR Sah</span>
+        </div>
       </div>
 
     </div>

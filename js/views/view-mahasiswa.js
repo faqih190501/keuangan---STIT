@@ -88,10 +88,11 @@ export function renderMahasiswaPortal(container) {
     </div>
 
     <!-- 1. Warm Islamic Welcome Hero Banner -->
-    <div class="student-welcome-hero" style="background: linear-gradient(135deg, #092540 0%, #0f3d63 40%, #064e3b 100%); border-radius: var(--radius-2xl); padding: 26px 30px; margin-bottom: 24px; box-shadow: 0 15px 35px -5px rgba(9, 37, 64, 0.4); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.15);">
+    <div class="student-welcome-hero card-academic-trim" style="background: linear-gradient(135deg, #092540 0%, #0f3d63 40%, #064e3b 100%); border-radius: var(--radius-2xl); padding: 26px 30px; margin-bottom: 24px; box-shadow: 0 15px 35px -5px rgba(9, 37, 64, 0.4); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.15);">
       
-      <!-- Subtle Decorative Halo Glow -->
+      <!-- Subtle Decorative Halo Glow & Corner Star -->
       <div style="position: absolute; right: -50px; top: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%); filter: blur(30px); pointer-events: none;"></div>
+      <div class="ornament-corner-star" style="opacity: 0.09; width: 140px; height: 140px; top: -15px; right: 15px;"></div>
 
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; position: relative; z-index: 1;">
         <div style="display: flex; align-items: center; gap: 20px;">
