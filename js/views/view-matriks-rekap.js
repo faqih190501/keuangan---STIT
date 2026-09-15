@@ -11,6 +11,22 @@ import { ModalManager } from '../modals.js';
 
 export function renderMatriksRekapView(container) {
   const state = appState.getState();
+
+  // Guard: Mahasiswa dilarang keras mengakses pangkalan data Matriks Rekap Google Sheets
+  if (state.currentRole === 'MAHASISWA') {
+    if (window.simpelToast) {
+      window.simpelToast.show(
+        'Akses Terbatas',
+        'Mahasiswa tidak memiliki hak akses ke pangkalan data Google Sheets STIT-IF.',
+        'danger'
+      );
+    }
+    if (window.simpelRouter) {
+      window.simpelRouter.navigateTo('view-mahasiswa');
+    }
+    return;
+  }
+
   const matrix = state.googleSheetsMatrix || {};
 
   let activeTab = 'BKPI_2026';

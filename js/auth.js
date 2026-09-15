@@ -104,6 +104,7 @@ export class AuthManager {
     const isStudent = state.currentRole === 'MAHASISWA';
 
     const navDashboard = document.getElementById('nav-dashboard');
+    const navMatriksRekap = document.getElementById('nav-matriks-rekap');
     const navSkema = document.getElementById('nav-skema');
     const navVerifikasi = document.getElementById('nav-verifikasi');
     const navKalender = document.getElementById('nav-kalender');
@@ -115,9 +116,11 @@ export class AuthManager {
     const navDaftarMahasiswa = document.getElementById('nav-daftar-mahasiswa');
 
     if (navDaftarMahasiswa) navDaftarMahasiswa.style.display = isStudent ? 'none' : 'flex';
+    if (navMatriksRekap) navMatriksRekap.style.display = isStudent ? 'none' : 'flex';
 
     if (isStudent) {
       if (navDashboard) navDashboard.style.display = 'none';
+      if (navMatriksRekap) navMatriksRekap.style.display = 'none';
       if (navSkema) navSkema.style.display = 'none';
       if (navVerifikasi) navVerifikasi.style.display = 'none';
       if (navAkademik) navAkademik.style.display = 'none';
@@ -128,6 +131,7 @@ export class AuthManager {
       if (navMahasiswa) navMahasiswa.style.display = 'flex';
     } else {
       if (navDashboard) navDashboard.style.display = 'flex';
+      if (navMatriksRekap) navMatriksRekap.style.display = 'flex';
       if (navSkema) navSkema.style.display = 'flex';
       if (navVerifikasi) navVerifikasi.style.display = 'flex';
       if (navAkademik) navAkademik.style.display = 'flex';

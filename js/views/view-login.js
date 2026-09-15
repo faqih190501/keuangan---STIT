@@ -62,15 +62,7 @@ export function renderLoginView(container) {
             </a>
           </div>
 
-          <!-- Instant Direct Access Buttons to Showcase Data -->
-          <div style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
-            <button type="button" id="btn-quick-enter-admin" class="btn btn-sm btn-shimmer" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: #ffffff; font-weight: 800; font-size: 0.80rem; padding: 8px 18px; border-radius: var(--radius-lg); border: 1px solid #60a5fa; cursor: pointer; box-shadow: 0 4px 12px rgba(37,99,235,0.25); display: inline-flex; align-items: center; gap: 6px;">
-              <span>👑</span> <span>Buka Dashboard Bendahara & Semua Data ➔</span>
-            </button>
-            <button type="button" id="btn-quick-enter-sheets" class="btn btn-sm btn-shimmer" style="background: #ffffff; color: #15803d; font-weight: 800; font-size: 0.80rem; padding: 8px 16px; border-radius: var(--radius-lg); border: 1px solid #86efac; cursor: pointer; box-shadow: 0 2px 8px rgba(34,197,94,0.15); display: inline-flex; align-items: center; gap: 6px;">
-              <span>📊</span> <span>Matriks Google Sheets PMB 2026 ↗</span>
-            </button>
-          </div>
+
 
           <div class="ornament-pinstripe" style="max-width: 480px; margin: 18px auto 0;"></div>
         </div>
@@ -364,24 +356,7 @@ export function renderLoginView(container) {
     </div>
   `;
 
-  // Quick Direct Access Buttons Listener
-  const btnQuickAdmin = container.querySelector('#btn-quick-enter-admin');
-  if (btnQuickAdmin) {
-    btnQuickAdmin.addEventListener('click', () => {
-      appState.setRole('ADMIN');
-      window.simpelToast.show('Mode Admin Aktif', 'Membuka Dashboard Bendahara & Seluruh Data Keuangan...', 'success');
-      if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
-    });
-  }
 
-  const btnQuickSheets = container.querySelector('#btn-quick-enter-sheets');
-  if (btnQuickSheets) {
-    btnQuickSheets.addEventListener('click', () => {
-      appState.setRole('ADMIN');
-      window.simpelToast.show('Matriks Rekap', 'Membuka Matriks Rekapitulasi Data PMB 2026 & Multi-Angkatan...', 'success');
-      if (window.simpelRouter) window.simpelRouter.navigateTo('view-matriks-rekap');
-    });
-  }
 
 
 
