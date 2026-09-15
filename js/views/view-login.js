@@ -338,13 +338,6 @@ export function renderLoginView(container) {
       </div>
 
     </div>
-  `;       ${renderStudentDemoCards(students, state)}
-          </div>
-        </div>
-
-      </div>
-
-    </div>
   `;
 
   function bindDemoCardListeners() {

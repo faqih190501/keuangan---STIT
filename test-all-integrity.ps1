@@ -94,6 +94,16 @@ Check-Condition "STANDARD_FEES in models.js" ($modelsRaw.Contains("STANDARD_FEES
 Check-Condition "SCHOLARSHIP_SCHEMES and SCHOLARSHIP_TYPES in models.js" ($modelsRaw.Contains("SCHOLARSHIP_TYPES") -and $modelsRaw.Contains("PAUD_LAKI"))
 Check-Condition "getScholarshipBadge in formatters.js handles dynamic types" ($formattersRaw.Contains("getScholarshipBadge") -and $formattersRaw.Contains("SCHOLARSHIP_TYPES"))
 
+# 6. Check JS Syntax & Delimiters (Backticks, Brackets, Parentheses)
+$jsFiles = Get-ChildItem -Path "d:\SIMPEL-IF\js" -Filter "*.js" -Recurse
+foreach ($js in $jsFiles) {
+    $content = Get-Content $js.FullName -Raw
+    # Count unescaped backticks
+    $backtickMatches = [regex]::Matches($content, '(?<!\\)`')
+    $isBackticksEven = ($backtickMatches.Count % 2 -eq 0)
+    Check-Condition "JS File syntax clean (balanced backticks): $($js.Name)" $isBackticksEven
+}
+
 Write-Host "`n==================================================================" -ForegroundColor Cyan
 Write-Host " INTEGRITY TEST RESULT: $passed PASSED, $failed FAILED" -ForegroundColor Cyan
 Write-Host "==================================================================" -ForegroundColor Cyan
