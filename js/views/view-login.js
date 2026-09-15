@@ -114,14 +114,14 @@ export function renderLoginView(container) {
           
           <div style="position: relative; z-index: 1;">
             <!-- Segmented Navigation Tabs -->
-            <div style="display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-xl); margin-bottom: 24px; gap: 4px; border: 1px solid #e2e8f0;">
-              <button type="button" id="tab-btn-student" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: #ffffff; color: var(--primary-800); box-shadow: 0 2px 5px rgba(0,0,0,0.08); border: none; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center;">
+            <div style="display: flex; background: #eff6ff; padding: 4px; border-radius: var(--radius-xl); margin-bottom: 24px; gap: 4px; border: 1px solid #bfdbfe;">
+              <button type="button" id="tab-btn-student" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: #ffffff; color: var(--primary-800); box-shadow: 0 2px 5px rgba(37,99,235,0.12); border: 1px solid #bfdbfe; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center;">
                 🎓 Masuk Mahasiswa
               </button>
               <button type="button" id="tab-btn-admin" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-lg); font-weight: 700; font-size: 0.80rem; padding: 10px 8px; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center;">
                 👑 Masuk Admin
               </button>
-              <button type="button" id="tab-btn-register" class="btn btn-sm btn-shimmer" style="flex: 1.1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #1d4ed8; border: 1px dashed #60a5fa; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center; box-shadow: 0 1px 3px rgba(37,99,235,0.1);">
+              <button type="button" id="tab-btn-register" class="btn btn-sm btn-shimmer" style="flex: 1.1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #1d4ed8; border: 1px dashed #3b82f6; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center; box-shadow: 0 1px 3px rgba(37,99,235,0.15);">
                 ✨ Buat Akun Baru
               </button>
             </div>
