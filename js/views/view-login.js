@@ -358,7 +358,7 @@ export function renderLoginView(container) {
           "Barangsiapa menempuh jalan untuk mencari ilmu, maka Allah akan memudahkan baginya jalan menuju surga." (HR. Muslim)
         </div>
         <div style="margin-top: 10px; font-size: 0.72rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;">
-          <span>📍 Salaman, Magelang, Jawa Tengah</span>
+          <span>📍 Pabelan, Magelang, Jawa Tengah</span>
           <span>&bull;</span>
           <span>🏛️ Prodi: BKPI & PIAUD</span>
           <span>&bull;</span>
