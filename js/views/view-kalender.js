@@ -498,7 +498,25 @@ export function renderKalenderView(container) {
     `;
   }
 
-  // --- SUB-RENDERER: 2. Interactive Monthly Calendar Grid with Swipe Support ---
+  // Helper to compute adjacent months
+  function getAdjacentMonth(offset) {
+    let m = calendarMonth + offset;
+    let y = calendarYear;
+    if (m > 11) {
+      m = 0;
+      y++;
+    } else if (m < 0) {
+      m = 11;
+      y--;
+    }
+    const monthNames = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    return { year: y, month: m, name: monthNames[m] };
+  }
+
+  // --- SUB-RENDERER: 2. Interactive Monthly Calendar Grid with Enhanced Swipe Support ---
   function renderMonthlyCalendarView(eventList) {
     const monthNames = [
       'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -513,11 +531,14 @@ export function renderKalenderView(container) {
     const isCurrentActualMonth = today.getFullYear() === calendarYear && today.getMonth() === calendarMonth;
     const currentActualDate = today.getDate();
 
+    const prevMonthObj = getAdjacentMonth(-1);
+    const nextMonthObj = getAdjacentMonth(1);
+
     // Animation class based on swipe direction
     const animStyle = slideDirection === 'left' 
-      ? 'animation: slideInRight 0.25s ease;' 
+      ? 'animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1);' 
       : slideDirection === 'right' 
-      ? 'animation: slideInLeft 0.25s ease;' 
+      ? 'animation: slideInLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1);' 
       : 'animation: fadeIn 0.25s ease;';
 
     // Generate Calendar Day Cells
@@ -526,8 +547,8 @@ export function renderKalenderView(container) {
     // Prev month padding days
     for (let i = firstDayIndex - 1; i >= 0; i--) {
       daysHtml += `
-        <div class="calendar-cell other-month" style="padding: 8px; min-height: 90px; background: #f8fafc; border: 1px solid #f1f5f9; color: #cbd5e1; font-size: 0.78rem;">
-          ${prevMonthDays - i}
+        <div class="calendar-cell other-month" style="padding: 8px; min-height: 85px; background: #f8fafc; border: 1px solid #f1f5f9; color: #cbd5e1; font-size: 0.76rem;">
+          <span style="opacity: 0.6;">${prevMonthDays - i}</span>
         </div>
       `;
     }
@@ -545,9 +566,9 @@ export function renderKalenderView(container) {
       });
 
       daysHtml += `
-        <div class="calendar-cell ${isToday ? 'today-cell' : ''}" style="padding: 8px; min-height: 95px; background: ${isToday ? '#eff6ff' : '#ffffff'}; border: 1px solid var(--border-light); position: relative; transition: background 0.15s;">
+        <div class="calendar-cell ${isToday ? 'today-cell' : ''}" style="padding: 8px; min-height: 90px; background: ${isToday ? '#eff6ff' : '#ffffff'}; border: 1px solid var(--border-light); position: relative; transition: background 0.15s;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <span style="font-weight: ${isToday ? '900' : '700'}; font-size: 0.82rem; color: ${isToday ? '#1e40af' : 'var(--text-dark)'}; ${isToday ? 'background: #3b82f6; color:#ffffff; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;' : ''}">
+            <span style="font-weight: ${isToday ? '900' : '700'}; font-size: 0.82rem; color: ${isToday ? '#1e40af' : 'var(--text-dark)'}; ${isToday ? 'background: #2563eb; color:#ffffff; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;' : ''}">
               ${day}
             </span>
             ${dayEvents.length > 0 ? `
@@ -558,7 +579,7 @@ export function renderKalenderView(container) {
           </div>
 
           <!-- Event Badges in Cell -->
-          <div style="display: flex; flex-direction: column; gap: 3px; max-height: 70px; overflow-y: auto;">
+          <div style="display: flex; flex-direction: column; gap: 3px; max-height: 65px; overflow-y: auto;">
             ${dayEvents.map(evt => {
               const cat = CATEGORY_CONFIG[evt.category] || CATEGORY_CONFIG.AKADEMIK;
               return `
@@ -573,41 +594,55 @@ export function renderKalenderView(container) {
     }
 
     return `
-      <div class="card" id="calendar-swipe-zone" style="padding: 22px; ${animStyle} touch-action: pan-y;">
+      <div style="position: relative;">
         
-        <!-- Month Navigation Bar with Gesture Guidance -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <button type="button" class="btn btn-outline btn-sm" id="btn-prev-month" style="font-weight: 800; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px;">
-              <span>◀</span> <span>Bulan Lalu</span>
-            </button>
-            <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--primary-950); margin: 0; min-width: 170px;">
-              ${monthNames[calendarMonth]} ${calendarYear}
-            </h3>
-            <button type="button" class="btn btn-outline btn-sm" id="btn-next-month" style="font-weight: 800; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px;">
-              <span>Bulan Depan</span> <span>▶</span>
-            </button>
+        <!-- Desktop Floating Quick Nav Buttons -->
+        <button type="button" class="cal-side-nav-btn btn-side-prev" id="btn-side-prev" title="Geser ke ${prevMonthObj.name} ${prevMonthObj.year}">
+          ◀
+        </button>
+        <button type="button" class="cal-side-nav-btn btn-side-next" id="btn-side-next" title="Geser ke ${nextMonthObj.name} ${nextMonthObj.year}">
+          ▶
+        </button>
+
+        <!-- Interactive Swipeable Calendar Card -->
+        <div class="card calendar-swipe-zone" id="calendar-swipe-zone" style="padding: 22px; ${animStyle}">
+          
+          <!-- Month Navigation Bar with Gesture Guidance -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button type="button" class="btn btn-outline btn-sm" id="btn-prev-month" style="font-weight: 800; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px;" title="Lihat ${prevMonthObj.name} ${prevMonthObj.year}">
+                <span>◀</span> <span>${prevMonthObj.name}</span>
+              </button>
+              <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--primary-950); margin: 0; min-width: 170px; text-align: center;">
+                ${monthNames[calendarMonth]} ${calendarYear}
+              </h3>
+              <button type="button" class="btn btn-outline btn-sm" id="btn-next-month" style="font-weight: 800; padding: 6px 12px; display: inline-flex; align-items: center; gap: 6px;" title="Lihat ${nextMonthObj.name} ${nextMonthObj.year}">
+                <span>${nextMonthObj.name}</span> <span>▶</span>
+              </button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge" style="background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; font-size: 0.72rem; font-weight: 800; padding: 4px 10px; display: inline-flex; align-items: center; gap: 4px;">
+                <span style="display: inline-block; animation: pulseGlow 2s infinite; border-radius: 50%;">🖐️</span> Geser / Swipe Kalender
+              </span>
+              <button type="button" class="btn btn-outline btn-sm" id="btn-today-month" style="font-size: 0.74rem; font-weight: 800;">
+                Bulan Ini
+              </button>
+            </div>
           </div>
 
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="badge" style="background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; font-size: 0.72rem; font-weight: 800; padding: 4px 10px;">
-              🖐️ Geser / Swipe Kalender
+          <!-- Swipe Guidance Hint -->
+          <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 8px 14px; margin-bottom: 14px; font-size: 0.75rem; color: var(--text-muted); flex-wrap: wrap; gap: 6px;">
+            <span style="display: inline-flex; align-items: center; gap: 6px;">
+              <span>👈</span> <span>Geser / Swipe ke <strong>Kiri</strong> untuk <strong>${nextMonthObj.name} ${nextMonthObj.year}</strong></span>
             </span>
-            <button type="button" class="btn btn-outline btn-sm" id="btn-today-month" style="font-size: 0.74rem; font-weight: 800;">
-              Hari Ini
-            </button>
+            <span style="display: inline-flex; align-items: center; gap: 6px;">
+              <span>Geser / Swipe ke <strong>Kanan</strong> untuk <strong>${prevMonthObj.name} ${prevMonthObj.year}</strong></span> <span>👉</span>
+            </span>
           </div>
-        </div>
 
-        <!-- Swipe Guidance Hint -->
-        <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 6px 14px; margin-bottom: 14px; font-size: 0.74rem; color: var(--text-muted);">
-          <span>👈 <strong>Geser / Drag ke Kiri</strong> untuk Bulan Depan</span>
-          <span>👉 <strong>Geser / Drag ke Kanan</strong> untuk Bulan Lalu</span>
-        </div>
-
-        <!-- Horizontal Scrollable Matrix Container (Mobile Responsive Drag-Scroll) -->
-        <div class="horizontal-scroll calendar-matrix-wrapper" data-scroll-x style="overflow-x: auto; -webkit-overflow-scrolling: touch; cursor: grab; padding-bottom: 4px;">
-          <div style="min-width: 680px;">
+          <!-- Calendar Matrix Wrapper (Clean responsive grid with swipe) -->
+          <div class="calendar-matrix-wrapper" data-no-drag-scroll style="width: 100%; user-select: none;">
             
             <!-- Days of Week Header (Sun to Sat) -->
             <div style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; font-size: 0.76rem; color: var(--text-muted); background: #f8fafc; border: 1px solid var(--border-light); border-bottom: none; border-radius: var(--radius-md) var(--radius-md) 0 0; padding: 8px 0;">
@@ -621,38 +656,38 @@ export function renderKalenderView(container) {
             </div>
 
             <!-- Calendar Matrix Grid -->
-            <div style="display: grid; grid-template-columns: repeat(7, 1fr); border-radius: 0 0 var(--radius-md) var(--radius-md); overflow: hidden;">
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); border-radius: 0 0 var(--radius-md) var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); border-top: none;">
               ${daysHtml}
             </div>
 
           </div>
-        </div>
 
-        <!-- Legend Footer -->
-        <div style="display: flex; align-items: center; gap: 16px; margin-top: 18px; font-size: 0.74rem; color: var(--text-muted); flex-wrap: wrap; justify-content: center; border-top: 1px solid var(--border-light); padding-top: 14px;">
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <span style="width: 10px; height: 10px; border-radius: 2px; background: #059669;"></span>
-            <span>Keuangan & SPP</span>
+          <!-- Legend Footer -->
+          <div style="display: flex; align-items: center; gap: 16px; margin-top: 18px; font-size: 0.74rem; color: var(--text-muted); flex-wrap: wrap; justify-content: center; border-top: 1px solid var(--border-light); padding-top: 14px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #059669;"></span>
+              <span>Keuangan & SPP</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #2563eb;"></span>
+              <span>Perkuliahan & Ujian</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #d97706;"></span>
+              <span>Kegiatan & Wisuda</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="width: 10px; height: 10px; border-radius: 2px; background: #e11d48;"></span>
+              <span>Hari Libur</span>
+            </div>
           </div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <span style="width: 10px; height: 10px; border-radius: 2px; background: #2563eb;"></span>
-            <span>Perkuliahan & Ujian</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <span style="width: 10px; height: 10px; border-radius: 2px; background: #d97706;"></span>
-            <span>Kegiatan & Wisuda</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <span style="width: 10px; height: 10px; border-radius: 2px; background: #e11d48;"></span>
-            <span>Hari Libur</span>
-          </div>
-        </div>
 
+        </div>
       </div>
     `;
   }
 
-  // --- INTERACTIVE SWIPE / DRAG GESTURE CONTROLLER ---
+  // --- ADVANCED INTERACTIVE SWIPE / GESTURE CONTROLLER ---
   function changeMonth(direction) {
     if (direction === 'next') {
       slideDirection = 'left';
@@ -678,67 +713,179 @@ export function renderKalenderView(container) {
       if (activePill) {
         activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
-    }, 50);
+    }, 60);
   }
 
-  function bindSwipeGestures(element) {
-    if (!element || element._hasSwipeGestures) return;
-    element._hasSwipeGestures = true;
+  function bindCalendarSwipe(swipeZone) {
+    if (!swipeZone || swipeZone._hasSwipeBound) return;
+    swipeZone._hasSwipeBound = true;
 
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let mouseStartX = 0;
-    let mouseStartY = 0;
-    let isMouseDown = false;
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let startTime = 0;
+    let isTracking = false;
+    let isSwipingHoriz = false;
+    let dragDistance = 0;
+    let floatingIndicator = null;
 
-    // 1. Touch Events (Mobile / Tablet)
-    element.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;
-    }, { passive: true });
+    const createIndicator = (type, targetName) => {
+      if (floatingIndicator && floatingIndicator.dataset.type === type) return;
+      removeIndicator();
+      floatingIndicator = document.createElement('div');
+      floatingIndicator.className = `cal-swipe-floating-indicator ${type === 'next' ? 'swipe-left' : 'swipe-right'}`;
+      floatingIndicator.dataset.type = type;
+      floatingIndicator.innerHTML = type === 'next' 
+        ? `<span>Bulan Depan: <strong>${targetName}</strong></span> <span style="font-size: 1rem;">➔</span>`
+        : `<span style="font-size: 1rem;">⬅</span> <span>Bulan Lalu: <strong>${targetName}</strong></span>`;
+      swipeZone.appendChild(floatingIndicator);
+    };
 
-    element.addEventListener('touchend', (e) => {
-      const touchEndX = e.changedTouches[0].screenX;
-      const touchEndY = e.changedTouches[0].screenY;
-      const diffX = touchEndX - touchStartX;
-      const diffY = touchEndY - touchStartY;
+    const removeIndicator = () => {
+      if (floatingIndicator && floatingIndicator.parentNode) {
+        floatingIndicator.remove();
+      }
+      floatingIndicator = null;
+    };
 
-      // Only trigger if horizontal swipe is greater than vertical and exceeds threshold
-      if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
-        if (diffX < 0) {
-          changeMonth('next');
-        } else {
-          changeMonth('prev');
+    const onStart = (clientX, clientY) => {
+      startX = clientX;
+      startY = clientY;
+      currentX = clientX;
+      currentY = clientY;
+      startTime = Date.now();
+      isTracking = true;
+      isSwipingHoriz = false;
+      dragDistance = 0;
+    };
+
+    const onMove = (clientX, clientY, e) => {
+      if (!isTracking) return;
+      currentX = clientX;
+      currentY = clientY;
+      const dx = currentX - startX;
+      const dy = currentY - startY;
+
+      if (!isSwipingHoriz) {
+        // Detect horizontal intent
+        if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.1) {
+          isSwipingHoriz = true;
+          swipeZone.classList.add('is-swiping');
         }
+      }
+
+      if (isSwipingHoriz) {
+        if (e && e.cancelable) {
+          e.preventDefault();
+        }
+        dragDistance = dx;
+        
+        // Elastic displacement damping
+        const damping = 0.42;
+        const translateX = dx * damping;
+        swipeZone.style.transform = `translateX(${translateX}px)`;
+        swipeZone.style.opacity = `${Math.max(0.6, 1 - Math.abs(dx) / 750)}`;
+
+        if (dx < -30) {
+          const next = getAdjacentMonth(1);
+          createIndicator('next', `${next.name} ${next.year}`);
+        } else if (dx > 30) {
+          const prev = getAdjacentMonth(-1);
+          createIndicator('prev', `${prev.name} ${prev.year}`);
+        } else {
+          removeIndicator();
+        }
+      }
+    };
+
+    const onEnd = () => {
+      if (!isTracking) return;
+      isTracking = false;
+      removeIndicator();
+      swipeZone.classList.remove('is-swiping');
+
+      if (isSwipingHoriz) {
+        const dx = currentX - startX;
+        const dt = Date.now() - startTime;
+        const velocity = Math.abs(dx) / Math.max(dt, 1);
+        const threshold = 35;
+
+        if (dx < -threshold || (dx < -15 && velocity > 0.35)) {
+          // Swipe Left -> Next Month
+          swipeZone.style.transition = 'transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.18s ease';
+          swipeZone.style.transform = 'translateX(-80px)';
+          swipeZone.style.opacity = '0';
+          setTimeout(() => {
+            changeMonth('next');
+          }, 110);
+        } else if (dx > threshold || (dx > 15 && velocity > 0.35)) {
+          // Swipe Right -> Prev Month
+          swipeZone.style.transition = 'transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.18s ease';
+          swipeZone.style.transform = 'translateX(80px)';
+          swipeZone.style.opacity = '0';
+          setTimeout(() => {
+            changeMonth('prev');
+          }, 110);
+        } else {
+          // Bounce back smoothly
+          swipeZone.style.transition = 'transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease';
+          swipeZone.style.transform = 'translateX(0)';
+          swipeZone.style.opacity = '1';
+        }
+
+        setTimeout(() => {
+          isSwipingHoriz = false;
+        }, 120);
+      }
+    };
+
+    // 1. Pointer Events (Desktop Mouse, Pen, Touchscreen)
+    swipeZone.addEventListener('pointerdown', (e) => {
+      if (['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON', 'A'].includes(e.target.tagName)) return;
+      onStart(e.clientX, e.clientY);
+    });
+
+    swipeZone.addEventListener('pointermove', (e) => {
+      onMove(e.clientX, e.clientY, e);
+    });
+
+    swipeZone.addEventListener('pointerup', () => {
+      onEnd();
+    });
+
+    swipeZone.addEventListener('pointercancel', () => {
+      onEnd();
+    });
+
+    // 2. Touch Events Fallback for Mobile Devices
+    swipeZone.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches.length === 1) {
+        onStart(e.touches[0].clientX, e.touches[0].clientY);
       }
     }, { passive: true });
 
-    // 2. Mouse Drag Events (Desktop)
-    element.addEventListener('mousedown', (e) => {
-      if (['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
-      isMouseDown = true;
-      mouseStartX = e.clientX;
-      mouseStartY = e.clientY;
-    });
-
-    element.addEventListener('mouseup', (e) => {
-      if (!isMouseDown) return;
-      isMouseDown = false;
-      const diffX = e.clientX - mouseStartX;
-      const diffY = e.clientY - mouseStartY;
-
-      if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
-        if (diffX < 0) {
-          changeMonth('next');
-        } else {
-          changeMonth('prev');
-        }
+    swipeZone.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches.length === 1) {
+        onMove(e.touches[0].clientX, e.touches[0].clientY, e);
       }
-    });
+    }, { passive: false });
 
-    element.addEventListener('mouseleave', () => {
-      isMouseDown = false;
-    });
+    swipeZone.addEventListener('touchend', () => {
+      onEnd();
+    }, { passive: true });
+
+    swipeZone.addEventListener('touchcancel', () => {
+      onEnd();
+    }, { passive: true });
+
+    // Prevent accidental click on children if dragging
+    swipeZone.addEventListener('click', (e) => {
+      if (Math.abs(dragDistance) > 8) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, true);
   }
 
   // --- EVENT LISTENERS & MODALS ---
@@ -751,10 +898,20 @@ export function renderKalenderView(container) {
       DragScrollHelper.attach(monthSlider);
     }
 
-    // Attach Swipe / Drag Gestures on Calendar View Card
+    // Attach Swipe Gestures on Calendar View Card
     const swipeZone = container.querySelector('#calendar-swipe-zone');
     if (swipeZone) {
-      bindSwipeGestures(swipeZone);
+      bindCalendarSwipe(swipeZone);
+    }
+
+    // Side floating arrow buttons
+    const btnSidePrev = container.querySelector('#btn-side-prev');
+    const btnSideNext = container.querySelector('#btn-side-next');
+    if (btnSidePrev) {
+      btnSidePrev.addEventListener('click', () => changeMonth('prev'));
+    }
+    if (btnSideNext) {
+      btnSideNext.addEventListener('click', () => changeMonth('next'));
     }
 
     // Month Slider Pills Click Handlers
@@ -827,7 +984,7 @@ export function renderKalenderView(container) {
             : renderMonthlyCalendarView(filtered);
           bindItemListeners();
           const newSwipeZone = container.querySelector('#calendar-swipe-zone');
-          if (newSwipeZone) bindSwipeGestures(newSwipeZone);
+          if (newSwipeZone) bindCalendarSwipe(newSwipeZone);
         }
       });
     }
@@ -1191,6 +1348,18 @@ export function renderKalenderView(container) {
     window.simpelToast.show('Unduhan Berhasil', 'Berkas kalender (.ics) berhasil diunduh. Anda dapat membukanya di Google Calendar, Outlook, atau Apple Calendar.', 'success');
   }
 
+  // Keyboard Arrow Navigation (Left = Prev Month, Right = Next Month)
+  const handleKeydown = (e) => {
+    if (currentViewMode !== 'calendar') return;
+    if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+    if (e.key === 'ArrowLeft') {
+      changeMonth('prev');
+    } else if (e.key === 'ArrowRight') {
+      changeMonth('next');
+    }
+  };
+  window.addEventListener('keydown', handleKeydown);
+
   // Initial Render
   renderView();
 
@@ -1199,5 +1368,8 @@ export function renderKalenderView(container) {
     renderView();
   });
 
-  return unsubscribe;
+  return () => {
+    window.removeEventListener('keydown', handleKeydown);
+    if (typeof unsubscribe === 'function') unsubscribe();
+  };
 }

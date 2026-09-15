@@ -924,8 +924,22 @@ textarea.form-control {
   box-shadow: var(--shadow-md);
 }
 
+.calendar-swipe-zone {
+  position: relative;
+  touch-action: pan-y;
+  user-select: none;
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease;
+  cursor: grab;
+}
+
+.calendar-swipe-zone.is-swiping {
+  cursor: grabbing !important;
+  transition: none !important;
+}
+
 .calendar-cell {
   user-select: none;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .calendar-cell:hover {
@@ -946,14 +960,90 @@ textarea.form-control {
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
+/* Floating Live Swipe Indicator Pill */
+.cal-swipe-floating-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  animation: fadeIn 0.15s ease;
+  letter-spacing: -0.2px;
+}
+
+.cal-swipe-floating-indicator.swipe-left {
+  right: 24px;
+}
+
+.cal-swipe-floating-indicator.swipe-right {
+  left: 24px;
+}
+
+/* Side navigation quick hover buttons */
+.cal-side-nav-btn {
+  position: absolute;
+  top: 55%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--primary-800);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0.85;
+}
+
+.cal-side-nav-btn:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+  background: var(--primary-800);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(30, 58, 138, 0.25);
+}
+
+.cal-side-nav-btn.btn-side-prev {
+  left: -14px;
+}
+
+.cal-side-nav-btn.btn-side-next {
+  right: -14px;
+}
+
 @media (max-width: 768px) {
+  .cal-side-nav-btn {
+    display: none; /* On mobile use native touch swipe */
+  }
   .calendar-cell {
-    min-height: 65px !important;
-    padding: 4px !important;
+    min-height: 60px !important;
+    padding: 3px !important;
   }
   .cal-mini-event {
-    font-size: 0.58rem !important;
+    font-size: 0.56rem !important;
     padding: 1px 2px !important;
+    border-radius: 2px !important;
+  }
+  .calendar-matrix-wrapper {
+    min-width: 100% !important;
   }
 }
 
