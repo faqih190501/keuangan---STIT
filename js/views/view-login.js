@@ -43,7 +43,9 @@ export function renderLoginView(container) {
     <div style="max-width: 1060px; margin: 12px auto 40px; animation: fadeInScale 0.35s ease; position: relative;">
       
       <!-- Faint STIT Institutional Watermark in Center Background -->
-      <div class="login-watermark-bg"></div>
+      <div class="login-watermark-bg" aria-hidden="true">
+        <img src="./assets/images/logo.png" alt="Watermark Logo STIT Ihsanul Fikri" class="login-watermark-img">
+      </div>
 
       <!-- Top Branding Hero -->
       <div style="text-align: center; margin-bottom: 26px; position: relative; z-index: 1;">
@@ -68,7 +70,7 @@ export function renderLoginView(container) {
           </p>
           
           <!-- Admin Hotline & Online Status Badge -->
-          <div style="margin-top: 12px; display: inline-flex; align-items: center; gap: 10px; background: rgba(240, 253, 244, 0.9); backdrop-filter: blur(8px); border: 1px solid #86efac; border-radius: 999px; padding: 5px 16px; font-size: 0.76rem; color: #166534; box-shadow: 0 2px 6px rgba(34,197,94,0.12); flex-wrap: wrap; justify-content: center;">
+          <div style="margin-top: 12px; display: inline-flex; align-items: center; gap: 10px; background: rgba(240, 253, 244, 0.95); backdrop-filter: blur(8px); border: 1px solid #86efac; border-radius: 999px; padding: 5px 16px; font-size: 0.76rem; color: #166534; box-shadow: 0 2px 6px rgba(34,197,94,0.12); flex-wrap: wrap; justify-content: center;">
             <div style="display: flex; align-items: center; gap: 6px;">
               <span class="pulsing-dot pulsing-dot-green"></span>
               <span>WhatsApp Admin:</span>
@@ -88,10 +90,12 @@ export function renderLoginView(container) {
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); gap: 28px; align-items: start; position: relative; z-index: 1;">
         
         <!-- Left Column: Authentication & Registration Card -->
-        <div class="card" style="padding: 30px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(37,99,235,0.1); border-top: 5px solid var(--primary-700); border-radius: var(--radius-2xl); position: relative; overflow: hidden;">
+        <div class="card" style="padding: 30px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(37,99,235,0.1); border-top: 5px solid var(--primary-700); border-radius: var(--radius-2xl); position: relative; overflow: hidden; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
           
           <!-- Subtle Card Watermark Logo -->
-          <div class="login-card-watermark"></div>
+          <div class="login-card-watermark" aria-hidden="true">
+            <img src="./assets/images/logo.png" alt="">
+          </div>
 
           <div style="position: relative; z-index: 1;">
             <!-- Segmented Navigation Tabs -->
@@ -264,10 +268,12 @@ export function renderLoginView(container) {
         </div>
 
         <!-- Right Column: Demo Accounts & Quick Selection Card -->
-        <div class="card" style="padding: 26px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08); border-top: 5px solid #0284c7; border-radius: var(--radius-2xl); position: relative; overflow: hidden;">
+        <div class="card" style="padding: 26px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08); border-top: 5px solid #0284c7; border-radius: var(--radius-2xl); position: relative; overflow: hidden; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
           
           <!-- Subtle Card Watermark Logo -->
-          <div class="login-card-watermark"></div>
+          <div class="login-card-watermark" aria-hidden="true">
+            <img src="./assets/images/logo.png" alt="">
+          </div>
 
           <div style="position: relative; z-index: 1;">
             <!-- Keterangan Akun Demo / Default Credentials -->
