@@ -9,35 +9,6 @@ import { AuthManager } from '../auth.js';
 
 export function renderLoginView(container) {
   const state = appState.getState();
-  const students = state.students || [];
-
-  function renderStudentDemoCards(studentList = [], st = {}) {
-    const schemes = (st && st.scholarshipSchemes) || [];
-    return (studentList || []).map(s => {
-      const sch = schemes.find(sc => sc.id === s.scholarshipId);
-      return `
-        <div class="student-demo-card interactive-hover-card" data-nim="${s.nim}" style="padding: 12px 14px; border: 1px solid var(--border-light); border-radius: var(--radius-lg); background: #ffffff; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: space-between; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 40px; height: 40px; border-radius: var(--radius-full); background: linear-gradient(135deg, ${s.gender === 'L' ? '#1e40af, #0284c7' : '#be185d, #f472b6'}); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.84rem; flex-shrink: 0; box-shadow: 0 2px 6px ${s.gender === 'L' ? 'rgba(37,99,235,0.3)' : 'rgba(236,72,153,0.3)'};">
-              ${s.name.split(' ').map(n=>n[0]).slice(0,2).join('')}
-            </div>
-            <div>
-              <div style="font-size: 0.86rem; font-weight: 800; color: var(--text-dark);">
-                ${s.name}
-              </div>
-              <div style="font-size: 0.72rem; color: var(--text-light); font-family: var(--font-mono); margin-top: 1px;">
-                NIM: ${s.nim} &bull; Sem ${s.semester}
-              </div>
-            </div>
-          </div>
-          <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-            ${getProdiBadge(s.prodi)}
-            <span style="font-size: 0.68rem; color: #0284c7; font-weight: 700; background: #f0f9ff; padding: 2px 6px; border-radius: 4px; border: 1px solid #e0f2fe;">${sch ? sch.name.split('(')[0] : 'Reguler'}</span>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
 
   container.innerHTML = `
     <div style="max-width: 1060px; margin: 12px auto 40px; animation: fadeInScale 0.35s ease; position: relative;">
@@ -324,24 +295,48 @@ export function renderLoginView(container) {
               </div>
             </div>
 
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;">
-              <div>
-                <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin: 0;">Pilih Cepat Akun Mahasiswa</h3>
-                <p style="font-size: 0.76rem; color: var(--text-light); margin: 2px 0 0;">Klik akun untuk simulasi login instan satu per satu</p>
+            <!-- Panduan Layanan Mahasiswa & Pembayaran Terintegrasi -->
+            <div style="margin-top: 8px;">
+              <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                <span>📘</span> <span>Panduan Pembayaran & Layanan Mahasiswa</span>
               </div>
-              <button type="button" id="btn-quick-register-student" class="btn btn-outline btn-sm btn-shimmer" style="font-size: 0.74rem; font-weight: 800; padding: 5px 12px; color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radius-md); cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px rgba(37,99,235,0.1);">
-                <span>➕</span> <span>Buat Akun</span>
-              </button>
-            </div>
 
-            <!-- Quick Filter Input for Demo Students -->
-            <div style="position: relative; margin-bottom: 12px;">
-              <input type="text" id="input-filter-demo-students" class="form-control form-control-sm" placeholder="🔍 Cari nama mhs atau NIM..." style="padding-left: 32px; border-radius: var(--radius-md); font-size: 0.8rem;">
-              <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: #94a3b8;">🔍</span>
-            </div>
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="padding: 12px 14px; border: 1px solid var(--border-light); border-radius: var(--radius-lg); background: #f8fafc; display: flex; gap: 12px; align-items: flex-start;">
+                  <div style="width: 32px; height: 32px; border-radius: 50%; background: #2563eb; color: #fff; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">1</div>
+                  <div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-dark);">Akses Portal & Cek Tagihan</div>
+                    <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 2px;">Masuk menggunakan NIM terdaftar untuk melihat status rincian biaya semester, riwayat pembayaran, serta besaran subsidi beasiswa.</div>
+                  </div>
+                </div>
 
-            <div id="student-demo-list-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto; padding-right: 4px;">
-              ${renderStudentDemoCards(students, state)}
+                <div style="padding: 12px 14px; border: 1px solid var(--border-light); border-radius: var(--radius-lg); background: #f8fafc; display: flex; gap: 12px; align-items: flex-start;">
+                  <div style="width: 32px; height: 32px; border-radius: 50%; background: #0284c7; color: #fff; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</div>
+                  <div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-dark);">Pembayaran BSI Virtual Account / QRIS</div>
+                    <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 2px;">Gunakan Nomor Virtual Account Bank BSI resmi atau pindai QRIS dinamis untuk pembayaran instan kapan saja.</div>
+                  </div>
+                </div>
+
+                <div style="padding: 12px 14px; border: 1px solid var(--border-light); border-radius: var(--radius-lg); background: #f8fafc; display: flex; gap: 12px; align-items: flex-start;">
+                  <div style="width: 32px; height: 32px; border-radius: 50%; background: #10b981; color: #fff; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">3</div>
+                  <div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: var(--text-dark);">Verifikasi & Kwitansi Ber-QR Sah</div>
+                    <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 2px;">Setelah diverifikasi, kwitansi digital resmi ber-QR Code otomatis terbit sebagai bukti sah registrasi akademik.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Button CTA Buat Akun Baru / Pendaftaran PMB -->
+              <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                <div>
+                  <div style="font-size: 0.80rem; font-weight: 800; color: var(--text-dark);">Mahasiswa Baru / Belum Ada Akun?</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">Daftar akun mandiri secara online untuk mendapatkan NIM & VA</div>
+                </div>
+                <button type="button" id="btn-quick-register-student" class="btn btn-primary btn-sm btn-shimmer" style="font-size: 0.78rem; font-weight: 800; padding: 7px 16px; border-radius: var(--radius-md); cursor: pointer; white-space: nowrap;">
+                  <span>➕ Buat Akun Baru</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -369,36 +364,6 @@ export function renderLoginView(container) {
     </div>
   `;
 
-  function bindDemoCardListeners() {
-    container.querySelectorAll('.student-demo-card').forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        card.style.borderColor = 'var(--primary-600)';
-        card.style.background = '#f0f9ff';
-        card.style.transform = 'translateX(4px)';
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.borderColor = 'var(--border-light)';
-        card.style.background = '#ffffff';
-        card.style.transform = 'translateX(0)';
-      });
-      card.addEventListener('click', () => {
-        const nim = card.getAttribute('data-nim');
-        const student = appState.getState().students.find(s => s.nim === nim);
-        if (student) {
-          container.querySelector('#login-nim').value = student.nim;
-          container.querySelector('#login-password').value = '123456';
-          
-          // Instant login
-          appState.setRole('MAHASISWA', student.nim);
-          window.simpelToast.show('Login Berhasil', `Masuk sebagai ${student.name} (${student.prodi})`, 'success');
-          if (window.simpelRouter) window.simpelRouter.navigateTo('view-mahasiswa');
-        }
-      });
-    });
-  }
-
-  bindDemoCardListeners();
-
   // Quick Direct Access Buttons Listener
   const btnQuickAdmin = container.querySelector('#btn-quick-enter-admin');
   if (btnQuickAdmin) {
@@ -418,31 +383,7 @@ export function renderLoginView(container) {
     });
   }
 
-  // Search filter for student demo cards
-  const filterDemoInput = container.querySelector('#input-filter-demo-students');
-  const demoListContainer = container.querySelector('#student-demo-list-container');
-  if (filterDemoInput && demoListContainer) {
-    filterDemoInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      const currentStudents = appState.getState().students;
-      const filtered = currentStudents.filter(s => 
-        s.name.toLowerCase().includes(q) || 
-        s.nim.includes(q) || 
-        s.prodi.toLowerCase().includes(q)
-      );
 
-      if (filtered.length === 0) {
-        demoListContainer.innerHTML = `
-          <div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.8rem;">
-            <div>🔍 Mahasiswa tidak ditemukan</div>
-          </div>
-        `;
-      } else {
-        demoListContainer.innerHTML = renderStudentDemoCards(filtered, state);
-        bindDemoCardListeners();
-      }
-    });
-  }
 
   // 1. Tab Switching (Mahasiswa vs Admin vs Buat Akun)
   const tabBtnStudent = container.querySelector('#tab-btn-student');
