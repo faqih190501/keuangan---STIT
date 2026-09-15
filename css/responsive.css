@@ -19,7 +19,7 @@
 @media (max-width: 768px) {
   :root {
     --sidebar-width: 270px;
-    --role-bar-height: 48px;
+    --role-bar-height: 42px;
     --header-height: 60px;
   }
 
