@@ -15,9 +15,9 @@ import { exportToCSV } from '../utils/export-engine.js';
 
 export function renderDashboardBendahara(container) {
   const state = appState.getState();
-  const invoices = state.invoices;
-  const students = state.students;
-  const pendingVerifs = state.paymentVerifications.filter(v => v.status === 'PENDING');
+  const invoices = state.invoices || [];
+  const students = state.students || [];
+  const pendingVerifs = (state.paymentVerifications || []).filter(v => v.status === 'PENDING');
 
   // Breakdown Calculations
   const bkpiStudents = students.filter(s => s.prodi === 'BKPI');

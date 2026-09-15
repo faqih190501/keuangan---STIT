@@ -197,11 +197,20 @@ class Router {
       }
     });
 
-    // Initial View Routing: Always land on view-login (Portal Login & Pendaftaran) by default
+    // Initial View Routing: Default to active role dashboard if no hash specified
     const hashView = window.location.hash.slice(1);
-    const initialView = hashView && hashView !== '' ? hashView : 'view-login';
+    const defaultRoleView = ROLE_PERMISSIONS[appState.getState().currentRole || 'ADMIN']?.defaultView || 'dashboard-bendahara';
+    const initialView = hashView && hashView !== '' ? hashView : defaultRoleView;
     this.navigateTo(initialView);
     this.updateBadges();
+
+    // Listen to hashchange for browser back/forward buttons and direct bookmark navigation
+    window.addEventListener('hashchange', () => {
+      const currentHash = window.location.hash.slice(1);
+      if (currentHash && currentHash !== this.currentView) {
+        this.navigateTo(currentHash);
+      }
+    });
   }
 
   updateBadges() {
@@ -267,6 +276,11 @@ class Router {
     }
 
     this.currentView = viewName;
+
+    // Synchronize URL hash so page refreshes and direct URLs preserve the active view
+    if (window.location.hash.slice(1) !== viewName) {
+      history.replaceState(null, '', '#' + viewName);
+    }
 
     // Highlight active nav item
     document.querySelectorAll('.nav-item').forEach(item => {

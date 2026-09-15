@@ -22,12 +22,12 @@ export function renderMahasiswaPortal(container) {
   const scholarship = ((state.scholarshipSchemes || []).find(sc => sc.id === currentStudent.scholarshipId)) || (state.scholarshipSchemes && state.scholarshipSchemes[0]) || { name: 'Reguler', discountValue: 0 };
   
   // Find current semester invoice
-  const currentInvoice = state.invoices.find(
+  const currentInvoice = (state.invoices || []).find(
     inv => inv.studentNim === currentStudent.nim && inv.semester === state.activeSemester
   ) || null;
 
   // Student history invoices
-  const studentInvoices = state.invoices.filter(inv => inv.studentNim === currentStudent.nim);
+  const studentInvoices = (state.invoices || []).filter(inv => inv.studentNim === currentStudent.nim);
 
   // Status helper flags
   const isLunas = currentInvoice && currentInvoice.status === STATUS_TAGIHAN.LUNAS;
