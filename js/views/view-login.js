@@ -40,10 +40,13 @@ export function renderLoginView(container) {
   }
 
   container.innerHTML = `
-    <div style="max-width: 1060px; margin: 12px auto 40px; animation: fadeInScale 0.35s ease;">
+    <div style="max-width: 1060px; margin: 12px auto 40px; animation: fadeInScale 0.35s ease; position: relative;">
       
+      <!-- Faint STIT Institutional Watermark in Center Background -->
+      <div class="login-watermark-bg"></div>
+
       <!-- Top Branding Hero -->
-      <div style="text-align: center; margin-bottom: 26px; position: relative;">
+      <div style="text-align: center; margin-bottom: 26px; position: relative; z-index: 1;">
         
         <!-- Glowing Ambient Halo -->
         <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 280px; height: 120px; background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, rgba(14,165,233,0.05) 50%, transparent 80%); filter: blur(20px); pointer-events: none; z-index: 0;"></div>
@@ -82,237 +85,254 @@ export function renderLoginView(container) {
       </div>
 
       <!-- Main Container Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); gap: 28px; align-items: start;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); gap: 28px; align-items: start; position: relative; z-index: 1;">
         
         <!-- Left Column: Authentication & Registration Card -->
-        <div class="card" style="padding: 30px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(37,99,235,0.1); border-top: 5px solid var(--primary-700); border-radius: var(--radius-2xl);">
+        <div class="card" style="padding: 30px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(37,99,235,0.1); border-top: 5px solid var(--primary-700); border-radius: var(--radius-2xl); position: relative; overflow: hidden;">
           
-          <!-- Segmented Navigation Tabs -->
-          <div style="display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-xl); margin-bottom: 24px; gap: 4px; border: 1px solid #e2e8f0;">
-            <button type="button" id="tab-btn-student" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: #ffffff; color: var(--primary-800); box-shadow: 0 2px 5px rgba(0,0,0,0.08); border: none; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center;">
-              🎓 Masuk Mahasiswa
-            </button>
-            <button type="button" id="tab-btn-admin" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-lg); font-weight: 700; font-size: 0.80rem; padding: 10px 8px; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center;">
-              👑 Masuk Admin
-            </button>
-            <button type="button" id="tab-btn-register" class="btn btn-sm btn-shimmer" style="flex: 1.1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #1d4ed8; border: 1px dashed #60a5fa; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center; box-shadow: 0 1px 3px rgba(37,99,235,0.1);">
-              ✨ Buat Akun Baru
-            </button>
-          </div>
+          <!-- Subtle Card Watermark Logo -->
+          <div class="login-card-watermark"></div>
 
-          <!-- PANE 1: LOGIN MAHASISWA -->
-          <div id="pane-student-login">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-              <div>
-                <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0;">Portal Login Mahasiswa</h2>
-                <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Gunakan NIM dan PIN untuk mengakses dashboard akademik & keuangan</p>
-              </div>
-              <div style="width: 44px; height: 44px; border-radius: 12px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 2px 6px rgba(37,99,235,0.15);">
-                🎓
-              </div>
-            </div>
-
-            <form id="form-student-login">
-              <div class="form-group">
-                <label class="form-label" for="login-nim" style="font-weight: 700;">NIM atau Username Mahasiswa <span class="required">*</span></label>
-                <div style="position: relative;">
-                  <input type="text" class="form-control" id="login-nim" placeholder="Masukkan NIM atau Username..." required style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md); border-color: #cbd5e1;" value="2601001">
-                  <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #64748b;">👤</span>
-                </div>
-                <span class="input-help-text">Gunakan NIM resmi atau Username akun mahasiswa STIT-IF</span>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="login-password" style="font-weight: 700;">PIN / Password <span class="required">*</span></label>
-                <div style="position: relative;">
-                  <input type="password" class="form-control" id="login-password" placeholder="Masukkan password atau PIN" required style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md); border-color: #cbd5e1;" value="123456">
-                  <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #64748b;">🔒</span>
-                  <button type="button" id="btn-toggle-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: #64748b; padding: 4px;" title="Lihat Password">
-                    👁️
-                  </button>
-                </div>
-                <span class="input-help-text">Default PIN simulasi mahasiswa: <code>123456</code></span>
-              </div>
-
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.78rem; flex-wrap: wrap; gap: 8px;">
-                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-weight: 600;">
-                  <input type="checkbox" id="remember-nim" checked> Ingat di perangkat ini
-                </label>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <a href="javascript:void(0)" id="link-inline-register" style="color: #2563eb; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
-                    <span>📝</span> <span>Buat Akun Baru</span>
-                  </a>
-                  <span style="color: #cbd5e1;">&bull;</span>
-                  <a href="javascript:void(0)" id="link-forgot-pin" style="color: var(--primary-700); font-weight: 600; text-decoration: none;">Bantuan?</a>
-                </div>
-              </div>
-
-              <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border: none; box-shadow: 0 4px 12px rgba(37,99,235,0.35);">
-                🚀 Masuk ke Portal Mahasiswa
+          <div style="position: relative; z-index: 1;">
+            <!-- Segmented Navigation Tabs -->
+            <div style="display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-xl); margin-bottom: 24px; gap: 4px; border: 1px solid #e2e8f0;">
+              <button type="button" id="tab-btn-student" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: #ffffff; color: var(--primary-800); box-shadow: 0 2px 5px rgba(0,0,0,0.08); border: none; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center;">
+                🎓 Masuk Mahasiswa
               </button>
-            </form>
-
-            <!-- VIP Student Self-Registration CTA Card -->
-            <div class="vip-register-card" style="margin-top: 18px; padding: 16px 18px;">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                <div style="font-size: 0.88rem; font-weight: 900; color: #1e3a8a; display: flex; align-items: center; gap: 6px;">
-                  <span>✨</span> Belum Memiliki Akun Mahasiswa?
-                </div>
-                <span class="badge" style="background: #ffffff; color: #1d4ed8; border: 1px solid #bfdbfe; font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 999px;">
-                  PMB 2026/2027
-                </span>
-              </div>
-              <p style="font-size: 0.75rem; color: #1e40af; margin: 0 0 10px; line-height: 1.4;">
-                Daftar akun mandiri dalam 1 menit: dapatkan <strong>Nomor Virtual Account Bank BSI</strong>, jadwal kuliah, dan klaim skema beasiswa.
-              </p>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; font-size: 0.72rem; color: #1e3a8a; font-weight: 600;">
-                <div style="display: flex; align-items: center; gap: 4px;"><span>✓</span> BSI VA 1056405743</div>
-                <div style="display: flex; align-items: center; gap: 4px;"><span>✓</span> Skema Beasiswa Santri</div>
-                <div style="display: flex; align-items: center; gap: 4px;"><span>✓</span> Portal KRS Terintegrasi</div>
-                <div style="display: flex; align-items: center; gap: 4px;"><span>✓</span> Akun Langsung Aktif</div>
-              </div>
-              <button type="button" id="btn-open-student-register" class="btn btn-sm btn-shimmer" style="width: 100%; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: #ffffff; font-weight: 800; font-size: 0.84rem; padding: 10px 14px; border-radius: var(--radius-md); border: none; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                <span>📝</span> <span>Buat Akun Mahasiswa Baru Sekarang ➔</span>
+              <button type="button" id="tab-btn-admin" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-lg); font-weight: 700; font-size: 0.80rem; padding: 10px 8px; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center;">
+                👑 Masuk Admin
+              </button>
+              <button type="button" id="tab-btn-register" class="btn btn-sm btn-shimmer" style="flex: 1.1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #1d4ed8; border: 1px dashed #60a5fa; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center; box-shadow: 0 1px 3px rgba(37,99,235,0.1);">
+                ✨ Buat Akun Baru
               </button>
             </div>
 
-            <!-- Callout: Kontak Admin & Bantuan Login -->
-            <div style="margin-top: 14px; padding: 12px 14px; background: #f0fdf4; border: 1px solid #86efac; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: #22c55e; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; box-shadow: 0 2px 4px rgba(34,197,94,0.3);">
-                  📞
-                </div>
+            <!-- PANE 1: LOGIN MAHASISWA -->
+            <div id="pane-student-login">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
                 <div>
-                  <div style="font-size: 0.78rem; font-weight: 800; color: #166534;">Kendala Login / Butuh Bantuan?</div>
-                  <div style="font-size: 0.74rem; color: #15803d;">Admin: <strong style="font-family: var(--font-mono); font-weight: 800; letter-spacing: 0.3px;">082342307414</strong></div>
+                  <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0;">Portal Login Mahasiswa</h2>
+                  <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Gunakan NIM dan PIN untuk mengakses dashboard akademik & keuangan</p>
+                </div>
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 2px 6px rgba(37,99,235,0.15);">
+                  🎓
                 </div>
               </div>
-              <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20login%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-sm" style="background: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.72rem; padding: 6px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; border: none; box-shadow: var(--shadow-sm);">
-                <span>Chat WA 💬</span>
-              </a>
-            </div>
-          </div>
 
-          <!-- PANE 2: LOGIN ADMIN (USERNAME & PASSWORD) -->
-          <div id="pane-admin-login" style="display: none;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-              <div>
-                <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0;">Login Admin / Pengelola</h2>
-                <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Akses pusat komando keuangan & tata kelola beasiswa</p>
-              </div>
-              <div style="width: 44px; height: 44px; border-radius: 12px; background: #0f172a; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-                👑
-              </div>
-            </div>
-
-            <form id="form-admin-login">
-              <div class="form-group">
-                <label class="form-label" for="admin-username" style="font-weight: 700;">Username / Email Admin <span class="required">*</span></label>
-                <div style="position: relative;">
-                  <input type="text" class="form-control" id="admin-username" placeholder="Masukkan username admin" required style="font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md);" value="admin">
-                  <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">💼</span>
+              <form id="form-student-login">
+                <div class="form-group">
+                  <label class="form-label" for="login-nim" style="font-weight: 700;">NIM atau Username Mahasiswa <span class="required">*</span></label>
+                  <div style="position: relative;">
+                    <input type="text" class="form-control" id="login-nim" placeholder="Masukkan NIM atau Username..." required style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md); border-color: #cbd5e1;" value="2601001">
+                    <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #64748b;">👤</span>
+                  </div>
+                  <span class="input-help-text">Gunakan NIM resmi atau Username akun mahasiswa STIT-IF</span>
                 </div>
-                <span class="input-help-text">Username admin: <code>admin</code> atau <code>bendahara</code></span>
-              </div>
 
-              <div class="form-group">
-                <label class="form-label" for="admin-password" style="font-weight: 700;">Password Admin <span class="required">*</span></label>
-                <div style="position: relative;">
-                  <input type="password" class="form-control" id="admin-password" placeholder="Masukkan password admin" required style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md);" value="admin123">
-                  <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">🔑</span>
-                  <button type="button" id="btn-toggle-admin-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: var(--text-light); padding: 4px;">
-                    👁️
-                  </button>
+                <div class="form-group">
+                  <label class="form-label" for="login-password" style="font-weight: 700;">PIN / Password <span class="required">*</span></label>
+                  <div style="position: relative;">
+                    <input type="password" class="form-control" id="login-password" placeholder="Masukkan password atau PIN" required style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md); border-color: #cbd5e1;" value="123456">
+                    <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #64748b;">🔒</span>
+                    <button type="button" id="btn-toggle-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: #64748b; padding: 4px;" title="Lihat Password">
+                      👁️
+                    </button>
+                  </div>
+                  <span class="input-help-text">Default PIN simulasi mahasiswa: <code>123456</code></span>
                 </div>
-                <span class="input-help-text">Password admin simulasi: <code>admin123</code></span>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.78rem; flex-wrap: wrap; gap: 8px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-weight: 600;">
+                    <input type="checkbox" id="remember-nim" checked> Ingat di perangkat ini
+                  </label>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <a href="javascript:void(0)" id="link-inline-register" style="color: #2563eb; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                      <span>📝</span> <span>Buat Akun Baru</span>
+                    </a>
+                    <span style="color: #cbd5e1;">&bull;</span>
+                    <a href="javascript:void(0)" id="link-forgot-pin" style="color: var(--primary-700); font-weight: 600; text-decoration: none;">Bantuan?</a>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border: none; box-shadow: 0 4px 12px rgba(37,99,235,0.35);">
+                  🚀 Masuk ke Portal Mahasiswa
+                </button>
+              </form>
+
+              <!-- VIP Student Self-Registration CTA Card -->
+              <div class="vip-register-card" style="margin-top: 18px; padding: 16px 18px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <div style="font-size: 0.88rem; font-weight: 900; color: #1e3a8a; display: flex; align-items: center; gap: 6px;">
+                    <span>✨</span> Belum Memiliki Akun Mahasiswa?
+                  </div>
+                  <span class="badge" style="background: #ffffff; color: #1d4ed8; border: 1px solid #bfdbfe; font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 999px;">
+                    PMB 2026/2027
+                  </span>
+                </div>
+                <p style="font-size: 0.75rem; color: #1e40af; margin: 0 0 10px; line-height: 1.4;">
+                  Daftar akun mandiri dalam 1 menit: dapatkan <strong>Nomor Virtual Account Bank BSI</strong>, jadwal kuliah, dan klaim skema beasiswa.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; font-size: 0.72rem; color: #1e3a8a; font-weight: 600;">
+                  <div style="display: flex; align-items: center; gap: 4px;"><span>✓</span> BSI VA 1056405743</div>
+                  <div style="display: flex; align-items: center; gap: 4px;"><span>✓</span> Skema Beasiswa Santri</div>
+                  <div style="display: flex; align-items: center; gap: 4px;"><span>✓</span> Portal KRS Terintegrasi</div>
+                  <div style="display: flex; align-items: center; gap: 4px;"><span>✓</span> Akun Langsung Aktif</div>
+                </div>
+                <button type="button" id="btn-open-student-register" class="btn btn-sm btn-shimmer" style="width: 100%; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: #ffffff; font-weight: 800; font-size: 0.84rem; padding: 10px 14px; border-radius: var(--radius-md); border: none; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                  <span>📝</span> <span>Buat Akun Mahasiswa Baru Sekarang ➔</span>
+                </button>
               </div>
 
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.78rem;">
-                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-weight: 600;">
-                  <input type="checkbox" id="remember-admin" checked> Ingat sesi di perangkat ini
-                </label>
-                <span style="color: #0284c7; font-weight: 700;">Hak Akses: Pengelola Penuh</span>
+              <!-- Callout: Kontak Admin & Bantuan Login -->
+              <div style="margin-top: 14px; padding: 12px 14px; background: #f0fdf4; border: 1px solid #86efac; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 36px; height: 36px; border-radius: var(--radius-full); background: #22c55e; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; box-shadow: 0 2px 4px rgba(34,197,94,0.3);">
+                    📞
+                  </div>
+                  <div>
+                    <div style="font-size: 0.78rem; font-weight: 800; color: #166534;">Kendala Login / Butuh Bantuan?</div>
+                    <div style="font-size: 0.74rem; color: #15803d;">Admin: <strong style="font-family: var(--font-mono); font-weight: 800; letter-spacing: 0.3px;">082342307414</strong></div>
+                  </div>
+                </div>
+                <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20login%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-sm" style="background: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.72rem; padding: 6px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; border: none; box-shadow: var(--shadow-sm);">
+                  <span>Chat WA 💬</span>
+                </a>
               </div>
-
-              <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); border: none; box-shadow: 0 4px 12px rgba(15,23,42,0.3);">
-                👑 Masuk ke Dashboard Admin
-              </button>
-            </form>
-
-            <!-- Admin Help / Support hotline -->
-            <div style="margin-top: 16px; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: var(--text-muted);">
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 1.1rem;">📞</span>
-                <span>Bantuan Teknis Admin: <strong style="font-family: var(--font-mono); color: var(--text-dark);">082342307414</strong></span>
-              </div>
-              <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20bantuan%20akses%20admin%20SIMPEL-IF" target="_blank" rel="noopener" style="color: #0284c7; font-weight: 800; text-decoration: none;">Hubungi WA ➔</a>
             </div>
 
-            <div style="margin-top: 12px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); font-size: 0.76rem; color: var(--text-muted);">
-              <strong>🛡️ Keamanan Sistem:</strong> Halaman Dashboard Admin memiliki hak akses penuh atas penerbitan tagihan, konfirmasi transfer manual, serta konfigurasi skema beasiswa.
+            <!-- PANE 2: LOGIN ADMIN (USERNAME & PASSWORD) -->
+            <div id="pane-admin-login" style="display: none;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <div>
+                  <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0;">Login Admin / Pengelola</h2>
+                  <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Akses pusat komando keuangan & tata kelola beasiswa</p>
+                </div>
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: #0f172a; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                  👑
+                </div>
+              </div>
+
+              <form id="form-admin-login">
+                <div class="form-group">
+                  <label class="form-label" for="admin-username" style="font-weight: 700;">Username / Email Admin <span class="required">*</span></label>
+                  <div style="position: relative;">
+                    <input type="text" class="form-control" id="admin-username" placeholder="Masukkan username admin" required style="font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md);" value="admin">
+                    <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">💼</span>
+                  </div>
+                  <span class="input-help-text">Username admin: <code>admin</code> atau <code>bendahara</code></span>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="admin-password" style="font-weight: 700;">Password Admin <span class="required">*</span></label>
+                  <div style="position: relative;">
+                    <input type="password" class="form-control" id="admin-password" placeholder="Masukkan password admin" required style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md);" value="admin123">
+                    <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">🔑</span>
+                    <button type="button" id="btn-toggle-admin-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: var(--text-light); padding: 4px;">
+                      👁️
+                    </button>
+                  </div>
+                  <span class="input-help-text">Password admin simulasi: <code>admin123</code></span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.78rem;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-weight: 600;">
+                    <input type="checkbox" id="remember-admin" checked> Ingat sesi di perangkat ini
+                  </label>
+                  <span style="color: #0284c7; font-weight: 700;">Hak Akses: Pengelola Penuh</span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); border: none; box-shadow: 0 4px 12px rgba(15,23,42,0.3);">
+                  👑 Masuk ke Dashboard Admin
+                </button>
+              </form>
+
+              <!-- Admin Help / Support hotline -->
+              <div style="margin-top: 16px; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: var(--text-muted);">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 1.1rem;">📞</span>
+                  <span>Bantuan Teknis Admin: <strong style="font-family: var(--font-mono); color: var(--text-dark);">082342307414</strong></span>
+                </div>
+                <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20bantuan%20akses%20admin%20SIMPEL-IF" target="_blank" rel="noopener" style="color: #0284c7; font-weight: 800; text-decoration: none;">Hubungi WA ➔</a>
+              </div>
+
+              <div style="margin-top: 12px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); font-size: 0.76rem; color: var(--text-muted);">
+                <strong>🛡️ Keamanan Sistem:</strong> Halaman Dashboard Admin memiliki hak akses penuh atas penerbitan tagihan, konfirmasi transfer manual, serta konfigurasi skema beasiswa.
+              </div>
             </div>
           </div>
 
         </div>
 
         <!-- Right Column: Demo Accounts & Quick Selection Card -->
-        <div class="card" style="padding: 26px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08); border-top: 5px solid #0284c7; border-radius: var(--radius-2xl);">
+        <div class="card" style="padding: 26px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08); border-top: 5px solid #0284c7; border-radius: var(--radius-2xl); position: relative; overflow: hidden;">
+          
+          <!-- Subtle Card Watermark Logo -->
+          <div class="login-card-watermark"></div>
 
-          <!-- Keterangan Akun Demo / Default Credentials -->
-          <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: var(--radius-xl); padding: 14px 18px; margin-bottom: 16px;">
-            <div style="font-size: 0.76rem; font-weight: 800; color: #1e40af; text-transform: uppercase; letter-spacing: 0.3px;">🔑 Kredensial Login Terdaftar di Sistem:</div>
-            <div style="font-size: 0.76rem; color: #1e3a8a; margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
-              <div><strong>👑 Akun Admin (${(state.adminUsers || []).length} Akun):</strong></div>
-              <div style="padding-left: 8px; display: flex; flex-direction: column; gap: 2px;">
-                ${(state.adminUsers || []).slice(0, 3).map(a => `<div>&bull; <strong>${a.name.split(',')[0]}:</strong> User <code>${a.username}</code> &bull; Pass <code>${a.password || 'admin123'}</code></div>`).join('')}
-                ${(state.adminUsers || []).length > 3 ? `<div style="font-size: 0.70rem; color: #3b82f6;">+ ${(state.adminUsers || []).length - 3} admin lainnya terdaftar</div>` : ''}
-              </div>
-              <div style="margin-top: 4px;"><strong>🎓 Mahasiswa:</strong> Masukkan <strong>NIM</strong> terdaftar &bull; Password: <code>123456</code></div>
-            </div>
-          </div>
-
-          <!-- Dedicated Admin Support Card with WhatsApp & Phone -->
-          <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: var(--radius-xl); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: var(--shadow-sm); flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <div style="width: 42px; height: 42px; border-radius: 50%; background: #22c55e; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(34,197,94,0.35);">
-                📱
-              </div>
-              <div>
-                <div style="font-size: 0.76rem; font-weight: 800; color: #166534; text-transform: uppercase; letter-spacing: 0.3px;">Kontak & Helpdesk Admin</div>
-                <div style="font-size: 0.95rem; font-weight: 900; color: #14532d; font-family: var(--font-mono); margin-top: 1px;">
-                  082342307414
+          <div style="position: relative; z-index: 1;">
+            <!-- Keterangan Akun Demo / Default Credentials -->
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: var(--radius-xl); padding: 14px 18px; margin-bottom: 16px;">
+              <div style="font-size: 0.76rem; font-weight: 800; color: #1e40af; text-transform: uppercase; letter-spacing: 0.3px;">🔑 Kredensial Login Terdaftar di Sistem:</div>
+              <div style="font-size: 0.76rem; color: #1e3a8a; margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
+                <div><strong>👑 Akun Admin (${(state.adminUsers || []).length} Akun):</strong></div>
+                <div style="padding-left: 8px; display: flex; flex-direction: column; gap: 2px;">
+                  ${(state.adminUsers || []).slice(0, 3).map(a => `<div>&bull; <strong>${a.name.split(',')[0]}:</strong> User <code>${a.username}</code> &bull; Pass <code>${a.password || 'admin123'}</code></div>`).join('')}
+                  ${(state.adminUsers || []).length > 3 ? `<div style="font-size: 0.70rem; color: #3b82f6;">+ ${(state.adminUsers || []).length - 3} admin lainnya terdaftar</div>` : ''}
                 </div>
-                <div style="font-size: 0.70rem; color: #15803d;">WhatsApp / Telepon &bull; <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" style="color: #15803d; font-weight: 700; text-decoration: underline;">stitihsanulfikri.ac.id</a></div>
+                <div style="margin-top: 4px;"><strong>🎓 Mahasiswa:</strong> Masukkan <strong>NIM</strong> terdaftar &bull; Password: <code>123456</code></div>
               </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" class="btn btn-sm btn-shimmer" style="background: #ffffff; color: #166534; border: 1px solid #86efac; font-weight: 800; font-size: 0.74rem; padding: 7px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
-                <span>🌐 Web ↗</span>
-              </a>
-              <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20layanan%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-sm btn-shimmer" style="background: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.74rem; padding: 7px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; box-shadow: 0 2px 6px rgba(22,163,74,0.3); border: none;">
-                <span>WA 💬</span>
-              </a>
+
+            <!-- Dedicated Admin Support Card with WhatsApp & Phone -->
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: var(--radius-xl); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: var(--shadow-sm); flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 42px; height: 42px; border-radius: 50%; background: #22c55e; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; box-shadow: 0 2px 6px rgba(34,197,94,0.35);">
+                  📱
+                </div>
+                <div>
+                  <div style="font-size: 0.76rem; font-weight: 800; color: #166534; text-transform: uppercase; letter-spacing: 0.3px;">Kontak & Helpdesk Admin</div>
+                  <div style="font-size: 0.95rem; font-weight: 900; color: #14532d; font-family: var(--font-mono); margin-top: 1px;">
+                    082342307414
+                  </div>
+                  <div style="font-size: 0.70rem; color: #15803d;">WhatsApp / Telepon &bull; <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" style="color: #15803d; font-weight: 700; text-decoration: underline;">stitihsanulfikri.ac.id</a></div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" class="btn btn-sm btn-shimmer" style="background: #ffffff; color: #166534; border: 1px solid #86efac; font-weight: 800; font-size: 0.74rem; padding: 7px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                  <span>🌐 Web ↗</span>
+                </a>
+                <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20layanan%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-sm btn-shimmer" style="background: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.74rem; padding: 7px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; box-shadow: 0 2px 6px rgba(22,163,74,0.3); border: none;">
+                  <span>WA 💬</span>
+                </a>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;">
+              <div>
+                <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin: 0;">Pilih Cepat Akun Mahasiswa</h3>
+                <p style="font-size: 0.76rem; color: var(--text-light); margin: 2px 0 0;">Klik akun untuk simulasi login instan satu per satu</p>
+              </div>
+              <button type="button" id="btn-quick-register-student" class="btn btn-outline btn-sm btn-shimmer" style="font-size: 0.74rem; font-weight: 800; padding: 5px 12px; color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radius-md); cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px rgba(37,99,235,0.1);">
+                <span>➕</span> <span>Buat Akun</span>
+              </button>
+            </div>
+
+            <!-- Quick Filter Input for Demo Students -->
+            <div style="position: relative; margin-bottom: 12px;">
+              <input type="text" id="input-filter-demo-students" class="form-control form-control-sm" placeholder="🔍 Cari nama mhs atau NIM..." style="padding-left: 32px; border-radius: var(--radius-md); font-size: 0.8rem;">
+              <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: #94a3b8;">🔍</span>
+            </div>
+
+            <div id="student-demo-list-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto; padding-right: 4px;">
+              ${renderStudentDemoCards(students, state)}
             </div>
           </div>
+        </div>
 
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;">
-            <div>
-              <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin: 0;">Pilih Cepat Akun Mahasiswa</h3>
-              <p style="font-size: 0.76rem; color: var(--text-light); margin: 2px 0 0;">Klik akun untuk simulasi login instan satu per satu</p>
-            </div>
-            <button type="button" id="btn-quick-register-student" class="btn btn-outline btn-sm btn-shimmer" style="font-size: 0.74rem; font-weight: 800; padding: 5px 12px; color: #1d4ed8; border-color: #93c5fd; background: #eff6ff; display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radius-md); cursor: pointer; white-space: nowrap; box-shadow: 0 1px 2px rgba(37,99,235,0.1);">
-              <span>➕</span> <span>Buat Akun</span>
-            </button>
-          </div>
+      </div>
 
-          <!-- Quick Filter Input for Demo Students -->
-          <div style="position: relative; margin-bottom: 12px;">
-            <input type="text" id="input-filter-demo-students" class="form-control form-control-sm" placeholder="🔍 Cari nama mhs atau NIM..." style="padding-left: 32px; border-radius: var(--radius-md); font-size: 0.8rem;">
-            <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: #94a3b8;">🔍</span>
-          </div>
-
-          <div id="student-demo-list-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow-y: auto; padding-right: 4px;">
-            ${renderStudentDemoCards(students, state)}
+    </div>
+  `;       ${renderStudentDemoCards(students, state)}
           </div>
         </div>
 
