@@ -647,6 +647,8 @@ function renderInvoicesTableRows(invoicesList, state) {
       scholarshipId: 'REGULER'
     };
 
+    const verif = (state.paymentVerifications || []).find(v => v.invoiceId === inv.id || v.studentNim === inv.studentNim);
+
     return `
       <tr>
         <td style="font-family: var(--font-mono); font-weight: 700; font-size: 0.78rem; color: var(--primary-700);">
@@ -677,6 +679,15 @@ function renderInvoicesTableRows(invoicesList, state) {
         </td>
         <td>
           <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            ${verif ? `
+              <button class="btn btn-outline btn-sm btn-action-transfer-proof" data-verif-id="${verif.id}" data-inv-id="${inv.id}" title="Lihat Bukti Struk Transfer Bank">
+                📄 Struk
+              </button>
+            ` : (inv.status === STATUS_TAGIHAN.LUNAS || (inv.paymentMethod && (inv.paymentMethod.includes('TRANSFER') || inv.paymentMethod.includes('BSI')))) ? `
+              <button class="btn btn-outline btn-sm btn-action-transfer-proof" data-inv-id="${inv.id}" title="Lihat Bukti Struk Transfer Bank">
+                📄 Struk
+              </button>
+            ` : ''}
             ${inv.status === STATUS_TAGIHAN.LUNAS ? `
               <button class="btn btn-outline btn-sm btn-action-receipt" data-inv-id="${inv.id}" title="Lihat Kwitansi Resmi">
                 🧾 Kwitansi
@@ -698,6 +709,15 @@ function renderInvoicesTableRows(invoicesList, state) {
 
 function attachTableActionListeners(tbody, state) {
   if (!tbody) return;
+
+  tbody.querySelectorAll('.btn-action-transfer-proof').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-verif-id') || btn.getAttribute('data-inv-id');
+      if (window.simpelModals && window.simpelModals.openTransferProofModal) {
+        window.simpelModals.openTransferProofModal(targetId);
+      }
+    });
+  });
 
   tbody.querySelectorAll('.btn-action-receipt').forEach(btn => {
     btn.addEventListener('click', () => {

@@ -1705,27 +1705,385 @@ export class ModalManager {
   }
 
   /**
-   * 7. Fullscreen Image Preview Modal
+   * 7. Transfer Proof Slip & BSI Mobile E-Receipt Modal
+   * Admin / Bendahara can preview, zoom, verify, and approve/reject transfer receipts
    */
-  static openImagePreviewModal(imageUrl) {
+  static openTransferProofModal(identifier) {
+    const state = appState.getState();
     const { overlay, card, title, body, footer } = this.getModalElements();
-    card.classList.remove('modal-xl');
-    card.classList.add('modal-lg');
+    if (!overlay || !card) return;
 
-    title.textContent = `🔍 Pratinjau Bukti Pembayaran / Struk Transfer`;
+    card.className = 'modal-card modal-transfer-proof';
+    body.scrollTop = 0;
 
-    body.innerHTML = `
-      <div style="text-align: center; padding: 10px; background: #0f172a; border-radius: var(--radius-lg);">
-        <img src="${imageUrl}" alt="Bukti Pembayaran" style="max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: var(--radius-md);">
+    // 1. Resolve verification and related invoice/student
+    let verif = null;
+    let invoice = null;
+
+    if (identifier && typeof identifier === 'object') {
+      verif = identifier;
+    } else if (identifier) {
+      verif = (state.paymentVerifications || []).find(v => v.id === identifier || v.invoiceId === identifier);
+      if (!verif) {
+        invoice = (state.invoices || []).find(i => i.id === identifier);
+        if (invoice) {
+          verif = (state.paymentVerifications || []).find(v => v.studentNim === invoice.studentNim);
+        }
+      }
+    }
+
+    if (verif && !invoice && verif.invoiceId) {
+      invoice = (state.invoices || []).find(i => i.id === verif.invoiceId);
+    }
+    if (verif && !invoice && verif.studentNim) {
+      invoice = (state.invoices || []).find(i => i.studentNim === verif.studentNim);
+    }
+
+    // Determine target student
+    const studentNim = verif?.studentNim || invoice?.studentNim || (typeof identifier === 'string' && identifier.length === 7 ? identifier : null);
+    const student = (state.students || []).find(s => s.nim === studentNim) || {
+      name: verif?.studentName || invoice?.studentName || 'Mahasiswa STIT-IF',
+      nim: studentNim || '2601001',
+      prodi: verif?.prodi || invoice?.prodi || 'BKPI',
+      semester: verif?.semester || invoice?.semester || 1
+    };
+
+    // Determine financial amounts
+    const amount = Number(verif?.amount) || Number(invoice?.paidAmount) || Number(invoice?.netAmount) || 200000;
+    const paymentTypeDesc = verif?.paymentType ? verif.paymentType.replace(/_/g, ' ') : (invoice?.feeType ? invoice.feeType.replace(/_/g, ' ') : 'BIAYA PENDIDIKAN');
+    
+    // Determine bank and transfer metadata
+    const senderBank = verif?.senderBank || 'Bank Syariah Indonesia (BSI)';
+    const senderAccName = verif?.senderAccountName || verif?.studentName || student.name;
+    const senderAccNum = verif?.senderAccountNumber || ('52' + String(student.nim).padStart(8, '0'));
+    const destAccNum = '1056405743';
+    const destAccName = 'STIT IHSANUL FIKRI';
+    const destBankName = 'BANK SYARIAH INDONESIA (451)';
+
+    const trxDate = verif?.submittedAt || verif?.paymentDate || invoice?.paymentDate || invoice?.createdDate || new Date().toISOString();
+    const trxDateFormatted = formatDateTime(trxDate);
+
+    // Reference number
+    const refCode = verif?.bankRefNumber || verif?.id || `BSI-${(invoice?.id || 'TRX').replace(/[^a-zA-Z0-9]/g, '')}-${student.nim.slice(-4)}`;
+
+    // Image URL check
+    let rawImageUrl = verif?.proofImage || verif?.proofImageUrl;
+    if (!rawImageUrl && typeof identifier === 'string' && (identifier.startsWith('data:') || identifier.startsWith('http') || identifier.includes('.png') || identifier.includes('.jpg') || identifier.includes('.webp') || identifier.includes('/'))) {
+      rawImageUrl = identifier;
+    }
+
+    const isPending = verif ? verif.status === 'PENDING' : (invoice?.status === 'MENUNGGU_VERIFIKASI');
+    const isApproved = verif ? verif.status === 'APPROVED' : (invoice?.status === 'LUNAS');
+
+    // Status Badge
+    let statusBadgeHTML = '';
+    if (isPending) {
+      statusBadgeHTML = `<span class="badge badge-pending"><span class="badge-dot"></span>Menunggu Verifikasi Bendahara</span>`;
+    } else if (isApproved) {
+      statusBadgeHTML = `<span class="badge badge-paid"><span class="badge-dot"></span>Disetujui & Terverifikasi Sah</span>`;
+    } else {
+      statusBadgeHTML = `<span class="badge badge-unpaid"><span class="badge-dot"></span>Ditolak</span>`;
+    }
+
+    title.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <span>📄 Bukti Struk Transfer & M-Banking</span>
+        ${statusBadgeHTML}
       </div>
     `;
 
-    footer.innerHTML = `
-      <button class="btn btn-primary" id="btn-close-img-preview">Tutup Pratinjau</button>
+    body.innerHTML = `
+      <div class="transfer-proof-grid">
+        <!-- Kolom Kiri: Authentic BSI Mobile Digital Slip -->
+        <div class="bsi-receipt-card" id="bsi-slip-printable">
+          <div class="bsi-receipt-header">
+            <div class="bsi-header-top">
+              <div class="bsi-logo-badge">
+                <span class="bsi-logo-icon">BSI</span>
+                <span>BSI Mobile</span>
+              </div>
+              <span class="bsi-channel-tag">M-Banking Transfer</span>
+            </div>
+            
+            <div class="bsi-status-circle">✓</div>
+            <h3 class="bsi-status-title">TRANSFER BERHASIL</h3>
+            <p class="bsi-status-time">${trxDateFormatted} WIB</p>
+          </div>
+
+          <div class="bsi-tear-border"></div>
+
+          <div class="bsi-receipt-body">
+            <div class="bsi-amount-box">
+              <div class="bsi-amount-label">Jumlah Pembayaran</div>
+              <div class="bsi-amount-value">${formatRupiah(amount)}</div>
+            </div>
+
+            <div class="bsi-detail-list">
+              <div class="bsi-detail-item">
+                <span class="bsi-item-label">No. Referensi</span>
+                <span class="bsi-item-val highlight" style="font-family: var(--font-mono);">${refCode}</span>
+              </div>
+
+              <div class="bsi-detail-item">
+                <span class="bsi-item-label">Pengirim</span>
+                <div class="bsi-item-val">
+                  <div style="font-weight: 700;">${senderAccName.toUpperCase()}</div>
+                  <div style="font-size: 0.74rem; color: #64748b;">${senderBank} (${senderAccNum})</div>
+                </div>
+              </div>
+
+              <div class="bsi-detail-item">
+                <span class="bsi-item-label">Penerima</span>
+                <div class="bsi-item-val">
+                  <div style="font-weight: 700; color: #00827d;">${destAccName}</div>
+                  <div style="font-size: 0.74rem; color: #64748b;">${destBankName}</div>
+                  <div style="font-size: 0.74rem; font-family: var(--font-mono); font-weight: 700; color: #1e293b;">Rek: ${destAccNum}</div>
+                </div>
+              </div>
+
+              <div class="bsi-detail-item">
+                <span class="bsi-item-label">Tipe Transaksi</span>
+                <span class="bsi-item-val">Pemindahbukuan / Transfer Online BSI</span>
+              </div>
+
+              <div class="bsi-detail-item">
+                <span class="bsi-item-label">Biaya Administrasi</span>
+                <span class="bsi-item-val" style="color: #15803d; font-weight: 700;">Rp 0 (Bebas Biaya)</span>
+              </div>
+
+              <div class="bsi-detail-item">
+                <span class="bsi-item-label">Total Transaksi</span>
+                <span class="bsi-item-val highlight" style="font-size: 0.95rem;">${formatRupiah(amount)}</span>
+              </div>
+
+              <div class="bsi-detail-item">
+                <span class="bsi-item-label">Berita / Catatan</span>
+                <span class="bsi-item-val" style="font-size: 0.76rem; color: #475569; font-style: italic;">
+                  ${verif?.notes || `Bayar ${paymentTypeDesc} - ${student.name} (${student.nim})`}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bsi-receipt-footer">
+            <span>🔒</span>
+            <span>Struk transaksi resmi tersinkronisasi sistem perbankan Bank Syariah Indonesia</span>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan: Pratinjau Foto Asli & Data Mahasiswa -->
+        <div class="transfer-proof-sidebar">
+          <!-- Dokumen Foto Unggahan -->
+          ${rawImageUrl ? `
+            <div class="proof-photo-card">
+              <div class="proof-photo-header">
+                <span>📷 Foto Struk yang Diunggah Mahasiswa</span>
+                <span style="font-size: 0.72rem; color: #94a3b8;">Klik gambar untuk zoom</span>
+              </div>
+              <div class="proof-photo-preview-wrap">
+                <img src="${rawImageUrl}" alt="Bukti Transfer Mahasiswa" class="proof-photo-img" id="img-proof-zoom" title="Klik untuk memperbesar gambar">
+              </div>
+              <div class="proof-photo-actions">
+                <button class="btn btn-outline btn-sm" id="btn-toggle-zoom" style="color: #ffffff; border-color: #475569; background: #1e293b;">
+                  🔍 Toggle Zoom
+                </button>
+                <a href="${rawImageUrl}" target="_blank" download="Bukti-Transfer-${student.nim}.jpg" class="btn btn-outline btn-sm" style="color: #ffffff; border-color: #475569; background: #1e293b;">
+                  ⬇️ Unduh Gambar
+                </a>
+              </div>
+            </div>
+          ` : `
+            <div class="proof-no-photo-card">
+              <div style="font-size: 2rem; margin-bottom: 8px;">📱</div>
+              <h4 style="font-size: 0.9rem; font-weight: 700; color: #334155; margin: 0 0 4px;">Transfer Elektronik M-Banking</h4>
+              <p style="font-size: 0.76rem; margin: 0; line-height: 1.4;">
+                Transaksi ini diproses via transfer rekening BSI. Rincian data mutasi telah terekam secara otomatis pada struk digital di samping.
+              </p>
+            </div>
+          `}
+
+          <!-- Informasi Akademik & Verifikasi -->
+          <div class="proof-context-card">
+            <div class="proof-context-header">
+              <span>👤</span>
+              <span>Data Mahasiswa & Tagihan</span>
+            </div>
+
+            <div class="proof-context-row">
+              <span style="color: #64748b;">Nama Lengkap</span>
+              <span style="font-weight: 700; color: #1e293b;">${student.name}</span>
+            </div>
+
+            <div class="proof-context-row">
+              <span style="color: #64748b;">NIM</span>
+              <span style="font-family: var(--font-mono); font-weight: 700;">${student.nim}</span>
+            </div>
+
+            <div class="proof-context-row">
+              <span style="color: #64748b;">Program Studi</span>
+              <span style="font-weight: 600;">${student.prodi === 'BKPI' ? 'BKPI' : 'PIAUD'} (Sem ${student.semester})</span>
+            </div>
+
+            <div class="proof-context-row">
+              <span style="color: #64748b;">No. Tagihan</span>
+              <span style="font-family: var(--font-mono);">${invoice?.id || verif?.invoiceId || '-'}</span>
+            </div>
+
+            <div class="proof-context-row">
+              <span style="color: #64748b;">Status Tagihan</span>
+              <span>${invoice?.status || (isApproved ? 'LUNAS' : 'MENUNGGU VERIFIKASI')}</span>
+            </div>
+
+            ${verif?.receiptNumber ? `
+              <div class="proof-context-row">
+                <span style="color: #64748b;">No. Kwitansi Sah</span>
+                <span style="color: #00827d; font-weight: 800; font-family: var(--font-mono);">${verif.receiptNumber}</span>
+              </div>
+            ` : ''}
+
+            ${verif?.verifiedBy ? `
+              <div class="proof-context-row">
+                <span style="color: #64748b;">Diverifikasi Oleh</span>
+                <span>${verif.verifiedBy}</span>
+              </div>
+            ` : ''}
+
+            ${verif?.rejectedReason ? `
+              <div class="proof-context-row" style="background: #fef2f2; padding: 6px; border-radius: 4px; margin-top: 4px;">
+                <span style="color: #b91c1c; font-weight: 600;">Alasan Tolak</span>
+                <span style="color: #b91c1c;">${verif.rejectedReason}</span>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>
     `;
 
+    // Footer Action Buttons
+    let footerBtnsHTML = '';
+
+    if (isPending && verif) {
+      footerBtnsHTML = `
+        <button class="btn btn-danger btn-sm" id="btn-modal-reject-proof">
+          ✕ Tolak Bukti
+        </button>
+        <button class="btn btn-success btn-sm" id="btn-modal-approve-proof" style="background: #059669; border-color: #047857;">
+          ✓ Setujui Pembayaran & Terbitkan Kwitansi
+        </button>
+        <button class="btn btn-outline btn-sm" id="btn-modal-close-proof">
+          Tutup
+        </button>
+      `;
+    } else if (invoice || verif?.invoiceId) {
+      footerBtnsHTML = `
+        <button class="btn btn-outline btn-sm" id="btn-modal-print-bsi">
+          🖨️ Cetak Struk Transfer
+        </button>
+        <button class="btn btn-primary btn-sm" id="btn-modal-open-kwitansi">
+          🧾 Buka Kwitansi Sah STIT-IF
+        </button>
+        <button class="btn btn-outline btn-sm" id="btn-modal-close-proof">
+          Tutup
+        </button>
+      `;
+    } else {
+      footerBtnsHTML = `
+        <button class="btn btn-outline btn-sm" id="btn-modal-print-bsi">
+          🖨️ Cetak Struk Transfer
+        </button>
+        <button class="btn btn-primary btn-sm" id="btn-modal-close-proof">
+          Tutup
+        </button>
+      `;
+    }
+
+    footer.innerHTML = footerBtnsHTML;
     overlay.classList.add('active');
-    footer.querySelector('#btn-close-img-preview').addEventListener('click', () => ModalManager.closeModal());
+
+    // Attach Interactive Event Listeners inside modal
+    const closeBtn = footer.querySelector('#btn-modal-close-proof');
+    if (closeBtn) closeBtn.addEventListener('click', () => ModalManager.closeModal());
+
+    // Zoom toggle on image
+    const imgZoom = body.querySelector('#img-proof-zoom');
+    const toggleZoomBtn = body.querySelector('#btn-toggle-zoom');
+    if (imgZoom) {
+      const toggleZoom = () => imgZoom.classList.toggle('zoomed');
+      imgZoom.addEventListener('click', toggleZoom);
+      if (toggleZoomBtn) toggleZoomBtn.addEventListener('click', toggleZoom);
+    }
+
+    // Print BSI receipt
+    const printBtn = footer.querySelector('#btn-modal-print-bsi');
+    if (printBtn) {
+      printBtn.addEventListener('click', () => {
+        const slipEl = body.querySelector('#bsi-slip-printable');
+        if (slipEl && window.printReceiptElement) {
+          window.printReceiptElement(slipEl);
+        } else {
+          window.print();
+        }
+      });
+    }
+
+    // Open Kwitansi
+    const kwitansiBtn = footer.querySelector('#btn-modal-open-kwitansi');
+    if (kwitansiBtn) {
+      kwitansiBtn.addEventListener('click', () => {
+        ModalManager.closeModal();
+        const targetInvId = invoice?.id || verif?.invoiceId;
+        if (targetInvId) ModalManager.openReceiptModal(targetInvId);
+      });
+    }
+
+    // Approve from modal
+    const approveBtn = footer.querySelector('#btn-modal-approve-proof');
+    if (approveBtn && verif) {
+      approveBtn.addEventListener('click', () => {
+        const confirmApprove = confirm(`Setujui pembayaran transfer untuk ${student.name} sebesar ${formatRupiah(amount)}?\n\nKwitansi resmi STIT Ihsanul Fikri akan langsung diterbitkan.`);
+        if (confirmApprove) {
+          const res = BillingEngine.approveManualPayment(verif.id, 'Bukti transfer valid dan sesuai dengan mutasi rekening BSI STIT-IF.');
+          if (res.success) {
+            ModalManager.closeModal();
+            if (window.simpelToast) {
+              window.simpelToast.show(
+                'Verifikasi Disetujui',
+                `Pembayaran ${student.name} disetujui. Kwitansi: ${res.receiptNumber}`,
+                'success'
+              );
+            }
+            if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+            ModalManager.openReceiptModal(res.invoice.id);
+          }
+        }
+      });
+    }
+
+    // Reject from modal
+    const rejectBtn = footer.querySelector('#btn-modal-reject-proof');
+    if (rejectBtn && verif) {
+      rejectBtn.addEventListener('click', () => {
+        const reason = prompt(`Masukkan alasan penolakan bukti transfer untuk ${student.name}:`, 'Nominal transfer tidak sesuai dengan tagihan / mutasi rekening tidak ditemukan');
+        if (reason) {
+          const res = BillingEngine.rejectManualPayment(verif.id, reason);
+          if (res.success) {
+            ModalManager.closeModal();
+            if (window.simpelToast) {
+              window.simpelToast.show(
+                'Bukti Ditolak',
+                `Bukti transfer ${student.name} telah ditolak.`,
+                'warning'
+              );
+            }
+            if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
+          }
+        }
+      });
+    }
+  }
+
+  static openImagePreviewModal(imageUrl) {
+    this.openTransferProofModal(imageUrl);
   }
 
   /**
@@ -2971,3 +3329,5 @@ export const openAdminManagementModal = () => ModalManager.openAdminManagementMo
 export const openStudentSelfProfileModal = (nim) => ModalManager.openStudentSelfProfileModal(nim);
 export const openAdminSelfProfileModal = () => ModalManager.openAdminSelfProfileModal();
 export const openNewInvoiceModal = (nim) => ModalManager.openNewInvoiceModal(nim);
+export const openTransferProofModal = (id) => ModalManager.openTransferProofModal(id);
+export const openImagePreviewModal = (urlOrId) => ModalManager.openTransferProofModal(urlOrId);

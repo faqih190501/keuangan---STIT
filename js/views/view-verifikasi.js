@@ -139,6 +139,13 @@ function renderVerifRows(verifs, filterVal) {
   }
 
   return filtered.map(v => {
+    const senderBankName = v.senderBank || 'Bank Syariah Indonesia (BSI)';
+    const senderAccName = v.senderAccountName || v.studentName;
+    const senderAccNum = v.senderAccountNumber || ('52' + String(v.studentNim).padStart(8, '0'));
+    const destBankRaw = v.destinationBank || v.bankDestination || 'BSI 1056405743 an. STIT IHSANUL FIKRI';
+    const destBankShort = destBankRaw.split('-')[0].trim();
+    const proofImg = v.proofImage || v.proofImageUrl;
+
     return `
       <tr>
         <td>
@@ -154,17 +161,26 @@ function renderVerifRows(verifs, filterVal) {
           </div>
         </td>
         <td>
-          <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-dark);">${v.senderBank}</div>
-          <div style="font-size: 0.74rem; color: var(--text-light);">A.N. ${v.senderAccountName} (${v.senderAccountNumber})</div>
-          <div style="font-size: 0.72rem; color: #0284c7; margin-top: 2px;">Tujuan: ${v.destinationBank.split('-')[0]}</div>
+          <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-dark);">${senderBankName}</div>
+          <div style="font-size: 0.74rem; color: var(--text-light);">A.N. ${senderAccName} (${senderAccNum})</div>
+          <div style="font-size: 0.72rem; color: #0284c7; margin-top: 2px;">Tujuan: ${destBankShort}</div>
         </td>
         <td style="font-size: 0.96rem; font-weight: 800; color: var(--primary-900);">
           ${formatRupiah(v.amount)}
         </td>
         <td>
-          <div style="position: relative; display: inline-block;">
-            <img src="${v.proofImage}" alt="Struk Transfer" class="btn-preview-image" data-img-url="${v.proofImage}" style="width: 58px; height: 58px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-color); cursor: pointer; transition: transform 0.2s;" title="Klik untuk memperbesar gambar">
-            <span style="display: block; font-size: 0.68rem; color: var(--text-light); text-align: center; margin-top: 2px;">🔍 Perbesar</span>
+          <div class="verif-struk-cell">
+            ${proofImg ? `
+              <div class="verif-thumb-wrap btn-open-transfer-proof" data-verif-id="${v.id}" title="Klik untuk memeriksa bukti struk transfer">
+                <img src="${proofImg}" alt="Struk Transfer" class="verif-thumb-img">
+                <span class="verif-thumb-badge">🔍 Periksa</span>
+              </div>
+            ` : `
+              <div class="verif-thumb-wrap verif-thumb-bsi btn-open-transfer-proof" data-verif-id="${v.id}" title="Klik untuk memeriksa struk transfer BSI Mobile">
+                <div class="verif-bsi-mini-icon">📱 BSI</div>
+                <span class="verif-thumb-badge">🔍 Lihat Struk</span>
+              </div>
+            `}
           </div>
         </td>
         <td>
@@ -174,6 +190,9 @@ function renderVerifRows(verifs, filterVal) {
         </td>
         <td>
           <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button class="btn btn-outline btn-sm btn-open-transfer-proof" data-verif-id="${v.id}" title="Periksa Bukti Struk Transfer">
+              📄 Struk
+            </button>
             ${v.status === 'PENDING' ? `
               <button class="btn btn-success btn-sm btn-approve-verif" data-verif-id="${v.id}" data-student="${v.studentName}" data-amount="${v.amount}">
                 ✓ Setujui
@@ -183,7 +202,7 @@ function renderVerifRows(verifs, filterVal) {
               </button>
             ` : v.status === 'APPROVED' ? `
               <button class="btn btn-outline btn-sm btn-view-verif-receipt" data-invoice-id="${v.invoiceId}">
-                🧾 Lihat Kwitansi
+                🧾 Kwitansi
               </button>
             ` : `
               <span style="font-size: 0.74rem; color: #b91c1c; font-style: italic;">Alasan: ${v.rejectionReason || 'Ditolak'}</span>
@@ -196,11 +215,16 @@ function renderVerifRows(verifs, filterVal) {
 }
 
 function attachVerifActions(container) {
-  // Image preview zoom
-  container.querySelectorAll('.btn-preview-image').forEach(img => {
-    img.addEventListener('click', () => {
-      const url = img.getAttribute('data-img-url');
-      window.simpelModals.openImagePreviewModal(url);
+  // Struk / Image preview zoom & modal
+  container.querySelectorAll('.btn-open-transfer-proof, .btn-preview-image').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const verifId = el.getAttribute('data-verif-id') || el.getAttribute('data-img-url');
+      if (window.simpelModals && window.simpelModals.openTransferProofModal) {
+        window.simpelModals.openTransferProofModal(verifId);
+      } else if (window.simpelModals && window.simpelModals.openImagePreviewModal) {
+        window.simpelModals.openImagePreviewModal(verifId);
+      }
     });
   });
 

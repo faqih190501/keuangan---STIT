@@ -966,3 +966,377 @@
     font-size: 2.8rem;
   }
 }
+
+/* ==========================================================================
+   14. BUKTI STRUK TRANSFER & BSI MOBILE E-RECEIPT MODAL
+   ========================================================================== */
+.modal-card.modal-transfer-proof {
+  max-width: 920px;
+  width: 95vw;
+}
+
+.transfer-proof-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 820px) {
+  .transfer-proof-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+/* BSI Mobile E-Receipt Card */
+.bsi-receipt-card {
+  background: #ffffff;
+  border: 1px solid #d1fae5;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 130, 125, 0.12), 0 8px 10px -6px rgba(0, 130, 125, 0.08);
+  overflow: hidden;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.bsi-receipt-header {
+  background: linear-gradient(135deg, #00827d 0%, #00a39d 100%);
+  color: #ffffff;
+  padding: 20px 22px;
+  position: relative;
+  text-align: center;
+}
+
+.bsi-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.bsi-logo-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 0.92rem;
+  letter-spacing: 0.5px;
+}
+
+.bsi-logo-icon {
+  background: #ffffff;
+  color: #00827d;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.bsi-channel-tag {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.bsi-status-circle {
+  width: 52px;
+  height: 52px;
+  background: #10b981;
+  color: #ffffff;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  border: 3px solid rgba(255, 255, 255, 0.6);
+}
+
+.bsi-status-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin: 0 0 2px;
+  color: #ffffff;
+}
+
+.bsi-status-time {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Receipt Tear Border */
+.bsi-tear-border {
+  position: relative;
+  height: 16px;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.bsi-tear-border::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  height: 16px;
+  background: radial-gradient(circle, transparent, transparent 50%, #ffffff 50%, #ffffff 100%);
+  background-size: 16px 16px;
+}
+
+/* Receipt Content Body */
+.bsi-receipt-body {
+  padding: 18px 22px 22px;
+  background: #ffffff;
+}
+
+.bsi-amount-box {
+  text-align: center;
+  padding: 14px 12px;
+  background: #f0fdf4;
+  border: 1px dashed #86efac;
+  border-radius: 10px;
+  margin-bottom: 18px;
+}
+
+.bsi-amount-label {
+  font-size: 0.72rem;
+  color: #15803d;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.bsi-amount-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #166534;
+  font-family: var(--font-mono), monospace;
+}
+
+.bsi-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.8rem;
+}
+
+.bsi-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.bsi-detail-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bsi-item-label {
+  color: #64748b;
+  font-weight: 500;
+  flex-shrink: 0;
+  width: 125px;
+}
+
+.bsi-item-val {
+  color: #1e293b;
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+}
+
+.bsi-item-val.highlight {
+  color: #00827d;
+  font-weight: 700;
+}
+
+.bsi-receipt-footer {
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 12px 18px;
+  text-align: center;
+  font-size: 0.7rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Secondary Panel: Uploaded Photo & Student Context */
+.transfer-proof-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.proof-photo-card {
+  background: #0f172a;
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.proof-photo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.proof-photo-preview-wrap {
+  position: relative;
+  max-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #334155;
+}
+
+.proof-photo-img {
+  max-width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+  cursor: zoom-in;
+}
+
+.proof-photo-img.zoomed {
+  transform: scale(1.6);
+  cursor: zoom-out;
+}
+
+.proof-photo-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* Fallback card when no photo is attached */
+.proof-no-photo-card {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+  color: #64748b;
+}
+
+.proof-context-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: 0.82rem;
+}
+
+.proof-context-header {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.proof-context-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.proof-context-row:last-child {
+  border-bottom: none;
+}
+
+/* Verification Table Thumbnail Cells */
+.verif-struk-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verif-thumb-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px;
+  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.verif-thumb-wrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-color: #00827d;
+}
+
+.verif-thumb-img {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.verif-thumb-bsi {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  border-color: #a7f3d0;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.verif-bsi-mini-icon {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #00827d;
+  background: #ffffff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #6ee7b7;
+}
+
+.verif-thumb-badge {
+  font-size: 0.65rem;
+  color: #00827d;
+  font-weight: 700;
+  margin-top: 3px;
+}
+

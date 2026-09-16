@@ -7627,14 +7627,17 @@ const INITIAL_SEED_DATA = {
         "amount":  200000,
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
+        "senderBank":  "Bank Syariah Indonesia (BSI)",
+        "senderAccountName":  "Miftahul Jannah",
+        "senderAccountNumber":  "5210928371",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
         "proofImageUrl":  null,
         "submittedAt":  "2026-08-25 10:00:00",
-        "verifiedAt":  "2026-08-25 14:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-IF/2026/08/1001",
-        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
+        "verifiedAt":  null,
+        "verifiedBy":  null,
+        "status":  "PENDING",
+        "receiptNumber":  null,
+        "notes":  "Pembayaran biaya pendaftaran via BSI Mobile"
     },
     {
         "id":  "VER-BKPI-2601002",
@@ -7645,14 +7648,17 @@ const INITIAL_SEED_DATA = {
         "amount":  200000,
         "paymentType":  "PENDAFTARAN",
         "paymentMethod":  "TRANSFER_BANK_BSI",
+        "senderBank":  "Bank Syariah Indonesia (BSI)",
+        "senderAccountName":  "Aifah Ruslan",
+        "senderAccountNumber":  "5210928372",
         "bankDestination":  "Bank BSI 1056405743 an. STIT IHSANUL FIKRI",
         "proofImageUrl":  null,
-        "submittedAt":  "2026-08-25 10:00:00",
-        "verifiedAt":  "2026-08-25 14:00:00",
-        "verifiedBy":  "Ustadzah Siti Fatimah, S.E.",
-        "status":  "APPROVED",
-        "receiptNumber":  "KW-IF/2026/08/1002",
-        "notes":  "Verifikasi Rekap Bank BSI STIT-IF"
+        "submittedAt":  "2026-08-25 10:15:00",
+        "verifiedAt":  null,
+        "verifiedBy":  null,
+        "status":  "PENDING",
+        "receiptNumber":  null,
+        "notes":  "Transfer antar rekening BSI Cabang Magelang"
     },
     {
         "id":  "VER-BKPI-2601003",
@@ -8910,6 +8916,24 @@ class StateManager {
           }
           if (!this.state.paymentVerifications || this.state.paymentVerifications.length < 40) {
             this.state.paymentVerifications = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.paymentVerifications));
+          } else {
+            this.state.paymentVerifications.forEach(v => {
+              if (!v.senderBank) v.senderBank = 'Bank Syariah Indonesia (BSI)';
+              if (!v.senderAccountName) v.senderAccountName = v.studentName;
+              if (!v.senderAccountNumber) v.senderAccountNumber = '52' + String(v.studentNim).padStart(8, '0');
+              if (!v.destinationBank) v.destinationBank = 'Bank BSI 1056405743 an. STIT IHSANUL FIKRI';
+            });
+            const hasPending = this.state.paymentVerifications.some(v => v.status === 'PENDING');
+            if (!hasPending && this.state.paymentVerifications.length >= 2) {
+              this.state.paymentVerifications[0].status = 'PENDING';
+              this.state.paymentVerifications[0].verifiedAt = null;
+              this.state.paymentVerifications[0].verifiedBy = null;
+              this.state.paymentVerifications[0].receiptNumber = null;
+              this.state.paymentVerifications[1].status = 'PENDING';
+              this.state.paymentVerifications[1].verifiedAt = null;
+              this.state.paymentVerifications[1].verifiedBy = null;
+              this.state.paymentVerifications[1].receiptNumber = null;
+            }
           }
           if (!this.state.scholarshipSchemes || this.state.scholarshipSchemes.length < 9) {
             this.state.scholarshipSchemes = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.scholarshipSchemes));
