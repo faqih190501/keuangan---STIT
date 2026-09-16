@@ -183,7 +183,7 @@ export class ModalManager {
             <div class="receipt-header-kop">
               <img src="./assets/images/logo.png" alt="Logo STIT-IF" class="receipt-kop-logo">
               <div class="receipt-kop-text">
-                <div class="kop-yayasan">YAYASAN PENDIDIKAN DAN DAKWAH IHSANUL FIKRI</div>
+                <div class="kop-yayasan">YAYASAN TARBIYATUL MUKMIN PABELAN</div>
                 <div class="kop-institution">SEKOLAH TINGGI ILMU TARBIYAH (STIT) IHSANUL FIKRI</div>
                 <div class="kop-accreditation">STATUS TERAKREDITASI KEMENTERIAN AGAMA RI & BAN-PT</div>
                 <div class="kop-prodi-info">Program Studi: S1 Bimbingan Konseling Pendidikan Islam (BKPI) &bull; S1 Pendidikan Islam Anak Usia Dini (PIAUD)</div>
@@ -411,6 +411,7 @@ export class ModalManager {
     const copyReceiptSummary = () => {
       const summaryText = 
         `KWITANSI PEMBAYARAN RESMI STIT IHSANUL FIKRI MAGELANG\n` +
+        `Yayasan        : Yayasan Tarbiyatul Mukmin Pabelan\n` +
         `Nomor Kwitansi : ${invoice.receiptNumber || invoice.id}\n` +
         `Nama Mahasiswa : ${student.name}\n` +
         `NIM            : ${student.nim}\n` +
