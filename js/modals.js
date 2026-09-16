@@ -56,6 +56,8 @@ export class ModalManager {
 
     const { overlay, card, title, body, footer } = this.getModalElements();
     card.classList.add('modal-xl');
+    card.classList.add('modal-receipt');
+    body.scrollTop = 0;
 
     const admin = state.adminProfile || {
       name: 'Ustadzah Siti Fatimah, S.E.',
