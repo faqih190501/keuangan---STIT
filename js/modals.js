@@ -64,143 +64,311 @@ export class ModalManager {
     };
 
     const signatureShort = (admin.name || 'Siti Fatimah').replace(/^(Ustadz|Ustadzah|Bpk|Ibu|Dr|Dra|Drs)\.?\s+/i, '').split(',')[0].trim();
+    const paymentDateFormatted = formatDate(invoice.paymentDate || invoice.createdDate || new Date().toISOString());
+    const isLunas = invoice.status === 'LUNAS';
+    
+    // Channel description
+    let paymentChannelDesc = 'Bank Syariah Indonesia (BSI) 1056405743 a.n. STIT IHSANUL FIKRI';
+    if (invoice.paymentMethod === 'QRIS_NATIONAL') {
+      paymentChannelDesc = 'QRIS Dinamis Standar Nasional (NMID: ID10200392019)';
+    } else if (invoice.paymentMethod === 'KASIR_TUNAI') {
+      paymentChannelDesc = 'Kasir Keuangan Tunai Kampus STIT-IF Magelang';
+    } else if (invoice.paymentMethod === 'VA_BSI') {
+      paymentChannelDesc = 'BSI Virtual Account 1056405743 a.n. STIT IHSANUL FIKRI';
+    }
 
-    title.innerHTML = `🧾 Kwitansi Elektronik Resmi — STIT Ihsanul Fikri`;
+    // Prodi full title
+    const prodiFullName = student.prodi === 'BKPI' 
+      ? 'Bimbingan Konseling Pendidikan Islam (BKPI)' 
+      : 'Pendidikan Islam Anak Usia Dini (PIAUD)';
+
+    // Generate Official Circular Stamp (Stempel Basah Bulat STIT-IF)
+    const stampColor = isLunas ? '#1e40af' : '#b45309';
+    const stampStatusWord = isLunas ? 'L U N A S' : 'D I C I C I L';
+    const stampDate = invoice.paymentDate ? new Date(invoice.paymentDate).toLocaleDateString('id-ID', { day:'2-digit', month:'2-digit', year:'numeric' }) : '';
+    
+    const officialStampSVG = `
+      <svg width="115" height="115" viewBox="0 0 120 120" class="signature-stamp-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <path id="stampUpperPath" d="M 18,60 A 42,42 0 1,1 102,60" fill="none" />
+          <path id="stampLowerPath" d="M 102,60 A 42,42 0 0,1 18,60" fill="none" />
+        </defs>
+        <circle cx="60" cy="60" r="56" fill="none" stroke="${stampColor}" stroke-width="2.5" stroke-opacity="0.88" />
+        <circle cx="60" cy="60" r="51" fill="none" stroke="${stampColor}" stroke-width="1.2" stroke-opacity="0.88" />
+        <text font-size="7.2" font-weight="900" fill="${stampColor}" letter-spacing="1.2px" font-family="'Plus Jakarta Sans', Arial, sans-serif" opacity="0.92">
+          <textPath href="#stampUpperPath" startOffset="50%" text-anchor="middle">
+            SEKOLAH TINGGI ILMU TARBIYAH
+          </textPath>
+        </text>
+        <text font-size="6.8" font-weight="900" fill="${stampColor}" letter-spacing="1px" font-family="'Plus Jakarta Sans', Arial, sans-serif" opacity="0.92">
+          <textPath href="#stampLowerPath" startOffset="50%" text-anchor="middle">
+            ★ IHSANUL FIKRI MAGELANG ★
+          </textPath>
+        </text>
+        <line x1="22" y1="45" x2="98" y2="45" stroke="${stampColor}" stroke-width="1.2" opacity="0.88" />
+        <text x="60" y="55" font-size="7.5" font-weight="900" fill="${stampColor}" text-anchor="middle" letter-spacing="1.2px" font-family="'Plus Jakarta Sans', Arial, sans-serif">
+          BAGIAN KEUANGAN
+        </text>
+        <text x="60" y="67" font-size="8.8" font-weight="900" fill="${stampColor}" text-anchor="middle" letter-spacing="2px" font-family="'Plus Jakarta Sans', Arial, sans-serif">
+          ${stampStatusWord}
+        </text>
+        ${stampDate ? `<text x="60" y="74" font-size="5.8" font-weight="700" fill="${stampColor}" text-anchor="middle" font-family="monospace">${stampDate}</text>` : ''}
+        <line x1="22" y1="${stampDate ? 78 : 73}" x2="98" y2="${stampDate ? 78 : 73}" stroke="${stampColor}" stroke-width="1.2" opacity="0.88" />
+        <text x="14" y="62" font-size="7" fill="${stampColor}" text-anchor="middle">★</text>
+        <text x="106" y="62" font-size="7" fill="${stampColor}" text-anchor="middle">★</text>
+      </svg>
+    `;
+
+    title.innerHTML = `🧾 Salinan Dokumen Kwitansi Elektronik — STIT Ihsanul Fikri`;
     
     body.innerHTML = `
       <div class="receipt-modal-container">
+        <!-- Floating Document Action Bar -->
+        <div class="receipt-toolbar no-print">
+          <div class="receipt-toolbar-left">
+            <span class="receipt-doc-badge">
+              <span>🛡️</span>
+              <span>Dokumen Keuangan Sah STIT-IF</span>
+            </span>
+            <span style="font-size: 0.75rem; color: #94a3b8; font-family: var(--font-mono);">${invoice.receiptNumber || invoice.id}</span>
+          </div>
+          <div class="receipt-toolbar-right">
+            <button class="receipt-tool-btn" id="btn-quick-copy-receipt" title="Salin Ringkasan Kwitansi ke Clipboard">
+              📋 Salin Info
+            </button>
+            <button class="receipt-tool-btn" id="btn-quick-validate-receipt" title="Uji Keaslian di Pusat Validator QR">
+              🔍 Cek Validator
+            </button>
+            <button class="receipt-tool-btn btn-print-action" id="btn-quick-print-receipt" title="Cetak Kwitansi (Kertas A4 / PDF)">
+              🖨️ Cetak A4 / PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Official Printable Paper Sheet -->
         <div class="official-receipt-paper" id="official-receipt-printable">
-          <!-- Watermark -->
-          <div class="receipt-watermark">STIT IHSANUL FIKRI</div>
+          <div class="receipt-inner-frame">
+            <!-- Security Corner Marks -->
+            <div class="receipt-corner-mark corner-tl"></div>
+            <div class="receipt-corner-mark corner-tr"></div>
+            <div class="receipt-corner-mark corner-bl"></div>
+            <div class="receipt-corner-mark corner-br"></div>
 
-          <!-- Paid Stamp -->
-          <div class="paid-stamp-watermark">LUNAS / PAID</div>
+            <!-- Background Security Watermark -->
+            <div class="receipt-watermark">
+              STIT IHSANUL FIKRI
+              <span class="receipt-watermark-sub">OFFICIAL FINANCIAL DOCUMENT</span>
+            </div>
 
-          <!-- Kop Surat Resmi -->
-          <div class="receipt-header-kop">
-            <img src="./assets/images/logo.png" alt="Logo STIT-IF" class="receipt-kop-logo">
-            <div class="receipt-kop-text">
-              <div class="kop-yayasan">YAYASAN PENDIDIKAN DAN DAKWAH IHSANUL FIKRI</div>
-              <div class="kop-institution">SEKOLAH TINGGI ILMU TARBIYAH (STIT) IHSANUL FIKRI</div>
-              <div class="kop-prodi-info">Program Studi: Bimbingan Konseling Pendidikan Islam (BKPI) &bull; Pendidikan Islam Anak Usia Dini (PIAUD)</div>
-              <div class="kop-address">Kampus: Pabelan 1, Pabelan, Kec. Mungkid, Kabupaten Magelang, Jawa Tengah 56512 &bull; WA: 082342307414 &bull; Web: <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" style="color: inherit; font-weight: 700; text-decoration: underline;">www.stitihsanulfikri.ac.id</a> &bull; Email: stit.ihsanulfikri@ac.id</div>
-            </div>
-          </div>
+            <!-- Paid / Installment Stamp -->
+            ${isLunas ? `
+              <div class="paid-stamp-watermark stamp-lunas">
+                <div class="stamp-stars">★ ★ ★</div>
+                <div class="stamp-main">LUNAS / PAID</div>
+                <div class="stamp-sub">KAS TERVERIFIKASI</div>
+                <div class="stamp-date">${paymentDateFormatted}</div>
+              </div>
+            ` : `
+              <div class="paid-stamp-watermark stamp-cicil">
+                <div class="stamp-stars">★ ★ ★</div>
+                <div class="stamp-main">DICICIL / ANGSURAN</div>
+                <div class="stamp-sub">DISPENSASI RESMI</div>
+                <div class="stamp-date">${paymentDateFormatted}</div>
+              </div>
+            `}
 
-          <!-- Receipt Details -->
-          <div class="receipt-meta-grid">
-            <div>
-              <div class="receipt-meta-label">Nomor Kwitansi Resmi:</div>
-              <div class="receipt-meta-value receipt-number-highlight">${invoice.receiptNumber || 'KW-IF/2026/08/0001'}</div>
+            <!-- Kop Surat Resmi Institusi -->
+            <div class="receipt-header-kop">
+              <img src="./assets/images/logo.png" alt="Logo STIT-IF" class="receipt-kop-logo">
+              <div class="receipt-kop-text">
+                <div class="kop-yayasan">YAYASAN PENDIDIKAN DAN DAKWAH IHSANUL FIKRI</div>
+                <div class="kop-institution">SEKOLAH TINGGI ILMU TARBIYAH (STIT) IHSANUL FIKRI</div>
+                <div class="kop-accreditation">STATUS TERAKREDITASI KEMENTERIAN AGAMA RI & BAN-PT</div>
+                <div class="kop-prodi-info">Program Studi: S1 Bimbingan Konseling Pendidikan Islam (BKPI) &bull; S1 Pendidikan Islam Anak Usia Dini (PIAUD)</div>
+                <div class="kop-address">Kampus: Pabelan 1, Pabelan, Kec. Mungkid, Kabupaten Magelang, Jawa Tengah 56512<br>Telp/WA: 082342307414 &bull; Web: <a href="https://www.stitihsanulfikri.ac.id/" target="_blank" rel="noopener" style="color: inherit; font-weight: 700; text-decoration: underline;">www.stitihsanulfikri.ac.id</a> &bull; Email: stit.ihsanulfikri@ac.id</div>
+              </div>
             </div>
-            <div style="text-align: right;">
-              <div class="receipt-meta-label">Status Verifikasi Kas:</div>
-              <span class="badge ${invoice.status === 'LUNAS' ? 'badge-paid' : 'badge-installment'}">
-                <span class="badge-dot"></span>${invoice.status === 'LUNAS' ? 'LUNAS (SAH)' : 'DICICIL'}
-              </span>
-            </div>
-          </div>
 
-          <!-- Student & Payment Profile Section -->
-          <div class="receipt-student-profile">
-            <div class="receipt-profile-row">
-              <span class="receipt-profile-label">Telah Diterima Dari:</span>
-              <span class="receipt-profile-value" style="font-size: 1rem; font-weight: 800;">${student.name}</span>
+            <!-- Kop Divider (Double Line) -->
+            <div class="receipt-kop-divider">
+              <div class="divider-thick"></div>
+              <div class="divider-thin"></div>
             </div>
-            <div class="receipt-profile-row">
-              <span class="receipt-profile-label">Nomor Induk Mahasiswa (NIM):</span>
-              <span class="receipt-profile-value" style="font-family: var(--font-mono); font-weight: 700;">${student.nim}</span>
-            </div>
-            <div class="receipt-profile-row">
-              <span class="receipt-profile-label">Program Studi & Semester:</span>
-              <span class="receipt-profile-value">${student.prodi === 'BKPI' ? 'Bimbingan Konseling Pendidikan Islam (BKPI)' : 'Pendidikan Islam Anak Usia Dini (PIAUD)'} &bull; Semester ${student.semester}</span>
-            </div>
-            <div class="receipt-profile-row">
-              <span class="receipt-profile-label">Skema Pembiayaan:</span>
-              <span class="receipt-profile-value">${scholarship ? scholarship.name : 'Reguler Mandiri'}</span>
-            </div>
-            <div class="receipt-profile-row">
-              <span class="receipt-profile-label">Tahun Akademik:</span>
-              <span class="receipt-profile-value">${invoice.semester || state.activeSemester}</span>
-            </div>
-          </div>
 
-          <!-- Invoice Breakdown Table -->
-          <table class="receipt-breakdown-table">
-            <thead>
-              <tr>
-                <th style="width: 50px; text-align: center;">No.</th>
-                <th>Rincian Pos Pembayaran</th>
-                <th style="text-align: right;">Tarif Pokok</th>
-                <th style="text-align: right;">Subsidi Beasiswa</th>
-                <th style="text-align: right;">Kewajiban Bersih</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${invoice.items.map((item, idx) => `
+            <!-- Receipt Title -->
+            <div class="receipt-title-box">
+              <h2 class="receipt-title-heading">KWITANSI BUKTI PEMBAYARAN SAH</h2>
+              <div class="receipt-title-sub">OFFICIAL FINANCIAL PAYMENT RECEIPT &bull; SIMPEL-IF STIT IHSANUL FIKRI</div>
+            </div>
+
+            <!-- Receipt Metadata & Verification Tag -->
+            <div class="receipt-meta-grid">
+              <div>
+                <div class="receipt-meta-label">Nomor Kwitansi Resmi:</div>
+                <div class="receipt-number-highlight">
+                  <span>${invoice.receiptNumber || 'KW-IF/2026/08/0001'}</span>
+                </div>
+                <div style="font-size: 0.7rem; color: #64748b; margin-top: 2px;">
+                  Tanggal Terbit: <strong>${formatDateTime(invoice.paymentDate || invoice.createdDate)}</strong>
+                </div>
+              </div>
+              <div class="receipt-meta-right">
+                <div class="receipt-meta-label">Status Verifikasi Kas:</div>
+                <div>
+                  <span class="badge ${isLunas ? 'badge-paid' : 'badge-installment'}">
+                    <span class="badge-dot"></span>${isLunas ? 'LUNAS (SAH)' : 'DISPENSASI / DICICIL'}
+                  </span>
+                </div>
+                <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; margin-top: 2px;">
+                  Tercatat Resmi Pangkalan Data Keuangan
+                </div>
+              </div>
+            </div>
+
+            <!-- Student Profile Section -->
+            <div class="receipt-student-profile">
+              <div class="receipt-profile-row">
+                <span class="receipt-profile-label">Telah Diterima Dari</span>
+                <span class="receipt-profile-colon">:</span>
+                <span class="receipt-profile-value receipt-student-name">${student.name}</span>
+              </div>
+              <div class="receipt-profile-row">
+                <span class="receipt-profile-label">Nomor Induk Mahasiswa</span>
+                <span class="receipt-profile-colon">:</span>
+                <span class="receipt-profile-value" style="font-family: var(--font-mono); font-weight: 800; color: #0a1e42;">${student.nim}</span>
+              </div>
+              <div class="receipt-profile-row">
+                <span class="receipt-profile-label">Program Studi / Strata</span>
+                <span class="receipt-profile-colon">:</span>
+                <span class="receipt-profile-value">${prodiFullName} &bull; S1</span>
+              </div>
+              <div class="receipt-profile-row">
+                <span class="receipt-profile-label">Semester / Angkatan</span>
+                <span class="receipt-profile-colon">:</span>
+                <span class="receipt-profile-value">Semester ${student.semester} &bull; Angkatan ${student.cohort || '2026'}</span>
+              </div>
+              <div class="receipt-profile-row">
+                <span class="receipt-profile-label">Skema Pembiayaan</span>
+                <span class="receipt-profile-colon">:</span>
+                <span class="receipt-profile-value">${scholarship ? scholarship.name : 'Reguler Mandiri'}</span>
+              </div>
+              <div class="receipt-profile-row">
+                <span class="receipt-profile-label">Tahun Akademik</span>
+                <span class="receipt-profile-colon">:</span>
+                <span class="receipt-profile-value">${invoice.semester || state.activeSemester}</span>
+              </div>
+              <div class="receipt-profile-row" style="grid-column: 1 / -1;">
+                <span class="receipt-profile-label">Kanal Pembayaran</span>
+                <span class="receipt-profile-colon">:</span>
+                <span class="receipt-profile-value" style="color: #1e40af; font-weight: 700;">${paymentChannelDesc}</span>
+              </div>
+            </div>
+
+            <!-- Itemized Fee Breakdown Table -->
+            <table class="receipt-breakdown-table">
+              <thead>
                 <tr>
-                  <td style="text-align: center; font-family: var(--font-mono);">${idx + 1}</td>
-                  <td>
-                    <div style="font-weight: 700;">${item.name}</div>
-                    <div style="font-size: 0.72rem; color: var(--text-light);">${item.category === 'INITIAL' ? 'Biaya Registrasi Awal' : item.category === 'FINAL' ? 'Biaya Akhir Studi' : 'Biaya Rutin Semester'}</div>
+                  <th class="col-no">No.</th>
+                  <th>Rincian Pos Pembayaran</th>
+                  <th style="text-align: right; width: 130px;">Tarif Pokok</th>
+                  <th style="text-align: right; width: 140px;">Subsidi Beasiswa</th>
+                  <th style="text-align: right; width: 140px;">Kewajiban Bersih</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${invoice.items.map((item, idx) => `
+                  <tr>
+                    <td class="col-no">${idx + 1}</td>
+                    <td>
+                      <div class="receipt-item-title">${item.name}</div>
+                      <div class="receipt-item-desc">${item.category === 'INITIAL' ? 'Biaya Registrasi / Awal Masuk' : item.category === 'FINAL' ? 'Biaya Akhir Studi / Wisuda' : 'Biaya Rutin Perkuliahan'}</div>
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono);">${formatRupiah(item.grossAmount)}</td>
+                    <td style="text-align: right; font-family: var(--font-mono); color: #0284c7;">
+                      ${item.discountAmount > 0 ? `-${formatRupiah(item.discountAmount)}` : '-'}
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 800; color: #0a1e42;">
+                      ${formatRupiah(item.netAmount)}
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+              <tfoot>
+                <tr class="receipt-subtotal-row">
+                  <td colspan="4" style="text-align: right;">TOTAL TARIF BIAYA PENDIDIKAN:</td>
+                  <td style="text-align: right; font-family: var(--font-mono);">${formatRupiah(invoice.grossAmount)}</td>
+                </tr>
+                ${invoice.totalDiscount > 0 ? `
+                  <tr class="receipt-discount-row">
+                    <td colspan="4" style="text-align: right;">TOTAL SUBSIDI BEASISWA / POTONGAN:</td>
+                    <td style="text-align: right; font-family: var(--font-mono);">-${formatRupiah(invoice.totalDiscount)}</td>
+                  </tr>
+                ` : ''}
+                <tr class="receipt-grand-total-row">
+                  <td colspan="4" style="text-align: right;">
+                    <div class="receipt-grand-total-label">TOTAL DITERIMA KAS (NETTO):</div>
+                    <div class="receipt-balance-note">
+                      ${isLunas 
+                        ? 'Status: Lunas Penuh Tanpa Sisa Tunggakan (Rp 0)' 
+                        : `Telah Dibayar: ${formatRupiah(invoice.paidAmount || 0)} | Sisa Kewajiban: ${formatRupiah(Math.max(0, invoice.netAmount - (invoice.paidAmount || 0)))}`}
+                    </div>
                   </td>
-                  <td style="text-align: right; font-family: var(--font-mono);">${formatRupiah(item.grossAmount)}</td>
-                  <td style="text-align: right; font-family: var(--font-mono); color: #0284c7;">
-                    ${item.discountAmount > 0 ? `-${formatRupiah(item.discountAmount)}` : '-'}
-                  </td>
-                  <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">
-                    ${formatRupiah(item.netAmount)}
+                  <td style="text-align: right;">
+                    <div class="receipt-grand-total-val">${formatRupiah(invoice.paidAmount || invoice.netAmount)}</div>
                   </td>
                 </tr>
-              `).join('')}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="4" style="text-align: right; font-weight: 700;">TOTAL BIAYA PENDIDIKAN:</td>
-                <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">${formatRupiah(invoice.grossAmount)}</td>
-              </tr>
-              ${invoice.totalDiscount > 0 ? `
-                <tr style="color: #0284c7;">
-                  <td colspan="4" style="text-align: right; font-weight: 700;">TOTAL SUBSIDI BEASISWA / POTONGAN:</td>
-                  <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">-${formatRupiah(invoice.totalDiscount)}</td>
-                </tr>
-              ` : ''}
-              <tr class="receipt-grand-total-row">
-                <td colspan="4" style="text-align: right; font-weight: 800; font-size: 0.95rem;">TOTAL DITERIMA KAS (NET):</td>
-                <td style="text-align: right; font-family: var(--font-mono); font-weight: 900; font-size: 1.1rem; color: #1e40af;">
-                  ${formatRupiah(invoice.paidAmount || invoice.netAmount)}
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+              </tfoot>
+            </table>
 
-          <!-- Terbilang Box -->
-          <div class="receipt-terbilang-box">
-            <div class="terbilang-label">Terbilang:</div>
-            <div class="terbilang-text">&ldquo;${terbilangText}&rdquo;</div>
-          </div>
+            <!-- Terbilang Box -->
+            <div class="receipt-terbilang-box">
+              <div class="terbilang-label">Nominal Terbilang:</div>
+              <div class="terbilang-text"># ${terbilangText} Rupiah #</div>
+            </div>
 
-          <!-- Bottom Row: QR Authenticity & Official Signature -->
-          <div class="receipt-bottom-grid">
-            <div class="receipt-qr-section">
-              <div class="receipt-qr-box">
-                ${qrSVG}
+            <!-- Bottom Row: QR Authenticity & Official Signature -->
+            <div class="receipt-bottom-grid">
+              <!-- QR Authenticity -->
+              <div class="receipt-qr-section">
+                <div class="receipt-qr-box">
+                  ${qrSVG}
+                </div>
+                <div class="receipt-qr-instructions">
+                  <div class="receipt-qr-title">
+                    <span>🛡️</span>
+                    <span>QR Code Keabsahan Resmi</span>
+                  </div>
+                  <div>Pindai kode QR untuk memvalidasi keaslian dokumen pada pangkalan data <strong>SIMPEL-IF STIT Ihsanul Fikri</strong>.</div>
+                  <div class="receipt-qr-hash">Token: ${invoice.receiptNumber || invoice.id} &bull; ${invoice.id.slice(-6)}</div>
+                </div>
               </div>
-              <div class="receipt-qr-instructions">
-                <strong>QR CODE KEASLIAN RESMI</strong>
-                Pindai kode QR untuk memvalidasi keaslian dokumen pada sistem terintegrasi <strong>SIMPEL-IF STIT Ihsanul Fikri</strong>.
-                <div style="font-size:0.65rem; color:#64748b; font-family:var(--font-mono); margin-top:3px;">Hash: ${invoice.id}-${student.nim.slice(-4)}</div>
+
+              <!-- Official Signature Box -->
+              <div class="receipt-signature-box">
+                <div class="signature-date">Magelang, ${paymentDateFormatted}</div>
+                <div class="signature-role">
+                  a.n. Pimpinan STIT Ihsanul Fikri<br>
+                  ${admin.title || 'Bendahara Penerimaan Kampus'},
+                </div>
+                <div class="signature-space">
+                  ${officialStampSVG}
+                  <div class="signature-digital-img">${signatureShort}</div>
+                </div>
+                <div class="signature-name">${admin.name}</div>
+                <div class="signature-nip">${admin.nip ? `NIP/NIDN: ${admin.nip}` : 'NIP: 19840512 201201 2 003'}</div>
               </div>
             </div>
 
-            <div class="receipt-signature-box">
-              <div class="signature-date">STIT Ihsanul Fikri, ${formatDate(invoice.paymentDate || invoice.createdDate)}</div>
-              <div class="signature-role">${admin.title || 'Bendahara Penerimaan Kampus'},</div>
-              <div class="signature-space">
-                <div class="signature-digital-img">${signatureShort}</div>
+            <!-- Legal Notice & Security Footer -->
+            <div class="receipt-legal-footer">
+              <div class="receipt-legal-text">
+                <strong>CATATAN HUKUM:</strong> Dokumen ini merupakan bukti pembayaran elektronik resmi yang diterbitkan secara sah oleh Sistem Informasi Manajemen Pembayaran Elektronik (SIMPEL-IF) STIT Ihsanul Fikri Magelang. Keaslian dokumen dijamin secara kriptografis dan dilindungi Undang-Undang Republik Indonesia Nomor 11 Tahun 2008 tentang Informasi dan Transaksi Elektronik (UU ITE) Pasal 5 Ayat 1 & 2. Harap simpan kwitansi ini untuk kelengkapan administrasi akademik, registrasi semester, dan yudisium.
               </div>
-              <div class="signature-name">${admin.name}</div>
-              <div class="signature-nip">${admin.nip ? `NIP/NIDN: ${admin.nip}` : 'NIP: 19840512 201201 2 003'}</div>
+              <div class="receipt-audit-trail">
+                <span>ID Invoice: ${invoice.id}</span>
+                <span>Dicetak: ${formatDateTime(new Date().toISOString())}</span>
+                <span>SIMPEL-IF v7.2 Production</span>
+              </div>
             </div>
           </div>
         </div>
@@ -213,31 +381,90 @@ export class ModalManager {
       `📄 *No. Kwitansi:* ${invoice.receiptNumber || invoice.id}\n` +
       `👤 *Nama Mahasiswa:* ${student.name}\n` +
       `🎓 *NIM:* ${student.nim}\n` +
-      `📚 *Program Studi:* ${student.prodi}\n` +
-      `💰 *Nominal Dibayar:* ${formatRupiah(invoice.paidAmount || invoice.netAmount)}\n` +
-      `✅ *Status:* ${invoice.status === 'LUNAS' ? 'LUNAS (SAH)' : 'DICICIL'}\n` +
-      `📅 *Tanggal:* ${formatDate(invoice.paidDate || new Date().toISOString())}\n\n` +
+      `📚 *Program Studi:* ${student.prodi} (S1)\n` +
+      `💰 *Nominal Diterima Kas:* ${formatRupiah(invoice.paidAmount || invoice.netAmount)}\n` +
+      `✅ *Status:* ${isLunas ? 'LUNAS (SAH)' : 'DICICIL / DISPENSASI'}\n` +
+      `📅 *Tanggal:* ${paymentDateFormatted}\n` +
+      `🏛️ *Kanal:* ${paymentChannelDesc}\n\n` +
       `🛡️ *Cek Keaslian Dokumen & QR Code:* https://faqih190501.github.io/keuangan---STIT/#view-qr-validator\n\n` +
       `_Kwitansi ini diterbitkan secara sah oleh Bagian Keuangan STIT Ihsanul Fikri._`
     );
 
     footer.innerHTML = `
       <button class="btn btn-outline" id="btn-close-receipt-modal">Tutup</button>
+      <button class="btn btn-outline" id="btn-copy-receipt-footer" style="font-weight: 700;">
+        📋 Salin Rincian
+      </button>
       <a href="https://api.whatsapp.com/send?text=${waText}" target="_blank" rel="noopener" class="btn btn-outline" style="background: #f0fdf4; color: #166534; border-color: #86efac; font-weight: 800; text-decoration: none;" id="btn-share-receipt-wa">
         📲 Bagikan via WhatsApp
       </a>
-      <button class="btn btn-primary" id="btn-print-receipt-modal">
-        🖨️ Cetak / Simpan Kwitansi PDF
+      <button class="btn btn-primary" id="btn-print-receipt-modal" style="font-weight: 800; background: #0f2042; border-color: #0a1e42;">
+        🖨️ Cetak / Simpan Kwitansi PDF (A4)
       </button>
     `;
 
     overlay.classList.add('active');
 
+    // Copy helper function
+    const copyReceiptSummary = () => {
+      const summaryText = 
+        `KWITANSI PEMBAYARAN RESMI STIT IHSANUL FIKRI MAGELANG\n` +
+        `Nomor Kwitansi : ${invoice.receiptNumber || invoice.id}\n` +
+        `Nama Mahasiswa : ${student.name}\n` +
+        `NIM            : ${student.nim}\n` +
+        `Program Studi  : ${prodiFullName}\n` +
+        `Semester       : ${student.semester} (${invoice.semester || state.activeSemester})\n` +
+        `Skema Biaya    : ${scholarship ? scholarship.name : 'Reguler Mandiri'}\n` +
+        `Total Diterima : ${formatRupiah(invoice.paidAmount || invoice.netAmount)}\n` +
+        `Status Kas     : ${isLunas ? 'LUNAS (SAH)' : 'DISPENSASI / DICICIL'}\n` +
+        `Tanggal Bayar  : ${paymentDateFormatted}\n` +
+        `Kanal Bayar    : ${paymentChannelDesc}\n` +
+        `Verifikasi QR  : https://faqih190501.github.io/keuangan---STIT/#view-qr-validator`;
+
+      navigator.clipboard.writeText(summaryText).then(() => {
+        if (window.simpelToast) {
+          window.simpelToast.show('Kwitansi Disalin', `Rincian ${invoice.receiptNumber || invoice.id} berhasil disalin ke clipboard.`, 'success');
+        } else {
+          alert('Rincian kwitansi berhasil disalin!');
+        }
+      }).catch(() => {
+        if (window.simpelToast) {
+          window.simpelToast.show('Info Kwitansi', invoice.receiptNumber || invoice.id, 'info');
+        }
+      });
+    };
+
     // Attach listeners
-    footer.querySelector('#btn-close-receipt-modal').addEventListener('click', () => ModalManager.closeModal());
-    footer.querySelector('#btn-print-receipt-modal').addEventListener('click', () => {
-      printReceiptElement();
-    });
+    const btnClose = footer.querySelector('#btn-close-receipt-modal');
+    if (btnClose) btnClose.addEventListener('click', () => ModalManager.closeModal());
+
+    const btnPrintFooter = footer.querySelector('#btn-print-receipt-modal');
+    if (btnPrintFooter) btnPrintFooter.addEventListener('click', () => printReceiptElement());
+
+    const btnQuickPrint = body.querySelector('#btn-quick-print-receipt');
+    if (btnQuickPrint) btnQuickPrint.addEventListener('click', () => printReceiptElement());
+
+    const btnCopyFooter = footer.querySelector('#btn-copy-receipt-footer');
+    if (btnCopyFooter) btnCopyFooter.addEventListener('click', copyReceiptSummary);
+
+    const btnQuickCopy = body.querySelector('#btn-quick-copy-receipt');
+    if (btnQuickCopy) btnQuickCopy.addEventListener('click', copyReceiptSummary);
+
+    const btnQuickValidate = body.querySelector('#btn-quick-validate-receipt');
+    if (btnQuickValidate) {
+      btnQuickValidate.addEventListener('click', () => {
+        ModalManager.closeModal();
+        window.location.hash = 'view-qr-validator';
+        setTimeout(() => {
+          const input = document.getElementById('input-receipt-token');
+          if (input) {
+            input.value = invoice.receiptNumber || invoice.id;
+            const btnRun = document.getElementById('btn-run-qr-validation');
+            if (btnRun) btnRun.click();
+          }
+        }, 150);
+      });
+    }
   }
 
   /**

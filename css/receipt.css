@@ -1,62 +1,267 @@
 /* ==========================================================================
-   SIMPEL-IF Official Receipt Stylesheet
-   Institusi: STIT Ihsanul Fikri
-   Alamat: Pabelan 1, Pabelan, Kec. Mungkid, Kabupaten Magelang, Jawa Tengah 56512
+   SIMPEL-IF Official Digital Receipt Stylesheet (Kwitansi Sah Digital)
+   Institusi: Sekolah Tinggi Ilmu Tarbiyah (STIT) Ihsanul Fikri Magelang
+   Alamat: Pabelan 1, Pabelan, Kec. Mungkid, Kab. Magelang, Jawa Tengah 56512
+   Standar: Dokumen Keuangan Resmi Ber-QR Code Kriptografis & Stempel Sah
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   1. Document Viewer Canvas (Modal Container)
+   -------------------------------------------------------------------------- */
 .receipt-modal-container {
-  background: #525659;
-  padding: 24px;
+  background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+  padding: 24px 16px 40px;
   overflow-y: auto;
   max-height: 85vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  user-select: text;
+  border-radius: var(--radius-md, 8px);
+  position: relative;
 }
 
+/* Document Top Toolbar */
+.receipt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  max-width: 820px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 8px 16px;
+  border-radius: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+}
+
+.receipt-toolbar-left,
+.receipt-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.receipt-doc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  letter-spacing: 0.3px;
+}
+
+.receipt-tool-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  padding: 6px 13px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.receipt-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+}
+
+.receipt-tool-btn.btn-wa {
+  background: #15803d;
+  border-color: #22c55e;
+  color: #ffffff;
+}
+.receipt-tool-btn.btn-wa:hover {
+  background: #166534;
+}
+
+.receipt-tool-btn.btn-print-action {
+  background: #0284c7;
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+.receipt-tool-btn.btn-print-action:hover {
+  background: #0369a1;
+}
+
+/* --------------------------------------------------------------------------
+   2. Official Receipt Paper Sheet
+   -------------------------------------------------------------------------- */
 .official-receipt-paper {
   width: 100%;
-  max-width: 780px;
+  max-width: 820px;
   background: #ffffff;
-  padding: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  border-radius: 4px;
+  padding: 32px 36px;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
   position: relative;
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-  color: #1e293b;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  color: #0f172a;
   overflow: hidden;
+  box-sizing: border-box;
+  transition: transform 0.2s ease;
 }
 
-/* Watermark Background */
+/* Document Inner Security Border Frame */
+.receipt-inner-frame {
+  border: 2px solid #0f2042;
+  border-radius: 4px;
+  padding: 24px 28px;
+  position: relative;
+  background: #ffffff;
+}
+
+.receipt-inner-frame::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border: 1px solid #d97706;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Corner Security Ornaments */
+.receipt-corner-mark {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: #0f2042;
+  pointer-events: none;
+  z-index: 3;
+}
+.corner-tl { top: 6px; left: 6px; border-top: 2px solid #0f2042; border-left: 2px solid #0f2042; }
+.corner-tr { top: 6px; right: 6px; border-top: 2px solid #0f2042; border-right: 2px solid #0f2042; }
+.corner-bl { bottom: 6px; left: 6px; border-bottom: 2px solid #0f2042; border-left: 2px solid #0f2042; }
+.corner-br { bottom: 6px; right: 6px; border-bottom: 2px solid #0f2042; border-right: 2px solid #0f2042; }
+
+/* --------------------------------------------------------------------------
+   3. Security Background Watermark & Stamps
+   -------------------------------------------------------------------------- */
 .receipt-watermark {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(-30deg);
-  font-size: 6.5rem;
+  transform: translate(-50%, -50%) rotate(-28deg);
+  font-size: 4.8rem;
   font-weight: 900;
-  color: rgba(30, 64, 175, 0.04);
-  letter-spacing: 12px;
+  color: rgba(15, 32, 66, 0.032);
+  letter-spacing: 8px;
   pointer-events: none;
   white-space: nowrap;
   text-transform: uppercase;
   z-index: 1;
+  text-align: center;
+  line-height: 1.15;
+  user-select: none;
 }
 
-/* Kop Surat Resmi */
+.receipt-watermark-sub {
+  font-size: 1.6rem;
+  letter-spacing: 6px;
+  font-weight: 800;
+  display: block;
+}
+
+/* Authentic Paid Stamp (Stempel Lunas Kas) */
+.paid-stamp-watermark {
+  position: absolute;
+  right: 48px;
+  top: 146px;
+  border: 3px double #15803d;
+  color: #15803d;
+  background: rgba(240, 253, 244, 0.88);
+  padding: 6px 18px;
+  border-radius: 8px;
+  transform: rotate(-13deg);
+  z-index: 5;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(21, 128, 61, 0.15);
+  pointer-events: none;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.paid-stamp-watermark .stamp-stars {
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  opacity: 0.9;
+  line-height: 1;
+}
+
+.paid-stamp-watermark .stamp-main {
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1.15;
+  margin: 1px 0;
+}
+
+.paid-stamp-watermark .stamp-sub {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #166534;
+}
+
+.paid-stamp-watermark .stamp-date {
+  font-size: 0.68rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.paid-stamp-watermark.stamp-cicil {
+  border-color: #d97706;
+  color: #b45309;
+  background: rgba(254, 243, 199, 0.88);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.15);
+}
+.paid-stamp-watermark.stamp-cicil .stamp-sub {
+  color: #92400e;
+}
+
+/* --------------------------------------------------------------------------
+   4. Kop Surat Resmi Institusi (Official Letterhead)
+   -------------------------------------------------------------------------- */
 .receipt-header-kop {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding-bottom: 16px;
-  border-bottom: 3px double #0f2042;
+  gap: 18px;
+  padding-bottom: 12px;
   position: relative;
   z-index: 2;
 }
 
 .receipt-kop-logo {
-  width: 80px;
-  height: 80px;
+  width: 82px;
+  height: 82px;
   object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
 }
 
 .receipt-kop-text {
@@ -65,173 +270,357 @@
 }
 
 .kop-yayasan {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: #475569;
-  letter-spacing: 0.8px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
+  margin-bottom: 2px;
 }
 
 .kop-institution {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 900;
-  color: #0f2042;
-  letter-spacing: 0.5px;
-  margin: 2px 0;
+  color: #0a1e42;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  line-height: 1.25;
+  margin: 1px 0;
+}
+
+.kop-accreditation {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #b45309;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
 }
 
 .kop-prodi-info {
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: #0284c7;
+  line-height: 1.3;
 }
 
 .kop-address {
-  font-size: 0.72rem;
+  font-size: 0.69rem;
   color: #64748b;
-  margin-top: 3px;
+  margin-top: 4px;
+  line-height: 1.35;
 }
 
-/* Receipt Title & Meta */
+/* Kop Divider Line */
+.receipt-kop-divider {
+  margin-top: 10px;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 2;
+}
+
+.receipt-kop-divider .divider-thick {
+  height: 3px;
+  background: #0a1e42;
+  border-radius: 2px;
+  margin-bottom: 2px;
+}
+
+.receipt-kop-divider .divider-thin {
+  height: 1.2px;
+  background: #d97706;
+  border-radius: 1px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Receipt Title & Metadata Bar
+   -------------------------------------------------------------------------- */
 .receipt-title-box {
   text-align: center;
-  margin: 24px 0 18px;
+  margin-bottom: 16px;
   position: relative;
   z-index: 2;
 }
 
 .receipt-title-heading {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #0f2042;
+  font-size: 1.22rem;
+  font-weight: 900;
+  color: #0a1e42;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  letter-spacing: 1.5px;
+  margin: 0;
 }
 
-.receipt-number-tag {
-  font-size: 0.82rem;
+.receipt-title-sub {
+  font-size: 0.72rem;
   font-weight: 700;
-  color: #475569;
-  margin-top: 4px;
-  font-family: var(--font-mono);
+  color: #64748b;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-top: 2px;
 }
 
-/* Student & Meta Grid */
-.receipt-info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px 24px;
-  margin-bottom: 22px;
+/* Meta Grid: Receipt No & Verification Status */
+.receipt-meta-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 10px 14px;
   background: #f8fafc;
-  padding: 16px 20px;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #e2e8f0;
-  font-size: 0.82rem;
+  margin-bottom: 18px;
   position: relative;
   z-index: 2;
 }
 
-.receipt-info-row {
+.receipt-meta-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.receipt-number-highlight {
+  font-family: var(--font-mono, monospace);
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #0a1e42;
+  letter-spacing: 0.5px;
   display: flex;
+  align-items: center;
   gap: 8px;
 }
 
-.receipt-info-label {
-  width: 130px;
-  color: #64748b;
-  font-weight: 600;
+.receipt-meta-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
 }
 
-.receipt-info-val {
+/* --------------------------------------------------------------------------
+   6. Student & Academic Profile (Data Pembayar)
+   -------------------------------------------------------------------------- */
+.receipt-student-profile {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 24px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  font-size: 0.8rem;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.receipt-profile-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.receipt-profile-label {
+  width: 140px;
+  color: #64748b;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.receipt-profile-colon {
+  color: #94a3b8;
+  margin-right: 2px;
+}
+
+.receipt-profile-value {
   flex: 1;
   color: #0f172a;
   font-weight: 700;
 }
 
-/* Table Breakdown */
-.receipt-table-wrapper {
-  margin-bottom: 20px;
+.receipt-student-name {
+  font-size: 0.96rem;
+  font-weight: 900;
+  color: #0a1e42;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   7. Itemized Financial Breakdown Table
+   -------------------------------------------------------------------------- */
+.receipt-breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 14px;
+  font-size: 0.8rem;
   position: relative;
   z-index: 2;
 }
 
-.receipt-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.82rem;
-}
-
-.receipt-table th {
-  background: #0f2042;
+.receipt-breakdown-table th {
+  background: #0a1e42;
   color: #ffffff;
-  padding: 10px 14px;
-  text-align: left;
-  font-weight: 700;
-  border: 1px solid #0f2042;
+  padding: 9px 12px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 1px solid #0a1e42;
 }
 
-.receipt-table td {
-  padding: 10px 14px;
+.receipt-breakdown-table td {
+  padding: 9px 12px;
   border: 1px solid #cbd5e1;
   color: #1e293b;
+  vertical-align: middle;
 }
 
-.receipt-table tbody tr:nth-child(even) {
+.receipt-breakdown-table tbody tr:nth-child(even) {
   background: #f8fafc;
 }
 
-.receipt-table .text-right {
-  text-align: right;
-}
-
-.receipt-table .total-row td {
-  background: #eff6ff;
-  font-weight: 800;
-  font-size: 0.92rem;
-  color: #0f2042;
-  border-top: 2px solid #0f2042;
-}
-
-/* Terbilang Box */
-.receipt-terbilang-box {
+.receipt-breakdown-table tbody tr:hover {
   background: #f1f5f9;
-  border-left: 4px solid #0284c7;
-  padding: 10px 16px;
-  font-size: 0.78rem;
-  font-style: italic;
+}
+
+.receipt-breakdown-table .col-no {
+  width: 44px;
+  text-align: center;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  color: #64748b;
+}
+
+.receipt-item-title {
+  font-weight: 800;
+  color: #0a1e42;
+}
+
+.receipt-item-desc {
+  font-size: 0.7rem;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.receipt-breakdown-table tfoot td {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+}
+
+.receipt-subtotal-row td {
+  background: #f8fafc;
+  font-weight: 700;
   color: #334155;
-  margin-bottom: 28px;
-  position: relative;
-  z-index: 2;
 }
 
-/* Signatures & QR Section */
-.receipt-bottom-section {
-  display: flex;
-  justify-content: space-between;
+.receipt-discount-row td {
+  background: #f0fdf4;
+  color: #15803d;
+  font-weight: 700;
+}
+
+.receipt-grand-total-row td {
+  background: #eff6ff !important;
+  border-top: 2px solid #0a1e42 !important;
+  border-bottom: 2px solid #0a1e42 !important;
+}
+
+.receipt-grand-total-label {
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #0a1e42;
+  letter-spacing: 0.5px;
+}
+
+.receipt-grand-total-val {
+  font-family: var(--font-mono, monospace);
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #1e40af;
+}
+
+.receipt-balance-note {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   8. Terbilang Callout Box
+   -------------------------------------------------------------------------- */
+.receipt-terbilang-box {
+  background: #f8fafc;
+  border-left: 4px solid #d97706;
+  border-radius: 0 6px 6px 0;
+  padding: 9px 16px;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.terbilang-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 2px;
+}
+
+.terbilang-text {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #0a1e42;
+  font-style: italic;
+  letter-spacing: 0.2px;
+}
+
+/* --------------------------------------------------------------------------
+   9. Bottom Grid: QR Code & Official Signature
+   -------------------------------------------------------------------------- */
+.receipt-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
   align-items: flex-end;
-  margin-top: 20px;
+  margin-bottom: 18px;
   position: relative;
   z-index: 2;
 }
 
-.receipt-qr-validation {
+/* QR Code Authenticity Box */
+.receipt-qr-section {
   display: flex;
   align-items: center;
   gap: 14px;
   border: 1px solid #cbd5e1;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: 6px;
   background: #ffffff;
-  max-width: 320px;
 }
 
-.receipt-qr-code {
-  width: 80px;
-  height: 80px;
+.receipt-qr-box {
+  background: #ffffff;
+  padding: 3px;
   border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.receipt-qr-box svg {
+  display: block;
 }
 
 .receipt-qr-instructions {
@@ -240,54 +629,83 @@
   line-height: 1.35;
 }
 
-.receipt-qr-instructions strong {
-  color: #0f2042;
-  display: block;
+.receipt-qr-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #0a1e42;
+  font-weight: 900;
+  font-size: 0.74rem;
+  letter-spacing: 0.4px;
   margin-bottom: 2px;
+  text-transform: uppercase;
 }
 
+.receipt-qr-hash {
+  font-size: 0.65rem;
+  color: #64748b;
+  font-family: var(--font-mono, monospace);
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+/* Official Signature Box */
 .receipt-signature-box {
   text-align: center;
-  min-width: 220px;
+  position: relative;
+  padding-left: 10px;
 }
 
 .signature-date {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: #475569;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .signature-role {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #0f2042;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #0a1e42;
+  line-height: 1.25;
 }
 
 .signature-space {
-  height: 65px;
+  height: 72px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.signature-stamp-img {
-  position: absolute;
-  width: 90px;
-  opacity: 0.85;
+  margin: 4px 0;
 }
 
 .signature-digital-img {
-  font-family: 'Brush Script MT', 'Dancing Script', cursive, sans-serif;
-  font-size: 1.8rem;
-  color: #1e40af;
-  transform: rotate(-5deg);
+  font-family: 'Brush Script MT', 'Dancing Script', 'Segoe Script', cursive, sans-serif;
+  font-size: 2.1rem;
+  color: #1e3a8a;
+  transform: rotate(-4deg);
+  user-select: none;
+  z-index: 2;
+  position: relative;
+}
+
+/* Circular Official Institutional Stamp (Stempel Basah Bulat) */
+.signature-stamp-svg {
+  position: absolute;
+  top: 50%;
+  left: 36%;
+  transform: translate(-50%, -50%) rotate(-10deg);
+  width: 105px;
+  height: 105px;
+  opacity: 0.85;
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(30, 64, 175, 0.25));
 }
 
 .signature-name {
-  font-size: 0.84rem;
-  font-weight: 800;
-  color: #0f2042;
+  font-size: 0.86rem;
+  font-weight: 900;
+  color: #0a1e42;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -295,33 +713,57 @@
 .signature-nip {
   font-size: 0.72rem;
   color: #64748b;
-  font-family: var(--font-mono);
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  margin-top: 2px;
 }
 
-/* Paid Stamp */
-.paid-stamp-watermark {
-  position: absolute;
-  right: 50px;
-  top: 140px;
-  border: 3px solid #15803d;
-  color: #15803d;
-  font-size: 1.6rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  padding: 6px 18px;
-  border-radius: 8px;
-  transform: rotate(-15deg);
-  opacity: 0.85;
-  letter-spacing: 2px;
-  z-index: 3;
+/* --------------------------------------------------------------------------
+   10. Legal Notice & Security Footer
+   -------------------------------------------------------------------------- */
+.receipt-legal-footer {
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 10px;
+  font-size: 0.65rem;
+  color: #64748b;
+  line-height: 1.4;
+  position: relative;
+  z-index: 2;
 }
 
-/* ==========================================================================
-   Print Stylesheet
-   ========================================================================== */
+.receipt-legal-text {
+  margin-bottom: 4px;
+}
+
+.receipt-audit-trail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.63rem;
+  color: #94a3b8;
+}
+
+/* --------------------------------------------------------------------------
+   11. Print Optimization Stylesheet (@media print)
+   -------------------------------------------------------------------------- */
+@page {
+  size: A4 portrait;
+  margin: 8mm 10mm 8mm 10mm;
+}
+
 @media print {
+  /* Hide all app chrome */
   body * {
     visibility: hidden;
+  }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
   .role-switcher-banner,
@@ -331,43 +773,134 @@
   .modal-footer,
   .toast-container,
   .btn,
-  .no-print {
+  .receipt-toolbar,
+  .no-print,
+  #global-modal-close,
+  .modal-close {
     display: none !important;
   }
 
   .modal-overlay {
-    position: static;
-    display: block;
-    background: transparent;
-    padding: 0;
+    position: static !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
   .modal-card {
-    box-shadow: none;
-    border: none;
+    box-shadow: none !important;
+    border: none !important;
     max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
     transform: none !important;
+    background: transparent !important;
+    overflow: visible !important;
+  }
+
+  .modal-body {
+    padding: 0 !important;
+    overflow: visible !important;
+    max-height: none !important;
   }
 
   .receipt-modal-container {
-    background: transparent;
-    padding: 0;
-    max-height: none;
-    overflow: visible;
+    background: transparent !important;
+    padding: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
   }
 
+  /* Make receipt sheet and children visible */
   .official-receipt-paper,
   .official-receipt-paper * {
-    visibility: visible;
+    visibility: visible !important;
   }
 
   .official-receipt-paper {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    max-width: 100%;
-    padding: 20px;
-    box-shadow: none;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .receipt-inner-frame {
+    border: 2px solid #0f2042 !important;
+    padding: 16px 20px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Prevent awkward page breaks */
+  .receipt-breakdown-table,
+  .receipt-bottom-grid,
+  .receipt-student-profile {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. Responsive Adjustments for Mobile / Tablet
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .official-receipt-paper {
+    padding: 18px 14px;
+  }
+
+  .receipt-inner-frame {
+    padding: 14px 12px;
+  }
+
+  .receipt-header-kop {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .receipt-kop-logo {
+    width: 65px;
+    height: 65px;
+  }
+
+  .kop-institution {
+    font-size: 1.15rem;
+  }
+
+  .receipt-student-profile {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .receipt-profile-label {
+    width: 120px;
+  }
+
+  .receipt-bottom-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .paid-stamp-watermark {
+    right: 14px;
+    top: 130px;
+    transform: rotate(-10deg) scale(0.85);
+  }
+
+  .receipt-watermark {
+    font-size: 2.8rem;
   }
 }
