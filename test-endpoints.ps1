@@ -18,6 +18,7 @@ $urls = @(
     'http://127.0.0.1:8080/js/utils/drag-scroll.js',
     'http://127.0.0.1:8080/js/utils/export-engine.js',
     'http://127.0.0.1:8080/js/utils/formatters.js',
+    'http://127.0.0.1:8080/js/utils/image-compressor.js',
     'http://127.0.0.1:8080/js/utils/qr-engine.js',
     'http://127.0.0.1:8080/js/views/dashboard-bendahara.js',
     'http://127.0.0.1:8080/js/views/view-akademik.js',

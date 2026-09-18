@@ -29,6 +29,10 @@ export function renderLoginView(container) {
             <span class="pulsing-dot pulsing-dot-green" style="position: absolute; bottom: 4px; right: 4px; border: 2px solid #ffffff;" title="Sistem Aktif Online"></span>
           </div>
 
+          <!-- Basmalah Calligraphy Ornament -->
+          <div class="islamic-basmalah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+          <div class="islamic-basmalah-sub">Dengan Menyebut Nama Allah Yang Maha Pengasih Lagi Maha Penyayang</div>
+
           <h1 style="font-size: 1.55rem; font-weight: 900; color: var(--primary-950); letter-spacing: -0.4px; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
             <span>SIMPEL-IF</span>
             <span style="font-size: 1rem; color: #94a3b8; font-weight: 400;">&bull;</span>
@@ -41,10 +45,10 @@ export function renderLoginView(container) {
 
           <!-- Decorative Feature Chips -->
           <div style="margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">
-            <span class="ornament-feature-chip">🏛️ STIT Ihsanul Fikri Magelang</span>
-            <span class="ornament-feature-chip">💳 BSI Virtual Account & QRIS</span>
+            <span class="ornament-feature-chip" style="border-color: #a7f3d0; color: #065f46;"><span style="color: #059669;">🕌</span> STIT Ihsanul Fikri Magelang</span>
+            <span class="ornament-feature-chip">💳 BSI Virtual Account (1056405743)</span>
             <span class="ornament-feature-chip">🎓 9 Skema Subsidi Beasiswa</span>
-            <span class="ornament-feature-chip">📊 Integrasi Matriks Google Sheets</span>
+            <span class="ornament-feature-chip" style="border-color: #fde68a; color: #92400e;"><span style="color: #d97706;">۞</span> Amanah, Syar'i & Berkah</span>
           </div>
           
           <!-- Admin Hotline & Online Status Badge -->
@@ -72,7 +76,7 @@ export function renderLoginView(container) {
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); gap: 28px; align-items: start; position: relative; z-index: 1;">
         
         <!-- Left Column: Authentication & Registration Card -->
-        <div class="card card-academic-trim" style="padding: 30px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(37,99,235,0.1); border-radius: var(--radius-2xl); position: relative; background: #ffffff;">
+        <div class="card card-islamic-trim" style="padding: 30px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(37,99,235,0.1); border-radius: var(--radius-2xl); position: relative; background: #ffffff;">
           <div class="ornament-corner-star"></div>
           
           <div style="position: relative; z-index: 1;">
@@ -338,11 +342,11 @@ export function renderLoginView(container) {
       <!-- Decorative Institutional Footer Ornament -->
       <div style="margin-top: 36px; text-align: center; position: relative; z-index: 1;">
         <div class="ornament-pinstripe" style="max-width: 600px; margin: 0 auto 16px;"></div>
-        <div style="font-size: 0.88rem; font-weight: 800; color: #1e3a8a; letter-spacing: 0.5px; font-style: italic;">
+        <div style="font-size: 1.35rem; font-family: var(--font-arabic); font-weight: 700; color: #064e3b; letter-spacing: 0.5px; line-height: 1.8; direction: rtl;">
           "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ"
         </div>
         <div style="font-size: 0.76rem; color: var(--text-muted); margin-top: 4px;">
-          "Barangsiapa menempuh jalan untuk mencari ilmu, maka Allah akan memudahkan baginya jalan menuju surga." (HR. Muslim)
+          "Barangsiapa menempuh jalan untuk menuntut ilmu, maka Allah akan memudahkan baginya jalan menuju surga." (HR. Muslim No. 2699)
         </div>
         <div style="margin-top: 10px; font-size: 0.72rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;">
           <span>📍 Pabelan, Magelang, Jawa Tengah</span>

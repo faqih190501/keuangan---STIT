@@ -379,8 +379,37 @@
 }
 
 /* --------------------------------------------------------------------------
-   5. Receipt Title & Metadata Bar
+   5. Islamic Basmalah & Receipt Title Box
    -------------------------------------------------------------------------- */
+.receipt-basmalah {
+  font-family: var(--font-arabic, 'Amiri', serif);
+  font-size: 1.48rem;
+  color: #064e3b;
+  text-align: center;
+  margin: 6px auto 4px;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+  direction: rtl;
+  font-weight: 700;
+  user-select: none;
+}
+
+.receipt-doa-taawun {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.72rem;
+  color: #166534;
+  text-align: center;
+  margin: 10px 0 6px;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
 .receipt-title-box {
   text-align: center;
   margin-bottom: 16px;

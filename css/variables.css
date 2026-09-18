@@ -108,6 +108,27 @@
   /* Typography */
   --font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-arabic: 'Amiri', 'Traditional Arabic', 'Scheherazade New', serif;
+
+  /* Islamic Nuance Palettes (Emerald & Noble Gold Harmony) */
+  --islamic-emerald-950: #022c22;
+  --islamic-emerald-900: #064e3b;
+  --islamic-emerald-800: #065f46;
+  --islamic-emerald-700: #047857;
+  --islamic-emerald-600: #059669;
+  --islamic-emerald-500: #10b981;
+  --islamic-emerald-400: #34d399;
+  --islamic-emerald-200: #a7f3d0;
+  --islamic-emerald-100: #d1fae5;
+  --islamic-emerald-50:  #ecfdf5;
+
+  --islamic-gold-700:    #b45309;
+  --islamic-gold-600:    #d97706;
+  --islamic-gold-500:    #f59e0b;
+  --islamic-gold-400:    #fbbf24;
+  --islamic-gold-200:    #fde68a;
+  --islamic-gold-100:    #fef3c7;
+  --islamic-gold-50:     #fffbeb;
 
   /* Dimensions */
   --sidebar-width: 270px;

@@ -23,17 +23,17 @@
   <meta name="twitter:description" content="Sistem Informasi Manajemen Pembayaran Elektronik & Portal Akademik STIT Ihsanul Fikri.">
   <meta name="twitter:image" content="./assets/images/logo.png">
 
-  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <!-- Google Fonts: Plus Jakarta Sans, JetBrains Mono, & Amiri (Arabic Typography) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Core Stylesheets (Corporate Blue Theme) -->
-  <link rel="stylesheet" href="./css/variables.css?v=5.1.0">
-  <link rel="stylesheet" href="./css/layout.css?v=5.1.0">
-  <link rel="stylesheet" href="./css/components.css?v=5.1.0">
-  <link rel="stylesheet" href="./css/receipt.css?v=5.1.0">
-  <link rel="stylesheet" href="./css/responsive.css?v=5.1.0">
+  <!-- Core Stylesheets (Corporate Blue Theme with Islamic Touches) -->
+  <link rel="stylesheet" href="./css/variables.css?v=5.2.0">
+  <link rel="stylesheet" href="./css/layout.css?v=5.2.0">
+  <link rel="stylesheet" href="./css/components.css?v=5.2.0">
+  <link rel="stylesheet" href="./css/receipt.css?v=5.2.0">
+  <link rel="stylesheet" href="./css/responsive.css?v=5.2.0">
 </head>
 <body>
 
@@ -43,6 +43,7 @@
       <img src="./assets/images/logo.png" alt="Logo" style="width: 24px; height: 24px; border-radius: 4px; object-fit: cover;">
       <span>STIT IHSANUL FIKRI</span>
       <span class="badge-tag">SIMPEL-IF V5.0</span>
+      <span class="islamic-rub-badge" title="Tarbiyah & Dakwah Islamiyah">۞ SYAR'I</span>
     </div>
 
     <!-- Role Switch Buttons -->
@@ -72,6 +73,7 @@
         <div class="sidebar-brand-text">
           <span class="sidebar-brand-title">SIMPEL-IF</span>
           <span class="sidebar-brand-subtitle">STIT Ihsanul Fikri</span>
+          <span class="sidebar-brand-motto">معهد و كلية التربية الإسلامية</span>
         </div>
       </div>
 
@@ -185,6 +187,12 @@
             <span class="search-placeholder">Cari cepat...</span>
             <kbd class="search-kbd">Ctrl K</kbd>
           </button>
+
+          <!-- Islamic Hijri Calendar Live Date Badge -->
+          <div class="islamic-date-badge" id="topbar-hijri-badge" title="Kalender Hijriyah Resmi STIT Ihsanul Fikri">
+            <span class="islamic-star-icon">۞</span>
+            <span id="topbar-hijri-text">Memuat Penanggalan Hijriyah...</span>
+          </div>
 
           <div class="academic-period-badge">
             <span class="dot"></span>

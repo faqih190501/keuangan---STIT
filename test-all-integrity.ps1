@@ -36,6 +36,7 @@ $coreFiles = @(
     "js/utils/drag-scroll.js",
     "js/utils/export-engine.js",
     "js/utils/formatters.js",
+    "js/utils/image-compressor.js",
     "js/utils/qr-engine.js",
     "js/views/dashboard-bendahara.js",
     "js/views/view-akademik.js",
@@ -93,6 +94,12 @@ $formattersRaw = Get-Content "d:\SIMPEL-IF\js\utils\formatters.js" -Raw
 Check-Condition "STANDARD_FEES in models.js" ($modelsRaw.Contains("STANDARD_FEES") -and $modelsRaw.Contains("PENDAFTARAN: 200000") -and $modelsRaw.Contains("DAFTAR_ULANG: 450000"))
 Check-Condition "SCHOLARSHIP_SCHEMES and SCHOLARSHIP_TYPES in models.js" ($modelsRaw.Contains("SCHOLARSHIP_TYPES") -and $modelsRaw.Contains("PAUD_LAKI"))
 Check-Condition "getScholarshipBadge in formatters.js handles dynamic types" ($formattersRaw.Contains("getScholarshipBadge") -and $formattersRaw.Contains("SCHOLARSHIP_TYPES"))
+
+# 5b. Check Image Compression Module & Mahasiswa Portal Integration
+$imgCompRaw = Get-Content "d:\SIMPEL-IF\js\utils\image-compressor.js" -Raw
+$mhsRaw = Get-Content "d:\SIMPEL-IF\js\views\view-mahasiswa.js" -Raw
+Check-Condition "compressImage exported in image-compressor.js" ($imgCompRaw.Contains("export function compressImage") -and $imgCompRaw.Contains("formatBytes"))
+Check-Condition "view-mahasiswa.js integrates automatic image compression" ($mhsRaw.Contains("compressImage") -and $mhsRaw.Contains("setupCompressedDropzone") -and $mhsRaw.Contains("manual-compression-card") -and $mhsRaw.Contains("mandiri-compression-card"))
 
 # 6. Check JS Syntax & Delimiters (Backticks, Brackets, Parentheses)
 $jsFiles = Get-ChildItem -Path "d:\SIMPEL-IF\js" -Filter "*.js" -Recurse

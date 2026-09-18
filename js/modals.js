@@ -197,6 +197,9 @@ export class ModalManager {
               <div class="divider-thin"></div>
             </div>
 
+            <!-- Islamic Basmalah Calligraphy -->
+            <div class="receipt-basmalah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+
             <!-- Receipt Title -->
             <div class="receipt-title-box">
               <h2 class="receipt-title-heading">KWITANSI BUKTI PEMBAYARAN SAH</h2>
@@ -361,6 +364,12 @@ export class ModalManager {
               </div>
             </div>
 
+            <!-- Doa Ta'awun Pembayaran Berkah -->
+            <div class="receipt-doa-taawun">
+              <span>🤲</span>
+              <span>"Jazakumullahu Khairan Katsiran atas pembayaran biaya perkuliahan di STIT Ihsanul Fikri. Semoga menjadi ilmu yang bermanfaat dan berkah fiddunya wal akhirah."</span>
+            </div>
+
             <!-- Legal Notice & Security Footer -->
             <div class="receipt-legal-footer">
               <div class="receipt-legal-text">
@@ -378,6 +387,7 @@ export class ModalManager {
     `;
 
     const waText = encodeURIComponent(
+      `*بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ*\n` +
       `*KWITANSI PEMBAYARAN ELEKTRONIK RESMI*\n` +
       `*STIT IHSANUL FIKRI MAGELANG*\n\n` +
       `📄 *No. Kwitansi:* ${invoice.receiptNumber || invoice.id}\n` +

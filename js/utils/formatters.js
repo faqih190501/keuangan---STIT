@@ -49,6 +49,44 @@ export function formatDateTime(dateStr) {
 }
 
 /**
+ * Konversi tanggal Masehi ke Penanggalan Kalender Hijriyah (Umm al-Qura / Kemenag)
+ * Menggunakan standar ECMAScript Intl API
+ */
+export function getHijriDate(dateInput = new Date()) {
+  try {
+    const d = dateInput instanceof Date ? dateInput : new Date(dateInput);
+    if (isNaN(d.getTime())) return 'Kalender Hijriyah';
+    
+    // Gunakan Intl DateTimeFormat standar ECMAScript dengan kalender Islamic Umalqura
+    const formatter = new Intl.DateTimeFormat('id-TN-u-ca-islamic-umalqura', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+    
+    let formatted = formatter.format(d);
+    // Bersihkan karakter aneh atau standarkan akhiran H
+    formatted = formatted.replace(/AH|BH/g, '').trim();
+    if (!formatted.toLowerCase().includes('h')) {
+      return `${formatted} H`;
+    }
+    return formatted;
+  } catch (e) {
+    try {
+      const d = dateInput instanceof Date ? dateInput : new Date(dateInput);
+      const formatter = new Intl.DateTimeFormat('id-ID-u-ca-islamic', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+      return `${formatter.format(d)} H`;
+    } catch (err) {
+      return '1448 H';
+    }
+  }
+}
+
+/**
  * Konversi angka rupiah ke kalimat terbilang bahasa Indonesia
  */
 export function terbilang(angka) {

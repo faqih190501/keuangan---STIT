@@ -8,6 +8,7 @@ import { AuthManager, ROLE_PERMISSIONS } from './auth.js';
 import { ModalManager } from './modals.js';
 import { DragScrollHelper } from './utils/drag-scroll.js';
 import { UserExperienceHelper } from './utils/user-experience.js';
+import { getHijriDate } from './utils/formatters.js';
 
 import { renderDashboardBendahara } from './views/dashboard-bendahara.js';
 import { renderMatriksRekapView } from './views/view-matriks-rekap.js';
@@ -392,4 +393,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const router = new Router();
   router.init();
   DragScrollHelper.init(document);
+
+  // Inisialisasi Penanggalan Kalender Hijriyah Dinamis
+  const hijriTextEl = document.getElementById('topbar-hijri-text');
+  if (hijriTextEl) {
+    hijriTextEl.textContent = getHijriDate(new Date());
+  }
 });

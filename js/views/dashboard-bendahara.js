@@ -132,23 +132,26 @@ export function renderDashboardBendahara(container) {
     </div>
 
     <!-- Admin Profile Identity Banner -->
-    <div class="card-academic-trim" style="background: linear-gradient(135deg, #163261 0%, #2563eb 100%); color: #ffffff; border-radius: var(--radius-xl); padding: 18px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(37,99,235,0.25); position: relative; overflow: hidden;">
-      <div class="ornament-corner-star" style="opacity: 0.08; width: 130px; height: 130px; top: -15px; right: -15px;"></div>
+    <div class="card-islamic-trim" style="background: linear-gradient(135deg, #064e3b 0%, #0f3261 50%, #1d4ed8 100%); color: #ffffff; border-radius: var(--radius-xl); padding: 18px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; box-shadow: 0 10px 25px -5px rgba(6, 78, 59, 0.25); position: relative; overflow: hidden;">
+      <div class="ornament-corner-star" style="opacity: 0.12; width: 130px; height: 130px; top: -15px; right: -15px;"></div>
       <div style="display: flex; align-items: center; gap: 16px; position: relative; z-index: 1;">
-        <div style="width: 52px; height: 52px; border-radius: 50%; background: #ffffff; color: #2563eb; font-weight: 900; font-size: 1.35rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.18); flex-shrink: 0;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #ffffff; color: #047857; font-weight: 900; font-size: 1.35rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.18); flex-shrink: 0; border: 2px solid #a7f3d0;">
           ${admin.avatarText || 'SF'}
         </div>
         <div>
+          <div style="font-size: 0.74rem; color: #a7f3d0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 2px;">
+            Assalamu'alaikum Warahmatullahi Wabarakatuh
+          </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
             <h3 style="font-size: 1.08rem; font-weight: 900; margin: 0; color: #ffffff;">${admin.name}</h3>
-            <span class="badge" style="background: #3b82f6; color: #ffffff; font-weight: 800; font-size: 0.7rem; padding: 2px 8px;">${admin.nip ? `NIP: ${admin.nip}` : 'Bendahara'}</span>
-            ${admin.isSuperAdmin ? '<span class="badge" style="background: #f59e0b; color: #ffffff; font-weight: 800; font-size: 0.7rem; padding: 2px 8px;">Super Admin</span>' : ''}
+            <span class="badge" style="background: #059669; color: #ffffff; font-weight: 800; font-size: 0.7rem; padding: 2px 8px; border: 1px solid #34d399;">${admin.nip ? `NIP: ${admin.nip}` : 'Bendahara'}</span>
+            ${admin.isSuperAdmin ? '<span class="badge" style="background: #f59e0b; color: #ffffff; font-weight: 800; font-size: 0.7rem; padding: 2px 8px;">۞ Super Admin</span>' : ''}
           </div>
           <div style="font-size: 0.78rem; opacity: 0.92; margin-top: 3px;">
             ${admin.title} &bull; <span style="opacity: 0.85;">${admin.department}</span>
           </div>
-          <div style="font-size: 0.72rem; opacity: 0.8; margin-top: 2px;">
-            📧 ${admin.email} &bull; 📱 ${admin.phone}
+          <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 2px;">
+            Tata kelola kas perkuliahan, beasiswa & ta'awun kampus yang amanah & akuntabel.
           </div>
         </div>
       </div>

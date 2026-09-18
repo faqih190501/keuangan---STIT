@@ -14,6 +14,7 @@ import { formatRupiah, formatDate, formatDateTime, getStatusBadge, getProdiBadge
 import { STATUS_TAGIHAN } from '../models.js';
 import { BillingEngine } from '../billing-engine.js';
 import { generateQRCodeSVG } from '../utils/qr-engine.js';
+import { compressImage, formatBytes } from '../utils/image-compressor.js';
 
 export function renderMahasiswaPortal(container) {
   const state = appState.getState();
@@ -88,7 +89,7 @@ export function renderMahasiswaPortal(container) {
     </div>
 
     <!-- 1. Warm Islamic Welcome Hero Banner -->
-    <div class="student-welcome-hero card-academic-trim" style="background: linear-gradient(135deg, #163261 0%, #1d4ed8 50%, #0284c7 100%); border-radius: var(--radius-2xl); padding: 26px 30px; margin-bottom: 24px; box-shadow: 0 15px 35px -5px rgba(22, 50, 97, 0.3); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.15);">
+    <div class="student-welcome-hero card-islamic-trim" style="background: linear-gradient(135deg, #064e3b 0%, #163261 50%, #1d4ed8 100%); border-radius: var(--radius-2xl); padding: 26px 30px; margin-bottom: 24px; box-shadow: 0 15px 35px -5px rgba(6, 78, 59, 0.25); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.15);">
       
       <!-- Subtle Decorative Halo Glow & Corner Star -->
       <div style="position: absolute; right: -50px; top: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%); filter: blur(30px); pointer-events: none;"></div>
@@ -567,10 +568,18 @@ export function renderMahasiswaPortal(container) {
                     <label class="form-label">Foto Bukti Transfer M-Banking / Struk <span class="required">*</span></label>
                     <div class="upload-dropzone" id="manual-dropzone">
                       <div class="upload-icon">📷</div>
-                      <div style="font-size: 0.86rem; font-weight: 800; color: var(--text-dark);">Klik atau Tarik Foto Bukti Transfer Disini</div>
+                      <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark);">Klik atau Tarik Foto Bukti Transfer Disini</div>
+                      <div style="font-size: 0.72rem; color: #059669; font-weight: 700; margin-top: 4px;">
+                        ⚡ Kompresi Otomatis Aktif (Ukuran file diperkecil otomatis, teks struk tetap jernih & tajam)
+                      </div>
                       <input type="file" id="manual-file-input" accept="image/*" style="display: none;">
-                      <div class="upload-preview-container" id="manual-preview-wrapper" style="display: none; margin-top: 12px;">
+                      <div id="manual-compression-loading" class="compression-loading" style="display: none;">
+                        <div class="compression-loading-spinner"></div>
+                        <span>Sedang mengompres foto bukti transfer otomatis...</span>
+                      </div>
+                      <div class="upload-preview-container" id="manual-preview-wrapper" style="display: none; margin-top: 14px;">
                         <img id="manual-img-preview" class="upload-preview-img" alt="Preview Bukti Bayar">
+                        <div id="manual-compression-card" class="compression-info-card" style="display: none;"></div>
                       </div>
                     </div>
                   </div>
@@ -784,10 +793,18 @@ export function renderMahasiswaPortal(container) {
                   <label class="form-label">Unggah Foto Struk / Screenshot Transfer Mandiri <span class="required">*</span></label>
                   <div class="upload-dropzone" id="mandiri-dropzone">
                     <div class="upload-icon">📷</div>
-                    <div style="font-size: 0.86rem; font-weight: 800; color: var(--text-dark);">Klik atau Tarik Foto Bukti Transfer Disini</div>
+                    <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-dark);">Klik atau Tarik Foto Bukti Transfer Disini</div>
+                    <div style="font-size: 0.72rem; color: #059669; font-weight: 700; margin-top: 4px;">
+                      ⚡ Kompresi Otomatis Aktif (Ukuran file diperkecil otomatis, teks struk tetap jernih & tajam)
+                    </div>
                     <input type="file" id="mandiri-file-input" accept="image/*" style="display: none;">
-                    <div class="upload-preview-container" id="mandiri-preview-wrapper" style="display: none; margin-top: 12px;">
+                    <div id="mandiri-compression-loading" class="compression-loading" style="display: none;">
+                      <div class="compression-loading-spinner"></div>
+                      <span>Sedang mengompres foto bukti transfer mandiri otomatis...</span>
+                    </div>
+                    <div class="upload-preview-container" id="mandiri-preview-wrapper" style="display: none; margin-top: 14px;">
                       <img id="mandiri-img-preview" class="upload-preview-img" alt="Preview Bukti Bayar">
+                      <div id="mandiri-compression-card" class="compression-info-card" style="display: none;"></div>
                     </div>
                   </div>
                 </div>
@@ -1157,29 +1174,179 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 8. Manual Invoice Upload File handling
-  const dropzone = container.querySelector('#manual-dropzone');
-  const fileInput = container.querySelector('#manual-file-input');
-  const previewWrapper = container.querySelector('#manual-preview-wrapper');
-  const imgPreview = container.querySelector('#manual-img-preview');
-  let selectedImageData = 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80';
+  // Helper: Setup Dropzone dengan Kompresi Gambar Otomatis
+  function setupCompressedDropzone({
+    dropzoneEl,
+    fileInputEl,
+    loadingEl,
+    previewWrapperEl,
+    imgPreviewEl,
+    infoCardEl,
+    onSuccess
+  }) {
+    if (!dropzoneEl || !fileInputEl) return;
 
-  if (dropzone && fileInput) {
-    dropzone.addEventListener('click', (e) => {
-      if (e.target !== fileInput) fileInput.click();
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropzoneEl.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
     });
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          selectedImageData = evt.target.result;
-          if (imgPreview) imgPreview.src = selectedImageData;
-          if (previewWrapper) previewWrapper.style.display = 'block';
-        };
-        reader.readAsDataURL(e.target.files[0]);
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzoneEl.addEventListener(eventName, () => {
+        dropzoneEl.classList.add('drag-active');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzoneEl.addEventListener(eventName, () => {
+        dropzoneEl.classList.remove('drag-active');
+      });
+    });
+
+    dropzoneEl.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      if (dt && dt.files && dt.files[0]) {
+        processUploadedImage(dt.files[0]);
       }
     });
+
+    dropzoneEl.addEventListener('click', (e) => {
+      if (e.target.closest('.btn-change-photo')) {
+        fileInputEl.click();
+        return;
+      }
+      if (e.target !== fileInputEl && !e.target.closest('.upload-preview-container')) {
+        fileInputEl.click();
+      }
+    });
+
+    fileInputEl.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        processUploadedImage(e.target.files[0]);
+      }
+    });
+
+    async function processUploadedImage(file) {
+      if (!file.type || !file.type.startsWith('image/')) {
+        if (window.simpelToast) {
+          window.simpelToast.show(
+            'Format Berkas Ditolak',
+            'Harap unggah berkas foto struk berformat gambar (JPG, PNG, atau WEBP).',
+            'error'
+          );
+        }
+        return;
+      }
+
+      if (loadingEl) loadingEl.style.display = 'flex';
+      if (previewWrapperEl) previewWrapperEl.style.display = 'none';
+
+      try {
+        const res = await compressImage(file, {
+          maxWidth: 1280,
+          maxHeight: 1280,
+          quality: 0.80,
+          targetMaxKB: 320
+        });
+
+        if (loadingEl) loadingEl.style.display = 'none';
+
+        if (imgPreviewEl) {
+          imgPreviewEl.src = res.dataUrl;
+        }
+
+        if (infoCardEl) {
+          infoCardEl.innerHTML = `
+            <div class="compression-info-header">
+              <span class="compression-badge">⚡ Otomatis Dikompres</span>
+              <span style="font-size: 0.72rem; color: #047857; font-weight: 700;">Hemat Kuota & Cepat Diunggah</span>
+            </div>
+            <div class="compression-stats-grid">
+              <div class="compression-stat-item">
+                <div class="compression-stat-label">Ukuran Asli</div>
+                <div class="compression-stat-value compression-stat-original">${res.originalSizeFormatted}</div>
+              </div>
+              <div class="compression-stat-item">
+                <div class="compression-stat-label">Ukuran Kompresi</div>
+                <div class="compression-stat-value" style="color: #059669;">${res.compressedSizeFormatted}</div>
+              </div>
+              <div class="compression-stat-item">
+                <div class="compression-stat-label">Penghematan</div>
+                <div class="compression-stat-value" style="color: #16a34a;">⚡ ${res.savingsPercent}</div>
+              </div>
+              <div class="compression-stat-item">
+                <div class="compression-stat-label">Dimensi Foto</div>
+                <div class="compression-stat-value">${res.compressedWidth} × ${res.compressedHeight}</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 6px; border-top: 1px dashed #a7f3d0;">
+              <span style="font-size: 0.68rem; color: #065f46;">✅ Teks nomor referensi & nominal tetap tajam</span>
+              <button type="button" class="btn-change-photo" style="background: none; border: none; color: #2563eb; font-size: 0.72rem; font-weight: 700; cursor: pointer; text-decoration: underline;">
+                🔄 Ganti Foto
+              </button>
+            </div>
+          `;
+          infoCardEl.style.display = 'block';
+
+          const btnChange = infoCardEl.querySelector('.btn-change-photo');
+          if (btnChange) {
+            btnChange.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              fileInputEl.click();
+            });
+          }
+        }
+
+        if (previewWrapperEl) {
+          previewWrapperEl.style.display = 'block';
+        }
+
+        if (onSuccess) onSuccess(res.dataUrl, res);
+
+        if (window.simpelToast) {
+          window.simpelToast.show(
+            'Foto Berhasil Dikompres!',
+            `Ukuran berkas berkurang dari ${res.originalSizeFormatted} menjadi ${res.compressedSizeFormatted} (Hemat ${res.savingsPercent}). Kualitas struk tetap jelas.`,
+            'success',
+            4500
+          );
+        }
+      } catch (err) {
+        if (loadingEl) loadingEl.style.display = 'none';
+        console.error('Image compression error:', err);
+        if (window.simpelToast) {
+          window.simpelToast.show(
+            'Gagal Mengompres Foto',
+            err.message || 'Terjadi kesalahan saat memproses gambar.',
+            'error'
+          );
+        }
+      }
+    }
   }
+
+  // 8. Manual Invoice Upload File handling dengan Kompresi Otomatis
+  const dropzone = container.querySelector('#manual-dropzone');
+  const fileInput = container.querySelector('#manual-file-input');
+  const loadingManual = container.querySelector('#manual-compression-loading');
+  const previewWrapper = container.querySelector('#manual-preview-wrapper');
+  const imgPreview = container.querySelector('#manual-img-preview');
+  const cardManual = container.querySelector('#manual-compression-card');
+  let selectedImageData = 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80';
+
+  setupCompressedDropzone({
+    dropzoneEl: dropzone,
+    fileInputEl: fileInput,
+    loadingEl: loadingManual,
+    previewWrapperEl: previewWrapper,
+    imgPreviewEl: imgPreview,
+    infoCardEl: cardManual,
+    onSuccess: (dataUrl) => {
+      selectedImageData = dataUrl;
+    }
+  });
 
   const formManual = container.querySelector('#form-manual-transfer');
   if (formManual && currentInvoice) {
@@ -1376,29 +1543,26 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // Mandiri Manual Upload
+  // Mandiri Manual Upload dengan Kompresi Otomatis
   const mandiriDropzone = container.querySelector('#mandiri-dropzone');
   const mandiriFileInput = container.querySelector('#mandiri-file-input');
+  const mandiriLoading = container.querySelector('#mandiri-compression-loading');
   const mandiriPreviewWrapper = container.querySelector('#mandiri-preview-wrapper');
   const mandiriImgPreview = container.querySelector('#mandiri-img-preview');
+  const mandiriCard = container.querySelector('#mandiri-compression-card');
   let mandiriSelectedImageData = 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80';
 
-  if (mandiriDropzone && mandiriFileInput) {
-    mandiriDropzone.addEventListener('click', (e) => {
-      if (e.target !== mandiriFileInput) mandiriFileInput.click();
-    });
-    mandiriFileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (evt) => {
-          mandiriSelectedImageData = evt.target.result;
-          if (mandiriImgPreview) mandiriImgPreview.src = mandiriSelectedImageData;
-          if (mandiriPreviewWrapper) mandiriPreviewWrapper.style.display = 'block';
-        };
-        reader.readAsDataURL(e.target.files[0]);
-      }
-    });
-  }
+  setupCompressedDropzone({
+    dropzoneEl: mandiriDropzone,
+    fileInputEl: mandiriFileInput,
+    loadingEl: mandiriLoading,
+    previewWrapperEl: mandiriPreviewWrapper,
+    imgPreviewEl: mandiriImgPreview,
+    infoCardEl: mandiriCard,
+    onSuccess: (dataUrl) => {
+      mandiriSelectedImageData = dataUrl;
+    }
+  });
 
   const formMandiriManual = container.querySelector('#form-mandiri-manual');
   if (formMandiriManual) {
