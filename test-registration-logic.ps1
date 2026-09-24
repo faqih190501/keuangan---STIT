@@ -9,7 +9,7 @@ $checks = @(
     @{ Name = "NIM collision check in state.js"; Condition = $stateJs.Contains("existingNim") },
     @{ Name = "Automatic invoice generation in state.js"; Condition = $stateJs.Contains("INV-2026-") -and $stateJs.Contains("REGISTER_STUDENT_SELF") },
     @{ Name = "openStudentRegistrationModal in modals.js"; Condition = $modalsJs.Contains("openStudentRegistrationModal") },
-    @{ Name = "Live fee calculation in modals.js"; Condition = $modalsJs.Contains("updateLiveFeeBreakdown") },
+    @{ Name = "Fee calculator removed from registration modal"; Condition = -not $modalsJs.Contains("Kalkulator Estimasi Biaya") },
     @{ Name = "Auto NIM generator in modals.js"; Condition = $modalsJs.Contains("generateRecommendedNim") },
     @{ Name = "Registration CTA card in view-login.js"; Condition = $loginJs.Contains("btn-open-student-register") },
     @{ Name = "Register tab in view-login.js"; Condition = $loginJs.Contains("tab-btn-register") },

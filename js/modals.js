@@ -2920,7 +2920,6 @@ export class ModalManager {
     if (!overlay) return;
 
     const scholarshipSchemes = state.scholarshipSchemes || [];
-    const feeComponents = state.feeComponents || [];
 
     // Helper to generate a unique recommended NIM
     function generateRecommendedNim(prodi, angkatan = '2026') {
@@ -3098,22 +3097,6 @@ export class ModalManager {
             </div>
           </div>
 
-          <!-- Section 4: Live Breakdown Estimasi Tagihan Perdana -->
-          <div style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1.5px solid #cbd5e1; border-radius: var(--radius-xl); padding: 18px; margin-top: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <span style="font-size: 0.86rem; font-weight: 800; color: #1e293b; display: flex; align-items: center; gap: 6px;">
-                <span>🧾</span> <span>Kalkulator Estimasi Biaya Kuliah Perdana</span>
-              </span>
-              <span class="badge" style="background: #ecfdf5; color: #065f46; font-size: 0.70rem; font-weight: 800; padding: 3px 10px; border: 1px solid #a7f3d0; border-radius: 999px;">
-                BSI VA: 1056405743
-              </span>
-            </div>
-
-            <div id="reg-live-fee-breakdown" style="font-size: 0.80rem; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted);">
-              <!-- Will be updated dynamically via JS -->
-            </div>
-          </div>
-
         </form>
 
       </div>
@@ -3125,64 +3108,6 @@ export class ModalManager {
         <span>🚀</span> <span>Daftar & Masuk Sekarang</span>
       </button>
     `;
-
-    // Live Fee Calculator Updater
-    function updateLiveFeeBreakdown() {
-      const prodiVal = body.querySelector('#reg-student-prodi').value;
-      const semVal = parseInt(body.querySelector('#reg-student-semester').value, 10) || 1;
-      const schId = body.querySelector('#reg-student-scholarship').value;
-      const scholarship = scholarshipSchemes.find(s => s.id === schId) || scholarshipSchemes[0];
-
-      const sppComp = feeComponents.find(c => c.id === 'SPP') || { defaultAmount: 2400000 };
-      const duComp = feeComponents.find(c => c.id === 'DAFTAR_ULANG') || { defaultAmount: 300000 };
-      const pendComp = feeComponents.find(c => c.id === 'PENDAFTARAN') || { defaultAmount: 350000 };
-
-      let sppDiscount = 0;
-      if (scholarship.id !== 'REGULER') {
-        if (scholarship.discountType === 'PERCENT') {
-          sppDiscount = (sppComp.defaultAmount * scholarship.discountValue) / 100;
-        } else if (scholarship.discountType === 'FIXED') {
-          sppDiscount = Math.min(scholarship.discountValue, sppComp.defaultAmount);
-        }
-      }
-      sppDiscount = Math.min(sppDiscount, sppComp.defaultAmount);
-      const sppFinal = sppComp.defaultAmount - sppDiscount;
-
-      let totalGross = sppComp.defaultAmount + duComp.defaultAmount;
-      let isMaba = semVal === 1;
-      if (isMaba) totalGross += pendComp.defaultAmount;
-      const totalNet = totalGross - sppDiscount;
-
-      const breakdownEl = body.querySelector('#reg-live-fee-breakdown');
-      if (breakdownEl) {
-        breakdownEl.innerHTML = `
-          <div style="display: flex; justify-content: space-between;">
-            <span>SPP / UKT Pokok Semester:</span>
-            <span>${formatRupiah(sppComp.defaultAmount)}</span>
-          </div>
-          ${sppDiscount > 0 ? `
-            <div style="display: flex; justify-content: space-between; color: #15803d; font-weight: 700;">
-              <span>Potongan ${scholarship.name}:</span>
-              <span>- ${formatRupiah(sppDiscount)}</span>
-            </div>
-          ` : ''}
-          <div style="display: flex; justify-content: space-between;">
-            <span>Daftar Ulang & Administrasi Akademik:</span>
-            <span>${formatRupiah(duComp.defaultAmount)}</span>
-          </div>
-          ${isMaba ? `
-            <div style="display: flex; justify-content: space-between;">
-              <span>Paket Orientasi & Jas Almamater Maba:</span>
-              <span>${formatRupiah(pendComp.defaultAmount)}</span>
-            </div>
-          ` : ''}
-          <div style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 6px; display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 900; color: var(--primary-950);">
-            <span>Total Tagihan Perdana:</span>
-            <span style="color: #1e40af; font-family: var(--font-mono);">${formatRupiah(totalNet)}</span>
-          </div>
-        `;
-      }
-    }
 
     // Auto-select PAUD_LAKI when gender L and prodi PIAUD
     function checkAutoScholarshipTag() {
@@ -3199,10 +3124,9 @@ export class ModalManager {
 
     body.querySelector('#reg-student-gender').addEventListener('change', () => {
       checkAutoScholarshipTag();
-      updateLiveFeeBreakdown();
     });
 
-    // Attach change listeners for live breakdown
+    // Auto update recommended NIM on prodi change
     body.querySelector('#reg-student-prodi').addEventListener('change', (e) => {
       const nimInput = body.querySelector('#reg-student-nim');
       const angkatan = body.querySelector('#reg-student-angkatan').value;
@@ -3214,11 +3138,7 @@ export class ModalManager {
         }
       }
       checkAutoScholarshipTag();
-      updateLiveFeeBreakdown();
     });
-
-    body.querySelector('#reg-student-semester').addEventListener('change', updateLiveFeeBreakdown);
-    body.querySelector('#reg-student-scholarship').addEventListener('change', updateLiveFeeBreakdown);
 
     // Generate NIM button
     const btnGenNim = body.querySelector('#btn-generate-nim');
@@ -3258,8 +3178,7 @@ export class ModalManager {
       });
     }
 
-    // Initial breakdown render
-    updateLiveFeeBreakdown();
+
 
     // Submit handler
     const btnSubmit = footer.querySelector('#btn-submit-register');
