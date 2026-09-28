@@ -386,6 +386,12 @@ export class ModalManager {
       </div>
     `;
 
+    const liveDomainBase = (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file:'))
+      ? (window.location.origin + window.location.pathname.replace(/\/index\.html$/, '').replace(/\/$/, '') + '/')
+      : 'http://simpel-if.my.id/';
+    const receiptToken = encodeURIComponent(invoice.receiptNumber || invoice.id);
+    const verificationUrl = `${liveDomainBase}#view-qr-validator?token=${receiptToken}`;
+
     const waText = encodeURIComponent(
       `*بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ*\n` +
       `*KWITANSI PEMBAYARAN ELEKTRONIK RESMI*\n` +
@@ -398,7 +404,7 @@ export class ModalManager {
       `✅ *Status:* ${isLunas ? 'LUNAS (SAH)' : 'DICICIL / DISPENSASI'}\n` +
       `📅 *Tanggal:* ${paymentDateFormatted}\n` +
       `🏛️ *Kanal:* ${paymentChannelDesc}\n\n` +
-      `🛡️ *Cek Keaslian Dokumen & QR Code:* https://faqih190501.github.io/keuangan---STIT/#view-qr-validator\n\n` +
+      `🛡️ *Cek Keaslian Dokumen & QR Code:* ${verificationUrl}\n\n` +
       `_Kwitansi ini diterbitkan secara sah oleh Bagian Keuangan STIT Ihsanul Fikri._`
     );
 
@@ -432,7 +438,7 @@ export class ModalManager {
         `Status Kas     : ${isLunas ? 'LUNAS (SAH)' : 'DISPENSASI / DICICIL'}\n` +
         `Tanggal Bayar  : ${paymentDateFormatted}\n` +
         `Kanal Bayar    : ${paymentChannelDesc}\n` +
-        `Verifikasi QR  : https://faqih190501.github.io/keuangan---STIT/#view-qr-validator`;
+        `Verifikasi QR  : ${verificationUrl}`;
 
       navigator.clipboard.writeText(summaryText).then(() => {
         if (window.simpelToast) {

@@ -1,45 +1,53 @@
-$urls = @(
-    'http://127.0.0.1:8080/',
-    'http://127.0.0.1:8080/index.html',
-    'http://127.0.0.1:8080/404.html',
-    'http://127.0.0.1:8080/assets/images/logo.png',
-    'http://127.0.0.1:8080/css/variables.css',
-    'http://127.0.0.1:8080/css/layout.css',
-    'http://127.0.0.1:8080/css/components.css',
-    'http://127.0.0.1:8080/css/receipt.css',
-    'http://127.0.0.1:8080/css/responsive.css',
-    'http://127.0.0.1:8080/js/app.js',
-    'http://127.0.0.1:8080/js/auth.js',
-    'http://127.0.0.1:8080/js/billing-engine.js',
-    'http://127.0.0.1:8080/js/modals.js',
-    'http://127.0.0.1:8080/js/models.js',
-    'http://127.0.0.1:8080/js/state.js',
-    'http://127.0.0.1:8080/js/utils/chart-engine.js',
-    'http://127.0.0.1:8080/js/utils/drag-scroll.js',
-    'http://127.0.0.1:8080/js/utils/export-engine.js',
-    'http://127.0.0.1:8080/js/utils/formatters.js',
-    'http://127.0.0.1:8080/js/utils/image-compressor.js',
-    'http://127.0.0.1:8080/js/utils/qr-engine.js',
-    'http://127.0.0.1:8080/js/views/dashboard-bendahara.js',
-    'http://127.0.0.1:8080/js/views/view-akademik.js',
-    'http://127.0.0.1:8080/js/views/view-audit-log.js',
-    'http://127.0.0.1:8080/js/views/view-kalender.js',
-    'http://127.0.0.1:8080/js/views/view-laporan.js',
-    'http://127.0.0.1:8080/js/views/view-login.js',
-    'http://127.0.0.1:8080/js/views/view-mahasiswa.js',
-    'http://127.0.0.1:8080/js/views/view-pimpinan.js',
-    'http://127.0.0.1:8080/js/views/view-qr-validator.js',
-    'http://127.0.0.1:8080/js/views/view-skema-tarif.js',
-    'http://127.0.0.1:8080/js/views/view-verifikasi.js',
-    'http://127.0.0.1:8080/js/views/view-matriks-rekap.js'
+param(
+    [string]$BaseUrl = 'http://127.0.0.1:8080'
 )
+
+$BaseUrl = $BaseUrl.TrimEnd('/')
+
+$paths = @(
+    '/',
+    '/index.html',
+    '/404.html',
+    '/assets/images/logo.png',
+    '/css/variables.css',
+    '/css/layout.css',
+    '/css/components.css',
+    '/css/receipt.css',
+    '/css/responsive.css',
+    '/js/app.js',
+    '/js/auth.js',
+    '/js/billing-engine.js',
+    '/js/modals.js',
+    '/js/models.js',
+    '/js/state.js',
+    '/js/utils/chart-engine.js',
+    '/js/utils/drag-scroll.js',
+    '/js/utils/export-engine.js',
+    '/js/utils/formatters.js',
+    '/js/utils/image-compressor.js',
+    '/js/utils/qr-engine.js',
+    '/js/views/dashboard-bendahara.js',
+    '/js/views/view-akademik.js',
+    '/js/views/view-audit-log.js',
+    '/js/views/view-kalender.js',
+    '/js/views/view-laporan.js',
+    '/js/views/view-login.js',
+    '/js/views/view-mahasiswa.js',
+    '/js/views/view-pimpinan.js',
+    '/js/views/view-qr-validator.js',
+    '/js/views/view-skema-tarif.js',
+    '/js/views/view-verifikasi.js',
+    '/js/views/view-matriks-rekap.js'
+)
+
+$urls = $paths | ForEach-Object { "$BaseUrl$_" }
 
 $passed = 0
 $failed = 0
 
 foreach ($u in $urls) {
     try {
-        $res = Invoke-WebRequest -Uri $u -UseBasicParsing -TimeoutSec 3
+        $res = Invoke-WebRequest -Uri $u -UseBasicParsing -TimeoutSec 6
         if ($res.StatusCode -eq 200) {
             Write-Host "[200 OK] $u" -ForegroundColor Green
             $passed++

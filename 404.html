@@ -57,12 +57,14 @@
   </div>
 
   <script>
-    // GitHub Pages & Local SPA route recovery
+    // SPA route recovery for simpel-if.my.id & GitHub Pages
     (function() {
       const path = window.location.pathname;
       let base = './index.html';
       if (path.indexOf('/keuangan---STIT') !== -1) {
         base = '/keuangan---STIT/index.html';
+      } else {
+        base = '/index.html';
       }
       const dest = base + (window.location.search || '') + (window.location.hash || '');
       window.location.replace(dest);

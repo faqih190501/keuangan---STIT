@@ -4,7 +4,7 @@
   <p><strong>Sekolah Tinggi Ilmu Tarbiyah (STIT) Ihsanul Fikri Pabelan Magelang</strong></p>
 
   <p>
-    <a href="https://faqih190501.github.io/keuangan---STIT/"><img src="https://img.shields.io/badge/Live_Demo-GitHub_Pages-blue?style=for-the-badge&logo=github" alt="Live Demo"></a>
+    <a href="http://simpel-if.my.id/"><img src="https://img.shields.io/badge/Live_Portal-simpel--if.my.id-blue?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Portal"></a>
     <img src="https://img.shields.io/badge/Version-3.0.0_Synced-emerald?style=for-the-badge" alt="Version">
     <img src="https://img.shields.io/badge/Google_Sheets-Live_Sync-34A853?style=for-the-badge&logo=googlesheets&logoColor=white" alt="Google Sheets">
     <img src="https://img.shields.io/badge/Vanilla-ES_Modules-f7df1e?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
@@ -27,10 +27,12 @@ Sistem telah **disinkronkan 1:1** dengan dokumen resmi Google Spreadsheet: [REKA
 
 ---
 
-## 🌐 Demo Publik (Live Web)
+## 🌐 Portal Resmi & Akses Live
 
-Aplikasi dapat langsung diakses secara publik melalui tautan GitHub Pages berikut:
-👉 **[https://faqih190501.github.io/keuangan---STIT/](https://faqih190501.github.io/keuangan---STIT/)**
+Aplikasi dapat langsung diakses secara publik melalui domain resmi berikut:
+👉 **[http://simpel-if.my.id/](http://simpel-if.my.id/)**
+
+*(Tersedia pula mirror GitHub Pages: [https://faqih190501.github.io/keuangan---STIT/](https://faqih190501.github.io/keuangan---STIT/))*
 
 ---
 

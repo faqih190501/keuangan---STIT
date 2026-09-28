@@ -281,5 +281,24 @@ export function renderQrValidatorView(container) {
       runValidation(tok);
     });
   });
+
+  // Auto-fill and auto-validate if token/kwitansi parameter is present in URL or Hash
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    let hashToken = null;
+    if (window.location.hash && window.location.hash.includes('?')) {
+      const hashQuery = new URLSearchParams(window.location.hash.split('?')[1]);
+      hashToken = hashQuery.get('token') || hashQuery.get('kwitansi');
+    }
+    const initialToken = urlParams.get('token') || urlParams.get('kwitansi') || hashToken;
+    if (initialToken && inputToken) {
+      inputToken.value = decodeURIComponent(initialToken).trim();
+      setTimeout(() => {
+        runValidation(inputToken.value);
+      }, 150);
+    }
+  } catch (paramErr) {
+    console.warn('Parameter parsing notice:', paramErr);
+  }
 }
 
