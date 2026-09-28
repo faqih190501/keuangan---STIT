@@ -74,7 +74,7 @@ export function renderMatriksRekapView(container) {
           </p>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-          <a href="${matrix.spreadsheetUrl || 'https://docs.google.com/spreadsheets/d/1nqh4jksle3r95PlupTIKve11iUxmg3hSdYOB3NTKp3U/edit?pli=1&gid=814809663#gid=814809663'}" target="_blank" rel="noopener" class="btn btn-outline" style="font-weight: 700; color: #047857; border-color: #a7f3d0; background: #ecfdf5;" title="Buka Spreadsheet Asli di Tab Baru">
+          <a href="${activeTab === 'BKPI_2026' ? (matrix.spreadsheetUrlBKPI || 'https://docs.google.com/spreadsheets/d/1nqh4jksle3r95PlupTIKve11iUxmg3hSdYOB3NTKp3U/edit?pli=1&gid=814809663#gid=814809663') : (matrix.spreadsheetUrlPIAUD || matrix.spreadsheetUrl || 'https://docs.google.com/spreadsheets/d/1nqh4jksle3r95PlupTIKve11iUxmg3hSdYOB3NTKp3U/edit?pli=1&gid=1770791775#gid=1770791775')}" target="_blank" rel="noopener" class="btn btn-outline" style="font-weight: 700; color: #047857; border-color: #a7f3d0; background: #ecfdf5;" title="Buka Spreadsheet Asli di Tab Baru">
             <span>🌐</span> Buka Google Sheet ↗
           </a>
           <button class="btn btn-outline" id="btn-export-matrix-csv" style="font-weight: 700;">
@@ -497,8 +497,8 @@ export function renderMatriksRekapView(container) {
             🔗 Tautan Spreadsheet Aktif:
           </div>
           <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <input type="text" readonly value="${matrix.spreadsheetUrl || 'https://docs.google.com/spreadsheets/d/1nqh4jksle3r95PlupTIKve11iUxmg3hSdYOB3NTKp3U/edit?pli=1&gid=814809663#gid=814809663'}" style="flex: 1; padding: 10px 14px; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; background: #ffffff; color: #1e40af;">
-            <a href="${matrix.spreadsheetUrl}" target="_blank" rel="noopener" class="btn btn-outline" style="font-weight: 700;">
+            <input type="text" readonly value="${matrix.spreadsheetUrl || 'https://docs.google.com/spreadsheets/d/1nqh4jksle3r95PlupTIKve11iUxmg3hSdYOB3NTKp3U/edit?pli=1&gid=1770791775#gid=1770791775'}" style="flex: 1; padding: 10px 14px; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; background: #ffffff; color: #1e40af;">
+            <a href="${matrix.spreadsheetUrl || 'https://docs.google.com/spreadsheets/d/1nqh4jksle3r95PlupTIKve11iUxmg3hSdYOB3NTKp3U/edit?pli=1&gid=1770791775#gid=1770791775'}" target="_blank" rel="noopener" class="btn btn-outline" style="font-weight: 700;">
               Buka di Google Docs ↗
             </a>
           </div>

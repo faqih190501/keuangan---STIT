@@ -41,9 +41,9 @@ Sistem memuat pangkalan data resmi STIT Ihsanul Fikri dengan rincian:
 | Program Studi / Angkatan | Sheet Sumber | Jumlah Mahasiswa | Komponen Biaya Utama |
 | :--- | :--- | :---: | :--- |
 | **Bimbingan & Konseling Pendidikan Islam (BKPI 2026)** | `gid=814809663` | **45 Mahasiswa** | Pendaftaran (Rp 200rb), Daftar Ulang (Rp 450rb), SPP Smt 1 (9 Skema Tarif) |
-| **Pendidikan Islam Anak Usia Dini (PIAUD 2026)** | `gid=1770791775` | **63 Mahasiswa** | Pendaftaran (Rp 200rb), Daftar Ulang (Rp 450rb), SPP Smt 1 (9 Skema Tarif) |
-| **Mahasiswa Senior / Lanjutan** | Cohort Angkatan Sebelumnya | **13 Mahasiswa** | SPP Semester Berjalan & Asrama As-Syamil |
-| **TOTAL DATA SISTEM** | Seluruh Angkatan | **121 Mahasiswa** | **106 Tagihan & 66 Log Pembayaran Sah** |
+| **Pendidikan Islam Anak Usia Dini (PIAUD 2026)** | `gid=1770791775` | **64 Mahasiswa** | Pendaftaran (Rp 200rb), Daftar Ulang (Rp 450rb), SPP Smt 1 (9 Skema Tarif) |
+| **Mahasiswa Senior / Lanjutan** | Cohort Angkatan Sebelumnya | **15 Mahasiswa** | SPP Semester Berjalan & Asrama As-Syamil |
+| **TOTAL DATA SISTEM** | Seluruh Angkatan | **124 Mahasiswa** | **109 Tagihan & 71 Log Pembayaran Sah** |
 
 ---
 
@@ -86,18 +86,16 @@ Sistem memuat pangkalan data resmi STIT Ihsanul Fikri dengan rincian:
 
 ---
 
-## 🔑 Kredensial Login Demo
+## 🔑 Akses Kredensial & Autentikasi Pengguna
 
-Sistem menyediakan akun siap pakai:
+Pada mode produksi publik (_live online_), kredensial login tidak lagi ditampilkan secara terbuka di halaman login demi menjaga privasi dan keamanan sistem. Pengguna masuk menggunakan:
 
-| Peran Akun | Username / NIM | Password / PIN | Keterangan |
+| Peran Akun | Identifier Masuk | Kredensial | Keterangan |
 | :--- | :--- | :--- | :--- |
-| **👑 Admin / Bendahara** | `admin` | `admin123` | Akses penuh dashboard, verifikasi, master data, skema beasiswa, laporan |
-| **🎓 Mahasiswa BKPI 2026** | `202602001` | `123456` | Za'am Tsafiq Al Azmi (BKPI 2026 - Reguler) |
-| **🎓 Mahasiswa PIAUD 2026** | `202601001` | `123456` | Garwita Felda Nabiha (PIAUD 2026 - Reguler) |
-| **🎓 Mahasiswa Beasiswa** | `202601002` | `123456` | Muhammad Nanang Nasikin (PIAUD 2026 - Beasiswa PAUD Laki-laki) |
+| **👑 Admin / Bendahara** | Username / Email resmi | Diberikan oleh BAAK / Institut | Akses penuh dashboard keuangan, verifikasi manual, master data, dan skema beasiswa |
+| **🎓 Mahasiswa Baru / PMB** | NIM / Username terdaftar | PIN / Password mandiri | Dibuat saat pendaftaran mandiri (PMB Online) atau terdaftar di pangkalan data kampus |
 
-> 💬 **Bantuan Akun & Reset PIN:** Hubungi Admin di **`082342307414`** (WhatsApp).
+> 💬 **Bantuan Akses, Pendaftaran & Reset PIN:** Hubungi BAAK / Layanan Admin Kampus di **`082342307414`** (WhatsApp).
 
 ---
 

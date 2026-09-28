@@ -67,6 +67,10 @@ Check-Condition "PIAUD 2026 students included" ($stateRaw.Contains("Erlisa Rita 
 Check-Condition "Senior cohort students included" ($stateRaw.Contains("Abdullah Azam Robbani") -and $stateRaw.Contains("2001001"))
 Check-Condition "Google Sheets Raw Matrix dataset present in state" ($stateRaw.Contains("googleSheetsMatrix") -and $stateRaw.Contains("bkpi2026") -and $stateRaw.Contains("piaud2026"))
 Check-Condition "9 Scholarship Schemes Defined" ($stateRaw.Contains("MITRA_GRATIS") -and $stateRaw.Contains("ALUMNI_PONPES") -and $stateRaw.Contains("PAUD_LAKI"))
+Check-Condition "Newly added PIAUD student Ida Nur Aini (2602062) included" ($stateRaw.Contains("Ida Nur Aini") -and $stateRaw.Contains("2602062"))
+Check-Condition "Corrected student Wahyu Kurnia Dewi (2602059) included" ($stateRaw.Contains("Wahyu Kurnia Dewi") -and $stateRaw.Contains("2602059"))
+Check-Condition "Updated payment Rohmah Indarti (2601027) recorded" ($stateRaw.Contains("2601027") -and $stateRaw.Contains("DAFTAR_ULANG_LUNAS"))
+Check-Condition "Updated payment Umi Farida (2602028) SPP Lunas recorded" ($stateRaw.Contains("2602028") -and $stateRaw.Contains("1.200.000") -and $stateRaw.Contains("23/09/26"))
 
 # 3. Check Matriks Rekap View
 $matriksRaw = Get-Content "d:\SIMPEL-IF\js\views\view-matriks-rekap.js" -Raw

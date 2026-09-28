@@ -4,11 +4,9 @@
  */
 
 import { appState } from '../state.js';
-import { getProdiBadge, getScholarshipBadge } from '../utils/formatters.js';
 import { AuthManager } from '../auth.js';
 
 export function renderLoginView(container) {
-  const state = appState.getState();
 
   container.innerHTML = `
     <div style="max-width: 1060px; margin: 12px auto 40px; animation: fadeInScale 0.35s ease; position: relative;">
@@ -109,7 +107,7 @@ export function renderLoginView(container) {
                 <div class="form-group">
                   <label class="form-label" for="login-nim" style="font-weight: 700;">NIM atau Username Mahasiswa <span class="required">*</span></label>
                   <div style="position: relative;">
-                    <input type="text" class="form-control" id="login-nim" placeholder="Masukkan NIM atau Username..." required style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md); border-color: #cbd5e1;" value="2601001">
+                    <input type="text" class="form-control" id="login-nim" placeholder="Masukkan NIM atau Username..." required autocomplete="username" style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md); border-color: #cbd5e1;">
                     <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #64748b;">👤</span>
                   </div>
                   <span class="input-help-text">Gunakan NIM resmi atau Username akun mahasiswa STIT-IF</span>
@@ -118,18 +116,18 @@ export function renderLoginView(container) {
                 <div class="form-group">
                   <label class="form-label" for="login-password" style="font-weight: 700;">PIN / Password <span class="required">*</span></label>
                   <div style="position: relative;">
-                    <input type="password" class="form-control" id="login-password" placeholder="Masukkan password atau PIN" required style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md); border-color: #cbd5e1;" value="123456">
+                    <input type="password" class="form-control" id="login-password" placeholder="Masukkan password atau PIN" required autocomplete="current-password" style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md); border-color: #cbd5e1;">
                     <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #64748b;">🔒</span>
                     <button type="button" id="btn-toggle-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: #64748b; padding: 4px;" title="Lihat Password">
                       👁️
                     </button>
                   </div>
-                  <span class="input-help-text">Default PIN simulasi mahasiswa: <code>123456</code></span>
+                  <span class="input-help-text">Masukkan PIN atau kata sandi akun mahasiswa Anda</span>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.78rem; flex-wrap: wrap; gap: 8px;">
                   <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-weight: 600;">
-                    <input type="checkbox" id="remember-nim" checked> Ingat di perangkat ini
+                    <input type="checkbox" id="remember-nim"> Ingat di perangkat ini
                   </label>
                   <div style="display: flex; align-items: center; gap: 8px;">
                     <a href="javascript:void(0)" id="link-inline-register" style="color: #2563eb; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
@@ -202,27 +200,27 @@ export function renderLoginView(container) {
                 <div class="form-group">
                   <label class="form-label" for="admin-username" style="font-weight: 700;">Username / Email Admin <span class="required">*</span></label>
                   <div style="position: relative;">
-                    <input type="text" class="form-control" id="admin-username" placeholder="Masukkan username admin" required style="font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md);" value="admin">
+                    <input type="text" class="form-control" id="admin-username" placeholder="Masukkan username admin" required autocomplete="username" style="font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md);">
                     <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">💼</span>
                   </div>
-                  <span class="input-help-text">Username admin: <code>admin</code> atau <code>bendahara</code></span>
+                  <span class="input-help-text">Gunakan username atau email admin resmi terdaftar</span>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label" for="admin-password" style="font-weight: 700;">Password Admin <span class="required">*</span></label>
                   <div style="position: relative;">
-                    <input type="password" class="form-control" id="admin-password" placeholder="Masukkan password admin" required style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md);" value="admin123">
+                    <input type="password" class="form-control" id="admin-password" placeholder="Masukkan password admin" required autocomplete="current-password" style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md);">
                     <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">🔑</span>
                     <button type="button" id="btn-toggle-admin-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: var(--text-light); padding: 4px;">
                       👁️
                     </button>
                   </div>
-                  <span class="input-help-text">Password admin simulasi: <code>admin123</code></span>
+                  <span class="input-help-text">Masukkan kata sandi akun pengelola</span>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.78rem;">
                   <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-weight: 600;">
-                    <input type="checkbox" id="remember-admin" checked> Ingat sesi di perangkat ini
+                    <input type="checkbox" id="remember-admin"> Ingat sesi di perangkat ini
                   </label>
                   <span style="color: #0284c7; font-weight: 700;">Hak Akses: Pengelola Penuh</span>
                 </div>
@@ -249,24 +247,11 @@ export function renderLoginView(container) {
 
         </div>
 
-        <!-- Right Column: Demo Accounts & Quick Selection Card -->
+        <!-- Right Column: Institutional Info & Student Services Guide -->
         <div class="card card-academic-trim" style="padding: 26px; box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.08); border-radius: var(--radius-2xl); position: relative; background: #ffffff;">
           <div class="ornament-corner-star"></div>
           
           <div style="position: relative; z-index: 1;">
-            <!-- Keterangan Akun Demo / Default Credentials -->
-            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: var(--radius-xl); padding: 14px 18px; margin-bottom: 16px;">
-              <div style="font-size: 0.76rem; font-weight: 800; color: #1e40af; text-transform: uppercase; letter-spacing: 0.3px;">🔑 Kredensial Login Terdaftar di Sistem:</div>
-              <div style="font-size: 0.76rem; color: #1e3a8a; margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
-                <div><strong>👑 Akun Admin (${(state.adminUsers || []).length} Akun):</strong></div>
-                <div style="padding-left: 8px; display: flex; flex-direction: column; gap: 2px;">
-                  ${(state.adminUsers || []).slice(0, 3).map(a => `<div>&bull; <strong>${a.name.split(',')[0]}:</strong> User <code>${a.username}</code> &bull; Pass <code>${a.password || 'admin123'}</code></div>`).join('')}
-                  ${(state.adminUsers || []).length > 3 ? `<div style="font-size: 0.70rem; color: #3b82f6;">+ ${(state.adminUsers || []).length - 3} admin lainnya terdaftar</div>` : ''}
-                </div>
-                <div style="margin-top: 4px;"><strong>🎓 Mahasiswa:</strong> Masukkan <strong>NIM</strong> terdaftar &bull; Password: <code>123456</code></div>
-              </div>
-            </div>
-
             <!-- Dedicated Admin Support Card with WhatsApp & Phone -->
             <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1px solid #86efac; border-radius: var(--radius-xl); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: var(--shadow-sm); flex-wrap: wrap;">
               <div style="display: flex; align-items: center; gap: 12px;">
@@ -573,10 +558,10 @@ export function renderLoginView(container) {
 
           <div style="background: #f8fafc; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 18px; font-size: 0.84rem; display: flex; flex-direction: column; gap: 10px;">
             <div>
-              <strong>🎓 Login Mahasiswa:</strong> Masukkan <strong>NIM</strong> Anda dan default password/PIN <code>123456</code>.
+              <strong>🎓 Login Mahasiswa:</strong> Masukkan <strong>NIM</strong> resmi dan kata sandi / PIN akun Anda yang telah terdaftar.
             </div>
             <div>
-              <strong>👑 Login Admin:</strong> Gunakan Username <code>admin</code> dan Password <code>admin123</code>.
+              <strong>👑 Login Admin:</strong> Masuk menggunakan akun admin resmi yang telah diberikan oleh pihak BAAK / Institut.
             </div>
           </div>
 
@@ -600,7 +585,7 @@ export function renderLoginView(container) {
         }
         if (overlay) overlay.classList.add('active');
       } else {
-        alert('Informasi Bantuan Login & Akun STIT Ihsanul Fikri:\n\n1. Login Mahasiswa: Masukkan NIM dan default PIN: 123456.\n2. Login Admin: Username: admin dan Password: admin123.\n\nUntuk bantuan login, reset password, dan administrasi hubungi Admin di nomor:\n082342307414 (WhatsApp / Telepon)');
+        alert('Informasi Bantuan Login & Akun STIT Ihsanul Fikri:\n\n1. Login Mahasiswa: Masukkan NIM dan password akun Anda.\n2. Login Admin: Masukkan username dan password admin resmi.\n\nUntuk bantuan login, reset password, dan administrasi hubungi Admin di nomor:\n082342307414 (WhatsApp / Telepon)');
       }
     });
   }
