@@ -134,7 +134,7 @@
   --sidebar-width: 270px;
   --sidebar-collapsed-width: 78px;
   --header-height: 64px;
-  --role-bar-height: 42px;
+  --role-bar-height: 0px;
 
   /* Transitions */
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);

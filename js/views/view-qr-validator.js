@@ -11,6 +11,16 @@ export function renderQrValidatorView(container) {
 
   container.innerHTML = `
     <div style="max-width: 860px; margin: 0 auto; animation: fadeIn 0.3s ease;">
+      <!-- Navigation Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <button type="button" id="btn-back-to-portal" class="btn btn-sm btn-outline" style="font-weight: 800; display: inline-flex; align-items: center; gap: 6px; border-radius: var(--radius-md); background: #ffffff;">
+          <span>⬅</span> <span>Kembali ke Portal Login</span>
+        </button>
+        <span style="font-size: 0.76rem; color: var(--text-muted); background: #f1f5f9; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border-light);">
+          🔒 Verifikasi Kriptografis Publik STIT-IF
+        </span>
+      </div>
+
       <div style="text-align: center; margin-bottom: 28px;">
         <div style="display: inline-flex; align-items: center; justify-content: center; width: 68px; height: 68px; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 2px solid #bfdbfe; border-radius: var(--radius-full); font-size: 2.2rem; margin-bottom: 12px; box-shadow: var(--shadow-sm);">
           🛡️
@@ -281,6 +291,21 @@ export function renderQrValidatorView(container) {
       runValidation(tok);
     });
   });
+
+  // Back to portal handler
+  const btnBack = container.querySelector('#btn-back-to-portal');
+  if (btnBack) {
+    btnBack.addEventListener('click', () => {
+      if (window.simpelRouter) {
+        if (appState.isAuthenticated()) {
+          const role = appState.getState().currentRole;
+          window.simpelRouter.navigateTo(role === 'MAHASISWA' ? 'view-mahasiswa' : 'dashboard-bendahara');
+        } else {
+          window.simpelRouter.navigateTo('view-login');
+        }
+      }
+    });
+  }
 
   // Auto-fill and auto-validate if token/kwitansi parameter is present in URL or Hash
   try {

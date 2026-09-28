@@ -46,13 +46,23 @@ export class AuthManager {
   }
 
   static renderRoleBar() {
+    const isAuthed = appState.isAuthenticated();
+    const roleBanner = document.getElementById('role-switcher-banner');
+    if (roleBanner) {
+      roleBanner.style.display = 'none';
+    }
+
+    if (!isAuthed) {
+      this.updateSidebarNav();
+      return;
+    }
+
     const state = appState.getState();
     const currentRole = state.currentRole === 'MAHASISWA' ? 'MAHASISWA' : 'ADMIN';
-    const currentUser = state.currentUser;
+    const currentUser = state.currentUser || {};
 
     const roleContainer = document.getElementById('role-buttons-container');
     if (roleContainer) {
-      // Display only 2 roles: ADMIN and MAHASISWA
       const rolesList = ['ADMIN', 'MAHASISWA'];
       roleContainer.innerHTML = rolesList.map(roleKey => {
         const role = USER_ROLES[roleKey];
@@ -64,7 +74,6 @@ export class AuthManager {
         `;
       }).join('');
 
-      // Add click handlers
       roleContainer.querySelectorAll('.role-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const roleKey = btn.getAttribute('data-role');
@@ -100,6 +109,7 @@ export class AuthManager {
   }
 
   static updateSidebarNav() {
+    const isAuthed = appState.isAuthenticated();
     const state = appState.getState();
     const isStudent = state.currentRole === 'MAHASISWA';
 
@@ -114,6 +124,17 @@ export class AuthManager {
     const navMahasiswa = document.getElementById('nav-mahasiswa');
     const navKelolaAdmin = document.getElementById('nav-kelola-admin');
     const navDaftarMahasiswa = document.getElementById('nav-daftar-mahasiswa');
+    const navLogin = document.getElementById('nav-login');
+    const navQr = document.getElementById('nav-qr-validator');
+
+    if (!isAuthed) {
+      [navDashboard, navMatriksRekap, navSkema, navVerifikasi, navKalender, navAkademik, navLaporan, navAuditLog, navMahasiswa, navKelolaAdmin, navDaftarMahasiswa].forEach(el => {
+        if (el) el.style.display = 'none';
+      });
+      if (navLogin) navLogin.style.display = 'flex';
+      if (navQr) navQr.style.display = 'flex';
+      return;
+    }
 
     if (navDaftarMahasiswa) navDaftarMahasiswa.style.display = isStudent ? 'none' : 'flex';
     if (navMatriksRekap) navMatriksRekap.style.display = isStudent ? 'none' : 'flex';
@@ -144,6 +165,10 @@ export class AuthManager {
   }
 
   static switchRole(roleKey, customStudentNim = null) {
+    if (!appState.isAuthenticated()) {
+      if (window.simpelRouter) window.simpelRouter.navigateTo('view-login');
+      return;
+    }
     const targetRole = roleKey === 'MAHASISWA' ? 'MAHASISWA' : 'ADMIN';
     appState.setRole(targetRole, customStudentNim);
     this.renderRoleBar();
@@ -158,6 +183,9 @@ export class AuthManager {
   }
 
   static logout() {
+    appState.logout();
+    this.renderRoleBar();
+    this.updateSidebarNav();
     if (window.simpelRouter) {
       window.simpelRouter.navigateTo('view-login');
       window.simpelToast.show('Logout Berhasil', 'Anda telah keluar dari sesi aktif.', 'info');

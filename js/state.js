@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SIMPEL-IF Reactive State Manager & Master Data Store
  * STIT Ihsanul Fikri Pabelan Magelang
  * Sinkronisasi Resmi Google Spreadsheet: "REKAP ADMINISTRASI STITIF"
@@ -11,7 +11,9 @@ const STORAGE_KEY = 'SIMPEL_IF_STATE_V8_SHEETS_PROD'; // Upgraded from SIMPEL_IF
 
 const INITIAL_SEED_DATA = {
   activeSemester: '2026/2027 Ganjil',
-  currentRole: 'ADMIN',
+  isAuthenticated: false,
+  currentRole: null,
+  currentUser: null,
   adminProfile: {
     id: 'ADM-001',
     username: 'admin',
@@ -9205,6 +9207,52 @@ class StateManager {
         this.state = JSON.parse(JSON.stringify(INITIAL_SEED_DATA));
         this.saveState();
       }
+
+      // Check active auth session
+      try {
+        const rawSession = localStorage.getItem('simpel_if_session') || sessionStorage.getItem('simpel_if_session');
+        if (rawSession) {
+          const session = JSON.parse(rawSession);
+          if (session.role === 'ADMIN') {
+            const admin = (this.state.adminUsers && this.state.adminUsers.find(a => a.id === session.adminId)) ||
+                          (this.state.adminUsers && this.state.adminUsers[0]) ||
+                          INITIAL_SEED_DATA.adminProfile;
+            this.state.isAuthenticated = true;
+            this.state.currentRole = 'ADMIN';
+            this.state.adminProfile = { ...admin };
+            this.state.currentUser = { ...admin, role: 'ADMIN' };
+          } else if (session.role === 'MAHASISWA') {
+            const student = this.state.students && this.state.students.find(s => s.nim === session.studentNim);
+            if (student) {
+              this.state.isAuthenticated = true;
+              this.state.currentRole = 'MAHASISWA';
+              this.state.currentUser = {
+                id: `MHS-${student.nim}`,
+                name: student.name,
+                role: 'MAHASISWA',
+                email: student.email,
+                avatarText: student.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase(),
+                prodi: student.prodi,
+                nim: student.nim,
+                scholarshipId: student.scholarshipId,
+                semester: student.semester
+              };
+            } else {
+              this.state.isAuthenticated = false;
+              this.state.currentRole = null;
+              this.state.currentUser = null;
+            }
+          }
+        } else {
+          this.state.isAuthenticated = false;
+          this.state.currentRole = null;
+          this.state.currentUser = null;
+        }
+      } catch (sessErr) {
+        this.state.isAuthenticated = false;
+        this.state.currentRole = null;
+        this.state.currentUser = null;
+      }
     } catch (e) {
       console.warn('Error loading state from localStorage, resetting:', e);
       this.state = JSON.parse(JSON.stringify(INITIAL_SEED_DATA));
@@ -9222,6 +9270,74 @@ class StateManager {
 
   getState() {
     return this.state;
+  }
+
+  isAuthenticated() {
+    return Boolean(this.state && this.state.isAuthenticated && this.state.currentUser && this.state.currentRole);
+  }
+
+  loginAsAdmin(admin, rememberMe = true) {
+    if (!admin) return { success: false, message: 'Data admin tidak valid.' };
+    this.state.isAuthenticated = true;
+    this.state.currentRole = 'ADMIN';
+    this.state.adminProfile = { ...admin };
+    this.state.currentUser = { ...admin, role: 'ADMIN' };
+    this.saveState();
+    try {
+      const payload = JSON.stringify({ role: 'ADMIN', adminId: admin.id, timestamp: Date.now() });
+      if (rememberMe) {
+        localStorage.setItem('simpel_if_session', payload);
+      } else {
+        sessionStorage.setItem('simpel_if_session', payload);
+      }
+    } catch (e) {}
+    this.addAuditLog('LOGIN', admin.name, `Admin ${admin.name} (@${admin.username || 'admin'}) berhasil login.`);
+    this.notify({ type: 'AUTH_LOGIN' });
+    return { success: true, message: `Selamat datang, ${admin.name}!` };
+  }
+
+  loginAsStudent(student, rememberMe = true) {
+    if (!student) return { success: false, message: 'Data mahasiswa tidak valid.' };
+    this.state.isAuthenticated = true;
+    this.state.currentRole = 'MAHASISWA';
+    this.state.currentUser = {
+      id: `MHS-${student.nim}`,
+      name: student.name,
+      role: 'MAHASISWA',
+      email: student.email,
+      avatarText: student.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase(),
+      prodi: student.prodi,
+      nim: student.nim,
+      scholarshipId: student.scholarshipId,
+      semester: student.semester
+    };
+    this.saveState();
+    try {
+      const payload = JSON.stringify({ role: 'MAHASISWA', studentNim: student.nim, timestamp: Date.now() });
+      if (rememberMe) {
+        localStorage.setItem('simpel_if_session', payload);
+      } else {
+        sessionStorage.setItem('simpel_if_session', payload);
+      }
+    } catch (e) {}
+    this.addAuditLog('LOGIN', student.name, `Mahasiswa ${student.name} (NIM: ${student.nim}) berhasil login.`);
+    this.notify({ type: 'AUTH_LOGIN' });
+    return { success: true, message: `Selamat datang, ${student.name}!` };
+  }
+
+  logout() {
+    const userName = (this.state.currentUser && this.state.currentUser.name) || 'Pengguna';
+    this.state.isAuthenticated = false;
+    this.state.currentRole = null;
+    this.state.currentUser = null;
+    this.saveState();
+    try {
+      localStorage.removeItem('simpel_if_session');
+      sessionStorage.removeItem('simpel_if_session');
+    } catch (e) {}
+    this.addAuditLog('LOGOUT', userName, `${userName} telah keluar dari sistem.`);
+    this.notify({ type: 'AUTH_LOGOUT' });
+    return { success: true };
   }
 
   subscribe(listener) {

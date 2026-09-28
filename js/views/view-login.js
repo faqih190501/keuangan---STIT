@@ -446,6 +446,7 @@ export function renderLoginView(container) {
       e.preventDefault();
       const identifier = container.querySelector('#login-nim').value.trim().toLowerCase();
       const pwd = container.querySelector('#login-password').value.trim();
+      const remember = container.querySelector('#remember-nim')?.checked || false;
       const currentStudents = appState.getState().students;
 
       const student = currentStudents.find(s => 
@@ -471,7 +472,9 @@ export function renderLoginView(container) {
       }
 
       // Login success
-      appState.setRole('MAHASISWA', student.nim);
+      appState.loginAsStudent(student, remember);
+      AuthManager.renderRoleBar();
+      AuthManager.updateSidebarNav();
       window.simpelToast.show('Login Berhasil', `Selamat datang di SIMPEL-IF, ${student.name}!`, 'success');
       if (window.simpelRouter) window.simpelRouter.navigateTo('view-mahasiswa');
     });
@@ -484,6 +487,7 @@ export function renderLoginView(container) {
       e.preventDefault();
       const username = container.querySelector('#admin-username').value.trim().toLowerCase();
       const password = container.querySelector('#admin-password').value.trim();
+      const remember = container.querySelector('#remember-admin')?.checked || false;
       const currentAdminUsers = appState.getState().adminUsers || [];
 
       // Find matched admin account by username or email
@@ -519,7 +523,9 @@ export function renderLoginView(container) {
         }
 
         // Login Success
-        appState.setActiveAdmin(matchedAdmin.id);
+        appState.loginAsAdmin(matchedAdmin, remember);
+        AuthManager.renderRoleBar();
+        AuthManager.updateSidebarNav();
         window.simpelToast.show(
           'Login Admin Berhasil',
           `Selamat datang di Pusat Komando SIMPEL-IF, ${matchedAdmin.name}!`,
@@ -527,7 +533,16 @@ export function renderLoginView(container) {
         );
         if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
       } else if (isFallbackDefault) {
-        appState.setRole('ADMIN');
+        const defaultAdmin = (currentAdminUsers && currentAdminUsers[0]) || {
+          id: 'ADM-001',
+          name: 'Bendahara Utama STIT-IF',
+          username: 'admin',
+          email: 'keuangan@stitihsanulfikri.ac.id',
+          roleTitle: 'Bendahara & BAAK'
+        };
+        appState.loginAsAdmin(defaultAdmin, remember);
+        AuthManager.renderRoleBar();
+        AuthManager.updateSidebarNav();
         window.simpelToast.show('Login Admin Berhasil', 'Selamat datang di Pusat Komando SIMPEL-IF STIT Ihsanul Fikri.', 'success');
         if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
       } else {

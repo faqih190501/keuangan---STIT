@@ -198,23 +198,38 @@ class Router {
       }
     });
 
-    // Initial View Routing: Default to active role dashboard if no hash specified
-    const hashView = window.location.hash.slice(1);
-    const defaultRoleView = ROLE_PERMISSIONS[appState.getState().currentRole || 'ADMIN']?.defaultView || 'dashboard-bendahara';
-    const initialView = hashView && hashView !== '' ? hashView : defaultRoleView;
+    // Initial View Routing: Default to view-login if unauthenticated
+    const hash = window.location.hash.slice(1);
+    const hashView = hash.includes('?') ? hash.split('?')[0] : hash;
+    let initialView = 'view-login';
+
+    if (appState.isAuthenticated()) {
+      const defaultRoleView = ROLE_PERMISSIONS[appState.getState().currentRole]?.defaultView || 'dashboard-bendahara';
+      initialView = hashView && hashView !== '' && hashView !== 'view-login' ? hashView : defaultRoleView;
+    } else {
+      // Unauthenticated: only allow view-qr-validator if accessed directly with receipt token, otherwise default to view-login
+      if (hashView === 'view-qr-validator') {
+        initialView = 'view-qr-validator';
+      } else {
+        initialView = 'view-login';
+      }
+    }
+
     this.navigateTo(initialView);
     this.updateBadges();
 
     // Listen to hashchange for browser back/forward buttons and direct bookmark navigation
     window.addEventListener('hashchange', () => {
       const currentHash = window.location.hash.slice(1);
-      if (currentHash && currentHash !== this.currentView) {
-        this.navigateTo(currentHash);
+      const cleanHash = currentHash.includes('?') ? currentHash.split('?')[0] : currentHash;
+      if (cleanHash && cleanHash !== this.currentView) {
+        this.navigateTo(cleanHash);
       }
     });
   }
 
   updateBadges() {
+    const isAuthed = appState.isAuthenticated();
     const state = appState.getState();
     const pendingCount = (state.paymentVerifications || []).filter(v => v.status === 'PENDING').length;
     if (this.verifBadgeEl) {
@@ -225,29 +240,37 @@ class Router {
     // Update notification indicator on header
     const notifDot = document.getElementById('header-notif-indicator');
     if (notifDot) {
-      notifDot.style.display = pendingCount > 0 ? 'block' : 'none';
+      notifDot.style.display = (isAuthed && pendingCount > 0) ? 'block' : 'none';
     }
 
-    // Update sidebar nav items visibility based on current role
+    // Update sidebar nav items visibility based on authentication and role
     const currentRole = state.currentRole;
-    const allowedViews = ROLE_PERMISSIONS[currentRole]?.allowedViews || [];
+    const allowedViews = isAuthed && currentRole ? (ROLE_PERMISSIONS[currentRole]?.allowedViews || []) : [];
 
     document.querySelectorAll('.nav-item').forEach(item => {
       const v = item.getAttribute('data-view');
-      if (allowedViews.includes(v)) {
-        item.style.display = 'flex';
+      if (!isAuthed) {
+        if (v === 'view-login' || v === 'view-qr-validator') {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
       } else {
-        item.style.display = 'none';
+        if (allowedViews.includes(v)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
       }
     });
 
     // Hide or show registration links based on current role
     const isStudent = currentRole === 'MAHASISWA';
     const navDaftar = document.getElementById('nav-daftar-mahasiswa');
-    if (navDaftar) navDaftar.style.display = isStudent ? 'none' : 'flex';
+    if (navDaftar) navDaftar.style.display = (!isAuthed || isStudent) ? 'none' : 'flex';
 
     const btnTopRegister = document.getElementById('btn-topbar-register');
-    if (btnTopRegister) btnTopRegister.style.display = isStudent ? 'none' : 'inline-flex';
+    if (btnTopRegister) btnTopRegister.style.display = (!isAuthed || isStudent) ? 'none' : 'inline-flex';
 
     // Hide or show sidebar section headers based on visible items
     document.querySelectorAll('.nav-section-label').forEach(lbl => {
@@ -262,30 +285,57 @@ class Router {
   }
 
   navigateTo(viewName) {
+    const isAuthed = appState.isAuthenticated();
     const state = appState.getState();
-    const currentRole = state.currentRole || 'ADMIN';
-    const allowedViews = ROLE_PERMISSIONS[currentRole]?.allowedViews || [];
+    const currentRole = state.currentRole;
 
-    // Enforce role-based access control (Hanya Admin yang dapat mengakses modul keuangan & persetujuan)
-    if (viewName && !allowedViews.includes(viewName) && viewName !== 'view-login' && viewName !== 'view-qr-validator') {
-      window.simpelToast.show(
-        'Akses Terbatas',
-        'Hanya Admin / Bendahara STIT-IF yang berwenang mengakses modul ini.',
-        'danger'
-      );
-      viewName = ROLE_PERMISSIONS[currentRole]?.defaultView || 'view-mahasiswa';
+    // Normalize viewName if query params exist (e.g. #view-qr-validator?token=...)
+    let cleanViewName = viewName;
+    if (viewName && viewName.includes('?')) {
+      cleanViewName = viewName.split('?')[0];
     }
 
-    this.currentView = viewName;
+    // STRICT AUTHENTICATION GUARD:
+    // Unauthenticated visitors CANNOT access admin or student portals
+    if (!isAuthed) {
+      if (cleanViewName !== 'view-login' && cleanViewName !== 'view-qr-validator') {
+        if (cleanViewName && cleanViewName !== '') {
+          window.simpelToast.show(
+            'Silakan Login',
+            'Silakan login terlebih dahulu untuk mengakses portal SIMPEL-IF.',
+            'warning'
+          );
+        }
+        cleanViewName = 'view-login';
+      }
+    } else {
+      // Authenticated users
+      if (cleanViewName === 'view-login') {
+        cleanViewName = ROLE_PERMISSIONS[currentRole]?.defaultView || (currentRole === 'MAHASISWA' ? 'view-mahasiswa' : 'dashboard-bendahara');
+      } else {
+        const allowedViews = ROLE_PERMISSIONS[currentRole]?.allowedViews || [];
+        if (cleanViewName && !allowedViews.includes(cleanViewName) && cleanViewName !== 'view-qr-validator') {
+          window.simpelToast.show(
+            'Akses Terbatas',
+            'Akun Anda tidak memiliki wewenang untuk mengakses modul ini.',
+            'danger'
+          );
+          cleanViewName = ROLE_PERMISSIONS[currentRole]?.defaultView || 'view-mahasiswa';
+        }
+      }
+    }
+
+    this.currentView = cleanViewName;
 
     // Synchronize URL hash so page refreshes and direct URLs preserve the active view
-    if (window.location.hash.slice(1) !== viewName) {
-      history.replaceState(null, '', '#' + viewName);
+    const currentHashClean = window.location.hash.slice(1).split('?')[0];
+    if (currentHashClean !== cleanViewName) {
+      history.replaceState(null, '', '#' + cleanViewName);
     }
 
     // Highlight active nav item
     document.querySelectorAll('.nav-item').forEach(item => {
-      if (item.getAttribute('data-view') === viewName) {
+      if (item.getAttribute('data-view') === cleanViewName) {
         item.classList.add('active');
       } else {
         item.classList.remove('active');
@@ -303,7 +353,15 @@ class Router {
     if (!this.container) return;
     this.container.innerHTML = '';
 
+    const isAuthed = appState.isAuthenticated();
     const viewName = this.currentView;
+
+    // Apply guest-mode full-width layout when unauthenticated or on login view
+    if (!isAuthed || viewName === 'view-login') {
+      document.body.classList.add('guest-mode');
+    } else {
+      document.body.classList.remove('guest-mode');
+    }
 
     switch (viewName) {
       case 'view-login':
