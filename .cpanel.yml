@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=$HOME/public_html/
+    - /bin/cp -R * $DEPLOYPATH
+    - if [ -f .htaccess ]; then /bin/cp .htaccess $DEPLOYPATH; fi
+    - if [ -f CNAME ]; then /bin/cp CNAME $DEPLOYPATH; fi
