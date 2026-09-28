@@ -18,3 +18,4 @@ build/
 # Scratchpad and temporary test files
 scratch/
 .system_generated/
+*.zip
