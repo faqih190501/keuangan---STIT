@@ -7,7 +7,7 @@
 
 import { PRODI, STATUS_AKADEMIK, STATUS_TAGIHAN, SCHOLARSHIP_TYPES, USER_ROLES, STANDARD_FEES } from './models.js';
 
-const STORAGE_KEY = 'SIMPEL_IF_STATE_V9_PROD_ONLINE';
+const STORAGE_KEY = 'SIMPEL_IF_STATE_V10_SINGLE_ADMIN';
 
 const INITIAL_SEED_DATA = {
   activeSemester: '2026/2027 Ganjil',
@@ -44,38 +44,6 @@ const INITIAL_SEED_DATA = {
       status: 'AKTIF',
       isSuperAdmin: true,
       createdAt: '2026-08-01 08:00:00'
-    },
-    {
-      id: 'ADM-002',
-      username: 'ridwan.hakim',
-      password: 'admin123',
-      name: 'Ustadz Ridwan Hakim, M.Pd.',
-      role: 'ADMIN',
-      email: 'baak@stit-if.ac.id',
-      phone: '081298765432',
-      title: 'Kepala Biro Administrasi Akademik & Kemahasiswaan (BAAK)',
-      department: 'Biro Administrasi Akademik (BAAK)',
-      nip: '19820315 201001 1 002',
-      avatarText: 'RH',
-      status: 'AKTIF',
-      isSuperAdmin: false,
-      createdAt: '2026-08-01 08:00:00'
-    },
-    {
-      id: 'ADM-003',
-      username: 'bendahara',
-      password: 'admin123',
-      name: 'Ustadzah Nurul Hidayah, S.Ak.',
-      role: 'ADMIN',
-      email: 'keuangan@stit-if.ac.id',
-      phone: '085712345678',
-      title: 'Staf Administrasi Keuangan & Kasir Kampus',
-      department: 'Biro Keuangan & Administrasi Umum (BAU)',
-      nip: '19901020 201802 2 005',
-      avatarText: 'NH',
-      status: 'AKTIF',
-      isSuperAdmin: false,
-      createdAt: '2026-08-05 09:00:00'
     }
   ],
 
@@ -9146,7 +9114,7 @@ class StateManager {
   loadInitialState() {
     try {
       // Clear legacy storage keys to prevent stale or corrupted data
-      ['simpel_if_state', 'SIMPEL_IF_STATE_V1', 'SIMPEL_IF_STATE_V2', 'SIMPEL_IF_STATE_V3', 'SIMPEL_IF_STATE_V4', 'SIMPEL_IF_STATE_V5', 'SIMPEL_IF_STATE_V6_PROD', 'SIMPEL_IF_STATE_V7_SHEETS_PROD', 'SIMPEL_IF_STATE_V8_SHEETS_PROD'].forEach(k => {
+      ['simpel_if_state', 'SIMPEL_IF_STATE_V1', 'SIMPEL_IF_STATE_V2', 'SIMPEL_IF_STATE_V3', 'SIMPEL_IF_STATE_V4', 'SIMPEL_IF_STATE_V5', 'SIMPEL_IF_STATE_V6_PROD', 'SIMPEL_IF_STATE_V7_SHEETS_PROD', 'SIMPEL_IF_STATE_V8_SHEETS_PROD', 'SIMPEL_IF_STATE_V9_PROD_ONLINE'].forEach(k => {
         try { localStorage.removeItem(k); } catch (e) {}
       });
 
