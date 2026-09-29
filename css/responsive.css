@@ -19,25 +19,15 @@
 @media (max-width: 768px) {
   :root {
     --sidebar-width: 270px;
-    --role-bar-height: 42px;
+    --role-bar-height: 0px;
     --header-height: 60px;
   }
 
   .role-switcher-banner {
-    padding: 0 12px;
-  }
-
-  .role-brand-badge {
-    font-size: 0.75rem;
-  }
-
-  .role-quick-info {
-    display: none;
-  }
-
-  .role-btn {
-    padding: 4px 8px;
-    font-size: 0.72rem;
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    visibility: hidden !important;
   }
 
   .mobile-menu-btn {

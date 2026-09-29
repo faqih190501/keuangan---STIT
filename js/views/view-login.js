@@ -78,51 +78,39 @@ export function renderLoginView(container) {
           <div class="ornament-corner-star"></div>
           
           <div style="position: relative; z-index: 1;">
-            <!-- Segmented Navigation Tabs -->
-            <div style="display: flex; background: #eff6ff; padding: 4px; border-radius: var(--radius-xl); margin-bottom: 24px; gap: 4px; border: 1px solid #bfdbfe;">
-              <button type="button" id="tab-btn-student" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: #ffffff; color: var(--primary-800); box-shadow: 0 2px 5px rgba(37,99,235,0.12); border: 1px solid #bfdbfe; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center;">
-                🎓 Masuk Mahasiswa
-              </button>
-              <button type="button" id="tab-btn-admin" class="btn btn-sm" style="flex: 1; border-radius: var(--radius-lg); font-weight: 700; font-size: 0.80rem; padding: 10px 8px; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center;">
-                👑 Masuk Admin
-              </button>
-              <button type="button" id="tab-btn-register" class="btn btn-sm btn-shimmer" style="flex: 1.1; border-radius: var(--radius-lg); font-weight: 800; font-size: 0.80rem; padding: 10px 8px; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #1d4ed8; border: 1px dashed #3b82f6; cursor: pointer; transition: all 0.25s ease; white-space: nowrap; text-align: center; box-shadow: 0 1px 3px rgba(37,99,235,0.15);">
-                ✨ Buat Akun Baru
-              </button>
+            <!-- Header Kartu Login Terpadu -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px;">
+              <div>
+                <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin: 0;">Portal Masuk SIMPEL-IF</h2>
+                <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Gunakan NIM Mahasiswa atau Akun Admin untuk masuk</p>
+              </div>
+              <div style="width: 44px; height: 44px; border-radius: 12px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 2px 6px rgba(37,99,235,0.15);">
+                🔐
+              </div>
             </div>
 
-            <!-- PANE 1: LOGIN MAHASISWA -->
+            <!-- Single Unified Login Pane -->
             <div id="pane-student-login">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-                <div>
-                  <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0;">Portal Login Mahasiswa</h2>
-                  <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Gunakan NIM dan PIN untuk mengakses dashboard akademik & keuangan</p>
-                </div>
-                <div style="width: 44px; height: 44px; border-radius: 12px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 2px 6px rgba(37,99,235,0.15);">
-                  🎓
-                </div>
-              </div>
-
               <form id="form-student-login">
                 <div class="form-group">
-                  <label class="form-label" for="login-nim" style="font-weight: 700;">NIM atau Username Mahasiswa <span class="required">*</span></label>
+                  <label class="form-label" for="login-nim" style="font-weight: 700;">NIM atau Username <span class="required">*</span></label>
                   <div style="position: relative;">
-                    <input type="text" class="form-control" id="login-nim" placeholder="Masukkan NIM atau Username..." required autocomplete="username" style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md); border-color: #cbd5e1;">
+                    <input type="text" class="form-control" id="login-nim" placeholder="Masukkan NIM Mahasiswa atau Username..." required autocomplete="username" style="font-family: var(--font-mono); font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md); border-color: #cbd5e1;">
                     <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #64748b;">👤</span>
                   </div>
-                  <span class="input-help-text">Gunakan NIM resmi atau Username akun mahasiswa STIT-IF</span>
+                  <span class="input-help-text">Gunakan NIM mahasiswa atau Username akun pengelola</span>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label" for="login-password" style="font-weight: 700;">PIN / Password <span class="required">*</span></label>
+                  <label class="form-label" for="login-password" style="font-weight: 700;">Password / PIN <span class="required">*</span></label>
                   <div style="position: relative;">
-                    <input type="password" class="form-control" id="login-password" placeholder="Masukkan password atau PIN" required autocomplete="current-password" style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md); border-color: #cbd5e1;">
+                    <input type="password" class="form-control" id="login-password" placeholder="Masukkan password atau PIN..." required autocomplete="current-password" style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md); border-color: #cbd5e1;">
                     <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: #64748b;">🔒</span>
                     <button type="button" id="btn-toggle-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: #64748b; padding: 4px;" title="Lihat Password">
                       👁️
                     </button>
                   </div>
-                  <span class="input-help-text">Masukkan PIN atau kata sandi akun mahasiswa Anda</span>
+                  <span class="input-help-text">Masukkan PIN atau kata sandi akun Anda</span>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.78rem; flex-wrap: wrap; gap: 8px;">
@@ -138,8 +126,8 @@ export function renderLoginView(container) {
                   </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
-                  🚀 Masuk ke Portal Mahasiswa
+                <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border: none; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
+                  🚀 Masuk ke Sistem SIMPEL-IF
                 </button>
               </form>
 
@@ -165,6 +153,7 @@ export function renderLoginView(container) {
                 <button type="button" id="btn-open-student-register" class="btn btn-sm btn-shimmer" style="width: 100%; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: #ffffff; font-weight: 800; font-size: 0.84rem; padding: 10px 14px; border-radius: var(--radius-md); border: none; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
                   <span>📝</span> <span>Buat Akun Mahasiswa Baru Sekarang ➔</span>
                 </button>
+                <button type="button" id="tab-btn-register" style="display: none;" aria-hidden="true"></button>
               </div>
 
               <!-- Callout: Kontak Admin & Bantuan Login -->
@@ -181,66 +170,6 @@ export function renderLoginView(container) {
                 <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20saya%20butuh%20bantuan%20login%20SIMPEL-IF" target="_blank" rel="noopener" class="btn btn-sm" style="background: #16a34a; color: #ffffff; font-weight: 800; font-size: 0.72rem; padding: 6px 12px; border-radius: var(--radius-md); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; border: none; box-shadow: var(--shadow-sm);">
                   <span>Chat WA 💬</span>
                 </a>
-              </div>
-            </div>
-
-            <!-- PANE 2: LOGIN ADMIN (USERNAME & PASSWORD) -->
-            <div id="pane-admin-login" style="display: none;">
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-                <div>
-                  <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0;">Login Admin / Pengelola</h2>
-                  <p style="font-size: 0.78rem; color: var(--text-light); margin: 3px 0 0;">Akses pusat komando keuangan & tata kelola beasiswa</p>
-                </div>
-                <div style="width: 44px; height: 44px; border-radius: 12px; background: #0f172a; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-                  👑
-                </div>
-              </div>
-
-              <form id="form-admin-login">
-                <div class="form-group">
-                  <label class="form-label" for="admin-username" style="font-weight: 700;">Username / Email Admin <span class="required">*</span></label>
-                  <div style="position: relative;">
-                    <input type="text" class="form-control" id="admin-username" placeholder="Masukkan username admin" required autocomplete="username" style="font-size: 0.95rem; padding-left: 38px; border-radius: var(--radius-md);">
-                    <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">💼</span>
-                  </div>
-                  <span class="input-help-text">Gunakan username atau email admin resmi terdaftar</span>
-                </div>
-
-                <div class="form-group">
-                  <label class="form-label" for="admin-password" style="font-weight: 700;">Password Admin <span class="required">*</span></label>
-                  <div style="position: relative;">
-                    <input type="password" class="form-control" id="admin-password" placeholder="Masukkan password admin" required autocomplete="current-password" style="padding-left: 38px; padding-right: 44px; border-radius: var(--radius-md);">
-                    <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-light);">🔑</span>
-                    <button type="button" id="btn-toggle-admin-pwd" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: var(--text-light); padding: 4px;">
-                      👁️
-                    </button>
-                  </div>
-                  <span class="input-help-text">Masukkan kata sandi akun pengelola</span>
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.78rem;">
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-weight: 600;">
-                    <input type="checkbox" id="remember-admin"> Ingat sesi di perangkat ini
-                  </label>
-                  <span style="color: #0284c7; font-weight: 700;">Hak Akses: Pengelola Penuh</span>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #163261 0%, #2563eb 100%); border: none; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
-                  👑 Masuk ke Dashboard Admin
-                </button>
-              </form>
-
-              <!-- Admin Help / Support hotline -->
-              <div style="margin-top: 16px; padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.76rem; color: var(--text-muted);">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <span style="font-size: 1.1rem;">📞</span>
-                  <span>Bantuan Teknis Admin: <strong style="font-family: var(--font-mono); color: var(--text-dark);">082342307414</strong></span>
-                </div>
-                <a href="https://wa.me/6282342307414?text=Halo%20Admin%20STIT%20Ihsanul%20Fikri,%20bantuan%20akses%20admin%20SIMPEL-IF" target="_blank" rel="noopener" style="color: #0284c7; font-weight: 800; text-decoration: none;">Hubungi WA ➔</a>
-              </div>
-
-              <div style="margin-top: 12px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); font-size: 0.76rem; color: var(--text-muted);">
-                <strong>🛡️ Keamanan Sistem:</strong> Halaman Dashboard Admin memiliki hak akses penuh atas penerbitan tagihan, konfirmasi transfer manual, serta konfigurasi skema beasiswa.
               </div>
             </div>
           </div>
@@ -349,48 +278,8 @@ export function renderLoginView(container) {
 
 
 
-  // 1. Tab Switching (Mahasiswa vs Admin vs Buat Akun)
-  const tabBtnStudent = container.querySelector('#tab-btn-student');
-  const tabBtnAdmin = container.querySelector('#tab-btn-admin');
+  // 1. Register Button Handlers (Student Self-Registration)
   const tabBtnRegister = container.querySelector('#tab-btn-register');
-
-  const paneStudent = container.querySelector('#pane-student-login');
-  const paneAdmin = container.querySelector('#pane-admin-login');
-
-  function setMode(mode) {
-    // Reset all tabs
-    [tabBtnStudent, tabBtnAdmin, tabBtnRegister].forEach(b => {
-      if (b) {
-        b.style.background = 'transparent';
-        b.style.color = 'var(--text-muted)';
-        b.style.boxShadow = 'none';
-        b.style.fontWeight = '700';
-      }
-    });
-
-    // Hide all panes
-    [paneStudent, paneAdmin].forEach(p => {
-      if (p) p.style.display = 'none';
-    });
-
-    if (mode === 'admin') {
-      tabBtnAdmin.style.background = '#ffffff';
-      tabBtnAdmin.style.color = 'var(--primary-800)';
-      tabBtnAdmin.style.boxShadow = 'var(--shadow-sm)';
-      tabBtnAdmin.style.fontWeight = '800';
-      paneAdmin.style.display = 'block';
-    } else {
-      tabBtnStudent.style.background = '#ffffff';
-      tabBtnStudent.style.color = 'var(--primary-800)';
-      tabBtnStudent.style.boxShadow = 'var(--shadow-sm)';
-      tabBtnStudent.style.fontWeight = '800';
-      paneStudent.style.display = 'block';
-    }
-  }
-
-  tabBtnStudent.addEventListener('click', () => setMode('student'));
-  tabBtnAdmin.addEventListener('click', () => setMode('admin'));
-  
   if (tabBtnRegister) {
     tabBtnRegister.addEventListener('click', () => {
       if (window.simpelModals) window.simpelModals.openStudentRegistrationModal();
@@ -418,7 +307,7 @@ export function renderLoginView(container) {
     });
   }
 
-  // 2. Password Visibility Toggles
+  // 2. Password Visibility Toggle
   const pwdInput = container.querySelector('#login-password');
   const btnToggle = container.querySelector('#btn-toggle-pwd');
   if (btnToggle && pwdInput) {
@@ -429,17 +318,7 @@ export function renderLoginView(container) {
     });
   }
 
-  const adminPwdInput = container.querySelector('#admin-password');
-  const btnToggleAdminPwd = container.querySelector('#btn-toggle-admin-pwd');
-  if (btnToggleAdminPwd && adminPwdInput) {
-    btnToggleAdminPwd.addEventListener('click', () => {
-      const isPwd = adminPwdInput.type === 'password';
-      adminPwdInput.type = isPwd ? 'text' : 'password';
-      btnToggleAdminPwd.textContent = isPwd ? '🙈' : '👁️';
-    });
-  }
-
-  // 3. Submit Student Login Form
+  // 3. Submit Unified Login Form (Auto-detect Admin or Student)
   const formLogin = container.querySelector('#form-student-login');
   if (formLogin) {
     formLogin.addEventListener('submit', (e) => {
@@ -447,16 +326,9 @@ export function renderLoginView(container) {
       const identifier = container.querySelector('#login-nim').value.trim().toLowerCase();
       const pwd = container.querySelector('#login-password').value.trim();
       const remember = container.querySelector('#remember-nim')?.checked || false;
-      const currentStudents = appState.getState().students;
 
-      const student = currentStudents.find(s => 
-        s.nim.toLowerCase() === identifier || 
-        (s.username && s.username.toLowerCase() === identifier) ||
-        (s.email && s.email.toLowerCase() === identifier)
-      );
-
-      if (!student) {
-        window.simpelToast.show('Akun Tidak Ditemukan', `NIM atau Username "${identifier}" belum terdaftar di sistem STIT Ihsanul Fikri. Silakan hubungi Admin Keuangan di 082342307414.`, 'danger');
+      if (!identifier) {
+        window.simpelToast.show('NIM/Username Kosong', 'Silakan masukkan NIM mahasiswa atau username admin.', 'warning');
         return;
       }
 
@@ -465,41 +337,18 @@ export function renderLoginView(container) {
         return;
       }
 
-      const expectedPwd = student.password || student.pin || '123456';
-      if (pwd !== expectedPwd) {
-        window.simpelToast.show('Password Salah', 'Password / PIN yang Anda masukkan tidak sesuai. Hubungi Admin Keuangan di 082342307414 jika lupa PIN.', 'danger');
-        return;
-      }
+      const state = appState.getState();
 
-      // Login success
-      appState.loginAsStudent(student, remember);
-      AuthManager.renderRoleBar();
-      AuthManager.updateSidebarNav();
-      window.simpelToast.show('Login Berhasil', `Selamat datang di SIMPEL-IF, ${student.name}!`, 'success');
-      if (window.simpelRouter) window.simpelRouter.navigateTo('view-mahasiswa');
-    });
-  }
-
-  // 4. Submit Admin Login Form (Strict Admin Validation)
-  const formAdminLogin = container.querySelector('#form-admin-login');
-  if (formAdminLogin) {
-    formAdminLogin.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const username = container.querySelector('#admin-username').value.trim().toLowerCase();
-      const password = container.querySelector('#admin-password').value.trim();
-      const remember = container.querySelector('#remember-admin')?.checked || false;
-      const currentAdminUsers = appState.getState().adminUsers || [];
-
-      // Find matched admin account by username or email
+      // Check Admin users first (Single Admin account)
+      const currentAdminUsers = state.adminUsers || [];
       const matchedAdmin = currentAdminUsers.find(a =>
-        a.username.toLowerCase() === username ||
-        (a.email && a.email.toLowerCase() === username)
+        a.username.toLowerCase() === identifier ||
+        (a.email && a.email.toLowerCase() === identifier)
       );
 
       if (matchedAdmin) {
-        // Verify Password strictly
-        const expectedPwd = matchedAdmin.password;
-        if (password !== expectedPwd) {
+        // Strict Password Check
+        if (pwd !== matchedAdmin.password) {
           window.simpelToast.show(
             'Password Admin Salah',
             'Password yang Anda masukkan tidak sesuai untuk akun @' + matchedAdmin.username + '.',
@@ -508,17 +357,17 @@ export function renderLoginView(container) {
           return;
         }
 
-        // Verify Active Status
+        // Active Status Check
         if (matchedAdmin.status === 'NON_AKTIF') {
           window.simpelToast.show(
             'Akun Admin Dinonaktifkan',
-            `Akun admin "${matchedAdmin.name}" sedang berstatus non-aktif. Silakan hubungi Super Admin untuk mengaktifkan kembali.`,
+            `Akun admin "${matchedAdmin.name}" sedang berstatus non-aktif.`,
             'warning'
           );
           return;
         }
 
-        // Login Success
+        // Login as Admin
         appState.loginAsAdmin(matchedAdmin, remember);
         AuthManager.renderRoleBar();
         AuthManager.updateSidebarNav();
@@ -528,13 +377,43 @@ export function renderLoginView(container) {
           'success'
         );
         if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
-      } else {
-        window.simpelToast.show(
-          'Login Admin Gagal',
-          `Username "${username}" tidak ditemukan dalam daftar admin terdaftar. Pastikan username dan password sudah benar.`,
-          'danger'
-        );
+        return;
       }
+
+      // Check Student users
+      const currentStudents = state.students || [];
+      const student = currentStudents.find(s => 
+        s.nim.toLowerCase() === identifier || 
+        (s.username && s.username.toLowerCase() === identifier) ||
+        (s.email && s.email.toLowerCase() === identifier)
+      );
+
+      if (student) {
+        const expectedPwd = student.password || student.pin || '123456';
+        if (pwd !== expectedPwd) {
+          window.simpelToast.show(
+            'Password Salah',
+            'Password / PIN yang Anda masukkan tidak sesuai. Hubungi Admin di 082342307414 jika lupa PIN.',
+            'danger'
+          );
+          return;
+        }
+
+        // Login as Student
+        appState.loginAsStudent(student, remember);
+        AuthManager.renderRoleBar();
+        AuthManager.updateSidebarNav();
+        window.simpelToast.show('Login Berhasil', `Selamat datang di SIMPEL-IF, ${student.name}!`, 'success');
+        if (window.simpelRouter) window.simpelRouter.navigateTo('view-mahasiswa');
+        return;
+      }
+
+      // If neither matches
+      window.simpelToast.show(
+        'Akun Tidak Ditemukan',
+        `NIM atau Username "${identifier}" belum terdaftar di sistem STIT Ihsanul Fikri. Silakan hubungi Admin di 082342307414.`,
+        'danger'
+      );
     });
   }
 
