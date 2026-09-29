@@ -272,6 +272,9 @@ class Router {
     const btnTopRegister = document.getElementById('btn-topbar-register');
     if (btnTopRegister) btnTopRegister.style.display = (!isAuthed || isStudent) ? 'none' : 'inline-flex';
 
+    const btnSyncState = document.getElementById('btn-sync-reset-state');
+    if (btnSyncState) btnSyncState.style.display = isAuthed ? 'inline-flex' : 'none';
+
     // Hide or show sidebar section headers based on visible items
     document.querySelectorAll('.nav-section-label').forEach(lbl => {
       let sibling = lbl.nextElementSibling;

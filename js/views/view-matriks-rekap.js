@@ -656,18 +656,23 @@ export function renderMatriksRekapView(container) {
       });
     }
 
-    // Top action: Sync live
-    const btnSyncLive = container.querySelector('#btn-sync-live-sheets') || container.querySelector('#btn-run-full-sync');
-    if (btnSyncLive) {
-      btnSyncLive.addEventListener('click', () => {
-        btnSyncLive.innerHTML = '⏳ Menghubungkan ke Google Sheets...';
+    // Top & bottom actions: Sync live
+    container.querySelectorAll('#btn-sync-live-sheets, #btn-run-full-sync').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const origText = btn.innerHTML;
+        btn.innerHTML = '⏳ Menghubungkan ke Google Sheets...';
         setTimeout(() => {
           appState.notify();
-          alert('✅ Berhasil menyinkronkan data dengan Google Spreadsheet STIT Ihsanul Fikri!');
+          if (window.simpelToast) {
+            window.simpelToast.show('Sinkronisasi Berhasil', 'Data pangkalan kampus telah disinkronkan dengan Google Spreadsheet!', 'success');
+          } else {
+            alert('✅ Berhasil menyinkronkan data dengan Google Spreadsheet STIT Ihsanul Fikri!');
+          }
+          btn.innerHTML = origText;
           render();
         }, 700);
       });
-    }
+    });
 
     // Reset data
     const btnReset = container.querySelector('#btn-reset-matrix-data');
