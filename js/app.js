@@ -360,10 +360,15 @@ class Router {
     const viewName = this.currentView;
 
     // Apply guest-mode full-width layout when unauthenticated or on login view
+    const mobileBtn = document.getElementById('mobile-menu-btn');
     if (!isAuthed || viewName === 'view-login') {
       document.body.classList.add('guest-mode');
+      document.body.setAttribute('data-view', 'view-login');
+      if (mobileBtn) mobileBtn.style.setProperty('display', 'none', 'important');
     } else {
       document.body.classList.remove('guest-mode');
+      document.body.setAttribute('data-view', viewName);
+      if (mobileBtn) mobileBtn.style.removeProperty('display');
     }
 
     switch (viewName) {

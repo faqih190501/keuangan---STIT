@@ -36,6 +36,21 @@
     justify-content: center;
   }
 
+  /* Sembunyikan tombol garis 3 (hamburger menu) pojok kiri pada saat login */
+  body.guest-mode .mobile-menu-btn,
+  body.guest-mode #mobile-menu-btn,
+  body[data-view="view-login"] .mobile-menu-btn,
+  body[data-view="view-login"] #mobile-menu-btn,
+  body.guest-mode .topbar,
+  body[data-view="view-login"] .topbar,
+  body.guest-mode .sidebar,
+  body[data-view="view-login"] .sidebar {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
   .sidebar {
     transform: translateX(-100%);
     box-shadow: 0 0 25px rgba(0,0,0,0.5);

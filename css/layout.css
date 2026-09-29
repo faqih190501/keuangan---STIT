@@ -76,8 +76,17 @@ body {
    ========================================================================== */
 body.guest-mode .role-switcher-banner,
 body.guest-mode .sidebar,
-body.guest-mode .topbar {
+body.guest-mode .topbar,
+body.guest-mode #mobile-menu-btn,
+body.guest-mode .mobile-menu-btn,
+body[data-view="view-login"] #mobile-menu-btn,
+body[data-view="view-login"] .mobile-menu-btn,
+body[data-view="view-login"] .topbar,
+body[data-view="view-login"] .sidebar {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 body.guest-mode .main-wrapper {

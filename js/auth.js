@@ -160,6 +160,13 @@ export class AuthManager {
 
   static logout() {
     appState.logout();
+    document.body.classList.add('guest-mode');
+    document.body.setAttribute('data-view', 'view-login');
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    if (mobileBtn) mobileBtn.style.setProperty('display', 'none', 'important');
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) sidebar.classList.remove('mobile-open');
+
     this.renderRoleBar();
     this.updateSidebarNav();
     if (window.simpelRouter) {
