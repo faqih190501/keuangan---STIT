@@ -47,11 +47,6 @@ export class AuthManager {
 
   static renderRoleBar() {
     const isAuthed = appState.isAuthenticated();
-    const roleBanner = document.getElementById('role-switcher-banner');
-    if (roleBanner) {
-      roleBanner.style.display = 'none';
-    }
-
     if (!isAuthed) {
       this.updateSidebarNav();
       return;
@@ -60,31 +55,6 @@ export class AuthManager {
     const state = appState.getState();
     const currentRole = state.currentRole === 'MAHASISWA' ? 'MAHASISWA' : 'ADMIN';
     const currentUser = state.currentUser || {};
-
-    const roleContainer = document.getElementById('role-buttons-container');
-    if (roleContainer) {
-      const rolesList = ['ADMIN', 'MAHASISWA'];
-      roleContainer.innerHTML = rolesList.map(roleKey => {
-        const role = USER_ROLES[roleKey];
-        const isActive = roleKey === currentRole ? 'active' : '';
-        return `
-          <button class="role-btn ${isActive}" data-role="${roleKey}">
-            <span>${role.icon}</span> ${role.name}
-          </button>
-        `;
-      }).join('');
-
-      roleContainer.querySelectorAll('.role-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const roleKey = btn.getAttribute('data-role');
-          if (roleKey === 'MAHASISWA' && currentRole !== 'MAHASISWA') {
-            AuthManager.switchRole('MAHASISWA');
-          } else {
-            AuthManager.switchRole(roleKey);
-          }
-        });
-      });
-    }
 
     // Update topbar / sidebar current user display
     const userNameEl = document.getElementById('topbar-user-name');
@@ -167,6 +137,12 @@ export class AuthManager {
   static switchRole(roleKey, customStudentNim = null) {
     if (!appState.isAuthenticated()) {
       if (window.simpelRouter) window.simpelRouter.navigateTo('view-login');
+      return;
+    }
+    const state = appState.getState();
+    // Security Guard: Mahasiswa cannot switch role to ADMIN
+    if (state.currentRole === 'MAHASISWA' && roleKey === 'ADMIN') {
+      window.simpelToast?.show('Akses Ditolak', 'Akun mahasiswa tidak memiliki wewenang untuk beralih ke Admin.', 'danger');
       return;
     }
     const targetRole = roleKey === 'MAHASISWA' ? 'MAHASISWA' : 'ADMIN';

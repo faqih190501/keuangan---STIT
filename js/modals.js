@@ -3241,8 +3241,8 @@ export class ModalManager {
         if (res.success) {
           window.simpelModals.closeModal();
           
-          // Switch active role immediately to the new student and navigate to student portal
-          appState.setRole('MAHASISWA', res.student.nim);
+          // Authenticate immediately to the new student and navigate to student portal
+          appState.loginAsStudent(res.student);
           if (window.simpelRouter) window.simpelRouter.navigateTo('view-mahasiswa');
           
           window.simpelToast.show('Pendaftaran Berhasil! 🎉', `Selamat datang, ${res.student.name}! Anda telah masuk ke portal mahasiswa SIMPEL-IF.`, 'success', 6000);

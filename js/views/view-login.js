@@ -466,7 +466,7 @@ export function renderLoginView(container) {
       }
 
       const expectedPwd = student.password || student.pin || '123456';
-      if (pwd !== expectedPwd && pwd !== '123456' && pwd !== 'admin') {
+      if (pwd !== expectedPwd) {
         window.simpelToast.show('Password Salah', 'Password / PIN yang Anda masukkan tidak sesuai. Hubungi Admin Keuangan di 082342307414 jika lupa PIN.', 'danger');
         return;
       }
@@ -480,7 +480,7 @@ export function renderLoginView(container) {
     });
   }
 
-  // 4. Submit Admin Login Form (Dynamic Admin Validation)
+  // 4. Submit Admin Login Form (Strict Admin Validation)
   const formAdminLogin = container.querySelector('#form-admin-login');
   if (formAdminLogin) {
     formAdminLogin.addEventListener('submit', (e) => {
@@ -496,14 +496,10 @@ export function renderLoginView(container) {
         (a.email && a.email.toLowerCase() === username)
       );
 
-      // Fallback aliases for default admin
-      const isFallbackDefault = (username === 'admin' || username === 'bendahara' || username === 'stit-if') &&
-                                (password === 'admin' || password === 'admin123' || password === '123456');
-
       if (matchedAdmin) {
-        // Verify Password
-        const expectedPwd = matchedAdmin.password || 'admin123';
-        if (password !== expectedPwd && password !== 'admin123' && password !== 'admin') {
+        // Verify Password strictly
+        const expectedPwd = matchedAdmin.password;
+        if (password !== expectedPwd) {
           window.simpelToast.show(
             'Password Admin Salah',
             'Password yang Anda masukkan tidak sesuai untuk akun @' + matchedAdmin.username + '.',
@@ -531,19 +527,6 @@ export function renderLoginView(container) {
           `Selamat datang di Pusat Komando SIMPEL-IF, ${matchedAdmin.name}!`,
           'success'
         );
-        if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
-      } else if (isFallbackDefault) {
-        const defaultAdmin = (currentAdminUsers && currentAdminUsers[0]) || {
-          id: 'ADM-001',
-          name: 'Bendahara Utama STIT-IF',
-          username: 'admin',
-          email: 'keuangan@stitihsanulfikri.ac.id',
-          roleTitle: 'Bendahara & BAAK'
-        };
-        appState.loginAsAdmin(defaultAdmin, remember);
-        AuthManager.renderRoleBar();
-        AuthManager.updateSidebarNav();
-        window.simpelToast.show('Login Admin Berhasil', 'Selamat datang di Pusat Komando SIMPEL-IF STIT Ihsanul Fikri.', 'success');
         if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
       } else {
         window.simpelToast.show(

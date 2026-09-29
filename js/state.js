@@ -7,7 +7,7 @@
 
 import { PRODI, STATUS_AKADEMIK, STATUS_TAGIHAN, SCHOLARSHIP_TYPES, USER_ROLES, STANDARD_FEES } from './models.js';
 
-const STORAGE_KEY = 'SIMPEL_IF_STATE_V8_SHEETS_PROD'; // Upgraded from SIMPEL_IF_STATE_V7_SHEETS_PROD
+const STORAGE_KEY = 'SIMPEL_IF_STATE_V9_PROD_ONLINE';
 
 const INITIAL_SEED_DATA = {
   activeSemester: '2026/2027 Ganjil',
@@ -78,21 +78,7 @@ const INITIAL_SEED_DATA = {
       createdAt: '2026-08-05 09:00:00'
     }
   ],
-  currentUser: {
-    id: 'ADM-001',
-    username: 'admin',
-    name: 'Ustadzah Siti Fatimah, S.E.',
-    role: 'ADMIN',
-    email: 'bendahara@stit-if.ac.id',
-    phone: '082342307414',
-    title: 'Kepala Bagian Keuangan & Bendahara Penerimaan',
-    department: 'Biro Keuangan & Administrasi Umum (BAU)',
-    nip: '19840512 201201 2 003',
-    avatarText: 'SF',
-    prodi: 'Bendahara Penerimaan',
-    status: 'AKTIF',
-    isSuperAdmin: true
-  },
+
 
   feeComponents: [
     {
@@ -9160,7 +9146,7 @@ class StateManager {
   loadInitialState() {
     try {
       // Clear legacy storage keys to prevent stale or corrupted data
-      ['simpel_if_state', 'SIMPEL_IF_STATE_V1', 'SIMPEL_IF_STATE_V2', 'SIMPEL_IF_STATE_V3', 'SIMPEL_IF_STATE_V4', 'SIMPEL_IF_STATE_V5', 'SIMPEL_IF_STATE_V6_PROD', 'SIMPEL_IF_STATE_V7_SHEETS_PROD'].forEach(k => {
+      ['simpel_if_state', 'SIMPEL_IF_STATE_V1', 'SIMPEL_IF_STATE_V2', 'SIMPEL_IF_STATE_V3', 'SIMPEL_IF_STATE_V4', 'SIMPEL_IF_STATE_V5', 'SIMPEL_IF_STATE_V6_PROD', 'SIMPEL_IF_STATE_V7_SHEETS_PROD', 'SIMPEL_IF_STATE_V8_SHEETS_PROD'].forEach(k => {
         try { localStorage.removeItem(k); } catch (e) {}
       });
 
@@ -9363,11 +9349,18 @@ class StateManager {
   }
 
   setRole(roleKey, customStudentNim = null) {
+    if (!this.state.isAuthenticated) return;
     const targetRole = roleKey === 'MAHASISWA' ? 'MAHASISWA' : 'ADMIN';
+
+    // Security Guard: Non-admin users cannot elevate to ADMIN
+    if (targetRole === 'ADMIN' && this.state.currentUser?.role !== 'ADMIN') {
+      return;
+    }
+
     this.state.currentRole = targetRole;
 
     if (targetRole === 'MAHASISWA') {
-      const targetNim = customStudentNim || (this.state.students && this.state.students[0] ? this.state.students[0].nim : '202602001');
+      const targetNim = customStudentNim || (this.state.currentUser?.role === 'MAHASISWA' ? this.state.currentUser.nim : (this.state.students && this.state.students[0] ? this.state.students[0].nim : '2601001'));
       const student = (this.state.students && this.state.students.find(s => s.nim === targetNim)) || (this.state.students && this.state.students[0]);
       if (student) {
         this.state.currentUser = {

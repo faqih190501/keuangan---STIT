@@ -917,15 +917,6 @@ export function renderMahasiswaPortal(container) {
     });
   }
 
-  // 1. Switch Student demo
-  const selectStudent = container.querySelector('#select-active-student');
-  if (selectStudent) {
-    selectStudent.addEventListener('change', (e) => {
-      const newNim = e.target.value;
-      appState.setRole('MAHASISWA', newNim);
-      renderMahasiswaPortal(container);
-    });
-  }
 
   // Student Self-Profile Edit Handlers
   const btnEditProfileTop = container.querySelector('#btn-self-edit-profile-top');
