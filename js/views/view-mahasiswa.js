@@ -469,8 +469,20 @@ export function renderMahasiswaPortal(container) {
                     Buka aplikasi dompet digital atau Mobile Banking apa saja (BSI Mobile, BCA, Livin Mandiri, GoPay, OVO, ShopeePay, DANA) lalu scan kode QR di samping.
                   </p>
 
-                  <button class="btn btn-primary btn-lg" id="btn-pay-qris-instant" data-invoice-id="${currentInvoice.id}" style="width: 100%; font-weight: 900; background: linear-gradient(135deg, #dc2626, #991b1b); border: none; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);">
-                    ⚡ Simulasikan Scan QRIS & Bayar Berhasil
+                  <div style="background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 16px;">
+                    <div style="font-size: 0.82rem; font-weight: 800; color: #1e293b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                      <span>📌</span> Petunjuk Konfirmasi Pembayaran:
+                    </div>
+                    <ol style="font-size: 0.76rem; color: #475569; padding-left: 18px; margin: 0; line-height: 1.6;">
+                      <li>Scan QRIS di samping menggunakan Mobile Banking atau e-Wallet pilihan Anda.</li>
+                      <li>Pastikan nominal transfer sesuai: <strong>${formatRupiah(selectedPayAmount)}</strong>.</li>
+                      <li>Simpan atau tangkap layar (screenshot) bukti transfer sukses.</li>
+                      <li>Unggah bukti transfer pada tab <strong>Transfer Bank BSI (Upload Struk)</strong> agar pembayaran diverifikasi oleh Bendahara.</li>
+                    </ol>
+                  </div>
+
+                  <button class="btn btn-success btn-lg" id="btn-switch-to-upload-struk" style="width: 100%; font-weight: 800; background: linear-gradient(135deg, #059669, #047857); border: none; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>📤</span> Sudah Scan QRIS? Unggah Bukti Struk di Sini
                   </button>
                 </div>
 
@@ -728,8 +740,20 @@ export function renderMahasiswaPortal(container) {
                 <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
                   Setelah scan berhasil, sistem akan otomatis mencatatkan pembayaran Anda dan langsung menerbitkan <strong>Kwitansi Resmi Digital ber-QR Code</strong>.
                 </p>
-                <button class="btn btn-primary btn-lg" id="btn-pay-mandiri-qris" style="width: 100%; font-weight: 900; background: linear-gradient(135deg, #dc2626, #991b1b); border: none; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);">
-                  ⚡ Simulasikan Scan QRIS Mandiri & Terbitkan Kwitansi
+                <div style="background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 16px;">
+                  <div style="font-size: 0.82rem; font-weight: 800; color: #1e293b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    <span>📌</span> Petunjuk Konfirmasi Pembayaran:
+                  </div>
+                  <ol style="font-size: 0.76rem; color: #475569; padding-left: 18px; margin: 0; line-height: 1.6;">
+                    <li>Pindai QRIS di samping dengan aplikasi m-Banking atau dompet digital Anda.</li>
+                    <li>Pastikan nominal pembayaran adalah <strong><span id="mandiri-qris-guide-amount">${formatRupiah(mandiriAmount)}</span></strong>.</li>
+                    <li>Simpan bukti transfer / struk pembayaran sukses.</li>
+                    <li>Buka tab <strong>Transfer Bank BSI (Upload Struk)</strong> untuk melampirkan bukti setoran agar diverifikasi dan dicatat resmi oleh Bendahara.</li>
+                  </ol>
+                </div>
+
+                <button class="btn btn-success btn-lg" id="btn-switch-mandiri-upload-struk" style="width: 100%; font-weight: 800; background: linear-gradient(135deg, #059669, #047857); border: none; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <span>📤</span> Sudah Scan QRIS? Unggah Bukti Struk di Sini
                 </button>
               </div>
             </div>
@@ -1077,22 +1101,24 @@ export function renderMahasiswaPortal(container) {
   if (tabBtnVa) tabBtnVa.addEventListener('click', () => setInvoicePaymentTab('va'));
   if (tabBtnManual) tabBtnManual.addEventListener('click', () => setInvoicePaymentTab('manual'));
 
-  // 5. QRIS Instant Invoice Payment
-  const btnPayQris = container.querySelector('#btn-pay-qris-instant');
-  if (btnPayQris && currentInvoice) {
-    btnPayQris.addEventListener('click', () => {
-      const invId = btnPayQris.getAttribute('data-invoice-id');
-      const res = BillingEngine.processQRISPayment(invId, selectedPayAmount, selectedPayAmount >= remainingAmount ? 'FULL' : 'CUSTOM');
-      if (res.success) {
-        window.simpelToast.show(
-          res.isFullyPaid ? 'Pembayaran QRIS Lunas!' : 'Pembayaran Angsuran QRIS Berhasil!',
-          `Nominal: ${formatRupiah(res.paidAmount)} diterima. No. Kwitansi: ${res.receiptNumber}`,
-          'success',
-          5000
-        );
-        renderMahasiswaPortal(container);
-        window.simpelModals.openReceiptModal(invId);
+  // 5. Navigate to Transfer Manual Proof Upload from QRIS
+  const btnSwitchUploadStruk = container.querySelector('#btn-switch-to-upload-struk');
+  if (btnSwitchUploadStruk) {
+    btnSwitchUploadStruk.addEventListener('click', () => {
+      setInvoicePaymentTab('manual');
+      const manualAmountInput = container.querySelector('#input-manual-amount');
+      if (manualAmountInput) manualAmountInput.value = selectedPayAmount;
+      const bankSelect = container.querySelector('#input-sender-bank');
+      if (bankSelect) bankSelect.value = 'QRIS / Dompet Digital';
+      const manualTab = container.querySelector('#tab-content-manual');
+      if (manualTab) {
+        manualTab.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
+      window.simpelToast.show(
+        'Langkah Konfirmasi',
+        'Silakan lampirkan tangkapan layar/foto struk QRIS yang telah berhasil Anda bayar.',
+        'info'
+      );
     });
   }
 
@@ -1390,6 +1416,8 @@ export function renderMahasiswaPortal(container) {
     if (mandiriQrisAmountDisplay) mandiriQrisAmountDisplay.textContent = formatRupiah(mandiriAmount);
     if (mandiriVaAmountDisplay) mandiriVaAmountDisplay.textContent = formatRupiah(mandiriAmount);
     if (mandiriQrisSvgWrapper) mandiriQrisSvgWrapper.innerHTML = getQrisSvg(mandiriAmount, 'MND');
+    const guideAmt = container.querySelector('#mandiri-qris-guide-amount');
+    if (guideAmt) guideAmt.textContent = formatRupiah(mandiriAmount);
   }
 
   // Category selectors
@@ -1471,29 +1499,20 @@ export function renderMahasiswaPortal(container) {
   if (tabMandiriBtnVa) tabMandiriBtnVa.addEventListener('click', () => setMandiriTab('va'));
   if (tabMandiriBtnManual) tabMandiriBtnManual.addEventListener('click', () => setMandiriTab('manual'));
 
-  // Pay Mandiri QRIS
-  const btnPayMandiriQris = container.querySelector('#btn-pay-mandiri-qris');
-  if (btnPayMandiriQris) {
-    btnPayMandiriQris.addEventListener('click', () => {
-      const res = BillingEngine.processMandiriPayment({
-        studentNim: currentStudent.nim,
-        categoryName: mandiriCategory,
-        categoryLabel: mandiriCategoryLabel,
-        amount: mandiriAmount,
-        paymentChannel: 'QRIS',
-        notes: `Pembayaran Mandiri via QRIS Dinamis`
-      });
-
-      if (res.success) {
-        window.simpelToast.show(
-          'Pembayaran Mandiri Berhasil!',
-          `Nominal ${formatRupiah(mandiriAmount)} telah tervalidasi. No. Kwitansi: ${res.receiptNumber}`,
-          'success',
-          5000
-        );
-        renderMahasiswaPortal(container);
-        window.simpelModals.openReceiptModal(res.invoice.id);
+  // Navigate to Manual Mandiri Upload from QRIS
+  const btnSwitchMandiriUpload = container.querySelector('#btn-switch-mandiri-upload-struk');
+  if (btnSwitchMandiriUpload) {
+    btnSwitchMandiriUpload.addEventListener('click', () => {
+      setMandiriTab('manual');
+      const mandiriManualTab = container.querySelector('#tab-mandiri-content-manual');
+      if (mandiriManualTab) {
+        mandiriManualTab.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
+      window.simpelToast.show(
+        'Langkah Konfirmasi Mandiri',
+        'Silakan isi data pengirim dan lampirkan bukti transfer QRIS mandiri Anda.',
+        'info'
+      );
     });
   }
 
