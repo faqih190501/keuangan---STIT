@@ -9102,6 +9102,44 @@ const INITIAL_SEED_DATA = {
       isMandatory: false,
       targetRoles: ['ALL']
     }
+  ],
+  auditLogs: [
+    {
+      id: 'LOG-1001',
+      action: 'ADMIN_LOGIN',
+      target: 'Sistem SIMPEL-IF',
+      entity: 'Sistem Keuangan',
+      details: 'Inisialisasi sistem database keuangan dan sinkronisasi matriks PMB 2026/2027.',
+      timestamp: '2026-08-01 08:00:00',
+      user: 'Ustadzah Siti Fatimah, S.E.',
+      userName: 'Ustadzah Siti Fatimah, S.E.',
+      role: 'ADMIN',
+      ip: '127.0.0.1'
+    },
+    {
+      id: 'LOG-1002',
+      action: 'SKEMA_SETUP',
+      target: 'Skema Beasiswa & Tarif',
+      entity: 'Skema Tarif',
+      details: 'Pembaruan 9 skema beasiswa PMB 2026 dan penetapan tarif UKT prodi BKPI dan PIAUD.',
+      timestamp: '2026-08-01 08:30:00',
+      user: 'Ustadzah Siti Fatimah, S.E.',
+      userName: 'Ustadzah Siti Fatimah, S.E.',
+      role: 'ADMIN',
+      ip: '127.0.0.1'
+    },
+    {
+      id: 'LOG-1003',
+      action: 'VERIFY_TRANSFER_APPROVE',
+      target: 'Kwitansi KWT-2026-001',
+      entity: 'Kwitansi Pembayaran',
+      details: 'Persetujuan verifikasi setoran awal mahasiswa baru Rohmah Indarti (NIM 2601027).',
+      timestamp: '2026-08-05 10:15:00',
+      user: 'Ustadzah Siti Fatimah, S.E.',
+      userName: 'Ustadzah Siti Fatimah, S.E.',
+      role: 'ADMIN',
+      ip: '127.0.0.1'
+    }
   ]
 };
 
@@ -9138,23 +9176,15 @@ class StateManager {
               if (!v.senderAccountNumber) v.senderAccountNumber = '52' + String(v.studentNim).padStart(8, '0');
               if (!v.destinationBank) v.destinationBank = 'Bank BSI 1056405743 an. STIT IHSANUL FIKRI';
             });
-            const hasPending = this.state.paymentVerifications.some(v => v.status === 'PENDING');
-            if (!hasPending && this.state.paymentVerifications.length >= 2) {
-              this.state.paymentVerifications[0].status = 'PENDING';
-              this.state.paymentVerifications[0].verifiedAt = null;
-              this.state.paymentVerifications[0].verifiedBy = null;
-              this.state.paymentVerifications[0].receiptNumber = null;
-              this.state.paymentVerifications[1].status = 'PENDING';
-              this.state.paymentVerifications[1].verifiedAt = null;
-              this.state.paymentVerifications[1].verifiedBy = null;
-              this.state.paymentVerifications[1].receiptNumber = null;
-            }
           }
           if (!this.state.scholarshipSchemes || this.state.scholarshipSchemes.length < 9) {
             this.state.scholarshipSchemes = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.scholarshipSchemes));
           }
           if (!this.state.feeComponents) {
             this.state.feeComponents = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.feeComponents));
+          }
+          if (!this.state.auditLogs || this.state.auditLogs.length === 0) {
+            this.state.auditLogs = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.auditLogs || []));
           }
         }
       } else {
@@ -9663,15 +9693,21 @@ class StateManager {
 
   addAuditLog(action, target, details) {
     if (!this.state.auditLogs) this.state.auditLogs = [];
+    const actorName = this.state.currentUser?.name || this.state.adminProfile?.name || 'Admin';
+    const actorRole = this.state.currentRole || 'ADMIN';
     this.state.auditLogs.unshift({
-      id: `LOG-${Date.now()}`,
-      action,
-      target,
-      details,
+      id: `LOG-${Date.now()}-${Math.floor(100 + Math.random() * 900)}`,
+      action: action || 'AKTIVITAS',
+      target: target || 'Sistem',
+      entity: target || 'Sistem Keuangan',
+      details: details || '',
       timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19),
-      user: this.state.currentUser?.name || 'Admin',
+      user: actorName,
+      userName: actorName,
+      role: actorRole,
       ip: '127.0.0.1'
     });
+    this.saveState();
   }
 
   addAcademicEvent(eventData) {

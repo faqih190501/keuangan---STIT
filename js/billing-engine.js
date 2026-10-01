@@ -398,8 +398,27 @@ export class BillingEngine {
     const verif = state.paymentVerifications.find(v => v.id === verificationId);
     if (!verif) return { success: false, message: 'Data verifikasi tidak ditemukan' };
 
-    const invoice = state.invoices.find(i => i.id === verif.invoiceId);
-    if (!invoice) return { success: false, message: 'Tagihan tidak ditemukan' };
+    let invoice = state.invoices.find(i => i.id === verif.invoiceId);
+    if (!invoice && verif.studentNim) {
+      invoice = state.invoices.find(i => i.studentNim === verif.studentNim);
+    }
+    if (!invoice) {
+      // Fallback: auto-create invoice record if missing
+      const student = state.students.find(s => s.nim === verif.studentNim);
+      invoice = {
+        id: `INV-AUTO-${Date.now()}`,
+        studentNim: verif.studentNim,
+        studentName: verif.studentName || (student ? student.name : 'Mahasiswa'),
+        semester: state.activeSemester || '2026/2027 Ganjil',
+        baseAmount: Number(verif.amount) || 0,
+        discountAmount: 0,
+        netAmount: Number(verif.amount) || 0,
+        paidAmount: 0,
+        status: STATUS_TAGIHAN.BELUM_BAYAR,
+        items: [{ code: 'PAY-MANUAL', name: 'Pembayaran Registrasi/SPP', nominal: Number(verif.amount) || 0, isMandatory: true }]
+      };
+      state.invoices.push(invoice);
+    }
 
     const now = new Date();
     const pad = (n) => n.toString().padStart(2, '0');
@@ -412,20 +431,31 @@ export class BillingEngine {
     verif.status = 'APPROVED';
     verif.processedAt = timeStr;
     verif.processedBy = adminName;
-    if (bendaharaNote) verif.notes = `${verif.notes} | Catatan Bendahara: ${bendaharaNote}`;
+    verif.verifiedAt = timeStr;
+    verif.verifiedBy = adminName;
+    verif.receiptNumber = receiptNumber;
+    if (bendaharaNote) verif.notes = `${verif.notes ? verif.notes + ' | ' : ''}Catatan Bendahara: ${bendaharaNote}`;
 
-    invoice.status = STATUS_TAGIHAN.LUNAS;
-    invoice.paidAmount = verif.amount;
+    const prevPaid = Number(invoice.paidAmount) || 0;
+    const addAmt = Number(verif.amount) || 0;
+    const newPaid = Math.min(Number(invoice.netAmount) || addAmt, prevPaid + addAmt);
+    invoice.paidAmount = newPaid;
+    if (newPaid >= (Number(invoice.netAmount) || addAmt)) {
+      invoice.status = STATUS_TAGIHAN.LUNAS;
+    } else {
+      invoice.status = STATUS_TAGIHAN.DICICIL;
+    }
     invoice.paymentDate = timeStr;
     invoice.receiptNumber = receiptNumber;
     invoice.notes = `Disetujui oleh Bendahara (${adminName}). Kwitansi: ${receiptNumber}`;
 
     appState.addAuditLog(
       'VERIFY_TRANSFER_APPROVE',
-      `${verif.id} (${verif.studentName})`,
-      `Bendahara (${adminName}) menyetujui transfer manual Rp ${verif.amount.toLocaleString('id-ID')}. Kwitansi terbit: ${receiptNumber}.`
+      `${verif.id} (${verif.studentName || verif.studentNim})`,
+      `Bendahara (${adminName}) menyetujui transfer manual Rp ${addAmt.toLocaleString('id-ID')}. Kwitansi terbit: ${receiptNumber}. Status: ${invoice.status}.`
     );
 
+    appState.saveState();
     appState.notify();
     return { success: true, receiptNumber, invoice };
   }
@@ -445,25 +475,32 @@ export class BillingEngine {
     const verif = state.paymentVerifications.find(v => v.id === verificationId);
     if (!verif) return { success: false, message: 'Data verifikasi tidak ditemukan' };
 
-    const invoice = state.invoices.find(i => i.id === verif.invoiceId);
-    if (invoice) {
+    const invoice = state.invoices.find(i => i.id === verif.invoiceId || (verif.studentNim && i.studentNim === verif.studentNim));
+    if (invoice && invoice.status !== STATUS_TAGIHAN.LUNAS) {
       invoice.status = STATUS_TAGIHAN.BELUM_BAYAR;
       invoice.notes = `Bukti transfer ditolak oleh Bendahara: ${rejectReason}`;
     }
 
     const adminName = state.currentUser?.name || (state.adminProfile?.name) || 'Bendahara STIT-IF';
+    const now = new Date();
+    const pad = (n) => n.toString().padStart(2, '0');
+    const timeStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 
     verif.status = 'REJECTED';
-    verif.processedAt = new Date().toISOString().replace('T', ' ').slice(0, 19);
+    verif.processedAt = timeStr;
     verif.processedBy = adminName;
+    verif.verifiedAt = timeStr;
+    verif.verifiedBy = adminName;
     verif.rejectionReason = rejectReason;
+    verif.rejectedReason = rejectReason;
 
     appState.addAuditLog(
       'VERIFY_TRANSFER_REJECT',
-      `${verif.id} (${verif.studentName})`,
+      `${verif.id} (${verif.studentName || verif.studentNim})`,
       `Bendahara (${adminName}) menolak bukti transfer. Alasan: "${rejectReason}".`
     );
 
+    appState.saveState();
     appState.notify();
     return { success: true };
   }

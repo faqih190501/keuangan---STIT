@@ -23,10 +23,37 @@ export function parseRupiah(str) {
   return parseInt(clean, 10) || 0;
 }
 
+export function parseFlexibleDate(dateInput) {
+  if (!dateInput) return null;
+  if (dateInput instanceof Date) return isNaN(dateInput.getTime()) ? null : dateInput;
+  const str = String(dateInput).trim();
+  if (!str || str === '-') return null;
+
+  // Check DD/MM/YY or DD/MM/YYYY format with optional time
+  const dmyMatch = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/);
+  if (dmyMatch) {
+    const day = parseInt(dmyMatch[1], 10);
+    const month = parseInt(dmyMatch[2], 10) - 1;
+    let year = parseInt(dmyMatch[3], 10);
+    if (year < 100) {
+      year = year > 50 ? 1900 + year : 2000 + year;
+    }
+    const hours = dmyMatch[4] ? parseInt(dmyMatch[4], 10) : 0;
+    const minutes = dmyMatch[5] ? parseInt(dmyMatch[5], 10) : 0;
+    const seconds = dmyMatch[6] ? parseInt(dmyMatch[6], 10) : 0;
+    const parsed = new Date(year, month, day, hours, minutes, seconds);
+    if (!isNaN(parsed.getTime())) return parsed;
+  }
+
+  const standard = new Date(str);
+  if (!isNaN(standard.getTime())) return standard;
+  return null;
+}
+
 export function formatDate(dateStr) {
-  if (!dateStr) return '-';
-  const date = new Date(dateStr);
-  if (isNaN(date.getTime())) return dateStr;
+  if (!dateStr || dateStr === '-') return '-';
+  const date = parseFlexibleDate(dateStr);
+  if (!date) return dateStr;
   return new Intl.DateTimeFormat('id-ID', {
     day: 'numeric',
     month: 'long',
@@ -35,9 +62,9 @@ export function formatDate(dateStr) {
 }
 
 export function formatDateTime(dateStr) {
-  if (!dateStr) return '-';
-  const date = new Date(dateStr);
-  if (isNaN(date.getTime())) return dateStr;
+  if (!dateStr || dateStr === '-') return '-';
+  const date = parseFlexibleDate(dateStr);
+  if (!date) return dateStr;
   return new Intl.DateTimeFormat('id-ID', {
     day: 'numeric',
     month: 'short',

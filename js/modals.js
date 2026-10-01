@@ -478,7 +478,7 @@ export class ModalManager {
           const input = document.getElementById('input-receipt-token');
           if (input) {
             input.value = invoice.receiptNumber || invoice.id;
-            const btnRun = document.getElementById('btn-run-qr-validation');
+            const btnRun = document.getElementById('btn-validate-token') || document.getElementById('btn-run-qr-validation');
             if (btnRun) btnRun.click();
           }
         }, 150);
@@ -3251,6 +3251,302 @@ export class ModalManager {
         }
       });
     }
+
+    overlay.classList.add('active');
+  }
+
+  /**
+   * Custom / Direct Payment Modal (from Matriks Rekap or Quick Pay)
+   */
+  static openCustomPaymentModal(data = {}) {
+    const { overlay, title, body, footer } = this.getModalElements();
+    const state = appState.getState();
+    const isAdmin = state.currentRole === 'ADMIN';
+    const student = (state.students || []).find(s => s.nim === data.nim) || {};
+    const nimVal = data.nim || student.nim || '';
+    const nameVal = data.name || student.name || '';
+    const prodiVal = data.prodi || student.prodi || 'BKPI';
+    const invoiceId = data.invoiceId || '';
+
+    title.innerHTML = `💳 Catat / Bayar Tagihan Mahasiswa`;
+    body.innerHTML = `
+      <div style="font-size: 0.82rem; color: var(--text-light); margin-bottom: 16px;">
+        Entri pencatatan setoran transfer manual, pembayaran tunai kasir, atau pelunasan tagihan perkuliahan STIT Ihsanul Fikri.
+      </div>
+      <form id="form-custom-payment" style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">NIM Mahasiswa <span style="color:var(--danger);">*</span></label>
+            <input type="text" class="form-control" id="custom-pay-nim" value="${nimVal}" required ${nimVal ? 'readonly' : ''} style="font-family: var(--font-mono); font-weight: 700;">
+          </div>
+          <div>
+            <label class="form-label">Program Studi</label>
+            <input type="text" class="form-control" id="custom-pay-prodi" value="${prodiVal}" readonly style="font-weight: 600;">
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Nama Lengkap Mahasiswa</label>
+          <input type="text" class="form-control" id="custom-pay-name" value="${nameVal}" ${nameVal ? 'readonly' : ''} style="font-weight: 700;">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">Kategori Pembayaran <span style="color:var(--danger);">*</span></label>
+            <select class="form-control" id="custom-pay-category">
+              <option value="SPP">SPP Bulanan / Semester</option>
+              <option value="DAFTAR_ULANG">Daftar Ulang (Her-Registrasi)</option>
+              <option value="PENDAFTARAN">Biaya Pendaftaran PMB</option>
+              <option value="ASRAMA">Iuran Asrama As-Syamil</option>
+              <option value="LAINNYA">Biaya Akademik Lainnya</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Nominal Pembayaran (Rp) <span style="color:var(--danger);">*</span></label>
+            <input type="number" class="form-control" id="custom-pay-amount" placeholder="Contoh: 1200000" min="10000" step="5000" required style="font-family: var(--font-mono); font-weight: 800; font-size: 1rem; color: var(--primary-700);">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">Metode Pembayaran</label>
+            <select class="form-control" id="custom-pay-method">
+              <option value="TRANSFER_BANK_BSI">Transfer Bank BSI (1056405743)</option>
+              <option value="KASIR_TUNAI">Kasir Tunai Kampus STIT-IF</option>
+              <option value="QRIS">QRIS Standar Nasional</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Tanggal Transaksi</label>
+            <input type="date" class="form-control" id="custom-pay-date" value="${new Date().toISOString().split('T')[0]}">
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Nama Pengirim / Catatan Transaksi</label>
+          <input type="text" class="form-control" id="custom-pay-notes" placeholder="Misal: Transfer via BSI Mobile an. Rohmah Indarti">
+        </div>
+
+        ${isAdmin ? `
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--radius-md); padding: 12px 14px; margin-top: 4px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 700; color: #166534;">
+            <input type="checkbox" id="custom-pay-auto-approve" checked style="width: 16px; height: 16px;">
+            Setujui Langsung & Terbitkan Kwitansi Sah (Khusus Bendahara)
+          </label>
+          <div style="font-size: 0.74rem; color: #15803d; margin-top: 4px; margin-left: 24px;">
+            Pembayaran akan langsung diakumulasikan ke saldo tagihan mahasiswa dan kwitansi resmi siap dicetak/divalidasi.
+          </div>
+        </div>
+        ` : ''}
+      </form>
+    `;
+
+    footer.innerHTML = `
+      <button class="btn btn-secondary" id="btn-cancel-custom-pay" style="font-weight: 700;">Batal</button>
+      <button class="btn btn-primary" id="btn-submit-custom-pay" style="font-weight: 800; min-width: 160px;">
+        💾 Simpan Pembayaran
+      </button>
+    `;
+
+    footer.querySelector('#btn-cancel-custom-pay').onclick = () => ModalManager.closeModal();
+
+    footer.querySelector('#btn-submit-custom-pay').onclick = () => {
+      const nim = body.querySelector('#custom-pay-nim').value.trim();
+      const amount = Number(body.querySelector('#custom-pay-amount').value);
+      const category = body.querySelector('#custom-pay-category').value;
+      const method = body.querySelector('#custom-pay-method').value;
+      const payDate = body.querySelector('#custom-pay-date').value || new Date().toISOString().split('T')[0];
+      const notes = body.querySelector('#custom-pay-notes').value.trim();
+      const autoApprove = isAdmin && (body.querySelector('#custom-pay-auto-approve')?.checked ?? false);
+
+      if (!nim) {
+        window.simpelToast.show('Validasi Gagal', 'NIM Mahasiswa wajib diisi.', 'danger');
+        return;
+      }
+      if (!amount || amount < 1000) {
+        window.simpelToast.show('Validasi Gagal', 'Nominal pembayaran tidak valid.', 'danger');
+        return;
+      }
+
+      const st = (state.students || []).find(s => s.nim === nim);
+      const studentName = st ? st.name : (nameVal || 'Mahasiswa');
+      const studentProdi = st ? st.prodi : prodiVal;
+
+      const verifResult = appState.createCustomPayment({
+        studentNim: nim,
+        studentName: studentName,
+        prodi: studentProdi,
+        amount: amount,
+        paymentType: category,
+        senderBank: method === 'TRANSFER_BANK_BSI' ? 'Bank Syariah Indonesia (BSI)' : method === 'KASIR_TUNAI' ? 'Kasir Tunai' : 'QRIS',
+        senderAccountName: studentName,
+        destinationBank: 'Bank BSI 1056405743 an. STIT IHSANUL FIKRI',
+        invoiceId: invoiceId || null,
+        notes: notes || `Pembayaran ${category} via ${method}`
+      });
+
+      if (!verifResult.success) {
+        window.simpelToast.show('Pencatatan Gagal', verifResult.message || 'Terjadi kesalahan sistem.', 'danger');
+        return;
+      }
+
+      if (autoApprove && verifResult.verification) {
+        const approveRes = BillingEngine.approveManualPayment(verifResult.verification.id, 'Disetujui langsung oleh Bendahara');
+        ModalManager.closeModal();
+        window.simpelToast.show('Pembayaran Disetujui! 🎉', `Setoran Rp ${amount.toLocaleString('id-ID')} berhasil dicatat & kwitansi ${approveRes.receiptNumber || ''} diterbitkan.`, 'success', 5000);
+        if (approveRes.invoice) {
+          setTimeout(() => ModalManager.openReceiptModal(approveRes.invoice.id), 300);
+        }
+      } else {
+        ModalManager.closeModal();
+        window.simpelToast.show('Berhasil Dicatat', `Setoran Rp ${amount.toLocaleString('id-ID')} berhasil disimpan ke antrean verifikasi.`, 'success');
+      }
+    };
+
+    overlay.classList.add('active');
+  }
+
+  /**
+   * New Invoice Modal (for Bendahara to generate ad-hoc / semester invoices)
+   */
+  static openNewInvoiceModal(nim = '') {
+    const { overlay, title, body, footer } = this.getModalElements();
+    const state = appState.getState();
+    const student = (state.students || []).find(s => s.nim === nim) || {};
+
+    title.innerHTML = `📄 Terbitkan Tagihan Baru`;
+    body.innerHTML = `
+      <div style="font-size: 0.82rem; color: var(--text-light); margin-bottom: 16px;">
+        Penerbitan tagihan biaya perkuliahan, registrasi semester, atau komponen khusus mahasiswa.
+      </div>
+      <form id="form-new-invoice" style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">NIM Mahasiswa <span style="color:var(--danger);">*</span></label>
+            <input type="text" class="form-control" id="new-inv-nim" value="${nim || student.nim || ''}" required style="font-family: var(--font-mono); font-weight: 700;">
+          </div>
+          <div>
+            <label class="form-label">Nama Mahasiswa</label>
+            <input type="text" class="form-control" id="new-inv-name" value="${student.name || ''}" placeholder="Nama mahasiswa..." style="font-weight: 700;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">Semester Akademik <span style="color:var(--danger);">*</span></label>
+            <select class="form-control" id="new-inv-semester">
+              <option value="2026/2027 Ganjil" selected>2026/2027 Ganjil</option>
+              <option value="2026/2027 Genap">2026/2027 Genap</option>
+              <option value="2025/2026 Ganjil">2025/2026 Ganjil</option>
+              <option value="2025/2026 Genap">2025/2026 Genap</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Jenis Tagihan / Komponen</label>
+            <select class="form-control" id="new-inv-type">
+              <option value="SPP">SPP Perkuliahan</option>
+              <option value="DAFTAR_ULANG">Daftar Ulang (Her-Registrasi)</option>
+              <option value="PENDAFTARAN">Biaya Formulir PMB</option>
+              <option value="ASRAMA">Iuran Asrama As-Syamil</option>
+              <option value="UJIAN">Biaya Ujian / Munaqosyah</option>
+              <option value="LAINNYA">Tagihan Lainnya</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">Nominal Tagihan (Rp) <span style="color:var(--danger);">*</span></label>
+            <input type="number" class="form-control" id="new-inv-amount" placeholder="Contoh: 1850000" min="10000" step="10000" required style="font-family: var(--font-mono); font-weight: 800; font-size: 1rem; color: var(--primary-700);">
+          </div>
+          <div>
+            <label class="form-label">Diskon / Potongan (Rp)</label>
+            <input type="number" class="form-control" id="new-inv-discount" value="0" min="0" step="5000" style="font-family: var(--font-mono);">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label class="form-label">Batas Jatuh Tempo</label>
+            <input type="date" class="form-control" id="new-inv-due-date" value="${new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0]}">
+          </div>
+          <div>
+            <label class="form-label">Keterangan / Catatan</label>
+            <input type="text" class="form-control" id="new-inv-notes" placeholder="Catatan tagihan...">
+          </div>
+        </div>
+      </form>
+    `;
+
+    footer.innerHTML = `
+      <button class="btn btn-secondary" id="btn-cancel-new-inv" style="font-weight: 700;">Batal</button>
+      <button class="btn btn-primary" id="btn-submit-new-inv" style="font-weight: 800;">
+        📤 Terbitkan Tagihan
+      </button>
+    `;
+
+    footer.querySelector('#btn-cancel-new-inv').onclick = () => ModalManager.closeModal();
+
+    footer.querySelector('#btn-submit-new-inv').onclick = () => {
+      const invNim = body.querySelector('#new-inv-nim').value.trim();
+      const invSemester = body.querySelector('#new-inv-semester').value;
+      const invType = body.querySelector('#new-inv-type').value;
+      const baseAmt = Number(body.querySelector('#new-inv-amount').value);
+      const discAmt = Number(body.querySelector('#new-inv-discount').value) || 0;
+      const dueDate = body.querySelector('#new-inv-due-date').value;
+      const notes = body.querySelector('#new-inv-notes').value.trim();
+
+      if (!invNim) {
+        window.simpelToast.show('Validasi Gagal', 'NIM Mahasiswa wajib diisi.', 'danger');
+        return;
+      }
+      if (!baseAmt || baseAmt < 1000) {
+        window.simpelToast.show('Validasi Gagal', 'Nominal tagihan tidak valid.', 'danger');
+        return;
+      }
+
+      const st = (state.students || []).find(s => s.nim === invNim);
+      const netAmt = Math.max(0, baseAmt - discAmt);
+      const invId = `INV-${Date.now()}`;
+
+      const newInvoice = {
+        id: invId,
+        studentNim: invNim,
+        studentName: st ? st.name : (body.querySelector('#new-inv-name').value.trim() || 'Mahasiswa'),
+        semester: invSemester,
+        createdDate: new Date().toISOString().split('T')[0],
+        dueDate: dueDate,
+        items: [
+          {
+            componentId: invType,
+            name: `Tagihan ${invType} - ${invSemester}`,
+            baseAmount: baseAmt,
+            discount: discAmt,
+            finalAmount: netAmt,
+            isMandatory: true
+          }
+        ],
+        baseAmount: baseAmt,
+        discountAmount: discAmt,
+        netAmount: netAmt,
+        paidAmount: 0,
+        status: STATUS_TAGIHAN.BELUM_BAYAR,
+        paymentMethod: 'VA_BSI',
+        receiptNumber: null,
+        paymentDate: null,
+        virtualAccount: '1056405743',
+        notes: notes || `Tagihan ${invType} semester ${invSemester}`
+      };
+
+      if (!state.invoices) state.invoices = [];
+      state.invoices.unshift(newInvoice);
+      appState.addAuditLog('ADD_INVOICE', `${newInvoice.id} (${invNim})`, `Penerbitan tagihan baru ${invType} nominal Rp ${netAmt.toLocaleString('id-ID')}.`);
+      appState.saveState();
+      appState.notify();
+
+      ModalManager.closeModal();
+      window.simpelToast.show('Tagihan Diterbitkan', `Tagihan #${invId} sebesar Rp ${netAmt.toLocaleString('id-ID')} berhasil diterbitkan.`, 'success');
+    };
 
     overlay.classList.add('active');
   }

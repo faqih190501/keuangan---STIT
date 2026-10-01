@@ -7,7 +7,7 @@
 import { appState } from '../state.js';
 import { formatRupiah, formatDate, getProdiBadge, getScholarshipBadge, getStatusBadge } from '../utils/formatters.js';
 import { exportToCSV } from '../utils/export-engine.js';
-import { ModalManager } from '../modals.js';
+import { ModalManager, openStudentDetailModal, openReceiptModal, openCustomPaymentModal } from '../modals.js';
 
 export function renderMatriksRekapView(container) {
   const state = appState.getState();
@@ -585,7 +585,7 @@ export function renderMatriksRekapView(container) {
     container.querySelectorAll('.matrix-student-row').forEach(row => {
       row.addEventListener('click', () => {
         const nim = row.getAttribute('data-nim');
-        if (nim) openStudentDetailModal(nim);
+        if (nim) ModalManager.openStudentDetailModal(nim);
       });
     });
 
@@ -594,7 +594,7 @@ export function renderMatriksRekapView(container) {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         const nim = btn.getAttribute('data-nim');
-        if (nim) openStudentDetailModal(nim);
+        if (nim) ModalManager.openStudentDetailModal(nim);
       });
     });
 
@@ -604,9 +604,9 @@ export function renderMatriksRekapView(container) {
         const nim = btn.getAttribute('data-nim');
         const studentInv = (state.invoices || []).find(i => i.studentNim === nim);
         if (studentInv) {
-          openReceiptModal(studentInv.id);
+          ModalManager.openReceiptModal(studentInv.id);
         } else {
-          openStudentDetailModal(nim);
+          ModalManager.openStudentDetailModal(nim);
         }
       });
     });

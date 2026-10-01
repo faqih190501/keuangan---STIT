@@ -81,3 +81,8 @@ export function exportToCSV(arg1, arg2, arg3) {
 export function printReceiptElement() {
   window.print();
 }
+
+if (typeof window !== 'undefined') {
+  window.printReceiptElement = printReceiptElement;
+  window.exportToCSV = exportToCSV;
+}

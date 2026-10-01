@@ -81,7 +81,14 @@ export function renderAuditLogView(container) {
     }
 
     return items.map(log => {
-      const icon = getActionIcon(log.action);
+      const action = log.action || 'AKTIVITAS';
+      const entity = log.entity || log.target || 'Sistem';
+      const userName = log.userName || log.user || 'Admin';
+      const role = log.role || 'ADMIN';
+      const details = log.details || '';
+      const id = log.id || '';
+      const icon = getActionIcon(action);
+
       return `
         <div class="audit-item" style="display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border-light);">
           <div class="audit-icon" style="width: 40px; height: 40px; border-radius: var(--radius-md); background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;">
@@ -90,17 +97,17 @@ export function renderAuditLogView(container) {
           <div class="audit-details" style="flex: 1;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
               <span class="audit-action-title" style="font-weight: 800; font-size: 0.88rem; color: var(--text-dark);">
-                ${log.action} — <span style="color: var(--primary-700);">${log.entity}</span>
+                ${action} — <span style="color: var(--primary-700);">${entity}</span>
               </span>
               <span style="font-size: 0.72rem; color: var(--text-light); font-family: var(--font-mono);">
                 ${formatDateTime(log.timestamp)}
               </span>
             </div>
             <div class="audit-meta" style="font-size: 0.74rem; color: var(--text-muted); margin: 4px 0 6px;">
-              Oleh: <strong>${log.userName}</strong> (${log.role}) &bull; Log ID: <span style="font-family: var(--font-mono); font-weight: 700;">${log.id}</span>
+              Oleh: <strong>${userName}</strong> (${role}) &bull; Log ID: <span style="font-family: var(--font-mono); font-weight: 700;">${id}</span>
             </div>
             <div class="audit-changes-box" style="font-size: 0.78rem; color: var(--text-main); background: #f8fafc; padding: 10px 14px; border-radius: var(--radius-md); border-left: 3px solid var(--primary-600); line-height: 1.45;">
-              ${log.details}
+              ${details}
             </div>
           </div>
         </div>
@@ -118,15 +125,21 @@ export function renderAuditLogView(container) {
     const cat = catFilter.value;
 
     const filtered = (state.auditLogs || []).filter(log => {
-      const matchQ = log.action.toLowerCase().includes(q) ||
-                     log.entity.toLowerCase().includes(q) ||
-                     log.details.toLowerCase().includes(q) ||
-                     log.userName.toLowerCase().includes(q) ||
-                     log.id.toLowerCase().includes(q);
+      const action = String(log.action || '').toLowerCase();
+      const entity = String(log.entity || log.target || '').toLowerCase();
+      const details = String(log.details || '').toLowerCase();
+      const userName = String(log.userName || log.user || '').toLowerCase();
+      const id = String(log.id || '').toLowerCase();
+
+      const matchQ = action.includes(q) ||
+                     entity.includes(q) ||
+                     details.includes(q) ||
+                     userName.includes(q) ||
+                     id.includes(q);
 
       let matchCat = true;
       if (cat !== 'ALL') {
-        matchCat = log.action.includes(cat);
+        matchCat = (log.action || '').includes(cat);
       }
 
       return matchQ && matchCat;
@@ -157,26 +170,32 @@ export function renderAuditLogView(container) {
       const cat = catFilter.value;
 
       const filtered = (state.auditLogs || []).filter(log => {
-        const matchQ = log.action.toLowerCase().includes(q) ||
-                       log.entity.toLowerCase().includes(q) ||
-                       log.details.toLowerCase().includes(q) ||
-                       log.userName.toLowerCase().includes(q) ||
-                       log.id.toLowerCase().includes(q);
+        const action = String(log.action || '').toLowerCase();
+        const entity = String(log.entity || log.target || '').toLowerCase();
+        const details = String(log.details || '').toLowerCase();
+        const userName = String(log.userName || log.user || '').toLowerCase();
+        const id = String(log.id || '').toLowerCase();
+
+        const matchQ = action.includes(q) ||
+                       entity.includes(q) ||
+                       details.includes(q) ||
+                       userName.includes(q) ||
+                       id.includes(q);
 
         let matchCat = true;
-        if (cat !== 'ALL') matchCat = log.action.includes(cat);
+        if (cat !== 'ALL') matchCat = (log.action || '').includes(cat);
         return matchQ && matchCat;
       });
 
       const headers = ['Log ID', 'Waktu Timestamp', 'Nama Pengguna', 'Peran / Role', 'Aksi', 'Entitas Terkait', 'Rincian Log'];
       const rows = filtered.map(log => [
-        log.id,
-        log.timestamp,
-        log.userName,
-        log.role,
-        log.action,
-        log.entity,
-        log.details.replace(/(\r\n|\n|\r)/gm, ' ')
+        log.id || '',
+        log.timestamp || '',
+        log.userName || log.user || 'Admin',
+        log.role || 'ADMIN',
+        log.action || '',
+        log.entity || log.target || 'Sistem',
+        String(log.details || '').replace(/(\r\n|\n|\r)/gm, ' ')
       ]);
 
       exportToCSV(`Audit_Log_SIMPEL_IF_${new Date().toISOString().slice(0, 10)}`, headers, rows);
