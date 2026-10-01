@@ -121,6 +121,14 @@ class Router {
           sidebar.classList.remove('mobile-open');
         }
       });
+
+      // Mobile close button inside sidebar header
+      const mobileCloseBtn = document.getElementById('sidebar-mobile-close-btn');
+      if (mobileCloseBtn) {
+        mobileCloseBtn.addEventListener('click', () => {
+          sidebar.classList.remove('mobile-open');
+        });
+      }
     }
 
     // Sidebar logout button
