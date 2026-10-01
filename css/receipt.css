@@ -763,18 +763,18 @@
   position: relative;
 }
 
-/* Circular Official Institutional Stamp (Stempel Basah Bulat) */
+/* Circular Official Institutional Stamp (Stempel Basah Bulat Berlogo STIT-IF) */
 .signature-stamp-svg {
   position: absolute;
-  top: 50%;
-  left: 36%;
-  transform: translate(-50%, -50%) rotate(-10deg);
-  width: 105px;
-  height: 105px;
-  opacity: 0.85;
+  top: 48%;
+  left: 38%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  width: 120px;
+  height: 120px;
+  opacity: 0.92;
   z-index: 3;
   pointer-events: none;
-  filter: drop-shadow(0 1px 2px rgba(30, 64, 175, 0.25));
+  filter: drop-shadow(0 2px 4px rgba(30, 64, 175, 0.22));
 }
 
 .signature-name {

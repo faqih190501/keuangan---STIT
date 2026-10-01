@@ -84,40 +84,63 @@ export class ModalManager {
       ? 'Bimbingan Konseling Pendidikan Islam (BKPI)' 
       : 'Pendidikan Islam Anak Usia Dini (PIAUD)';
 
-    // Generate Official Circular Stamp (Stempel Basah Bulat STIT-IF)
+    // Generate Official Circular Stamp (Stempel Basah Bulat STIT-IF dengan Logo Resmi)
     const stampColor = isLunas ? '#1e40af' : '#b45309';
     const stampStatusWord = isLunas ? 'L U N A S' : 'D I C I C I L';
     const stampDate = invoice.paymentDate ? new Date(invoice.paymentDate).toLocaleDateString('id-ID', { day:'2-digit', month:'2-digit', year:'numeric' }) : '';
     
     const officialStampSVG = `
-      <svg width="115" height="115" viewBox="0 0 120 120" class="signature-stamp-svg" xmlns="http://www.w3.org/2000/svg">
+      <svg width="124" height="124" viewBox="0 0 120 120" class="signature-stamp-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs>
           <path id="stampUpperPath" d="M 18,60 A 42,42 0 1,1 102,60" fill="none" />
           <path id="stampLowerPath" d="M 102,60 A 42,42 0 0,1 18,60" fill="none" />
         </defs>
-        <circle cx="60" cy="60" r="56" fill="none" stroke="${stampColor}" stroke-width="2.5" stroke-opacity="0.88" />
-        <circle cx="60" cy="60" r="51" fill="none" stroke="${stampColor}" stroke-width="1.2" stroke-opacity="0.88" />
-        <text font-size="7.2" font-weight="900" fill="${stampColor}" letter-spacing="1.2px" font-family="'Plus Jakarta Sans', Arial, sans-serif" opacity="0.92">
+        <!-- Double Outer Circle -->
+        <circle cx="60" cy="60" r="56" fill="none" stroke="${stampColor}" stroke-width="2.5" stroke-opacity="0.9" />
+        <circle cx="60" cy="60" r="51.5" fill="none" stroke="${stampColor}" stroke-width="1.2" stroke-opacity="0.9" />
+        
+        <!-- Text Lingkar Atas: SEKOLAH TINGGI ILMU TARBIYAH -->
+        <text font-size="7" font-weight="900" fill="${stampColor}" letter-spacing="1.1px" font-family="'Plus Jakarta Sans', Arial, sans-serif" opacity="0.95">
           <textPath href="#stampUpperPath" startOffset="50%" text-anchor="middle">
             SEKOLAH TINGGI ILMU TARBIYAH
           </textPath>
         </text>
-        <text font-size="6.8" font-weight="900" fill="${stampColor}" letter-spacing="1px" font-family="'Plus Jakarta Sans', Arial, sans-serif" opacity="0.92">
+        
+        <!-- Text Lingkar Bawah: ★ IHSANUL FIKRI MAGELANG ★ -->
+        <text font-size="6.6" font-weight="900" fill="${stampColor}" letter-spacing="0.9px" font-family="'Plus Jakarta Sans', Arial, sans-serif" opacity="0.95">
           <textPath href="#stampLowerPath" startOffset="50%" text-anchor="middle">
             ★ IHSANUL FIKRI MAGELANG ★
           </textPath>
         </text>
-        <line x1="22" y1="45" x2="98" y2="45" stroke="${stampColor}" stroke-width="1.2" opacity="0.88" />
-        <text x="60" y="55" font-size="7.5" font-weight="900" fill="${stampColor}" text-anchor="middle" letter-spacing="1.2px" font-family="'Plus Jakarta Sans', Arial, sans-serif">
+        
+        <!-- Bintang Pemisah Samping -->
+        <text x="14.5" y="62" font-size="7" font-weight="900" fill="${stampColor}" text-anchor="middle">★</text>
+        <text x="105.5" y="62" font-size="7" font-weight="900" fill="${stampColor}" text-anchor="middle">★</text>
+
+        <!-- Lingkaran Bingkai Logo STIT Ihsanul Fikri -->
+        <circle cx="60" cy="37.5" r="16" fill="#ffffff" fill-opacity="0.96" stroke="${stampColor}" stroke-width="1" stroke-dasharray="2,1.5" opacity="0.85" />
+        
+        <!-- Logo Resmi STIT-IF -->
+        <image href="./assets/images/logo.png" xlink:href="./assets/images/logo.png" x="45" y="22.5" width="30" height="30" preserveAspectRatio="xMidYMid meet" />
+
+        <!-- Garis Pemisah Tengah -->
+        <line x1="22" y1="57" x2="98" y2="57" stroke="${stampColor}" stroke-width="1.2" opacity="0.9" />
+        
+        <!-- Label Bagian Keuangan -->
+        <text x="60" y="65.5" font-size="6.8" font-weight="900" fill="${stampColor}" text-anchor="middle" letter-spacing="1.2px" font-family="'Plus Jakarta Sans', Arial, sans-serif">
           BAGIAN KEUANGAN
         </text>
-        <text x="60" y="67" font-size="8.8" font-weight="900" fill="${stampColor}" text-anchor="middle" letter-spacing="2px" font-family="'Plus Jakarta Sans', Arial, sans-serif">
+        
+        <!-- Status Pembayaran (LUNAS / DICICIL) -->
+        <text x="60" y="77" font-size="8.8" font-weight="900" fill="${stampColor}" text-anchor="middle" letter-spacing="2px" font-family="'Plus Jakarta Sans', Arial, sans-serif">
           ${stampStatusWord}
         </text>
-        ${stampDate ? `<text x="60" y="74" font-size="5.8" font-weight="700" fill="${stampColor}" text-anchor="middle" font-family="monospace">${stampDate}</text>` : ''}
-        <line x1="22" y1="${stampDate ? 78 : 73}" x2="98" y2="${stampDate ? 78 : 73}" stroke="${stampColor}" stroke-width="1.2" opacity="0.88" />
-        <text x="14" y="62" font-size="7" fill="${stampColor}" text-anchor="middle">★</text>
-        <text x="106" y="62" font-size="7" fill="${stampColor}" text-anchor="middle">★</text>
+        
+        <!-- Tanggal Bayar -->
+        ${stampDate ? `<text x="60" y="85" font-size="5.2" font-weight="700" fill="${stampColor}" text-anchor="middle" font-family="monospace">${stampDate}</text>` : ''}
+        
+        <!-- Garis Bawah Pemisah -->
+        <line x1="22" y1="${stampDate ? 88.5 : 82.5}" x2="98" y2="${stampDate ? 88.5 : 82.5}" stroke="${stampColor}" stroke-width="1.2" opacity="0.9" />
       </svg>
     `;
 
@@ -165,16 +188,22 @@ export class ModalManager {
             <!-- Paid / Installment Stamp -->
             ${isLunas ? `
               <div class="paid-stamp-watermark stamp-lunas">
-                <div class="stamp-stars">★ ★ ★</div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 3px;">
+                  <img src="./assets/images/logo.png" alt="Logo STIT-IF" style="width: 20px; height: 20px; object-fit: contain;">
+                  <div class="stamp-stars" style="margin: 0; font-weight: 800;">★ STIT-IF ★</div>
+                </div>
                 <div class="stamp-main">LUNAS / PAID</div>
-                <div class="stamp-sub">KAS TERVERIFIKASI</div>
+                <div class="stamp-sub">KAS TERVERIFIKASI RESMI</div>
                 <div class="stamp-date">${paymentDateFormatted}</div>
               </div>
             ` : `
               <div class="paid-stamp-watermark stamp-cicil">
-                <div class="stamp-stars">★ ★ ★</div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 3px;">
+                  <img src="./assets/images/logo.png" alt="Logo STIT-IF" style="width: 20px; height: 20px; object-fit: contain;">
+                  <div class="stamp-stars" style="margin: 0; font-weight: 800;">★ STIT-IF ★</div>
+                </div>
                 <div class="stamp-main">DICICIL / ANGSURAN</div>
-                <div class="stamp-sub">DISPENSASI RESMI</div>
+                <div class="stamp-sub">DISPENSASI KEUANGAN</div>
                 <div class="stamp-date">${paymentDateFormatted}</div>
               </div>
             `}
