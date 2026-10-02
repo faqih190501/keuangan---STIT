@@ -1,0 +1,66 @@
+{
+  "name": "SIMPEL-IF &bull; STIT Ihsanul Fikri",
+  "short_name": "SIMPEL-IF",
+  "description": "Sistem Informasi Manajemen Pembayaran Elektronik, Beasiswa, dan Portal Akademik STIT Ihsanul Fikri Magelang",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#0f172a",
+  "theme_color": "#1e40af",
+  "lang": "id",
+  "dir": "ltr",
+  "categories": ["education", "finance", "productivity"],
+  "icons": [
+    {
+      "src": "./assets/images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Portal Mahasiswa",
+      "short_name": "Mahasiswa",
+      "description": "Buka Portal Tagihan dan Pembayaran Mahasiswa",
+      "url": "./index.html?view=view-mahasiswa",
+      "icons": [{ "src": "./assets/images/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dashboard Bendahara",
+      "short_name": "Dashboard",
+      "description": "Buka Dashboard Utama Keuangan",
+      "url": "./index.html?view=dashboard-bendahara",
+      "icons": [{ "src": "./assets/images/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Validasi QR Kwitansi",
+      "short_name": "Validasi QR",
+      "description": "Cek Keaslian Dokumen dan Kwitansi Resmi",
+      "url": "./index.html?view=view-qr-validator",
+      "icons": [{ "src": "./assets/images/logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Matriks Rekap Sheets",
+      "short_name": "Matriks Rekap",
+      "description": "Rekapitulasi Keuangan Terintegrasi Google Sheets",
+      "url": "./index.html?view=view-matriks-rekap",
+      "icons": [{ "src": "./assets/images/logo.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

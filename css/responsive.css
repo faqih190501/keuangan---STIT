@@ -1001,3 +1001,226 @@ html {
     padding: 2px 7px !important;
   }
 }
+
+/* ==========================================================================
+   MULTIPLATFORM UI ENHANCEMENTS & PWA NATIVE SHELL
+   Supported Platforms: Android, iOS (iPhone & iPad), Windows, macOS, Linux, ChromeOS
+   Form Factors: Smartphone, Tablet & Foldable, Laptop, Desktop & Ultrawide
+   ========================================================================== */
+
+/* 1. Dynamic Viewport & iOS Safe Area Ergonomics */
+@supports (height: 100dvh) {
+  :root {
+    --app-viewport-height: 100dvh;
+  }
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* 2. Standalone PWA App Mode Enhancements */
+@media (display-mode: standalone) {
+  body.is-pwa-standalone {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body.is-pwa-standalone input,
+  body.is-pwa-standalone textarea,
+  body.is-pwa-standalone select {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  /* Safe padding for system status bar / notch in standalone mode */
+  .topbar {
+    padding-top: max(14px, env(safe-area-inset-top, 0px)) !important;
+  }
+
+  /* Hide redundant install buttons in PWA standalone */
+  .btn-multiplatform-install,
+  #nav-install-app,
+  #btn-topbar-install-app {
+    display: none !important;
+  }
+}
+
+/* 3. Mobile Bottom-Sheet Modal Architecture (< 768px) */
+@media (max-width: 767px) {
+  .modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(4px) !important;
+  }
+
+  .modal-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 90vh !important;
+    max-height: 90dvh !important;
+    margin: 0 !important;
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px)) !important;
+    animation: slideUpBottomSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    position: relative;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Drag handle bar indicator for bottom sheet */
+  .modal-card::before {
+    content: '';
+    display: block;
+    width: 44px;
+    height: 4px;
+    background: #cbd5e1;
+    border-radius: 4px;
+    margin: 10px auto 4px;
+    flex-shrink: 0;
+  }
+
+  @keyframes slideUpBottomSheet {
+    from {
+      transform: translateY(100%);
+      opacity: 0.6;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .modal-header {
+    padding-top: 6px !important;
+  }
+}
+
+/* 4. Tablet & Foldable Ergonomics (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .content-area {
+    padding: 20px 24px 40px !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  .btn-topbar-install-label {
+    display: none;
+  }
+}
+
+/* 5. Ultrawide & 4K Monitor Optimization (>= 1440px) */
+@media (min-width: 1440px) {
+  .content-area {
+    max-width: 1600px !important;
+    padding: 30px 48px 60px !important;
+  }
+
+  .stats-grid {
+    gap: 24px !important;
+  }
+}
+
+/* 6. PWA Update Banner & Offline Connectivity Pill */
+.pwa-update-banner {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  background: #1e3a8a;
+  color: #ffffff;
+  padding: 14px 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: slideInBanner 0.3s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 440px;
+}
+
+@keyframes slideInBanner {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.pwa-update-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pwa-update-icon {
+  font-size: 1.6rem;
+}
+
+.pwa-update-text strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.pwa-update-text small {
+  font-size: 0.8rem;
+  color: #bfdbfe;
+}
+
+.pwa-update-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Network Offline Badge */
+.network-offline-badge {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
+  background: #b91c1c;
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.4);
+  align-items: center;
+  gap: 8px;
+}
+
+.network-offline-badge.active {
+  display: inline-flex;
+  animation: bouncePill 0.4s ease-out;
+}
+
+@keyframes bouncePill {
+  0% { transform: translate(-50%, -20px); opacity: 0; }
+  60% { transform: translate(-50%, 4px); }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* PWA Sidebar & Topbar Badges */
+.nav-item-install-pwa:hover {
+  background: rgba(56, 189, 248, 0.12) !important;
+}
+
+@media (max-width: 767px) {
+  .pwa-update-banner {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+    max-width: none !important;
+  }
+}
+

@@ -224,6 +224,7 @@ export class UserExperienceHelper {
     // Base pages catalog
     const pages = [
       { id: 'dashboard-bendahara', title: 'Dashboard Utama Admin', desc: 'Pusat statistik keuangan, neraca prodi, dan ringkasan tagihan', icon: '👑', type: 'PAGE' },
+      { id: 'view-matriks-rekap', title: 'Matriks Rekapitulasi Sheets (PMB 2026 & Multi-Angkatan)', desc: 'Sinkronisasi Google Sheets, matriks pembayaran BKPI, PIAUD & Asrama As-Syamil', icon: '📊', type: 'PAGE' },
       { id: 'view-mahasiswa', title: 'Portal Pembayaran Mahasiswa', desc: 'Cek tagihan semester, QRIS dinamis, virtual account BSI, dan bayar cicilan', icon: '🎓', type: 'PAGE' },
       { id: 'view-skema-tarif', title: 'Skema Beasiswa & Tarif Kuliah', desc: 'Atur beasiswa santri, mitra pesantren, PAUD laki-laki, dan rincian tarif', icon: '⚙️', type: 'PAGE' },
       { id: 'view-verifikasi', title: 'Antrean Verifikasi Pembayaran', desc: 'Validasi dan setujui bukti transfer bank manual mahasiswa', icon: '🔍', type: 'PAGE' },
@@ -237,6 +238,8 @@ export class UserExperienceHelper {
 
     // Quick actions catalog
     const allActions = [
+      { title: 'Pasang Aplikasi di HP / Laptop (Install PWA)', desc: 'Gunakan SIMPEL-IF sebagai aplikasi mandiri di Android, iOS, Windows, macOS, Linux', icon: '📲', action: () => window.simpelMultiplatform?.triggerInstall(), type: 'ACTION' },
+      { title: 'Diagnostik Multiplatform Perangkat', desc: 'Periksa status layar, sistem operasi, mode tampilan PWA, dan touch target', icon: '⚙️', action: () => window.simpelMultiplatform?.openPlatformSpecsModal(), type: 'ACTION' },
       { title: 'Buat Akun Mahasiswa Baru (PMB)', desc: 'Buka formulir pendaftaran mahasiswa baru langsung', icon: '✨', role: 'ADMIN', action: () => ModalManager.openStudentRegistrationModal(), type: 'ACTION' },
       { title: 'Kelola Akun Admin & Bendahara', desc: 'Tambah atau ubah data login pengelola keuangan', icon: '👥', role: 'ADMIN', action: () => ModalManager.openAdminManagementModal(), type: 'ACTION' },
       { title: 'Profil Saya / Ganti Password', desc: 'Edit data profil akun aktif dan ubah password/PIN', icon: '👤', action: () => {

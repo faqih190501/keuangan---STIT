@@ -8,6 +8,7 @@ import { AuthManager, ROLE_PERMISSIONS } from './auth.js';
 import { ModalManager } from './modals.js';
 import { DragScrollHelper } from './utils/drag-scroll.js';
 import { UserExperienceHelper } from './utils/user-experience.js';
+import { MultiplatformHelper } from './utils/multiplatform.js';
 import { getHijriDate } from './utils/formatters.js';
 
 import { renderDashboardBendahara } from './views/dashboard-bendahara.js';
@@ -70,6 +71,7 @@ class Router {
     ModalManager.init();
     AuthManager.init();
     UserExperienceHelper.init();
+    MultiplatformHelper.init();
 
     // Bind sidebar navigation links
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -445,6 +447,7 @@ class Router {
     setTimeout(() => {
       DragScrollHelper.init(document);
       UserExperienceHelper.bindCopyButtons(this.container);
+      MultiplatformHelper.bindMultiplatformButtons();
     }, 50);
 
     if (scrollToTop) {

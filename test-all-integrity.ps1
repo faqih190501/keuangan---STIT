@@ -21,6 +21,8 @@ $coreFiles = @(
     "index.html",
     "404.html",
     "assets/images/logo.png",
+    "manifest.webmanifest",
+    "sw.js",
     "css/variables.css",
     "css/layout.css",
     "css/components.css",
@@ -38,6 +40,8 @@ $coreFiles = @(
     "js/utils/formatters.js",
     "js/utils/image-compressor.js",
     "js/utils/qr-engine.js",
+    "js/utils/user-experience.js",
+    "js/utils/multiplatform.js",
     "js/views/dashboard-bendahara.js",
     "js/views/view-akademik.js",
     "js/views/view-audit-log.js",
@@ -104,6 +108,15 @@ $imgCompRaw = Get-Content "d:\SIMPEL-IF\js\utils\image-compressor.js" -Raw
 $mhsRaw = Get-Content "d:\SIMPEL-IF\js\views\view-mahasiswa.js" -Raw
 Check-Condition "compressImage exported in image-compressor.js" ($imgCompRaw.Contains("export function compressImage") -and $imgCompRaw.Contains("formatBytes"))
 Check-Condition "view-mahasiswa.js integrates automatic image compression" ($mhsRaw.Contains("compressImage") -and $mhsRaw.Contains("setupCompressedDropzone") -and $mhsRaw.Contains("manual-compression-card") -and $mhsRaw.Contains("mandiri-compression-card"))
+
+# 5c. Check Multiplatform UI & PWA Architecture
+$multiRaw = Get-Content "d:\SIMPEL-IF\js\utils\multiplatform.js" -Raw
+$manifestRaw = Get-Content "d:\SIMPEL-IF\manifest.webmanifest" -Raw
+$swRaw = Get-Content "d:\SIMPEL-IF\sw.js" -Raw
+Check-Condition "MultiplatformHelper exported in multiplatform.js" ($multiRaw.Contains("export class MultiplatformHelper") -and $multiRaw.Contains("getPlatformInfo") -and $multiRaw.Contains("triggerInstall"))
+Check-Condition "Service Worker defines caching & offline capabilities" ($swRaw.Contains("CACHE_NAME") -and $swRaw.Contains("STATIC_ASSETS") -and $swRaw.Contains("addEventListener('fetch'"))
+Check-Condition "Manifest defines PWA identity & standalone display" ($manifestRaw.Contains('"display": "standalone"') -and $manifestRaw.Contains('"icons"') -and $manifestRaw.Contains("SIMPEL-IF"))
+Check-Condition "index.html links manifest and multiplatform meta tags" ($htmlRaw.Contains('rel="manifest"') -and $htmlRaw.Contains('apple-mobile-web-app-capable'))
 
 # 6. Check JS Syntax & Delimiters (Backticks, Brackets, Parentheses)
 $jsFiles = Get-ChildItem -Path "d:\SIMPEL-IF\js" -Filter "*.js" -Recurse
