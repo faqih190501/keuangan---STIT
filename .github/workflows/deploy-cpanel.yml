@@ -33,4 +33,4 @@ jobs:
             **/LICENSE
             **/test*.*
             **/server.ps1
-            **/*.zip
+

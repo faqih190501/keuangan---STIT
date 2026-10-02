@@ -400,6 +400,9 @@ export class ApiClient {
             <a href="./schema.sql" download="simpel_if_schema.sql" class="btn btn-sm btn-outline" style="font-weight: 700; background: #fff; color: #0369a1; text-decoration: none;">
               📄 Unduh schema.sql
             </a>
+            <a href="./update-simpel-if.zip" download="update-simpel-if.zip" class="btn btn-sm btn-outline" style="font-weight: 700; background: #fff; color: #047857; text-decoration: none;" title="Unduh Paket Arsip Lengkap SIMPEL-IF (.zip)">
+              📦 Unduh Paket (.zip)
+            </a>
           </div>
         </div>
       </div>

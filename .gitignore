@@ -19,3 +19,4 @@ build/
 scratch/
 .system_generated/
 *.zip
+!update-simpel-if.zip
