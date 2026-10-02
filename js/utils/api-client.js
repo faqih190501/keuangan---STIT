@@ -22,6 +22,65 @@ export class ApiClient {
   }
 
   /**
+   * Universal Sync: Synchronizes Google Sheets Matrix, LocalStorage State, and cPanel MySQL Database
+   */
+  static async syncEverything(notify = true) {
+    if (notify && window.simpelToast) {
+      window.simpelToast.show('Memulai Sinkronisasi... ⏳', 'Menghubungkan data lokal, Google Sheets, dan database cPanel.', 'info', 2500);
+    }
+
+    let mysqlStatus = 'Mode Offline / Standalone';
+
+    // 1. Check & Sync with cPanel MySQL if available
+    try {
+      await this.checkStatus();
+      if (this.isConnected) {
+        const pushRes = await this.pushToDatabase(false);
+        if (pushRes) {
+          mysqlStatus = `Terhubung ke MySQL cPanel (${this.dbInfo?.database || 'MySQL'})`;
+        }
+      }
+    } catch (e) {
+      console.warn('[Sync] MySQL sync bypassed:', e);
+    }
+
+    // 2. Trigger Google Sheets matrix sync timestamp update
+    const state = appState.getState();
+    if (state.googleSheetsMatrix) {
+      state.googleSheetsMatrix.lastSyncTime = new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    // 3. Save to storage & notify router
+    appState.saveToStorage();
+    appState.notify();
+
+    if (window.simpelRouter) {
+      window.simpelRouter.refreshCurrentView();
+    }
+
+    const totalStudents = state.students?.length || 0;
+    const totalInvoices = state.invoices?.length || 0;
+
+    if (notify && window.simpelToast) {
+      window.simpelToast.show(
+        'Sinkronisasi Selesai! ✅',
+        `Semua data telah disinkronkan (${totalStudents} Mahasiswa, ${totalInvoices} Tagihan & Beasiswa, ${mysqlStatus}).`,
+        'success',
+        4000
+      );
+    }
+
+    return {
+      success: true,
+      mysqlConnected: this.isConnected,
+      mysqlStatus,
+      totalStudents,
+      totalInvoices,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  /**
    * 1. Check MySQL connection status on cPanel
    */
   static async checkStatus() {

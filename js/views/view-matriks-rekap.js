@@ -686,19 +686,19 @@ export function renderMatriksRekapView(container) {
 
     // Top & bottom actions: Sync live
     container.querySelectorAll('#btn-sync-live-sheets, #btn-run-full-sync').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         const origText = btn.innerHTML;
-        btn.innerHTML = '⏳ Menghubungkan ke Google Sheets...';
-        setTimeout(() => {
+        btn.innerHTML = '⏳ Menyinkronkan Semua Data...';
+        if (window.simpelApi) {
+          await window.simpelApi.syncEverything(true);
+        } else {
           appState.notify();
           if (window.simpelToast) {
             window.simpelToast.show('Sinkronisasi Berhasil', 'Data pangkalan kampus telah disinkronkan dengan Google Spreadsheet!', 'success');
-          } else {
-            alert('✅ Berhasil menyinkronkan data dengan Google Spreadsheet STIT Ihsanul Fikri!');
           }
-          btn.innerHTML = origText;
-          render();
-        }, 700);
+        }
+        btn.innerHTML = origText;
+        render();
       });
     });
 

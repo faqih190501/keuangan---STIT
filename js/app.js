@@ -185,7 +185,9 @@ class Router {
     const btnSyncState = document.getElementById('btn-sync-reset-state');
     if (btnSyncState) {
       btnSyncState.addEventListener('click', () => {
-        if (confirm('Apakah Anda ingin menyinkronkan ulang data awal SIMPEL-IF?\n\nSemua skema beasiswa, tarif, dan data mahasiswa akan diperbarui ke versi mutakhir.')) {
+        if (window.simpelApi) {
+          window.simpelApi.syncEverything(true);
+        } else {
           appState.resetAllData();
           window.simpelToast.show('Data Disinkronkan', 'Data sistem berhasil diperbarui ke versi mutakhir.', 'success');
           this.refreshCurrentView();

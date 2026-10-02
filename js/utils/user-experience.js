@@ -250,8 +250,10 @@ export class UserExperienceHelper {
           ModalManager.openAdminSelfProfileModal();
         }
       }, type: 'ACTION' },
-      { title: 'Sinkronkan Ulang Data Awal', desc: 'Reset dan segarkan data master simulasi ke versi terbaru', icon: '🔄', action: () => {
-        if (confirm('Sinkronkan ulang data awal SIMPEL-IF?')) {
+      { title: 'Sinkronisasi Menyeluruh (Sheets & Database)', desc: 'Sinkronkan seluruh data mahasiswa, tagihan, Google Sheets, dan database cPanel', icon: '🔄', action: () => {
+        if (window.simpelApi) {
+          window.simpelApi.syncEverything(true);
+        } else {
           appState.resetAllData();
           if (window.simpelToast) window.simpelToast.show('Data Disinkronkan', 'Data master berhasil diperbarui.', 'success');
           if (window.simpelRouter) window.simpelRouter.refreshCurrentView();
