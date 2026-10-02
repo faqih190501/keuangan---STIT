@@ -4,7 +4,7 @@
  * Offline caching & multiplatform PWA support
  */
 
-const CACHE_NAME = 'simpel-if-v5.4.1';
+const CACHE_NAME = 'simpel-if-v5.5.0';
 
 const STATIC_ASSETS = [
   './',
