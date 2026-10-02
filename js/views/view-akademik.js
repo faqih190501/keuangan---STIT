@@ -45,13 +45,16 @@ export function renderAkademikView(container) {
         <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">Pantau pangkalan data mahasiswa yang telah terdaftar di aplikasi, kontak WhatsApp aktif, skema beasiswa, dan status pembayaran.</p>
       </div>
       <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-primary" id="btn-create-invoice-modal" style="font-weight: 800; background: #047857; border-color: #047857;">
+          📄 + Terbitkan Tagihan Mahasiswa
+        </button>
         <button class="btn btn-outline" id="btn-export-students" style="font-weight: 700;">
           📥 Ekspor Data (.csv)
         </button>
         <button class="btn btn-outline" id="btn-print-students-dir" style="font-weight: 700;">
           🖨️ Cetak Direktori
         </button>
-        <button class="btn btn-primary" id="btn-add-student-modal" style="font-weight: 800;">
+        <button class="btn btn-outline" id="btn-add-student-modal" style="font-weight: 700;">
           + Tambah Mahasiswa Baru
         </button>
       </div>
@@ -196,6 +199,13 @@ export function renderAkademikView(container) {
   `;
 
   // Attach Event Listeners
+  const btnCreateInv = container.querySelector('#btn-create-invoice-modal');
+  if (btnCreateInv) {
+    btnCreateInv.addEventListener('click', () => {
+      window.simpelModals.openNewInvoiceModal();
+    });
+  }
+
   const btnAdd = container.querySelector('#btn-add-student-modal');
   if (btnAdd) {
     btnAdd.addEventListener('click', () => {
@@ -399,6 +409,9 @@ function renderStudentsTableRows(students, state, getStudentInvoiceSummary) {
         </td>
         <td>
           <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button class="btn btn-outline btn-sm btn-invoice-student" data-student-nim="${s.nim}" title="Terbitkan Tagihan Baru untuk Mahasiswa Ini" style="color: #047857; border-color: #a7f3d0; background: #ecfdf5; font-weight: 800;">
+              📄 Tagihan
+            </button>
             <button class="btn btn-outline btn-sm btn-detail-student" data-student-nim="${s.nim}" title="Lihat Profil Lengkap & Histori Tagihan" style="font-weight: 700;">
               👁️ Detail
             </button>
@@ -422,6 +435,14 @@ function renderStudentsTableRows(students, state, getStudentInvoiceSummary) {
 }
 
 function attachStudentRowActions(container) {
+  // Invoice button handler
+  container.querySelectorAll('.btn-invoice-student').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nim = btn.getAttribute('data-student-nim');
+      window.simpelModals.openNewInvoiceModal(nim);
+    });
+  });
+
   // Detail button handler
   container.querySelectorAll('.btn-detail-student').forEach(btn => {
     btn.addEventListener('click', () => {

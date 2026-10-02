@@ -74,6 +74,9 @@ export function renderMatriksRekapView(container) {
           </p>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+          <button class="btn btn-primary" id="btn-matriks-new-invoice" style="font-weight: 800; background: #047857; border-color: #047857;">
+            <span>📄</span> + Terbitkan Tagihan Mahasiswa
+          </button>
           <a href="${activeTab === 'BKPI_2026' ? (matrix.spreadsheetUrlBKPI || 'https://docs.google.com/spreadsheets/d/1nqh4jksle3r95PlupTIKve11iUxmg3hSdYOB3NTKp3U/edit?pli=1&gid=814809663#gid=814809663') : (matrix.spreadsheetUrlPIAUD || matrix.spreadsheetUrl || 'https://docs.google.com/spreadsheets/d/1nqh4jksle3r95PlupTIKve11iUxmg3hSdYOB3NTKp3U/edit?pli=1&gid=1770791775#gid=1770791775')}" target="_blank" rel="noopener" class="btn btn-outline" style="font-weight: 700; color: #047857; border-color: #a7f3d0; background: #ecfdf5;" title="Buka Spreadsheet Asli di Tab Baru">
             <span>🌐</span> Buka Google Sheet ↗
           </a>
@@ -334,6 +337,9 @@ export function renderMatriksRekapView(container) {
                   </td>
                   <td style="text-align: center;" onclick="event.stopPropagation();">
                     <div style="display: flex; gap: 4px; justify-content: center;">
+                      <button class="btn btn-outline btn-sm btn-action-quick-invoice" data-nim="${item.nim}" title="Terbitkan Tagihan Sesuai Beasiswa" style="padding: 3px 7px; font-size: 0.72rem; font-weight: 700; color: #047857; border-color: #a7f3d0; background: #ecfdf5;">
+                        📄
+                      </button>
                       <button class="btn btn-outline btn-sm btn-action-detail-student" data-nim="${item.nim}" title="Lihat Profil & Rincian Tagihan" style="padding: 3px 7px; font-size: 0.72rem; font-weight: 700;">
                         👁️
                       </button>
@@ -466,9 +472,14 @@ export function renderMatriksRekapView(container) {
                   <td style="font-weight: 700; color: #15803d;">Rp 450.000</td>
                   <td style="font-weight: 800; color: #1e40af;">Rp 1.440.000</td>
                   <td>
-                    <button class="btn btn-outline btn-sm btn-action-detail-student" data-nim="${s.nim}" style="padding: 3px 8px; font-size: 0.72rem;">
-                      Detail
-                    </button>
+                    <div style="display: flex; gap: 4px;">
+                      <button class="btn btn-outline btn-sm btn-action-quick-invoice" data-nim="${s.nim}" title="Terbitkan Tagihan Sesuai Beasiswa" style="padding: 3px 8px; font-size: 0.72rem; font-weight: 700; color: #047857; border-color: #a7f3d0; background: #ecfdf5;">
+                        📄 Tagihan
+                      </button>
+                      <button class="btn btn-outline btn-sm btn-action-detail-student" data-nim="${s.nim}" style="padding: 3px 8px; font-size: 0.72rem;">
+                        Detail
+                      </button>
+                    </div>
                   </td>
                 </tr>
               `).join('')}
@@ -595,6 +606,23 @@ export function renderMatriksRekapView(container) {
         e.stopPropagation();
         const nim = btn.getAttribute('data-nim');
         if (nim) ModalManager.openStudentDetailModal(nim);
+      });
+    });
+
+    // Top Header: New Invoice
+    const btnMatriksNewInv = container.querySelector('#btn-matriks-new-invoice');
+    if (btnMatriksNewInv) {
+      btnMatriksNewInv.addEventListener('click', () => {
+        ModalManager.openNewInvoiceModal();
+      });
+    }
+
+    // Quick Invoice buttons inside tables
+    container.querySelectorAll('.btn-action-quick-invoice').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const nim = btn.getAttribute('data-nim');
+        if (nim) ModalManager.openNewInvoiceModal(nim);
       });
     });
 

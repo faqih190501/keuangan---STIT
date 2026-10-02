@@ -517,7 +517,7 @@ export function renderDashboardBendahara(container) {
   const btnNewInv = container.querySelector('#btn-quick-new-invoice');
   if (btnNewInv) {
     btnNewInv.addEventListener('click', () => {
-      window.simpelModals.openAddStudentModal();
+      window.simpelModals.openNewInvoiceModal();
     });
   }
 

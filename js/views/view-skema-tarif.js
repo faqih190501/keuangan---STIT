@@ -22,7 +22,10 @@ export function renderSkemaTarifView(container) {
         <p style="font-size: 0.8rem; color: var(--text-light);">Admin/Bendahara dapat mengedit nama, regulasi, persentase diskon, menambah skema program beasiswa baru, serta menetapkan dispensasi cicilan mahasiswa.</p>
       </div>
       <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <button class="btn btn-primary" id="btn-open-add-scheme">
+        <button class="btn btn-primary" id="btn-open-create-invoice-from-schemes" style="font-weight: 800; background: #047857; border-color: #047857;">
+          📄 + Terbitkan Tagihan Sesuai Skema
+        </button>
+        <button class="btn btn-outline" id="btn-open-add-scheme">
           + Tambah Skema Beasiswa Baru
         </button>
         <button class="btn btn-outline" id="btn-open-add-override">
@@ -252,6 +255,9 @@ export function renderSkemaTarifView(container) {
       window.simpelModals.openEditSchemeModal(schemeId);
     });
   });
+
+  const btnCreateInv = container.querySelector('#btn-open-create-invoice-from-schemes');
+  if (btnCreateInv) btnCreateInv.addEventListener('click', () => window.simpelModals.openNewInvoiceModal());
 
   const btnAddScheme1 = container.querySelector('#btn-open-add-scheme');
   const btnAddScheme2 = container.querySelector('#btn-add-scheme-card-header');

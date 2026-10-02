@@ -8,15 +8,16 @@ import { STATUS_TAGIHAN } from './models.js';
 
 export class BillingEngine {
   /**
-   * Calculate invoice breakdown for a specific student
+   * Calculate invoice breakdown for a specific student tailored to scholarship scheme
    */
-  static calculateInvoice(student, semester) {
+  static calculateInvoice(student, semester, options = {}) {
     const state = appState.getState();
-    const feeComponents = state.feeComponents;
-    const scholarshipSchemes = state.scholarshipSchemes;
+    const feeComponents = state.feeComponents || [];
+    const scholarshipSchemes = state.scholarshipSchemes || [];
     const individualOverrides = state.individualOverrides || [];
 
-    const scholarship = scholarshipSchemes.find(s => s.id === student.scholarshipId) || scholarshipSchemes[0];
+    const effectiveScholarshipId = options.scholarshipId || student.scholarshipId;
+    const scholarship = scholarshipSchemes.find(s => s.id === effectiveScholarshipId) || scholarshipSchemes[0] || { id: 'REGULER', discountType: 'PERCENT', discountValue: 0 };
     const studentOverride = individualOverrides.find(
       ov => ov.studentNim === student.nim && ov.semester === semester && ov.status === 'ACTIVE'
     );
@@ -25,9 +26,11 @@ export class BillingEngine {
     let grossAmount = 0;
     let totalDiscount = 0;
 
+    const shouldInclude = (id) => !options.selectedComponentIds || options.selectedComponentIds.includes(id);
+
     // 1. SPP / UKT Pokok
-    const sppComp = feeComponents.find(c => c.id === 'SPP');
-    if (sppComp) {
+    if (shouldInclude('SPP')) {
+      const sppComp = feeComponents.find(c => c.id === 'SPP') || { name: 'SPP / UKT Pokok Semester', defaultAmount: 2400000 };
       let sppDiscount = 0;
       if (scholarship.id !== 'REGULER') {
         if (scholarship.discountType === 'PERCENT') {
@@ -37,9 +40,12 @@ export class BillingEngine {
         }
       }
 
-      // Check additional discount from individual override
+      // Check additional discount from individual override or options.extraDiscount
       if (studentOverride && studentOverride.overrideType === 'ADDITIONAL_DISCOUNT') {
         sppDiscount += studentOverride.discountAmount || 0;
+      }
+      if (options.extraDiscount) {
+        sppDiscount += Number(options.extraDiscount) || 0;
       }
 
       // Max discount cannot exceed base
@@ -59,8 +65,8 @@ export class BillingEngine {
     }
 
     // 2. Daftar Ulang (Every semester)
-    const duComp = feeComponents.find(c => c.id === 'DAFTAR_ULANG');
-    if (duComp) {
+    if (shouldInclude('DAFTAR_ULANG')) {
+      const duComp = feeComponents.find(c => c.id === 'DAFTAR_ULANG') || { name: 'Biaya Daftar Ulang / Heregistrasi', defaultAmount: 450000 };
       items.push({
         componentId: 'DAFTAR_ULANG',
         name: duComp.name,
@@ -71,37 +77,66 @@ export class BillingEngine {
       grossAmount += duComp.defaultAmount;
     }
 
-    // 3. Pendaftaran Maba (Semester 1 only)
-    if (student.semester === 1) {
-      const pendComp = feeComponents.find(c => c.id === 'PENDAFTARAN');
-      if (pendComp) {
-        items.push({
-          componentId: 'PENDAFTARAN',
-          name: pendComp.name,
-          baseAmount: pendComp.defaultAmount,
-          discount: 0,
-          finalAmount: pendComp.defaultAmount
-        });
-        grossAmount += pendComp.defaultAmount;
-      }
+    // 3. Pendaftaran Maba (Semester 1 only unless forced or explicitly selected)
+    if (shouldInclude('PENDAFTARAN') && (options.forceAllComponents || student.semester === 1 || options.selectedComponentIds)) {
+      const pendComp = feeComponents.find(c => c.id === 'PENDAFTARAN') || { name: 'Biaya Pendaftaran & Formulir PMB', defaultAmount: 200000 };
+      items.push({
+        componentId: 'PENDAFTARAN',
+        name: pendComp.name,
+        baseAmount: pendComp.defaultAmount,
+        discount: 0,
+        finalAmount: pendComp.defaultAmount
+      });
+      grossAmount += pendComp.defaultAmount;
     }
 
-    // 4. Wisuda / Munaqosyah (Semester 7 or 8)
-    if (student.semester >= 7) {
-      const wisudaComp = feeComponents.find(c => c.id === 'WISUDA');
-      if (wisudaComp) {
-        items.push({
-          componentId: 'WISUDA',
-          name: wisudaComp.name,
-          baseAmount: wisudaComp.defaultAmount,
-          discount: 0,
-          finalAmount: wisudaComp.defaultAmount
-        });
-        grossAmount += wisudaComp.defaultAmount;
-      }
+    // 4. Wisuda / Munaqosyah (Semester 7 or 8 unless forced or explicitly selected)
+    if (shouldInclude('WISUDA') && (options.forceAllComponents || student.semester >= 7 || options.selectedComponentIds)) {
+      const wisudaComp = feeComponents.find(c => c.id === 'WISUDA') || { name: 'Biaya Munaqosyah & Wisuda', defaultAmount: 1500000 };
+      items.push({
+        componentId: 'WISUDA',
+        name: wisudaComp.name,
+        baseAmount: wisudaComp.defaultAmount,
+        discount: 0,
+        finalAmount: wisudaComp.defaultAmount
+      });
+      grossAmount += wisudaComp.defaultAmount;
     }
 
-    const netAmount = grossAmount - totalDiscount;
+    // 5. Asrama Pesantren (If selected or explicitly included)
+    if (shouldInclude('ASRAMA') && options.selectedComponentIds) {
+      const asramaBase = Number(options.asramaAmount) || 500000;
+      items.push({
+        componentId: 'ASRAMA',
+        name: 'Iuran Asrama Santri Mukim As-Syamil',
+        baseAmount: asramaBase,
+        discount: 0,
+        finalAmount: asramaBase
+      });
+      grossAmount += asramaBase;
+    }
+
+    // Custom items if provided
+    if (Array.isArray(options.customItems)) {
+      options.customItems.forEach(ci => {
+        const base = Number(ci.baseAmount) || 0;
+        const disc = Number(ci.discount) || 0;
+        const fin = Math.max(0, base - disc);
+        if (base > 0) {
+          items.push({
+            componentId: ci.componentId || 'CUSTOM',
+            name: ci.name || 'Tagihan Lainnya',
+            baseAmount: base,
+            discount: disc,
+            finalAmount: fin
+          });
+          grossAmount += base;
+          totalDiscount += disc;
+        }
+      });
+    }
+
+    const netAmount = Math.max(0, grossAmount - totalDiscount);
 
     // Virtual Account Resmi Bank Syariah Indonesia (BSI) STIT-IF
     const virtualAccount = '1056405743';
@@ -112,8 +147,76 @@ export class BillingEngine {
       totalDiscount,
       netAmount,
       virtualAccount,
-      studentOverride
+      studentOverride,
+      scholarship
     };
+  }
+
+  /**
+   * Create and record a new student invoice tailored to their scholarship track
+   */
+  static createStudentInvoice({
+    studentNim,
+    semester,
+    scholarshipId,
+    items,
+    grossAmount,
+    totalDiscount,
+    netAmount,
+    dueDate,
+    notes = '',
+    customVirtualAccount = '1056405743'
+  }) {
+    const state = appState.getState();
+    const student = (state.students || []).find(s => s.nim === studentNim);
+    if (!student) return { success: false, message: 'Mahasiswa tidak ditemukan' };
+
+    const scholarshipSchemes = state.scholarshipSchemes || [];
+    const scholarship = scholarshipSchemes.find(s => s.id === scholarshipId) || scholarshipSchemes[0] || { id: 'REGULER', name: 'Reguler' };
+
+    const invId = `INV-${Date.now().toString().slice(-6)}-${student.nim.slice(-3)}`;
+    const isZeroBill = netAmount <= 0;
+
+    const pad = (n) => n.toString().padStart(2, '0');
+    const now = new Date();
+    const receiptSerial = Math.floor(1000 + Math.random() * 9000);
+    const autoReceipt = `KW-IF/${now.getFullYear()}/${pad(now.getMonth() + 1)}/${receiptSerial}`;
+
+    const newInvoice = {
+      id: invId,
+      studentNim: student.nim,
+      studentName: student.name,
+      semester: semester || state.activeSemester || '2026/2027 Ganjil',
+      createdDate: new Date().toISOString().slice(0, 10),
+      dueDate: dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+      items: items || [],
+      grossAmount: Number(grossAmount) || 0,
+      totalDiscount: Number(totalDiscount) || 0,
+      netAmount: Math.max(0, Number(netAmount) || 0),
+      paidAmount: isZeroBill ? 0 : 0,
+      status: isZeroBill ? STATUS_TAGIHAN.LUNAS : STATUS_TAGIHAN.BELUM_BAYAR,
+      paymentMethod: isZeroBill ? 'SUBSIDI_BEASISWA_100' : 'VA_BSI',
+      receiptNumber: isZeroBill ? autoReceipt : null,
+      paymentDate: isZeroBill ? new Date().toISOString().slice(0, 10) : null,
+      virtualAccount: customVirtualAccount,
+      scholarshipId: scholarship.id,
+      scholarshipName: scholarship.name,
+      notes: notes || `Tagihan semester ${semester} (Jalur Beasiswa: ${scholarship.name})`
+    };
+
+    if (!state.invoices) state.invoices = [];
+    state.invoices.unshift(newInvoice);
+
+    appState.addAuditLog(
+      'CREATE_INVOICE_SCHOLARSHIP',
+      `${newInvoice.id} (${student.name} - ${student.nim})`,
+      `Penerbitan tagihan semester ${newInvoice.semester} dengan Skema ${scholarship.name}. Tarif Bruto: Rp ${grossAmount.toLocaleString('id-ID')}, Subsidi Beasiswa: Rp ${totalDiscount.toLocaleString('id-ID')}, Wajib Bayar: Rp ${newInvoice.netAmount.toLocaleString('id-ID')}.`
+    );
+
+    appState.saveState();
+    appState.notify();
+
+    return { success: true, invoice: newInvoice, student, scholarship };
   }
 
   /**

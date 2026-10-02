@@ -8,6 +8,7 @@ import { formatRupiah, formatDate, formatDateTime, terbilang, getProdiBadge, get
 import { generateQRCodeSVG, createReceiptValidationToken } from './utils/qr-engine.js';
 import { BillingEngine } from './billing-engine.js';
 import { printReceiptElement } from './utils/export-engine.js';
+import { STATUS_TAGIHAN, SCHOLARSHIP_TYPES, SCHOLARSHIP_SCHEMES, STANDARD_FEES } from './models.js';
 
 export class ModalManager {
   static init() {
@@ -1654,9 +1655,14 @@ export class ModalManager {
 
         <!-- Histori Tagihan & Kwitansi Mahasiswa -->
         <div style="border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 18px 22px; background: #ffffff;">
-          <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0 0 14px; display: flex; align-items: center; justify-content: space-between;">
-            <span>📜 Riwayat Tagihan & Kwitansi (${studentInvoices.length} Transaksi)</span>
-          </h4>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+            <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0;">
+              📜 Riwayat Tagihan & Kwitansi (${studentInvoices.length} Transaksi)
+            </h4>
+            <button type="button" class="btn btn-sm btn-primary" id="btn-detail-add-invoice" style="background: #047857; border: none; font-weight: 800; font-size: 0.74rem; padding: 5px 12px; display: inline-flex; align-items: center; gap: 4px;">
+              <span>+</span> Terbitkan Tagihan Baru
+            </button>
+          </div>
           <div class="table-responsive">
             <table class="custom-table" style="font-size: 0.82rem;">
               <thead>
@@ -1707,7 +1713,10 @@ export class ModalManager {
         <a href="https://wa.me/${waNumber}?text=Assalamu'alaikum%20${encodeURIComponent(student.name)},%20ini%20dari%20Admin%20Keuangan%20STIT%20Ihsanul%20Fikri." target="_blank" rel="noopener" class="btn btn-sm" style="background: #16a34a; color: #ffffff; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
           📱 Hubungi via WhatsApp (${student.phone || '082342307414'})
         </a>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="btn btn-primary btn-sm" id="btn-detail-footer-add-invoice" style="font-weight: 800; background: #047857; border-color: #047857;">
+            📄 + Terbitkan Tagihan
+          </button>
           <button class="btn btn-outline btn-sm" id="btn-detail-open-chg-pwd" style="font-weight: 700; color: #0284c7; border-color: #bae6fd; background: #f0f9ff;">
             🔑 Ganti Password
           </button>
@@ -1740,6 +1749,20 @@ export class ModalManager {
       quickChgBtn.addEventListener('click', () => {
         ModalManager.closeModal();
         ModalManager.openChangeStudentPasswordModal(student.nim);
+      });
+    }
+    const btnAddInvHeader = body.querySelector('#btn-detail-add-invoice');
+    if (btnAddInvHeader) {
+      btnAddInvHeader.addEventListener('click', () => {
+        ModalManager.closeModal();
+        ModalManager.openNewInvoiceModal(student.nim);
+      });
+    }
+    const btnAddInvFooter = footer.querySelector('#btn-detail-footer-add-invoice');
+    if (btnAddInvFooter) {
+      btnAddInvFooter.addEventListener('click', () => {
+        ModalManager.closeModal();
+        ModalManager.openNewInvoiceModal(student.nim);
       });
     }
     footer.querySelector('#btn-goto-student-portal-detail').addEventListener('click', () => {
@@ -3438,145 +3461,889 @@ export class ModalManager {
   /**
    * New Invoice Modal (for Bendahara to generate ad-hoc / semester invoices)
    */
-  static openNewInvoiceModal(nim = '') {
-    const { overlay, title, body, footer } = this.getModalElements();
+  /**
+   * New Invoice Modal (for Bendahara/Admin to generate invoices tailored to student's scholarship track)
+   */
+  static openNewInvoiceModal(nim = '', prefillData = {}) {
+    const { overlay, card, title, body, footer } = this.getModalElements();
     const state = appState.getState();
-    const student = (state.students || []).find(s => s.nim === nim) || {};
+    const students = state.students || [];
+    const scholarshipSchemes = state.scholarshipSchemes || SCHOLARSHIP_SCHEMES || [];
+    const feeComponents = state.feeComponents || [];
+    const activeSemester = prefillData.semester || state.activeSemester || '2026/2027 Ganjil';
 
-    title.innerHTML = `📄 Terbitkan Tagihan Baru`;
-    body.innerHTML = `
-      <div style="font-size: 0.82rem; color: var(--text-light); margin-bottom: 16px;">
-        Penerbitan tagihan biaya perkuliahan, registrasi semester, atau komponen khusus mahasiswa.
-      </div>
-      <form id="form-new-invoice" style="display: flex; flex-direction: column; gap: 14px;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div>
-            <label class="form-label">NIM Mahasiswa <span style="color:var(--danger);">*</span></label>
-            <input type="text" class="form-control" id="new-inv-nim" value="${nim || student.nim || ''}" required style="font-family: var(--font-mono); font-weight: 700;">
-          </div>
-          <div>
-            <label class="form-label">Nama Mahasiswa</label>
-            <input type="text" class="form-control" id="new-inv-name" value="${student.name || ''}" placeholder="Nama mahasiswa..." style="font-weight: 700;">
-          </div>
-        </div>
+    card.classList.remove('modal-sm');
+    card.classList.add('modal-xl');
+    body.scrollTop = 0;
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div>
-            <label class="form-label">Semester Akademik <span style="color:var(--danger);">*</span></label>
-            <select class="form-control" id="new-inv-semester">
-              <option value="2026/2027 Ganjil" selected>2026/2027 Ganjil</option>
-              <option value="2026/2027 Genap">2026/2027 Genap</option>
-              <option value="2025/2026 Ganjil">2025/2026 Ganjil</option>
-              <option value="2025/2026 Genap">2025/2026 Genap</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Jenis Tagihan / Komponen</label>
-            <select class="form-control" id="new-inv-type">
-              <option value="SPP">SPP Perkuliahan</option>
-              <option value="DAFTAR_ULANG">Daftar Ulang (Her-Registrasi)</option>
-              <option value="PENDAFTARAN">Biaya Formulir PMB</option>
-              <option value="ASRAMA">Iuran Asrama As-Syamil</option>
-              <option value="UJIAN">Biaya Ujian / Munaqosyah</option>
-              <option value="LAINNYA">Tagihan Lainnya</option>
-            </select>
-          </div>
-        </div>
+    let selectedStudent = students.find(s => s.nim === (nim || prefillData.studentNim)) || null;
+    let selectedScholarshipId = selectedStudent ? (selectedStudent.scholarshipId || 'REGULER') : 'REGULER';
+    let selectedSemester = activeSemester;
+    let mode = 'PACKAGE'; // 'PACKAGE' or 'CUSTOM'
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div>
-            <label class="form-label">Nominal Tagihan (Rp) <span style="color:var(--danger);">*</span></label>
-            <input type="number" class="form-control" id="new-inv-amount" placeholder="Contoh: 1850000" min="10000" step="10000" required style="font-family: var(--font-mono); font-weight: 800; font-size: 1rem; color: var(--primary-700);">
-          </div>
-          <div>
-            <label class="form-label">Diskon / Potongan (Rp)</label>
-            <input type="number" class="form-control" id="new-inv-discount" value="0" min="0" step="5000" style="font-family: var(--font-mono);">
-          </div>
-        </div>
+    // Component configurations
+    const sppComp = feeComponents.find(c => c.id === 'SPP') || { name: 'SPP / UKT Pokok Semester', defaultAmount: 2400000 };
+    const duComp = feeComponents.find(c => c.id === 'DAFTAR_ULANG') || { name: 'Biaya Daftar Ulang / Heregistrasi', defaultAmount: 450000 };
+    const pendComp = feeComponents.find(c => c.id === 'PENDAFTARAN') || { name: 'Biaya Formulir & Pendaftaran PMB', defaultAmount: 200000 };
+    const wisudaComp = feeComponents.find(c => c.id === 'WISUDA') || { name: 'Biaya Wisuda & Munaqosyah', defaultAmount: 1500000 };
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div>
-            <label class="form-label">Batas Jatuh Tempo</label>
-            <input type="date" class="form-control" id="new-inv-due-date" value="${new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0]}">
-          </div>
-          <div>
-            <label class="form-label">Keterangan / Catatan</label>
-            <input type="text" class="form-control" id="new-inv-notes" placeholder="Catatan tagihan...">
-          </div>
-        </div>
-      </form>
-    `;
+    let incSpp = true;
+    let incDu = true;
+    let incPend = selectedStudent ? selectedStudent.semester === 1 : false;
+    let incWisuda = selectedStudent ? selectedStudent.semester >= 7 : false;
+    let incAsrama = selectedScholarshipId === 'ASRAMA';
+    let incCustom = false;
 
-    footer.innerHTML = `
-      <button class="btn btn-secondary" id="btn-cancel-new-inv" style="font-weight: 700;">Batal</button>
-      <button class="btn btn-primary" id="btn-submit-new-inv" style="font-weight: 800;">
-        📤 Terbitkan Tagihan
-      </button>
-    `;
+    let sppBase = sppComp.defaultAmount || 2400000;
+    let duBase = duComp.defaultAmount || 450000;
+    let pendBase = pendComp.defaultAmount || 200000;
+    let wisudaBase = wisudaComp.defaultAmount || 1500000;
+    let asramaBase = 500000;
+    let customName = '';
+    let customBase = 0;
+    let extraDiscount = 0;
 
-    footer.querySelector('#btn-cancel-new-inv').onclick = () => ModalManager.closeModal();
+    const defaultDueDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    let dueDateVal = defaultDueDate;
+    let notesVal = '';
 
-    footer.querySelector('#btn-submit-new-inv').onclick = () => {
-      const invNim = body.querySelector('#new-inv-nim').value.trim();
-      const invSemester = body.querySelector('#new-inv-semester').value;
-      const invType = body.querySelector('#new-inv-type').value;
-      const baseAmt = Number(body.querySelector('#new-inv-amount').value);
-      const discAmt = Number(body.querySelector('#new-inv-discount').value) || 0;
-      const dueDate = body.querySelector('#new-inv-due-date').value;
-      const notes = body.querySelector('#new-inv-notes').value.trim();
+    title.innerHTML = `📄 Terbitkan Tagihan Mahasiswa (Sistem Subsidi Beasiswa)`;
 
-      if (!invNim) {
-        window.simpelToast.show('Validasi Gagal', 'NIM Mahasiswa wajib diisi.', 'danger');
-        return;
+    function renderModalUI() {
+      // Find current scholarship object
+      const sch = scholarshipSchemes.find(s => s.id === selectedScholarshipId) || scholarshipSchemes[0] || { id: 'REGULER', name: 'Reguler (Tarif Standar)', discountType: 'PERCENT', discountValue: 0 };
+
+      // Calculate SPP discount according to scholarship
+      let sppDiscount = 0;
+      if (sch.id !== 'REGULER') {
+        if (sch.discountType === 'PERCENT') {
+          sppDiscount = Math.round((sppBase * sch.discountValue) / 100);
+        } else if (sch.discountType === 'FIXED') {
+          sppDiscount = Math.min(sch.discountValue, sppBase);
+        }
       }
-      if (!baseAmt || baseAmt < 1000) {
-        window.simpelToast.show('Validasi Gagal', 'Nominal tagihan tidak valid.', 'danger');
-        return;
+      sppDiscount = Math.min(sppDiscount, sppBase);
+
+      // Compute selected items
+      const items = [];
+      let totalGross = 0;
+      let totalDisc = 0;
+
+      if (incSpp) {
+        const sppNet = Math.max(0, sppBase - sppDiscount);
+        items.push({
+          componentId: 'SPP',
+          name: sppComp.name,
+          baseAmount: sppBase,
+          discount: sppDiscount,
+          finalAmount: sppNet
+        });
+        totalGross += sppBase;
+        totalDisc += sppDiscount;
       }
 
-      const st = (state.students || []).find(s => s.nim === invNim);
-      const netAmt = Math.max(0, baseAmt - discAmt);
-      const invId = `INV-${Date.now()}`;
+      if (incDu) {
+        items.push({
+          componentId: 'DAFTAR_ULANG',
+          name: duComp.name,
+          baseAmount: duBase,
+          discount: 0,
+          finalAmount: duBase
+        });
+        totalGross += duBase;
+      }
 
-      const newInvoice = {
-        id: invId,
-        studentNim: invNim,
-        studentName: st ? st.name : (body.querySelector('#new-inv-name').value.trim() || 'Mahasiswa'),
-        semester: invSemester,
-        createdDate: new Date().toISOString().split('T')[0],
-        dueDate: dueDate,
-        items: [
-          {
-            componentId: invType,
-            name: `Tagihan ${invType} - ${invSemester}`,
-            baseAmount: baseAmt,
-            discount: discAmt,
-            finalAmount: netAmt,
-            isMandatory: true
+      if (incPend) {
+        items.push({
+          componentId: 'PENDAFTARAN',
+          name: pendComp.name,
+          baseAmount: pendBase,
+          discount: 0,
+          finalAmount: pendBase
+        });
+        totalGross += pendBase;
+      }
+
+      if (incWisuda) {
+        items.push({
+          componentId: 'WISUDA',
+          name: wisudaComp.name,
+          baseAmount: wisudaBase,
+          discount: 0,
+          finalAmount: wisudaBase
+        });
+        totalGross += wisudaBase;
+      }
+
+      if (incAsrama) {
+        items.push({
+          componentId: 'ASRAMA',
+          name: 'Iuran Asrama Santri Mukim As-Syamil',
+          baseAmount: asramaBase,
+          discount: 0,
+          finalAmount: asramaBase
+        });
+        totalGross += asramaBase;
+      }
+
+      if (incCustom && customBase > 0) {
+        items.push({
+          componentId: 'CUSTOM',
+          name: customName || 'Komponen Lainnya',
+          baseAmount: customBase,
+          discount: 0,
+          finalAmount: customBase
+        });
+        totalGross += customBase;
+      }
+
+      const extraDiscNum = Math.max(0, Number(extraDiscount) || 0);
+      if (extraDiscNum > 0) {
+        const applicableExtra = Math.min(extraDiscNum, Math.max(0, totalGross - totalDisc));
+        totalDisc += applicableExtra;
+      }
+
+      const totalNet = Math.max(0, totalGross - totalDisc);
+
+      // Check existing invoice for warning
+      const existingInv = selectedStudent ? (state.invoices || []).find(
+        inv => inv.studentNim === selectedStudent.nim && inv.semester === selectedSemester
+      ) : null;
+
+      // Auto update note if not user-edited
+      if (!notesVal || notesVal.startsWith('Tagihan ')) {
+        notesVal = `Tagihan ${selectedSemester} (${sch.shortName || sch.name}${sppDiscount > 0 ? ` - Subsidi SPP ${sch.discountValue}%` : ''})`;
+      }
+
+      body.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+          
+          <!-- Banner Penjelasan Fitur -->
+          <div style="background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%); border: 1px solid #bbf7d0; border-radius: var(--radius-lg); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: #059669; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 900; flex-shrink: 0;">
+                🎓
+              </div>
+              <div>
+                <div style="font-weight: 800; font-size: 0.92rem; color: #065f46;">
+                  Penagihan Pintar Berbasis Skema Subsidi Beasiswa
+                </div>
+                <div style="font-size: 0.78rem; color: #047857; margin-top: 2px;">
+                  Sistem otomatis menghitung besaran subsidi SPP berdasarkan <strong>Jalur Beasiswa</strong> mahasiswa, menerbitkan nomor Virtual Account BSI resmi, dan mencatat transparansi audit keuangan kampus.
+                </div>
+              </div>
+            </div>
+            <span class="badge" style="background: #0284c7; color: #ffffff; font-weight: 800; padding: 4px 10px; font-size: 0.74rem;">
+              STIT Ihsanul Fikri
+            </span>
+          </div>
+
+          <!-- Section 1: Pemilihan / Profil Mahasiswa -->
+          <div style="border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 18px 20px; background: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0; display: flex; align-items: center; gap: 8px;">
+                <span>👤</span> 1. Pilih Mahasiswa Penerima Tagihan
+              </h4>
+              ${selectedStudent ? `
+                <button type="button" class="btn btn-outline btn-sm" id="btn-change-student" style="font-size: 0.74rem; font-weight: 700; color: #0284c7; border-color: #bae6fd; background: #f0f9ff;">
+                  🔄 Ganti Mahasiswa Lain
+                </button>
+              ` : ''}
+            </div>
+
+            ${!selectedStudent ? `
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="position: relative;">
+                  <input type="text" class="form-control" id="search-student-input" placeholder="🔍 Ketik Nama atau NIM untuk mencari mahasiswa..." style="font-weight: 600; padding-left: 36px;">
+                  <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; opacity: 0.6;">🔍</span>
+                </div>
+                <select class="form-control" id="select-student-dropdown" size="5" style="border-radius: var(--radius-md); font-size: 0.85rem; font-family: var(--font-sans);">
+                  ${students.map(s => {
+                    const scObj = scholarshipSchemes.find(x => x.id === s.scholarshipId) || { shortName: 'Reguler' };
+                    return `<option value="${s.nim}">[${s.nim}] ${s.name} — ${s.prodi} Sem ${s.semester} (${scObj.shortName || scObj.name})</option>`;
+                  }).join('')}
+                </select>
+                <div style="font-size: 0.74rem; color: var(--text-muted);">
+                  💡 Pilih salah satu mahasiswa dari daftar di atas untuk melanjutkan pengisian tagihan.
+                </div>
+              </div>
+            ` : `
+              <!-- Compact Student Identity Card -->
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-lg); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <div style="width: 48px; height: 48px; border-radius: 50%; background: ${selectedStudent.gender === 'L' ? '#1e40af' : '#9d174d'}; color: #fff; font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    ${selectedStudent.name.split(' ').map(n => n[0]).slice(0, 2).join('')}
+                  </div>
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                      <span style="font-weight: 900; font-size: 1.05rem; color: var(--text-dark);">${selectedStudent.name}</span>
+                      <span class="badge" style="background: #f1f5f9; color: var(--text-dark); font-family: var(--font-mono); font-weight: 800; font-size: 0.72rem;">NIM: ${selectedStudent.nim}</span>
+                    </div>
+                    <div style="font-size: 0.78rem; color: var(--text-light); margin-top: 3px; display: flex; gap: 10px; flex-wrap: wrap;">
+                      <span>Prodi: <strong>${selectedStudent.prodi}</strong></span>
+                      <span>•</span>
+                      <span>Semester: <strong>${selectedStudent.semester}</strong></span>
+                      <span>•</span>
+                      <span>Angkatan: <strong>${selectedStudent.classYear || '2026'}</strong></span>
+                      <span>•</span>
+                      <span>VA BSI: <strong style="font-family: var(--font-mono); color: #047857;">1056405743</strong></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                  ${getProdiBadge(selectedStudent.prodi)}
+                  ${getScholarshipBadge(selectedStudent.scholarshipId)}
+                </div>
+              </div>
+            `}
+          </div>
+
+          <!-- Section 2: Penyesuaian Jalur Beasiswa & Semester -->
+          <div style="border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 18px 20px; background: #ffffff;">
+            <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0 0 14px; display: flex; align-items: center; gap: 8px;">
+              <span>🎓</span> 2. Jalur Beasiswa & Periode Tagihan
+            </h4>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+              <!-- Jalur Beasiswa -->
+              <div>
+                <label class="form-label" style="font-weight: 800; color: #1e3a8a;">
+                  Jalur Beasiswa / Skema Pembiayaan Mahasiswa <span style="color:var(--danger);">*</span>
+                </label>
+                <select class="form-control" id="inv-scholarship-select" style="font-weight: 700; color: #1e40af; border: 1.5px solid #93c5fd; background: #f0f9ff;">
+                  ${scholarshipSchemes.map(s => {
+                    let discText = 'Tanpa Potongan (0%)';
+                    if (s.id !== 'REGULER') {
+                      if (s.discountType === 'PERCENT') discText = `Potongan SPP ${s.discountValue}%`;
+                      else discText = `Potongan SPP ${formatRupiah(s.discountValue)}`;
+                    }
+                    return `<option value="${s.id}" ${s.id === selectedScholarshipId ? 'selected' : ''}>🎓 ${s.name} — ${discText}</option>`;
+                  }).join('')}
+                </select>
+                <div style="margin-top: 8px; font-size: 0.78rem; padding: 8px 12px; background: #f0fdf4; border-left: 3px solid #16a34a; border-radius: 4px; color: #166534;">
+                  ✨ <strong>Regulasi:</strong> ${sch.description || 'Skema reguler penuh.'}
+                  ${sch.id !== 'REGULER' ? `<br><strong>Subsidi SPP Terhitung:</strong> -${formatRupiah(sppDiscount)} (${sch.discountValue}% dari SPP Pokok ${formatRupiah(sppBase)})` : ''}
+                </div>
+              </div>
+
+              <!-- Semester Akademik & Batas Waktu -->
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div>
+                  <label class="form-label" style="font-weight: 700;">Semester Akademik <span style="color:var(--danger);">*</span></label>
+                  <select class="form-control" id="inv-semester-select" style="font-weight: 700;">
+                    <option value="2026/2027 Ganjil" ${selectedSemester === '2026/2027 Ganjil' ? 'selected' : ''}>2026/2027 Ganjil (Aktif)</option>
+                    <option value="2026/2027 Genap" ${selectedSemester === '2026/2027 Genap' ? 'selected' : ''}>2026/2027 Genap</option>
+                    <option value="2025/2026 Ganjil" ${selectedSemester === '2025/2026 Ganjil' ? 'selected' : ''}>2025/2026 Ganjil</option>
+                    <option value="2025/2026 Genap" ${selectedSemester === '2025/2026 Genap' ? 'selected' : ''}>2025/2026 Genap</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="form-label" style="font-weight: 700;">Batas Tanggal Jatuh Tempo</label>
+                  <input type="date" class="form-control" id="inv-due-date-input" value="${dueDateVal}">
+                </div>
+              </div>
+            </div>
+
+            <!-- Warning duplicate jika sudah ada invoice untuk semester ini -->
+            ${existingInv ? `
+              <div style="margin-top: 14px; background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--radius-md); padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-size: 0.78rem; color: #92400e;">
+                <span style="font-size: 1.1rem;">⚠️</span>
+                <div>
+                  <strong>Pemberitahuan:</strong> Mahasiswa ini sudah memiliki tagihan terdaftar di semester <strong>${selectedSemester}</strong> (No. Invoice: <strong style="font-family:var(--font-mono);">${existingInv.id}</strong>, Status: <strong>${existingInv.status}</strong>, Bersih: <strong>${formatRupiah(existingInv.netAmount)}</strong>). Tagihan yang akan Anda buat ini akan dicatat sebagai invoice suplemen/tambahan.
+                </div>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Section 3: Rincian Komponen Biaya & Kalkulasi Otomatis -->
+          <div style="border: 1px solid var(--border-light); border-radius: var(--radius-xl); padding: 18px 20px; background: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark); margin: 0; display: flex; align-items: center; gap: 8px;">
+                <span>📋</span> 3. Komponen Biaya & Perhitungan Subsidi
+              </h4>
+              <div style="display: flex; gap: 6px;">
+                <button type="button" class="btn btn-sm ${mode === 'PACKAGE' ? 'btn-primary' : 'btn-outline'}" id="btn-mode-package" style="font-size: 0.72rem; font-weight: 700;">
+                  🚀 Paket Rekomendasi Semester
+                </button>
+                <button type="button" class="btn btn-sm ${mode === 'CUSTOM' ? 'btn-primary' : 'btn-outline'}" id="btn-mode-custom" style="font-size: 0.72rem; font-weight: 700;">
+                  🛠️ Pilih Komponen Manual
+                </button>
+              </div>
+            </div>
+
+            <!-- Komponen Checklist Table -->
+            <div class="table-responsive">
+              <table class="custom-table" style="font-size: 0.82rem; margin-bottom: 14px;">
+                <thead>
+                  <tr>
+                    <th style="width: 40px; text-align: center;">Pilih</th>
+                    <th>Nama Komponen Biaya</th>
+                    <th style="text-align: right;">Tarif Dasar (Rp)</th>
+                    <th style="text-align: right;">Subsidi Beasiswa (Rp)</th>
+                    <th style="text-align: right;">Wajib Bayar (Rp)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- SPP -->
+                  <tr style="background: ${incSpp ? '#f8fafc' : 'transparent'};">
+                    <td style="text-align: center;">
+                      <input type="checkbox" id="chk-comp-spp" ${incSpp ? 'checked' : ''} style="cursor: pointer; transform: scale(1.15);">
+                    </td>
+                    <td>
+                      <label for="chk-comp-spp" style="cursor: pointer; margin: 0; font-weight: 700; color: var(--text-dark);">
+                        ${sppComp.name}
+                      </label>
+                      <div style="font-size: 0.7rem; color: var(--text-muted);">
+                        Komponen pokok perkuliahan yang mendapatkan subsidi beasiswa sesuai jalur
+                      </div>
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">
+                      ${formatRupiah(sppBase)}
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 800; color: #0284c7;">
+                      ${sppDiscount > 0 ? `-${formatRupiah(sppDiscount)}` : '<span style="color:var(--text-light);">-</span>'}
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 800; color: #047857;">
+                      ${formatRupiah(Math.max(0, sppBase - sppDiscount))}
+                    </td>
+                  </tr>
+
+                  <!-- Daftar Ulang -->
+                  <tr style="background: ${incDu ? '#f8fafc' : 'transparent'};">
+                    <td style="text-align: center;">
+                      <input type="checkbox" id="chk-comp-du" ${incDu ? 'checked' : ''} style="cursor: pointer; transform: scale(1.15);">
+                    </td>
+                    <td>
+                      <label for="chk-comp-du" style="cursor: pointer; margin: 0; font-weight: 700; color: var(--text-dark);">
+                        ${duComp.name}
+                      </label>
+                      <div style="font-size: 0.7rem; color: var(--text-muted);">Heregistrasi administrasi & validasi KRS semester</div>
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">
+                      ${formatRupiah(duBase)}
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); color: var(--text-light);">-</td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 800; color: #047857;">
+                      ${formatRupiah(duBase)}
+                    </td>
+                  </tr>
+
+                  <!-- Pendaftaran PMB (Semester 1) -->
+                  <tr style="background: ${incPend ? '#f8fafc' : 'transparent'};">
+                    <td style="text-align: center;">
+                      <input type="checkbox" id="chk-comp-pend" ${incPend ? 'checked' : ''} style="cursor: pointer; transform: scale(1.15);">
+                    </td>
+                    <td>
+                      <label for="chk-comp-pend" style="cursor: pointer; margin: 0; font-weight: 700; color: var(--text-dark);">
+                        ${pendComp.name}
+                      </label>
+                      <div style="font-size: 0.7rem; color: var(--text-muted);">Formulir dan seleksi pendaftaran mahasiswa baru (Sekali di Semester 1)</div>
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">
+                      ${formatRupiah(pendBase)}
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); color: var(--text-light);">-</td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 800; color: #047857;">
+                      ${formatRupiah(pendBase)}
+                    </td>
+                  </tr>
+
+                  <!-- Wisuda (Semester >= 7) -->
+                  <tr style="background: ${incWisuda ? '#f8fafc' : 'transparent'};">
+                    <td style="text-align: center;">
+                      <input type="checkbox" id="chk-comp-wisuda" ${incWisuda ? 'checked' : ''} style="cursor: pointer; transform: scale(1.15);">
+                    </td>
+                    <td>
+                      <label for="chk-comp-wisuda" style="cursor: pointer; margin: 0; font-weight: 700; color: var(--text-dark);">
+                        ${wisudaComp.name}
+                      </label>
+                      <div style="font-size: 0.7rem; color: var(--text-muted);">Ujian komprehensif, munaqosyah skripsi & prosesi wisuda sarjana</div>
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">
+                      ${formatRupiah(wisudaBase)}
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); color: var(--text-light);">-</td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 800; color: #047857;">
+                      ${formatRupiah(wisudaBase)}
+                    </td>
+                  </tr>
+
+                  <!-- Asrama Pesantren -->
+                  <tr style="background: ${incAsrama ? '#f8fafc' : 'transparent'};">
+                    <td style="text-align: center;">
+                      <input type="checkbox" id="chk-comp-asrama" ${incAsrama ? 'checked' : ''} style="cursor: pointer; transform: scale(1.15);">
+                    </td>
+                    <td>
+                      <label for="chk-comp-asrama" style="cursor: pointer; margin: 0; font-weight: 700; color: var(--text-dark);">
+                        Iuran Asrama Pesantren As-Syamil
+                      </label>
+                      <div style="font-size: 0.7rem; color: var(--text-muted);">Pemeliharaan asrama santri mukim & pembinaan tahfidz</div>
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">
+                      ${formatRupiah(asramaBase)}
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); color: var(--text-light);">-</td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 800; color: #047857;">
+                      ${formatRupiah(asramaBase)}
+                    </td>
+                  </tr>
+
+                  <!-- Custom Component -->
+                  <tr style="background: ${incCustom ? '#f8fafc' : 'transparent'};">
+                    <td style="text-align: center;">
+                      <input type="checkbox" id="chk-comp-custom" ${incCustom ? 'checked' : ''} style="cursor: pointer; transform: scale(1.15);">
+                    </td>
+                    <td>
+                      <label for="chk-comp-custom" style="cursor: pointer; margin: 0; font-weight: 700; color: var(--text-dark);">
+                        Komponen Tambahan Khusus
+                      </label>
+                      ${incCustom ? `
+                        <div style="display: flex; gap: 8px; margin-top: 6px;">
+                          <input type="text" class="form-control form-control-sm" id="custom-comp-name" placeholder="Nama Komponen (Contoh: Jas Lab / Sertifikasi)" value="${customName}" style="font-size: 0.76rem;">
+                          <input type="number" class="form-control form-control-sm" id="custom-comp-base" placeholder="Nominal Rp" value="${customBase || ''}" min="0" step="10000" style="width: 140px; font-family: var(--font-mono); font-size: 0.76rem;">
+                        </div>
+                      ` : `
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">Centang untuk memasukkan tagihan kustom di luar komponen baku</div>
+                      `}
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 700;">
+                      ${incCustom ? formatRupiah(customBase) : '-'}
+                    </td>
+                    <td style="text-align: right; font-family: var(--font-mono); color: var(--text-light);">-</td>
+                    <td style="text-align: right; font-family: var(--font-mono); font-weight: 800; color: #047857;">
+                      ${incCustom ? formatRupiah(customBase) : '-'}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Dispensasi Tambahan Khusus (Override) -->
+            <div style="background: #fafaf9; border: 1px dashed #d6d3d1; border-radius: var(--radius-md); padding: 12px 16px; margin-top: 6px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                  <div style="font-weight: 700; font-size: 0.82rem; color: var(--text-dark);">
+                    🎁 Tambahan Dispensasi / Keringanan Pimpinan (Opsional)
+                  </div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">
+                    Potongan ekstra di luar jalur beasiswa standar (misal: rekomendasi Mudir / Yatim)
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-light);">Diskon: Rp</span>
+                  <input type="number" class="form-control form-control-sm" id="inv-extra-discount" value="${extraDiscount || ''}" placeholder="0" min="0" step="25000" style="width: 150px; font-family: var(--font-mono); font-weight: 700;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Live Dynamic Summary Card & Rekening BSI -->
+          <div style="background: linear-gradient(135deg, #064e3b 0%, #0f3261 100%); color: #ffffff; border-radius: var(--radius-xl); padding: 20px 24px; box-shadow: 0 10px 25px -5px rgba(6, 78, 59, 0.25);">
+            <div style="font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.8px; opacity: 0.85; font-weight: 800; color: #a7f3d0;">
+              Ringkasan Rekapitulasi Tagihan Resmi
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 6px;">
+              <span style="font-size: 0.85rem; opacity: 0.9;">Total Tarif Normal (Bruto):</span>
+              <strong style="font-family: var(--font-mono); font-size: 1.05rem;">${formatRupiah(totalGross)}</strong>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 6px; color: #6ee7b7;">
+              <span style="font-size: 0.85rem;">Subsidi Beasiswa (${sch.shortName || sch.name}):</span>
+              <strong style="font-family: var(--font-mono); font-size: 1.05rem;">-${formatRupiah(totalDisc)}</strong>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px;">
+              <span style="font-size: 1.05rem; font-weight: 800; color: #fef08a;">TOTAL WAJIB BAYAR (NETTO):</span>
+              <strong style="font-family: var(--font-mono); font-size: 1.55rem; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                ${formatRupiah(totalNet)}
+              </strong>
+            </div>
+
+            <div style="font-size: 0.74rem; color: #e2e8f0; font-style: italic; margin-top: 4px;">
+              Terbilang: <strong>${terbilang(totalNet)} Rupiah</strong>
+            </div>
+
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.18); display: flex; justify-content: space-between; font-size: 0.78rem; opacity: 0.95; flex-wrap: wrap; gap: 8px;">
+              <div>🏦 Rekening VA BSI: <strong style="font-family: var(--font-mono); color: #a7f3d0;">1056405743</strong> a.n. <strong>STIT IHSANUL FIKRI</strong></div>
+              <div>📅 Jatuh Tempo: <strong>${formatDate(dueDateVal)}</strong></div>
+            </div>
+          </div>
+
+          <!-- Section 5: Catatan Memo Tagihan -->
+          <div>
+            <label class="form-label" style="font-weight: 700;">Catatan / Keterangan Tagihan</label>
+            <input type="text" class="form-control" id="inv-notes-input" value="${notesVal}" placeholder="Catatan resmi tagihan...">
+          </div>
+
+        </div>
+      `;
+
+      footer.innerHTML = `
+        <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div style="font-size: 0.78rem; color: var(--text-muted);">
+            ${items.length} Komponen Terpilih • Total Bersih: <strong style="color: #047857; font-family: var(--font-mono);">${formatRupiah(totalNet)}</strong>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-secondary" id="btn-cancel-new-inv" style="font-weight: 700;">Batal</button>
+            <button class="btn btn-primary" id="btn-submit-new-inv" style="font-weight: 800; background: #047857; border-color: #047857;">
+              📤 Terbitkan Tagihan Resmi (${formatRupiah(totalNet)})
+            </button>
+          </div>
+        </div>
+      `;
+
+      // Attach event listeners for re-calculation and interactions
+      attachEventListeners();
+    }
+
+    function attachEventListeners() {
+      // Cancel
+      const btnCancel = footer.querySelector('#btn-cancel-new-inv');
+      if (btnCancel) btnCancel.onclick = () => ModalManager.closeModal();
+
+      // Change student
+      const btnChangeStudent = body.querySelector('#btn-change-student');
+      if (btnChangeStudent) {
+        btnChangeStudent.onclick = () => {
+          selectedStudent = null;
+          renderModalUI();
+        };
+      }
+
+      // Student search filter
+      const searchInput = body.querySelector('#search-student-input');
+      const selectDropdown = body.querySelector('#select-student-dropdown');
+      if (searchInput && selectDropdown) {
+        searchInput.oninput = (e) => {
+          const q = e.target.value.toLowerCase().trim();
+          Array.from(selectDropdown.options).forEach(opt => {
+            const match = opt.text.toLowerCase().includes(q);
+            opt.style.display = match ? '' : 'none';
+          });
+        };
+        selectDropdown.onchange = (e) => {
+          const nimVal = e.target.value;
+          selectedStudent = students.find(s => s.nim === nimVal) || null;
+          if (selectedStudent) {
+            selectedScholarshipId = selectedStudent.scholarshipId || 'REGULER';
+            incPend = selectedStudent.semester === 1;
+            incWisuda = selectedStudent.semester >= 7;
+            incAsrama = selectedScholarshipId === 'ASRAMA';
           }
-        ],
-        baseAmount: baseAmt,
-        discountAmount: discAmt,
-        netAmount: netAmt,
-        paidAmount: 0,
-        status: STATUS_TAGIHAN.BELUM_BAYAR,
-        paymentMethod: 'VA_BSI',
-        receiptNumber: null,
-        paymentDate: null,
-        virtualAccount: '1056405743',
-        notes: notes || `Tagihan ${invType} semester ${invSemester}`
-      };
+          renderModalUI();
+        };
+      }
 
-      if (!state.invoices) state.invoices = [];
-      state.invoices.unshift(newInvoice);
-      appState.addAuditLog('ADD_INVOICE', `${newInvoice.id} (${invNim})`, `Penerbitan tagihan baru ${invType} nominal Rp ${netAmt.toLocaleString('id-ID')}.`);
-      appState.saveState();
-      appState.notify();
+      // Scholarship change
+      const schSelect = body.querySelector('#inv-scholarship-select');
+      if (schSelect) {
+        schSelect.onchange = (e) => {
+          selectedScholarshipId = e.target.value;
+          if (selectedScholarshipId === 'ASRAMA') incAsrama = true;
+          renderModalUI();
+        };
+      }
 
-      ModalManager.closeModal();
-      window.simpelToast.show('Tagihan Diterbitkan', `Tagihan #${invId} sebesar Rp ${netAmt.toLocaleString('id-ID')} berhasil diterbitkan.`, 'success');
-    };
+      // Semester change
+      const semSelect = body.querySelector('#inv-semester-select');
+      if (semSelect) {
+        semSelect.onchange = (e) => {
+          selectedSemester = e.target.value;
+          renderModalUI();
+        };
+      }
 
+      // Due date change
+      const dueInput = body.querySelector('#inv-due-date-input');
+      if (dueInput) {
+        dueInput.onchange = (e) => {
+          dueDateVal = e.target.value;
+        };
+      }
+
+      // Notes change
+      const notesInput = body.querySelector('#inv-notes-input');
+      if (notesInput) {
+        notesInput.oninput = (e) => {
+          notesVal = e.target.value;
+        };
+      }
+
+      // Extra discount change
+      const extraDiscInput = body.querySelector('#inv-extra-discount');
+      if (extraDiscInput) {
+        extraDiscInput.oninput = (e) => {
+          extraDiscount = Number(e.target.value) || 0;
+          renderModalUI();
+        };
+      }
+
+      // Mode switch
+      const btnModePkg = body.querySelector('#btn-mode-package');
+      const btnModeCust = body.querySelector('#btn-mode-custom');
+      if (btnModePkg) {
+        btnModePkg.onclick = () => {
+          mode = 'PACKAGE';
+          incSpp = true;
+          incDu = true;
+          incPend = selectedStudent ? selectedStudent.semester === 1 : false;
+          incWisuda = selectedStudent ? selectedStudent.semester >= 7 : false;
+          incAsrama = selectedScholarshipId === 'ASRAMA';
+          incCustom = false;
+          renderModalUI();
+        };
+      }
+      if (btnModeCust) {
+        btnModeCust.onclick = () => {
+          mode = 'CUSTOM';
+          renderModalUI();
+        };
+      }
+
+      // Component checkboxes
+      const chkSpp = body.querySelector('#chk-comp-spp');
+      if (chkSpp) chkSpp.onchange = (e) => { incSpp = e.target.checked; renderModalUI(); };
+
+      const chkDu = body.querySelector('#chk-comp-du');
+      if (chkDu) chkDu.onchange = (e) => { incDu = e.target.checked; renderModalUI(); };
+
+      const chkPend = body.querySelector('#chk-comp-pend');
+      if (chkPend) chkPend.onchange = (e) => { incPend = e.target.checked; renderModalUI(); };
+
+      const chkWisuda = body.querySelector('#chk-comp-wisuda');
+      if (chkWisuda) chkWisuda.onchange = (e) => { incWisuda = e.target.checked; renderModalUI(); };
+
+      const chkAsrama = body.querySelector('#chk-comp-asrama');
+      if (chkAsrama) chkAsrama.onchange = (e) => { incAsrama = e.target.checked; renderModalUI(); };
+
+      const chkCustom = body.querySelector('#chk-comp-custom');
+      if (chkCustom) chkCustom.onchange = (e) => { incCustom = e.target.checked; renderModalUI(); };
+
+      const customNameInput = body.querySelector('#custom-comp-name');
+      if (customNameInput) {
+        customNameInput.oninput = (e) => { customName = e.target.value; };
+      }
+      const customBaseInput = body.querySelector('#custom-comp-base');
+      if (customBaseInput) {
+        customBaseInput.oninput = (e) => {
+          customBase = Number(e.target.value) || 0;
+          renderModalUI();
+        };
+      }
+
+      // Submit new invoice
+      const btnSubmit = footer.querySelector('#btn-submit-new-inv');
+      if (btnSubmit) {
+        btnSubmit.onclick = () => {
+          if (!selectedStudent) {
+            window.simpelToast.show('Pilih Mahasiswa', 'Silakan pilih mahasiswa penerima tagihan terlebih dahulu.', 'warning');
+            return;
+          }
+
+          // Gather final items
+          const finalSch = scholarshipSchemes.find(s => s.id === selectedScholarshipId) || scholarshipSchemes[0] || { id: 'REGULER', name: 'Reguler', discountType: 'PERCENT', discountValue: 0 };
+          let finalSppDisc = 0;
+          if (finalSch.id !== 'REGULER') {
+            if (finalSch.discountType === 'PERCENT') finalSppDisc = Math.round((sppBase * finalSch.discountValue) / 100);
+            else finalSppDisc = Math.min(finalSch.discountValue, sppBase);
+          }
+          finalSppDisc = Math.min(finalSppDisc, sppBase);
+
+          const finalItems = [];
+          let calcGross = 0;
+          let calcDisc = 0;
+
+          if (incSpp) {
+            const sppNet = Math.max(0, sppBase - finalSppDisc);
+            finalItems.push({
+              componentId: 'SPP',
+              name: sppComp.name,
+              baseAmount: sppBase,
+              discount: finalSppDisc,
+              finalAmount: sppNet
+            });
+            calcGross += sppBase;
+            calcDisc += finalSppDisc;
+          }
+
+          if (incDu) {
+            finalItems.push({
+              componentId: 'DAFTAR_ULANG',
+              name: duComp.name,
+              baseAmount: duBase,
+              discount: 0,
+              finalAmount: duBase
+            });
+            calcGross += duBase;
+          }
+
+          if (incPend) {
+            finalItems.push({
+              componentId: 'PENDAFTARAN',
+              name: pendComp.name,
+              baseAmount: pendBase,
+              discount: 0,
+              finalAmount: pendBase
+            });
+            calcGross += pendBase;
+          }
+
+          if (incWisuda) {
+            finalItems.push({
+              componentId: 'WISUDA',
+              name: wisudaComp.name,
+              baseAmount: wisudaBase,
+              discount: 0,
+              finalAmount: wisudaBase
+            });
+            calcGross += wisudaBase;
+          }
+
+          if (incAsrama) {
+            finalItems.push({
+              componentId: 'ASRAMA',
+              name: 'Iuran Asrama Santri Mukim As-Syamil',
+              baseAmount: asramaBase,
+              discount: 0,
+              finalAmount: asramaBase
+            });
+            calcGross += asramaBase;
+          }
+
+          if (incCustom && customBase > 0) {
+            finalItems.push({
+              componentId: 'CUSTOM',
+              name: customName || 'Komponen Tambahan',
+              baseAmount: customBase,
+              discount: 0,
+              finalAmount: customBase
+            });
+            calcGross += customBase;
+          }
+
+          if (finalItems.length === 0) {
+            window.simpelToast.show('Komponen Kosong', 'Pilih minimal satu komponen tagihan untuk diterbitkan.', 'warning');
+            return;
+          }
+
+          const extraDiscNum = Math.max(0, Number(extraDiscount) || 0);
+          if (extraDiscNum > 0) {
+            calcDisc += Math.min(extraDiscNum, Math.max(0, calcGross - calcDisc));
+          }
+
+          const calcNet = Math.max(0, calcGross - calcDisc);
+
+          // Create the invoice via BillingEngine
+          const result = BillingEngine.createStudentInvoice({
+            studentNim: selectedStudent.nim,
+            semester: selectedSemester,
+            scholarshipId: finalSch.id,
+            items: finalItems,
+            grossAmount: calcGross,
+            totalDiscount: calcDisc,
+            netAmount: calcNet,
+            dueDate: dueDateVal,
+            notes: notesVal
+          });
+
+          if (!result.success) {
+            window.simpelToast.show('Gagal', result.message || 'Gagal menerbitkan tagihan', 'danger');
+            return;
+          }
+
+          const createdInvoice = result.invoice;
+
+          // Render Success Screen inside modal
+          title.innerHTML = `✅ Tagihan Berhasil Diterbitkan`;
+
+          const cleanPhone = (selectedStudent.phone || '082342307414').replace(/[^0-9]/g, '');
+          const waNumber = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : cleanPhone;
+          const waMessage = `Assalamu'alaikum Wr. Wb.\n` +
+            `Yth. Sdr/i *${selectedStudent.name}* (NIM: ${selectedStudent.nim})\n` +
+            `Program Studi ${selectedStudent.prodi} — STIT Ihsanul Fikri\n\n` +
+            `Berikut rincian tagihan perkuliahan resmi Anda untuk semester *${selectedSemester}*:\n` +
+            `• No. Tagihan: *${createdInvoice.id}*\n` +
+            `• Skema Beasiswa: *${finalSch.name}*\n` +
+            `• Total Tarif Normal: *${formatRupiah(calcGross)}*\n` +
+            `• Subsidi Beasiswa: *-Rp ${calcDisc.toLocaleString('id-ID')}*\n` +
+            `• Total Wajib Bayar: *${formatRupiah(calcNet)}*\n` +
+            `• Batas Jatuh Tempo: *${formatDate(dueDateVal)}*\n\n` +
+            `Pembayaran dapat ditransfer melalui:\n` +
+            `*Bank Syariah Indonesia (BSI)*\n` +
+            `Nomor Rekening / VA: *1056405743*\n` +
+            `Atas Nama: *STIT IHSANUL FIKRI*\n\n` +
+            `Bukti pembayaran dapat diunggah melalui Portal Mahasiswa SIMPEL-IF.\n` +
+            `Jazakumullah Khairan Katsiran.\n` +
+            `— Bagian Keuangan STIT Ihsanul Fikri`;
+
+          const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
+
+          body.innerHTML = `
+            <div style="text-align: center; padding: 24px 16px;">
+              <div style="width: 68px; height: 68px; border-radius: 50%; background: #dcfce7; color: #15803d; font-size: 2.2rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: 0 4px 14px rgba(22, 163, 74, 0.2);">
+                ✓
+              </div>
+              <h3 style="font-size: 1.25rem; font-weight: 900; color: var(--text-dark); margin: 0 0 6px;">
+                Tagihan Mahasiswa Berhasil Diterbitkan!
+              </h3>
+              <p style="font-size: 0.84rem; color: var(--text-light); max-width: 520px; margin: 0 auto 20px;">
+                Tagihan telah disesuaikan dengan skema <strong>${finalSch.name}</strong> dan tersimpan dalam pangkalan data keuangan SIMPEL-IF.
+              </p>
+
+              <!-- Invoice Summary Box -->
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-xl); padding: 18px 22px; max-width: 560px; margin: 0 auto 24px; text-align: left;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-light); padding-bottom: 8px;">
+                  <span style="font-size: 0.8rem; color: var(--text-light);">No. Invoice:</span>
+                  <strong style="font-family: var(--font-mono); color: var(--primary-700);">${createdInvoice.id}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-light); padding: 8px 0;">
+                  <span style="font-size: 0.8rem; color: var(--text-light);">Nama Mahasiswa:</span>
+                  <strong style="color: var(--text-dark);">${selectedStudent.name} (${selectedStudent.nim})</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-light); padding: 8px 0;">
+                  <span style="font-size: 0.8rem; color: var(--text-light);">Jalur Beasiswa:</span>
+                  <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 800;">${finalSch.name}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-light); padding: 8px 0;">
+                  <span style="font-size: 0.8rem; color: var(--text-light);">Subsidi Diberikan:</span>
+                  <strong style="color: #0284c7; font-family: var(--font-mono);">-${formatRupiah(calcDisc)}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 10px;">
+                  <span style="font-weight: 800; font-size: 0.95rem; color: #065f46;">Total Wajib Bayar:</span>
+                  <strong style="font-size: 1.4rem; font-weight: 900; font-family: var(--font-mono); color: #047857;">${formatRupiah(calcNet)}</strong>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-outline" id="btn-success-view-receipt" style="font-weight: 700;">
+                  🧾 Buka Surat Tagihan / Kwitansi
+                </button>
+                <a href="${waUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="font-weight: 800; background: #16a34a; border-color: #16a34a; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+                  📱 Kirim Rincian Tagihan ke WhatsApp
+                </a>
+                <button class="btn btn-secondary" id="btn-success-done" style="font-weight: 700;">
+                  Selesai
+                </button>
+              </div>
+            </div>
+          `;
+
+          footer.innerHTML = '';
+
+          body.querySelector('#btn-success-done').onclick = () => ModalManager.closeModal();
+          body.querySelector('#btn-success-view-receipt').onclick = () => {
+            ModalManager.closeModal();
+            ModalManager.openReceiptModal(createdInvoice.id);
+          };
+
+          window.simpelToast.show('Tagihan Diterbitkan', `Tagihan #${createdInvoice.id} sebesar ${formatRupiah(calcNet)} berhasil diterbitkan sesuai skema ${finalSch.name}.`, 'success');
+        };
+      }
+    }
+
+    renderModalUI();
     overlay.classList.add('active');
   }
 }
