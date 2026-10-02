@@ -23,6 +23,11 @@ $coreFiles = @(
     "assets/images/logo.png",
     "manifest.webmanifest",
     "sw.js",
+    "schema.sql",
+    "api/config.php",
+    "api/db.php",
+    "api/test.php",
+    "api/sync.php",
     "css/variables.css",
     "css/layout.css",
     "css/components.css",
@@ -42,6 +47,7 @@ $coreFiles = @(
     "js/utils/qr-engine.js",
     "js/utils/user-experience.js",
     "js/utils/multiplatform.js",
+    "js/utils/api-client.js",
     "js/views/dashboard-bendahara.js",
     "js/views/view-akademik.js",
     "js/views/view-audit-log.js",
@@ -117,6 +123,17 @@ Check-Condition "MultiplatformHelper exported in multiplatform.js" ($multiRaw.Co
 Check-Condition "Service Worker defines caching & offline capabilities" ($swRaw.Contains("CACHE_NAME") -and $swRaw.Contains("STATIC_ASSETS") -and $swRaw.Contains("addEventListener('fetch'"))
 Check-Condition "Manifest defines PWA identity & standalone display" ($manifestRaw.Contains('"display": "standalone"') -and $manifestRaw.Contains('"icons"') -and $manifestRaw.Contains("SIMPEL-IF"))
 Check-Condition "index.html links manifest and multiplatform meta tags" ($htmlRaw.Contains('rel="manifest"') -and $htmlRaw.Contains('apple-mobile-web-app-capable'))
+
+# 5d. Check cPanel Database Bridge & API
+$apiRaw = Get-Content "d:\SIMPEL-IF\js\utils\api-client.js" -Raw
+$sqlRaw = Get-Content "d:\SIMPEL-IF\schema.sql" -Raw
+$dbPhpRaw = Get-Content "d:\SIMPEL-IF\api\db.php" -Raw
+$syncPhpRaw = Get-Content "d:\SIMPEL-IF\api\sync.php" -Raw
+Check-Condition "ApiClient exported in api-client.js" ($apiRaw.Contains("export class ApiClient") -and $apiRaw.Contains("checkStatus") -and $apiRaw.Contains("openDatabaseConfigModal"))
+Check-Condition "schema.sql defines students, invoices, and transactions tables" ($sqlRaw.Contains('CREATE TABLE IF NOT EXISTS `students`') -and $sqlRaw.Contains('CREATE TABLE IF NOT EXISTS `invoices`') -and $sqlRaw.Contains('CREATE TABLE IF NOT EXISTS `transactions`'))
+Check-Condition "api/db.php establishes PDO and autoMigrateTables" ($dbPhpRaw.Contains("getDbConnection") -and $dbPhpRaw.Contains("autoMigrateTables"))
+Check-Condition "api/sync.php supports GET pull and POST push synchronization" ($syncPhpRaw.Contains('$method === ''GET''') -and $syncPhpRaw.Contains('$method === ''POST''') -and $syncPhpRaw.Contains('app_state_snapshots'))
+Check-Condition "index.html has cPanel Database sidebar item" ($htmlRaw.Contains('nav-database-cpanel'))
 
 # 6. Check JS Syntax & Delimiters (Backticks, Brackets, Parentheses)
 $jsFiles = Get-ChildItem -Path "d:\SIMPEL-IF\js" -Filter "*.js" -Recurse

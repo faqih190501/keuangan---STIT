@@ -104,6 +104,9 @@ export function renderDashboardBendahara(container) {
         <button class="btn btn-outline" id="btn-goto-matriks-rekap" style="font-weight: 800; color: #0284c7; border-color: #7dd3fc; background: #f0f9ff;">
           📊 Matriks Rekap (Sheets)
         </button>
+        <button class="btn btn-outline" id="btn-admin-manage-database" style="font-weight: 800; color: #0284c7; border-color: #7dd3fc; background: #f0f9ff;" title="Konfigurasi dan Sinkronisasi Database MySQL cPanel">
+          🗄️ Database cPanel
+        </button>
         <button class="btn btn-outline" id="btn-admin-manage-users" style="font-weight: 800; color: #1e40af; border-color: #93c5fd; background: #eff6ff;">
           👥 Kelola Admin (${(state.adminUsers || []).length})
         </button>
@@ -490,6 +493,15 @@ export function renderDashboardBendahara(container) {
   if (btnGotoMatriks) {
     btnGotoMatriks.addEventListener('click', () => {
       if (window.simpelRouter) window.simpelRouter.navigateTo('view-matriks-rekap');
+    });
+  }
+
+  const btnManageDb = container.querySelector('#btn-admin-manage-database');
+  if (btnManageDb) {
+    btnManageDb.addEventListener('click', () => {
+      if (window.simpelApi) {
+        window.simpelApi.openDatabaseConfigModal();
+      }
     });
   }
 

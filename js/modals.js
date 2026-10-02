@@ -34,6 +34,12 @@ export class ModalManager {
     }
   }
 
+  static openDatabaseConfigModal() {
+    if (window.simpelApi) {
+      window.simpelApi.openDatabaseConfigModal();
+    }
+  }
+
   /**
    * 1. Official Digital Receipt Modal with QR Code and Institution Kop Surat
    */

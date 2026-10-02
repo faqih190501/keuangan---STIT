@@ -9,6 +9,7 @@ import { ModalManager } from './modals.js';
 import { DragScrollHelper } from './utils/drag-scroll.js';
 import { UserExperienceHelper } from './utils/user-experience.js';
 import { MultiplatformHelper } from './utils/multiplatform.js';
+import { ApiClient } from './utils/api-client.js';
 import { getHijriDate } from './utils/formatters.js';
 
 import { renderDashboardBendahara } from './views/dashboard-bendahara.js';
@@ -72,6 +73,7 @@ class Router {
     AuthManager.init();
     UserExperienceHelper.init();
     MultiplatformHelper.init();
+    ApiClient.init();
 
     // Bind sidebar navigation links
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -83,6 +85,15 @@ class Router {
         }
       });
     });
+
+    // Database cPanel modal trigger from sidebar
+    const navDb = document.getElementById('nav-database-cpanel');
+    if (navDb) {
+      navDb.addEventListener('click', (e) => {
+        e.preventDefault();
+        ApiClient.openDatabaseConfigModal();
+      });
+    }
 
     // Admin management trigger from sidebar
     const navKelolaAdmin = document.getElementById('nav-kelola-admin');

@@ -238,6 +238,7 @@ export class UserExperienceHelper {
 
     // Quick actions catalog
     const allActions = [
+      { title: 'Konfigurasi Database cPanel (MySQL)', desc: 'Hubungkan langsung sistem ke database MySQL / MariaDB cPanel hosting', icon: '🗄️', role: 'ADMIN', action: () => window.simpelApi?.openDatabaseConfigModal(), type: 'ACTION' },
       { title: 'Pasang Aplikasi di HP / Laptop (Install PWA)', desc: 'Gunakan SIMPEL-IF sebagai aplikasi mandiri di Android, iOS, Windows, macOS, Linux', icon: '📲', action: () => window.simpelMultiplatform?.triggerInstall(), type: 'ACTION' },
       { title: 'Diagnostik Multiplatform Perangkat', desc: 'Periksa status layar, sistem operasi, mode tampilan PWA, dan touch target', icon: '⚙️', action: () => window.simpelMultiplatform?.openPlatformSpecsModal(), type: 'ACTION' },
       { title: 'Buat Akun Mahasiswa Baru (PMB)', desc: 'Buka formulir pendaftaran mahasiswa baru langsung', icon: '✨', role: 'ADMIN', action: () => ModalManager.openStudentRegistrationModal(), type: 'ACTION' },
