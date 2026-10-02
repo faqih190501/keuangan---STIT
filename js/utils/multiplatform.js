@@ -9,12 +9,12 @@ export class MultiplatformHelper {
   static isInstalled = false;
 
   static init() {
-    this.detectEnvironment();
-    this.registerServiceWorker();
-    this.setupInstallPrompt();
-    this.setupNetworkMonitor();
-    this.injectPlatformIndicator();
-    this.bindMultiplatformButtons();
+    try { this.detectEnvironment(); } catch (e) { console.warn('[Multiplatform] detectEnvironment:', e); }
+    try { this.registerServiceWorker(); } catch (e) { console.warn('[Multiplatform] registerServiceWorker:', e); }
+    try { this.setupInstallPrompt(); } catch (e) { console.warn('[Multiplatform] setupInstallPrompt:', e); }
+    try { this.setupNetworkMonitor(); } catch (e) { console.warn('[Multiplatform] setupNetworkMonitor:', e); }
+    try { this.injectPlatformIndicator(); } catch (e) { console.warn('[Multiplatform] injectPlatformIndicator:', e); }
+    try { this.bindMultiplatformButtons(); } catch (e) { console.warn('[Multiplatform] bindMultiplatformButtons:', e); }
 
     window.simpelMultiplatform = this;
   }

@@ -69,11 +69,12 @@ class Router {
   init() {
     window.simpelRouter = this;
     window.simpelToast = new ToastManager();
-    ModalManager.init();
-    AuthManager.init();
-    UserExperienceHelper.init();
-    MultiplatformHelper.init();
-    ApiClient.init();
+
+    try { ModalManager.init(); } catch (e) { console.warn('[Init] ModalManager warning:', e); }
+    try { AuthManager.init(); } catch (e) { console.warn('[Init] AuthManager warning:', e); }
+    try { UserExperienceHelper.init(); } catch (e) { console.warn('[Init] UserExperienceHelper warning:', e); }
+    try { MultiplatformHelper.init(); } catch (e) { console.warn('[Init] MultiplatformHelper warning:', e); }
+    try { ApiClient.init(); } catch (e) { console.warn('[Init] ApiClient warning:', e); }
 
     // Bind sidebar navigation links
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -394,73 +395,98 @@ class Router {
       if (mobileBtn) mobileBtn.style.removeProperty('display');
     }
 
-    switch (viewName) {
-      case 'view-login':
-        this.setPageHeaders('Portal Login SIMPEL-IF', 'SIMPEL-IF / Autentikasi');
-        renderLoginView(this.container);
-        break;
+    try {
+      switch (viewName) {
+        case 'view-login':
+          this.setPageHeaders('Portal Login SIMPEL-IF', 'SIMPEL-IF / Autentikasi');
+          renderLoginView(this.container);
+          break;
 
-      case 'dashboard-bendahara':
-      case 'view-pimpinan':
-        this.setPageHeaders('Dashboard Utama Admin', 'SIMPEL-IF / Dashboard Admin');
-        renderDashboardBendahara(this.container);
-        break;
+        case 'dashboard-bendahara':
+        case 'view-pimpinan':
+          this.setPageHeaders('Dashboard Utama Admin', 'SIMPEL-IF / Dashboard Admin');
+          renderDashboardBendahara(this.container);
+          break;
 
-      case 'view-matriks-rekap':
-        this.setPageHeaders('Matriks Rekapitulasi Google Sheets (PMB 2026 & Multi-Angkatan)', 'SIMPEL-IF / Administrasi / Matriks Sheets');
-        renderMatriksRekapView(this.container);
-        break;
+        case 'view-matriks-rekap':
+          this.setPageHeaders('Matriks Rekapitulasi Google Sheets (PMB 2026 & Multi-Angkatan)', 'SIMPEL-IF / Administrasi / Matriks Sheets');
+          renderMatriksRekapView(this.container);
+          break;
 
-      case 'view-skema-tarif':
-        this.setPageHeaders('Konfigurasi Skema Beasiswa & Tarif', 'SIMPEL-IF / Keuangan / Skema & Tarif');
-        renderSkemaTarifView(this.container);
-        break;
+        case 'view-skema-tarif':
+          this.setPageHeaders('Konfigurasi Skema Beasiswa & Tarif', 'SIMPEL-IF / Keuangan / Skema & Tarif');
+          renderSkemaTarifView(this.container);
+          break;
 
-      case 'view-verifikasi':
-        this.setPageHeaders('Antrean Verifikasi Pembayaran Manual', 'SIMPEL-IF / Keuangan / Verifikasi');
-        renderVerifikasiView(this.container);
-        break;
+        case 'view-verifikasi':
+          this.setPageHeaders('Antrean Verifikasi Pembayaran Manual', 'SIMPEL-IF / Keuangan / Verifikasi');
+          renderVerifikasiView(this.container);
+          break;
 
-      case 'view-mahasiswa':
-        this.setPageHeaders('Portal Pembayaran Kuliah Mahasiswa', 'SIMPEL-IF / Mahasiswa / Tagihan');
-        renderMahasiswaPortal(this.container);
-        break;
+        case 'view-mahasiswa':
+          this.setPageHeaders('Portal Pembayaran Kuliah Mahasiswa', 'SIMPEL-IF / Mahasiswa / Tagihan');
+          renderMahasiswaPortal(this.container);
+          break;
 
-      case 'view-akademik':
-        this.setPageHeaders('Master Data Mahasiswa & Akademik', 'SIMPEL-IF / Akademik / Data Induk');
-        renderAkademikView(this.container);
-        break;
+        case 'view-akademik':
+          this.setPageHeaders('Master Data Mahasiswa & Akademik', 'SIMPEL-IF / Akademik / Data Induk');
+          renderAkademikView(this.container);
+          break;
 
-      case 'view-kalender':
-        this.setPageHeaders('Kalender Akademik & Jadwal Finansial', 'SIMPEL-IF / Akademik / Kalender');
-        renderKalenderView(this.container);
-        break;
+        case 'view-kalender':
+          this.setPageHeaders('Kalender Akademik & Jadwal Finansial', 'SIMPEL-IF / Akademik / Kalender');
+          renderKalenderView(this.container);
+          break;
 
-      case 'view-laporan':
-        this.setPageHeaders('Rekapitulasi Laporan Keuangan', 'SIMPEL-IF / Laporan / Arus Kas');
-        renderLaporanView(this.container);
-        break;
+        case 'view-laporan':
+          this.setPageHeaders('Rekapitulasi Laporan Keuangan', 'SIMPEL-IF / Laporan / Arus Kas');
+          renderLaporanView(this.container);
+          break;
 
-      case 'view-audit-log':
-        this.setPageHeaders('Audit Trail & Log Transaksi', 'SIMPEL-IF / Pengaturan / Audit Trail');
-        renderAuditLogView(this.container);
-        break;
+        case 'view-audit-log':
+          this.setPageHeaders('Audit Trail & Log Transaksi', 'SIMPEL-IF / Pengaturan / Audit Trail');
+          renderAuditLogView(this.container);
+          break;
 
-      case 'view-qr-validator':
-        this.setPageHeaders('Verifikator QR Code & Dokumen Resmi', 'SIMPEL-IF / Publik / Validasi QR');
-        renderQrValidatorView(this.container);
-        break;
+        case 'view-qr-validator':
+          this.setPageHeaders('Verifikator QR Code & Dokumen Resmi', 'SIMPEL-IF / Publik / Validasi QR');
+          renderQrValidatorView(this.container);
+          break;
 
-      default:
-        this.setPageHeaders('Dashboard Keuangan', 'SIMPEL-IF / Utama');
-        renderDashboardBendahara(this.container);
+        default:
+          this.setPageHeaders('Dashboard Keuangan', 'SIMPEL-IF / Utama');
+          renderDashboardBendahara(this.container);
+      }
+    } catch (renderError) {
+      console.error(`[Router] Error rendering view ${viewName}:`, renderError);
+      this.container.innerHTML = `
+        <div style="max-width: 600px; margin: 40px auto; padding: 24px; background: #fff; border-radius: 16px; border: 1.5px solid #fed7aa; box-shadow: 0 10px 25px rgba(0,0,0,0.06); text-align: center;">
+          <div style="font-size: 2.6rem; margin-bottom: 8px;">⚠️</div>
+          <h3 style="color: #9a3412; margin-bottom: 8px; font-weight: 800;">Tampilan Sedang Diperbarui</h3>
+          <p style="color: #78350f; font-size: 0.88rem; margin-bottom: 16px; line-height: 1.5;">
+            Modul sedang menyinkronkan data tampilan. Klik tombol di bawah untuk kembali ke halaman utama atau login.
+          </p>
+          <div style="display: flex; justify-content: center; gap: 10px;">
+            <button class="btn btn-primary btn-sm" onclick="window.simpelRouter ? window.simpelRouter.navigateTo('view-login') : window.location.reload(true);" style="font-weight: 700;">
+              Kembali ke Login ➔
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="window.location.reload(true);" style="font-weight: 700;">
+              Segarkan (Refresh)
+            </button>
+          </div>
+        </div>
+      `;
     }
 
     // Initialize drag and swipe horizontal scroll for all tables, cards, and toolbars
     setTimeout(() => {
-      DragScrollHelper.init(document);
-      UserExperienceHelper.bindCopyButtons(this.container);
-      MultiplatformHelper.bindMultiplatformButtons();
+      try {
+        DragScrollHelper.init(document);
+        UserExperienceHelper.bindCopyButtons(this.container);
+        MultiplatformHelper.bindMultiplatformButtons();
+      } catch (e) {
+        console.warn('[Router Post-Render Warning]:', e);
+      }
     }, 50);
 
     if (scrollToTop) {
@@ -478,15 +504,44 @@ class Router {
   }
 }
 
-// Bootstrap on DOM Ready
-document.addEventListener('DOMContentLoaded', () => {
-  const router = new Router();
-  router.init();
-  DragScrollHelper.init(document);
+// Resilient Application Bootstrapper (handles both loading and interactive/complete DOM readyState)
+function bootstrapApp() {
+  try {
+    const router = new Router();
+    router.init();
+    try { DragScrollHelper.init(document); } catch (e) { }
 
-  // Inisialisasi Penanggalan Kalender Hijriyah Dinamis
-  const hijriTextEl = document.getElementById('topbar-hijri-text');
-  if (hijriTextEl) {
-    hijriTextEl.textContent = getHijriDate(new Date());
+    // Inisialisasi Penanggalan Kalender Hijriyah Dinamis
+    const hijriTextEl = document.getElementById('topbar-hijri-text');
+    if (hijriTextEl) {
+      hijriTextEl.textContent = getHijriDate(new Date());
+    }
+  } catch (bootstrapErr) {
+    console.error('[SIMPEL-IF Bootstrap Exception]:', bootstrapErr);
+    const container = document.getElementById('main-view-container');
+    if (container && (!container.children || container.children.length === 0)) {
+      try {
+        renderLoginView(container);
+      } catch (fallbackErr) {
+        container.innerHTML = `
+          <div style="max-width: 520px; margin: 60px auto; padding: 32px 24px; background: #fff; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; border: 1px solid #e2e8f0;">
+            <div style="width: 64px; height: 64px; border-radius: 16px; background: #0f1e3c; padding: 6px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+              <img src="./assets/images/logo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <h2 style="font-size: 1.3rem; font-weight: 800; color: #1e3a8a; margin: 0 0 6px;">SIMPEL-IF STIT Ihsanul Fikri</h2>
+            <p style="font-size: 0.85rem; color: #64748b; margin: 0 auto 20px; max-width: 380px;">Sistem sedang menyinkronkan pembaruan terkini. Klik tombol di bawah untuk menyegarkan tampilan.</p>
+            <button onclick="window.location.reload(true)" style="background: linear-gradient(135deg, #1e40af, #2563eb); color: #fff; border: none; padding: 10px 24px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
+              🔄 Segarkan Tampilan (Refresh)
+            </button>
+          </div>
+        `;
+      }
+    }
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootstrapApp);
+} else {
+  bootstrapApp();
+}

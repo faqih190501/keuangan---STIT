@@ -14,9 +14,9 @@ export class ApiClient {
   static syncTimeout = null;
 
   static async init() {
-    this.injectDatabaseStatusBadge();
-    await this.checkStatus();
-    this.bindAutoSync();
+    try { this.injectDatabaseStatusBadge(); } catch (e) { console.warn('[ApiClient] injectDatabaseStatusBadge:', e); }
+    try { await this.checkStatus(); } catch (e) { console.warn('[ApiClient] checkStatus:', e); }
+    try { this.bindAutoSync(); } catch (e) { console.warn('[ApiClient] bindAutoSync:', e); }
 
     window.simpelApi = this;
   }

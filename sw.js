@@ -2,9 +2,10 @@
  * SIMPEL-IF Service Worker
  * STIT Ihsanul Fikri
  * Offline caching & multiplatform PWA support
+ * Version: 5.5.1
  */
 
-const CACHE_NAME = 'simpel-if-v5.5.0';
+const CACHE_NAME = 'simpel-if-v5.5.1';
 
 const STATIC_ASSETS = [
   './',
@@ -22,14 +23,15 @@ const STATIC_ASSETS = [
   './js/modals.js',
   './js/models.js',
   './js/state.js',
+  './js/utils/api-client.js',
   './js/utils/chart-engine.js',
   './js/utils/drag-scroll.js',
   './js/utils/export-engine.js',
   './js/utils/formatters.js',
   './js/utils/image-compressor.js',
+  './js/utils/multiplatform.js',
   './js/utils/qr-engine.js',
   './js/utils/user-experience.js',
-  './js/utils/multiplatform.js',
   './js/views/dashboard-bendahara.js',
   './js/views/view-akademik.js',
   './js/views/view-audit-log.js',
@@ -37,18 +39,17 @@ const STATIC_ASSETS = [
   './js/views/view-laporan.js',
   './js/views/view-login.js',
   './js/views/view-mahasiswa.js',
+  './js/views/view-matriks-rekap.js',
   './js/views/view-pimpinan.js',
   './js/views/view-qr-validator.js',
   './js/views/view-skema-tarif.js',
-  './js/views/view-verifikasi.js',
-  './js/views/view-matriks-rekap.js'
+  './js/views/view-verifikasi.js'
 ];
 
-// Install event - Cache core app shell
+// Install event - Cache core app shell and immediately take over
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Use cache.addAll with individual catch to avoid aborting on single failed resource
       return Promise.allSettled(
         STATIC_ASSETS.map((asset) =>
           cache.add(asset).catch((err) => {
@@ -60,14 +61,14 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate event - Clean old caches
+// Activate event - Immediately clean all obsolete caches and claim clients
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log(`[PWA ServiceWorker] Removing old cache: ${key}`);
+            console.log(`[PWA ServiceWorker] Purging old cache: ${key}`);
             return caches.delete(key);
           }
         })
@@ -76,47 +77,79 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch event - Stale-While-Revalidate with Network Fallback
+// Fetch event - Network-First for HTML/Scripts/Styles; Cache-First for static assets; Bypass for APIs
 self.addEventListener('fetch', (event) => {
   const request = event.request;
 
-  // Don't intercept non-GET requests or Google Analytics / external APIs
+  // Don't intercept non-GET requests
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
 
-  // Allow Google Fonts to pass through or be handled dynamically
+  // CRITICAL: NEVER intercept cPanel MySQL API endpoints or PHP scripts
+  if (url.pathname.includes('/api/') || url.pathname.endsWith('.php')) {
+    return;
+  }
+
+  // Allow external APIs or analytics to pass through
   if (url.origin !== self.location.origin && !url.hostname.includes('fonts.googleapis.com') && !url.hostname.includes('fonts.gstatic.com')) {
     return;
   }
 
-  event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      const fetchPromise = fetch(request)
+  // Network-First strategy for HTML navigation, JS modules, and CSS styles
+  // Ensures fresh updates are visible immediately, falling back to cache when offline
+  const isCodeOrDoc = request.mode === 'navigate' ||
+                      url.pathname.endsWith('.js') ||
+                      url.pathname.endsWith('.css') ||
+                      url.pathname.endsWith('.html') ||
+                      url.pathname === '/' ||
+                      url.search.includes('v=');
+
+  if (isCodeOrDoc) {
+    event.respondWith(
+      fetch(request)
         .then((networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(request, responseToCache);
-            });
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
           }
           return networkResponse;
         })
         .catch(() => {
-          // If offline and request is an HTML navigation, return cached index.html
-          if (request.mode === 'navigate') {
-            return caches.match('./index.html') || cachedResponse;
-          }
-          return cachedResponse;
-        });
+          return caches.match(request).then((cachedResponse) => {
+            if (cachedResponse) return cachedResponse;
+            if (request.mode === 'navigate') {
+              return caches.match('./index.html');
+            }
+          });
+        })
+    );
+    return;
+  }
 
-      return cachedResponse || fetchPromise;
+  // Cache-First strategy for static images, logos, and webfonts
+  event.respondWith(
+    caches.match(request).then((cachedResponse) => {
+      if (cachedResponse) return cachedResponse;
+
+      return fetch(request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const copy = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
+        return networkResponse;
+      });
     })
   );
 });
 
-// Message listener for skip waiting
+// Message listener for skip waiting or cache purge
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
+  }
+  if (event.data && event.data.type === 'CLEAR_CACHE') {
+    caches.keys().then((keys) => {
+      return Promise.all(keys.map((k) => caches.delete(k)));
+    });
   }
 });
