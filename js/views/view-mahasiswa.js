@@ -16,10 +16,15 @@ import { BillingEngine } from '../billing-engine.js';
 import { generateQRCodeSVG } from '../utils/qr-engine.js';
 import { compressImage, formatBytes } from '../utils/image-compressor.js';
 
+let adminSelectedStudentNim = null;
+
 export function renderMahasiswaPortal(container) {
   const state = appState.getState();
-  const currentNim = (state.currentUser && state.currentUser.nim) || (state.students && state.students[0] && state.students[0].nim) || '202602001';
-  const currentStudent = (state.students && state.students.find(s => s.nim === currentNim)) || (state.students && state.students[0]) || { nim: '202602001', name: 'Za\'am Tsafiq Al Azmi', prodi: 'BKPI', semester: 1, scholarshipId: 'REGULER' };
+  const isAdmin = state.currentRole === 'ADMIN';
+  const effectiveNim = (isAdmin && adminSelectedStudentNim)
+    ? adminSelectedStudentNim
+    : ((state.currentUser && state.currentUser.nim) || (state.students && state.students[0] && state.students[0].nim) || '202602001');
+  const currentStudent = (state.students && state.students.find(s => s.nim === effectiveNim)) || (state.students && state.students[0]) || { nim: '202602001', name: 'Za\'am Tsafiq Al Azmi', prodi: 'BKPI', semester: 1, scholarshipId: 'REGULER' };
   const scholarship = ((state.scholarshipSchemes || []).find(sc => sc.id === currentStudent.scholarshipId)) || (state.scholarshipSchemes && state.scholarshipSchemes[0]) || { name: 'Reguler', discountValue: 0 };
   
   // Find current semester invoice
@@ -60,6 +65,32 @@ export function renderMahasiswaPortal(container) {
   }
 
   container.innerHTML = `
+    ${isAdmin ? `
+      <!-- Admin Preview & Student Switcher Toolbar -->
+      <div style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #ffffff; padding: 14px 20px; border-radius: var(--radius-xl); margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; box-shadow: 0 4px 14px rgba(37,99,235,0.25);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 1.5rem; background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">👑</span>
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 800; color: #ffffff;">Mode Pratinjau Administrator — Portal Mahasiswa</div>
+            <div style="font-size: 0.74rem; color: #bfdbfe; margin-top: 1px;">Pilih mahasiswa dari daftar untuk melihat simulasi tagihan, nomor VA, dan riwayat kwitansi secara langsung.</div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <label style="font-size: 0.76rem; font-weight: 800; color: #e0e7ff;" for="admin-select-student">Pilih Mahasiswa:</label>
+          <select id="admin-select-student" style="background: #ffffff; color: #0f172a; font-weight: 800; font-size: 0.82rem; padding: 7px 14px; border-radius: var(--radius-md); border: 1.5px solid #93c5fd; cursor: pointer; max-width: 340px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+            ${(state.students || []).map(s => `
+              <option value="${s.nim}" ${s.nim === currentStudent.nim ? 'selected' : ''}>
+                [${s.prodi}] ${s.nim} - ${s.name}
+              </option>
+            `).join('')}
+          </select>
+          <button class="btn btn-sm" id="btn-admin-back-to-dashboard" style="background: rgba(255,255,255,0.2); color: #ffffff; border: 1px solid rgba(255,255,255,0.4); font-weight: 800; font-size: 0.76rem; padding: 6px 12px; border-radius: var(--radius-md); cursor: pointer;">
+            ← Dashboard Utama
+          </button>
+        </div>
+      </div>
+    ` : ''}
+
     <!-- Top Bar: Account Switcher & Quick Actions -->
     <div class="glass-panel" style="border-radius: var(--radius-xl); padding: 14px 22px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; box-shadow: 0 4px 20px rgba(15,23,42,0.06); border: 1px solid rgba(255,255,255,0.8);">
       <div style="display: flex; align-items: center; gap: 12px;">
@@ -1616,4 +1647,20 @@ export function renderMahasiswaPortal(container) {
       window.simpelModals.openReceiptModal(invId);
     });
   });
+
+  // Admin student selector & back to dashboard handlers
+  const adminSelect = container.querySelector('#admin-select-student');
+  if (adminSelect) {
+    adminSelect.addEventListener('change', (e) => {
+      adminSelectedStudentNim = e.target.value;
+      renderMahasiswaPortal(container);
+    });
+  }
+
+  const btnBackDash = container.querySelector('#btn-admin-back-to-dashboard');
+  if (btnBackDash) {
+    btnBackDash.addEventListener('click', () => {
+      if (window.simpelRouter) window.simpelRouter.navigateTo('dashboard-bendahara');
+    });
+  }
 }

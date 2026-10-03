@@ -222,17 +222,20 @@ class Router {
       }
     });
 
-    // Initial View Routing: Default to view-login if unauthenticated
+    // Initial View Routing: Support URL search query parameter (e.g. ?view=...) and hash (#view)
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchView = urlParams.get('view');
     const hash = window.location.hash.slice(1);
     const hashView = hash.includes('?') ? hash.split('?')[0] : hash;
+    const requestedView = searchView || hashView;
     let initialView = 'view-login';
 
     if (appState.isAuthenticated()) {
       const defaultRoleView = ROLE_PERMISSIONS[appState.getState().currentRole]?.defaultView || 'dashboard-bendahara';
-      initialView = hashView && hashView !== '' && hashView !== 'view-login' ? hashView : defaultRoleView;
+      initialView = requestedView && requestedView !== '' && requestedView !== 'view-login' ? requestedView : defaultRoleView;
     } else {
       // Unauthenticated: only allow view-qr-validator if accessed directly with receipt token, otherwise default to view-login
-      if (hashView === 'view-qr-validator') {
+      if (requestedView === 'view-qr-validator') {
         initialView = 'view-qr-validator';
       } else {
         initialView = 'view-login';
@@ -270,28 +273,29 @@ class Router {
     // Update sidebar nav items visibility based on authentication and role
     const currentRole = state.currentRole;
     const allowedViews = isAuthed && currentRole ? (ROLE_PERMISSIONS[currentRole]?.allowedViews || []) : [];
+    const isStudent = currentRole === 'MAHASISWA';
 
     document.querySelectorAll('.nav-item').forEach(item => {
       const v = item.getAttribute('data-view');
-      if (!isAuthed) {
-        if (v === 'view-login' || v === 'view-qr-validator') {
-          item.style.display = 'flex';
+      const itemId = item.id;
+
+      // Handle items with data-view (routed views)
+      if (v) {
+        if (!isAuthed) {
+          item.style.display = (v === 'view-login' || v === 'view-qr-validator') ? 'flex' : 'none';
         } else {
-          item.style.display = 'none';
+          item.style.display = allowedViews.includes(v) ? 'flex' : 'none';
         }
-      } else {
-        if (allowedViews.includes(v)) {
-          item.style.display = 'flex';
-        } else {
-          item.style.display = 'none';
-        }
+        return;
+      }
+
+      // Handle items without data-view (action buttons or external links)
+      if (itemId === 'nav-website-stit') {
+        item.style.display = 'flex';
+      } else if (itemId === 'nav-database-cpanel' || itemId === 'nav-kelola-admin' || itemId === 'nav-daftar-mahasiswa') {
+        item.style.display = (isAuthed && !isStudent) ? 'flex' : 'none';
       }
     });
-
-    // Hide or show registration links based on current role
-    const isStudent = currentRole === 'MAHASISWA';
-    const navDaftar = document.getElementById('nav-daftar-mahasiswa');
-    if (navDaftar) navDaftar.style.display = (!isAuthed || isStudent) ? 'none' : 'flex';
 
     const btnTopRegister = document.getElementById('btn-topbar-register');
     if (btnTopRegister) btnTopRegister.style.display = (!isAuthed || isStudent) ? 'none' : 'inline-flex';

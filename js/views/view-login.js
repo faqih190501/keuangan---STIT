@@ -129,6 +129,25 @@ export function renderLoginView(container) {
                 <button type="submit" class="btn btn-primary btn-lg btn-shimmer" style="width: 100%; font-size: 0.96rem; font-weight: 800; padding: 12px 20px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border: none; box-shadow: 0 4px 12px rgba(37,99,235,0.3);">
                   🚀 Masuk ke Sistem SIMPEL-IF
                 </button>
+
+                <!-- Quick Demo Account Fillers -->
+                <div style="margin-top: 16px; padding: 12px 14px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: var(--radius-md);">
+                  <div style="font-size: 0.72rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+                    <span>⚡ Masuk Cepat / Akun Demo</span>
+                    <span style="font-size: 0.68rem; color: #64748b; font-weight: 600;">Klik untuk isi otomatis</span>
+                  </div>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-sm btn-outline btn-demo-fill" data-user="admin" data-pwd="admin123" style="font-size: 0.74rem; font-weight: 800; padding: 5px 10px; border-color: #93c5fd; background: #eff6ff; color: #1e40af; border-radius: var(--radius-sm); cursor: pointer;">
+                      👑 Bendahara (Admin)
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline btn-demo-fill" data-user="2601001" data-pwd="123456" style="font-size: 0.74rem; font-weight: 800; padding: 5px 10px; border-color: #cbd5e1; background: #ffffff; color: #334155; border-radius: var(--radius-sm); cursor: pointer;">
+                      🎓 Mhs BKPI (2601001)
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline btn-demo-fill" data-user="2602001" data-pwd="123456" style="font-size: 0.74rem; font-weight: 800; padding: 5px 10px; border-color: #fbcfe8; background: #fdf2f8; color: #be185d; border-radius: var(--radius-sm); cursor: pointer;">
+                      🎓 Mhs PIAUD (2602001)
+                    </button>
+                  </div>
+                </div>
               </form>
 
               <!-- VIP Student Self-Registration CTA Card -->
@@ -317,6 +336,24 @@ export function renderLoginView(container) {
       btnToggle.textContent = isPwd ? '🙈' : '👁️';
     });
   }
+
+  // 2b. Quick Demo Fill Handlers
+  container.querySelectorAll('.btn-demo-fill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const u = btn.getAttribute('data-user');
+      const p = btn.getAttribute('data-pwd');
+      const inputU = container.querySelector('#login-nim');
+      const inputP = container.querySelector('#login-password');
+      if (inputU && inputP) {
+        inputU.value = u;
+        inputP.value = p;
+        inputU.focus();
+        if (window.simpelToast) {
+          window.simpelToast.show('Akun Dipilih', `Data login terisi untuk ${btn.textContent.trim()}. Silakan klik tombol Masuk.`, 'info', 2500);
+        }
+      }
+    });
+  });
 
   // 3. Submit Unified Login Form (Auto-detect Admin or Student)
   const formLogin = container.querySelector('#form-student-login');

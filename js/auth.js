@@ -11,6 +11,8 @@ export const ROLE_PERMISSIONS = {
   ADMIN: {
     allowedViews: [
       'dashboard-bendahara',
+      'view-pimpinan',
+      'view-mahasiswa',
       'view-matriks-rekap',
       'view-skema-tarif',
       'view-verifikasi',
@@ -93,21 +95,23 @@ export class AuthManager {
     const navAuditLog = document.getElementById('nav-audit-log');
     const navMahasiswa = document.getElementById('nav-mahasiswa');
     const navKelolaAdmin = document.getElementById('nav-kelola-admin');
+    const navDatabaseCpanel = document.getElementById('nav-database-cpanel');
     const navDaftarMahasiswa = document.getElementById('nav-daftar-mahasiswa');
+    const navWebsiteStit = document.getElementById('nav-website-stit');
     const navLogin = document.getElementById('nav-login');
     const navQr = document.getElementById('nav-qr-validator');
 
     if (!isAuthed) {
-      [navDashboard, navMatriksRekap, navSkema, navVerifikasi, navKalender, navAkademik, navLaporan, navAuditLog, navMahasiswa, navKelolaAdmin, navDaftarMahasiswa].forEach(el => {
+      [navDashboard, navMatriksRekap, navSkema, navVerifikasi, navKalender, navAkademik, navLaporan, navAuditLog, navMahasiswa, navKelolaAdmin, navDatabaseCpanel, navDaftarMahasiswa].forEach(el => {
         if (el) el.style.display = 'none';
       });
       if (navLogin) navLogin.style.display = 'flex';
       if (navQr) navQr.style.display = 'flex';
+      if (navWebsiteStit) navWebsiteStit.style.display = 'flex';
       return;
     }
 
-    if (navDaftarMahasiswa) navDaftarMahasiswa.style.display = isStudent ? 'none' : 'flex';
-    if (navMatriksRekap) navMatriksRekap.style.display = isStudent ? 'none' : 'flex';
+    if (navWebsiteStit) navWebsiteStit.style.display = 'flex';
 
     if (isStudent) {
       if (navDashboard) navDashboard.style.display = 'none';
@@ -118,9 +122,13 @@ export class AuthManager {
       if (navLaporan) navLaporan.style.display = 'none';
       if (navAuditLog) navAuditLog.style.display = 'none';
       if (navKelolaAdmin) navKelolaAdmin.style.display = 'none';
+      if (navDatabaseCpanel) navDatabaseCpanel.style.display = 'none';
+      if (navDaftarMahasiswa) navDaftarMahasiswa.style.display = 'none';
       if (navKalender) navKalender.style.display = 'flex';
       if (navMahasiswa) navMahasiswa.style.display = 'flex';
+      if (navQr) navQr.style.display = 'flex';
     } else {
+      // Admin Role: Full Access to all management modules & Student Portal preview
       if (navDashboard) navDashboard.style.display = 'flex';
       if (navMatriksRekap) navMatriksRekap.style.display = 'flex';
       if (navSkema) navSkema.style.display = 'flex';
@@ -130,7 +138,10 @@ export class AuthManager {
       if (navLaporan) navLaporan.style.display = 'flex';
       if (navAuditLog) navAuditLog.style.display = 'flex';
       if (navKelolaAdmin) navKelolaAdmin.style.display = 'flex';
+      if (navDatabaseCpanel) navDatabaseCpanel.style.display = 'flex';
+      if (navDaftarMahasiswa) navDaftarMahasiswa.style.display = 'flex';
       if (navMahasiswa) navMahasiswa.style.display = 'flex';
+      if (navQr) navQr.style.display = 'flex';
     }
   }
 

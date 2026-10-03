@@ -5,7 +5,7 @@
  * Version: 5.5.1
  */
 
-const CACHE_NAME = 'simpel-if-v5.5.1';
+const CACHE_NAME = 'simpel-if-v5.5.2';
 
 const STATIC_ASSETS = [
   './',
@@ -115,11 +115,12 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => {
-          return caches.match(request).then((cachedResponse) => {
+          return caches.match(request, { ignoreSearch: true }).then((cachedResponse) => {
             if (cachedResponse) return cachedResponse;
             if (request.mode === 'navigate') {
-              return caches.match('./index.html');
+              return caches.match('./index.html', { ignoreSearch: true });
             }
+            return new Response('', { status: 504, statusText: 'Offline / Gateway Timeout' });
           });
         })
     );
@@ -128,7 +129,7 @@ self.addEventListener('fetch', (event) => {
 
   // Cache-First strategy for static images, logos, and webfonts
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
+    caches.match(request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;
 
       return fetch(request).then((networkResponse) => {
@@ -137,6 +138,8 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
         }
         return networkResponse;
+      }).catch(() => {
+        return new Response('', { status: 404, statusText: 'Resource Not Found' });
       });
     })
   );
