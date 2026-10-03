@@ -9140,7 +9140,8 @@ const INITIAL_SEED_DATA = {
       role: 'ADMIN',
       ip: '127.0.0.1'
     }
-  ]
+  ],
+  transactions: []
 };
 
 class StateManager {
@@ -9185,6 +9186,9 @@ class StateManager {
           }
           if (!this.state.auditLogs || this.state.auditLogs.length === 0) {
             this.state.auditLogs = JSON.parse(JSON.stringify(INITIAL_SEED_DATA.auditLogs || []));
+          }
+          if (!this.state.transactions) {
+            this.state.transactions = [];
           }
         }
       } else {
@@ -9334,6 +9338,17 @@ class StateManager {
   notify(options = {}) {
     this.saveState();
     this.notifyListeners(options);
+    try {
+      window.dispatchEvent(new CustomEvent('simpel_state_changed', {
+        detail: {
+          state: this.state,
+          options,
+          timestamp: Date.now()
+        }
+      }));
+    } catch (e) {
+      console.warn('[StateManager] Event dispatch warning:', e);
+    }
   }
 
   notifyListeners(options = {}) {
@@ -9521,7 +9536,17 @@ class StateManager {
     this.state.invoices.unshift(newInv);
 
     this.addAuditLog('REGISTER_STUDENT_SELF', `${newStudent.name} (${newStudent.nim})`, `Registrasi mandiri mahasiswa baru prodi ${newStudent.prodi}.`);
-    this.notify();
+    this.notify({ type: 'REGISTER_STUDENT', student: newStudent, invoice: newInv });
+
+    // Otomatis sinkronisasi ke cloud / database cPanel
+    try {
+      if (window.simpelApi && typeof window.simpelApi.triggerAutoSync === 'function') {
+        window.simpelApi.triggerAutoSync('REGISTER_STUDENT');
+      }
+    } catch (e) {
+      console.warn('[StateManager] Cloud auto-sync trigger warning:', e);
+    }
+
     return { success: true, message: `Pendaftaran berhasil! NIM Anda: ${newStudent.nim}`, student: newStudent, invoice: newInv };
   }
 

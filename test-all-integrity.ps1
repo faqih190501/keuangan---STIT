@@ -126,13 +126,15 @@ Check-Condition "index.html links manifest and multiplatform meta tags" ($htmlRa
 
 # 5d. Check cPanel Database Bridge & API
 $apiRaw = Get-Content "d:\SIMPEL-IF\js\utils\api-client.js" -Raw
+$billingRaw = Get-Content "d:\SIMPEL-IF\js\billing-engine.js" -Raw
 $sqlRaw = Get-Content "d:\SIMPEL-IF\schema.sql" -Raw
 $dbPhpRaw = Get-Content "d:\SIMPEL-IF\api\db.php" -Raw
 $syncPhpRaw = Get-Content "d:\SIMPEL-IF\api\sync.php" -Raw
-Check-Condition "ApiClient exported in api-client.js" ($apiRaw.Contains("export class ApiClient") -and $apiRaw.Contains("checkStatus") -and $apiRaw.Contains("openDatabaseConfigModal"))
+Check-Condition "ApiClient exported in api-client.js" ($apiRaw.Contains("export class ApiClient") -and $apiRaw.Contains("checkStatus") -and $apiRaw.Contains("openDatabaseConfigModal") -and $apiRaw.Contains("triggerAutoSync"))
+Check-Condition "Automatic state change event and payment auto-sync wired" ($stateRaw.Contains("simpel_state_changed") -and $apiRaw.Contains("bindAutoSync") -and $billingRaw.Contains("triggerAutoSync"))
 Check-Condition "schema.sql defines students, invoices, and transactions tables" ($sqlRaw.Contains('CREATE TABLE IF NOT EXISTS `students`') -and $sqlRaw.Contains('CREATE TABLE IF NOT EXISTS `invoices`') -and $sqlRaw.Contains('CREATE TABLE IF NOT EXISTS `transactions`'))
-Check-Condition "api/db.php establishes PDO and autoMigrateTables" ($dbPhpRaw.Contains("getDbConnection") -and $dbPhpRaw.Contains("autoMigrateTables"))
-Check-Condition "api/sync.php supports GET pull and POST push synchronization" ($syncPhpRaw.Contains('$method === ''GET''') -and $syncPhpRaw.Contains('$method === ''POST''') -and $syncPhpRaw.Contains('app_state_snapshots'))
+Check-Condition "api/db.php establishes PDO and autoMigrateTables" ($dbPhpRaw.Contains("getDbConnection") -and $dbPhpRaw.Contains("autoMigrateTables") -and $dbPhpRaw.Contains("payment_verifications"))
+Check-Condition "api/sync.php supports GET pull and POST push synchronization" ($syncPhpRaw.Contains('$method === ''GET''') -and $syncPhpRaw.Contains('$method === ''POST''') -and $syncPhpRaw.Contains('app_state_snapshots') -and $syncPhpRaw.Contains('payment_verifications'))
 Check-Condition "index.html has cPanel Database sidebar item" ($htmlRaw.Contains('nav-database-cpanel'))
 
 # 6. Check JS Syntax & Delimiters (Backticks, Brackets, Parentheses)

@@ -156,10 +156,13 @@ export class ApiClient {
    */
   static async pushToDatabase(notify = false) {
     if (!this.isConnected) {
-      if (notify && window.simpelToast) {
-        window.simpelToast.show('Database Belum Konek ⚠️', 'Konfigurasikan koneksi MySQL cPanel terlebih dahulu.', 'warning');
+      const reconnected = await this.checkStatus();
+      if (!reconnected) {
+        if (notify && window.simpelToast) {
+          window.simpelToast.show('Mode Offline / Database Belum Terhubung ⚠️', 'Data tetap aman tersimpan di penyimpanan lokal browser Anda.', 'info');
+        }
+        return false;
       }
-      return false;
     }
 
     try {
@@ -232,15 +235,54 @@ export class ApiClient {
   }
 
   /**
-   * 6. Auto-sync state on local changes (debounced 1.5 seconds)
+   * 6. Realtime Auto-sync state on local changes, registrations and payments
    */
+  static triggerAutoSync(reason = 'AUTO') {
+    if (this.syncTimeout) clearTimeout(this.syncTimeout);
+
+    const isUrgent = ['REGISTER', 'PAYMENT', 'VERIF', 'MANDIRI'].some(k => (reason || '').toUpperCase().includes(k));
+    const delay = isUrgent ? 300 : 1500;
+
+    this.syncTimeout = setTimeout(async () => {
+      try {
+        if (typeof appState.saveState === 'function') {
+          appState.saveState();
+        }
+
+        if (!this.isConnected) {
+          await this.checkStatus();
+        }
+
+        if (this.isConnected) {
+          const success = await this.pushToDatabase(false);
+          if (success && isUrgent && window.simpelToast) {
+            window.simpelToast.show(
+              'Otomatis Tersimpan di Cloud! ☁️',
+              'Data pendaftaran / transaksi pembayaran berhasil tersimpan otomatis di database cPanel MySQL.',
+              'success',
+              3500
+            );
+          }
+        } else {
+          if (isUrgent && window.simpelToast) {
+            window.simpelToast.show(
+              'Data Tersimpan Aman! 💾',
+              'Data telah tersimpan di penyimpanan lokal dan siap disinkronkan otomatis saat terhubung ke database cloud.',
+              'info',
+              3500
+            );
+          }
+        }
+      } catch (syncErr) {
+        console.warn('[ApiClient] triggerAutoSync error:', syncErr);
+      }
+    }, delay);
+  }
+
   static bindAutoSync() {
-    window.addEventListener('simpel_state_changed', () => {
-      if (!this.isConnected) return;
-      if (this.syncTimeout) clearTimeout(this.syncTimeout);
-      this.syncTimeout = setTimeout(() => {
-        this.pushToDatabase(false);
-      }, 1500);
+    window.addEventListener('simpel_state_changed', (e) => {
+      const type = e?.detail?.options?.type || 'STATE_CHANGED';
+      this.triggerAutoSync(type);
     });
   }
 

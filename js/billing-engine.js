@@ -303,7 +303,30 @@ export class BillingEngine {
       `${isFullyPaid ? 'Pelunasan tagihan' : 'Pembayaran angsuran cicilan'} sebesar Rp ${actualPay.toLocaleString('id-ID')} via QRIS. Kwitansi terbit: ${receiptNumber}.`
     );
 
-    appState.notify();
+    if (!state.transactions) state.transactions = [];
+    state.transactions.unshift({
+      id: `TRX-${Date.now()}-${receiptSerial}`,
+      invoiceId: invoice.id,
+      studentNim: invoice.studentNim,
+      amount: actualPay,
+      paymentMethod: 'QRIS',
+      vaNumber: null,
+      bankName: 'QRIS Standar Nasional',
+      status: 'VERIFIED',
+      receiptNumber: receiptNumber,
+      verifiedBy: 'SISTEM_QRIS_OTOMATIS',
+      verifiedAt: timeStr,
+      notes: invoice.notes,
+      createdAt: timeStr
+    });
+
+    appState.notify({ type: 'PAYMENT_QRIS_PROCESSED', invoiceId: invoice.id, receiptNumber, isFullyPaid });
+    try {
+      if (window.simpelApi && typeof window.simpelApi.triggerAutoSync === 'function') {
+        window.simpelApi.triggerAutoSync('PAYMENT_QRIS_PROCESSED');
+      }
+    } catch (e) {}
+
     return { success: true, receiptNumber, invoice, isFullyPaid, paidAmount: actualPay, totalPaid: newTotalPaid };
   }
 
@@ -344,7 +367,30 @@ export class BillingEngine {
       `${isFullyPaid ? 'Pelunasan tagihan' : 'Pembayaran angsuran cicilan'} sebesar Rp ${actualPay.toLocaleString('id-ID')} via ${bankName}. Kwitansi terbit: ${receiptNumber}.`
     );
 
-    appState.notify();
+    if (!state.transactions) state.transactions = [];
+    state.transactions.unshift({
+      id: `TRX-${Date.now()}-${receiptSerial}`,
+      invoiceId: invoice.id,
+      studentNim: invoice.studentNim,
+      amount: actualPay,
+      paymentMethod: 'VA',
+      vaNumber: '1056405743',
+      bankName: bankName,
+      status: 'VERIFIED',
+      receiptNumber: receiptNumber,
+      verifiedBy: 'SISTEM_VA_OTOMATIS',
+      verifiedAt: timeStr,
+      notes: invoice.notes,
+      createdAt: timeStr
+    });
+
+    appState.notify({ type: 'PAYMENT_VA_PROCESSED', invoiceId: invoice.id, receiptNumber, isFullyPaid });
+    try {
+      if (window.simpelApi && typeof window.simpelApi.triggerAutoSync === 'function') {
+        window.simpelApi.triggerAutoSync('PAYMENT_VA_PROCESSED');
+      }
+    } catch (e) {}
+
     return { success: true, receiptNumber, invoice, isFullyPaid, paidAmount: actualPay, totalPaid: newTotalPaid };
   }
 
@@ -435,7 +481,32 @@ export class BillingEngine {
       `Mahasiswa melakukan pembayaran mandiri ${categoryLabel} sebesar Rp ${amount.toLocaleString('id-ID')} via ${paymentChannel}.`
     );
 
-    appState.notify();
+    if (isInstant) {
+      if (!state.transactions) state.transactions = [];
+      state.transactions.unshift({
+        id: `TRX-${Date.now()}-${receiptSerial}`,
+        invoiceId: newInvoice.id,
+        studentNim: student.nim,
+        amount: amount,
+        paymentMethod: paymentChannel,
+        vaNumber: paymentChannel === 'VA_BSI' ? '1056405743' : null,
+        bankName: paymentChannel === 'VA_BSI' ? 'Bank BSI' : 'QRIS Nasional',
+        status: 'VERIFIED',
+        receiptNumber: receiptNumber,
+        verifiedBy: 'SISTEM_MANDIRI_OTOMATIS',
+        verifiedAt: timeStr,
+        notes: newInvoice.notes,
+        createdAt: timeStr
+      });
+    }
+
+    appState.notify({ type: isInstant ? 'PAYMENT_MANDIRI_SUCCESS' : 'SUBMIT_MANDIRI_TRANSFER', invoiceId: newInvoice.id, receiptNumber });
+    try {
+      if (window.simpelApi && typeof window.simpelApi.triggerAutoSync === 'function') {
+        window.simpelApi.triggerAutoSync(isInstant ? 'PAYMENT_MANDIRI_SUCCESS' : 'SUBMIT_MANDIRI_TRANSFER');
+      }
+    } catch (e) {}
+
     return { success: true, invoice: newInvoice, receiptNumber: isInstant ? receiptNumber : null, isInstant };
   }
 
@@ -482,7 +553,13 @@ export class BillingEngine {
       `Mahasiswa mengunggah bukti transfer manual sebesar Rp ${(transferData.amount || invoice.netAmount).toLocaleString('id-ID')}.`
     );
 
-    appState.notify();
+    appState.notify({ type: 'VERIFICATION_SUBMITTED', verification: newVerif });
+    try {
+      if (window.simpelApi && typeof window.simpelApi.triggerAutoSync === 'function') {
+        window.simpelApi.triggerAutoSync('VERIFICATION_SUBMITTED');
+      }
+    } catch (e) {}
+
     return { success: true, verification: newVerif };
   }
 
@@ -558,8 +635,31 @@ export class BillingEngine {
       `Bendahara (${adminName}) menyetujui transfer manual Rp ${addAmt.toLocaleString('id-ID')}. Kwitansi terbit: ${receiptNumber}. Status: ${invoice.status}.`
     );
 
+    if (!state.transactions) state.transactions = [];
+    state.transactions.unshift({
+      id: `TRX-${Date.now()}-${receiptSerial}`,
+      invoiceId: invoice.id,
+      studentNim: invoice.studentNim,
+      amount: addAmt,
+      paymentMethod: 'TRANSFER_MANUAL',
+      vaNumber: null,
+      bankName: verif.senderBank || 'Bank BSI',
+      status: 'VERIFIED',
+      receiptNumber: receiptNumber,
+      verifiedBy: adminName,
+      verifiedAt: timeStr,
+      notes: invoice.notes,
+      createdAt: timeStr
+    });
+
     appState.saveState();
-    appState.notify();
+    appState.notify({ type: 'PAYMENT_APPROVED', verificationId, invoiceId: invoice.id });
+    try {
+      if (window.simpelApi && typeof window.simpelApi.triggerAutoSync === 'function') {
+        window.simpelApi.triggerAutoSync('PAYMENT_APPROVED');
+      }
+    } catch (e) {}
+
     return { success: true, receiptNumber, invoice };
   }
 
@@ -862,7 +962,30 @@ export class BillingEngine {
       `Penerimaan pembayaran ${isFullyPaid ? 'lunas' : 'angsuran'} sebesar Rp ${actualPay.toLocaleString('id-ID')} via ${method} oleh ${verifiedBy}. Kwitansi resmi terbit: ${receiptNumber}.`
     );
 
-    appState.notify();
+    if (!state.transactions) state.transactions = [];
+    state.transactions.unshift({
+      id: `TRX-${Date.now()}-${receiptSerial}`,
+      invoiceId: invoice.id,
+      studentNim: invoice.studentNim,
+      amount: actualPay,
+      paymentMethod: method,
+      vaNumber: null,
+      bankName: 'KASIR_TUNAI',
+      status: 'VERIFIED',
+      receiptNumber: receiptNumber,
+      verifiedBy: verifiedBy || 'KASIR_BENDAHARA',
+      verifiedAt: timeStr,
+      notes: invoice.notes,
+      createdAt: timeStr
+    });
+
+    appState.notify({ type: 'PAYMENT_MANUAL_PROCESSED', invoiceId: invoice.id, receiptNumber });
+    try {
+      if (window.simpelApi && typeof window.simpelApi.triggerAutoSync === 'function') {
+        window.simpelApi.triggerAutoSync('PAYMENT_MANUAL_PROCESSED');
+      }
+    } catch (e) {}
+
     return {
       success: true,
       receiptNumber,

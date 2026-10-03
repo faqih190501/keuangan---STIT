@@ -138,6 +138,28 @@ function autoMigrateTables($pdo) {
             `created_by` VARCHAR(100) DEFAULT 'SYSTEM',
             `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
+
+        "CREATE TABLE IF NOT EXISTS `payment_verifications` (
+            `id` VARCHAR(50) NOT NULL,
+            `invoice_id` VARCHAR(50) DEFAULT NULL,
+            `student_nim` VARCHAR(30) NOT NULL,
+            `student_name` VARCHAR(150) DEFAULT NULL,
+            `prodi` VARCHAR(30) DEFAULT NULL,
+            `amount` DECIMAL(14,2) NOT NULL DEFAULT 0.00,
+            `transfer_date` VARCHAR(30) DEFAULT NULL,
+            `sender_bank` VARCHAR(60) DEFAULT NULL,
+            `sender_account_name` VARCHAR(120) DEFAULT NULL,
+            `sender_account_number` VARCHAR(50) DEFAULT NULL,
+            `destination_bank` VARCHAR(120) DEFAULT NULL,
+            `proof_image` LONGTEXT DEFAULT NULL,
+            `status` VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+            `notes` TEXT DEFAULT NULL,
+            `submitted_at` DATETIME DEFAULT NULL,
+            `verified_at` DATETIME DEFAULT NULL,
+            `verified_by` VARCHAR(100) DEFAULT NULL,
+            `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
     ];
 
